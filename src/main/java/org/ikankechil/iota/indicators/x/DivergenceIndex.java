@@ -5,7 +5,8 @@
  */
 package org.ikankechil.iota.indicators.x;
 
-import org.ikankechil.iota.indicators.AbstractIndicator;
+import static org.ikankechil.iota.indicators.pattern.Extrema.*;
+
 import org.ikankechil.iota.indicators.Indicator;
 
 /**
@@ -17,23 +18,60 @@ import org.ikankechil.iota.indicators.Indicator;
  * @author Daniel Kuan
  * @version 0.1
  */
-class DivergenceIndex extends AbstractIndicator {
+public class DivergenceIndex extends Divergence {
 
-  private final Indicator indicator;
-
-  public DivergenceIndex() {
-    this(null);
+  public DivergenceIndex(final Indicator indicator, final int awayPoints) {
+    super(indicator, awayPoints);
   }
 
-  public DivergenceIndex(final Indicator indicator) {
-    super(ZERO);
+  @Override
+  protected double[] detectTopsDivergences(final double[] tops,
+                                           final double[] highs,
+                                           final double[] indicatorValues) {
+    final double[] divergence = new double[indicatorValues.length];
 
-    this.indicator = indicator;
+    for (int p = nextExtremum(tops, NOT_FOUND), c = NOT_FOUND;
+         (c = nextExtremum(tops, p)) > NOT_FOUND;
+         p = c) {
+      final double hp = tops[p];                    // previous top
+      final double hc = tops[c];                    // current top
+      final double hh = (hc > hp) ? hc : hp;        // highest high
+      final double hl = min(highs, p, c);           // lowest high
+
+      final double ip = indicatorValues[p];         // previous top
+      final double ic = indicatorValues[c];         // current top
+      final double ih = (ic > ip) ? ic : ip;        // highest high
+      final double il = min(indicatorValues, p, c); // lowest high
+
+      divergence[c] = FIFTY_PERCENT * (((hc - hp) / (hh - hl)) - ((ic - ip) / (ih - il)));
+    }
+
+    return divergence;
   }
 
-  public static void main(final String[] args) {
-    // TODO Auto-generated method stub
+  @Override
+  protected double[] detectBottomsDivergences(final double[] bottoms,
+                                              final double[] lows,
+                                              final double[] indicatorValues) {
+    final double[] divergence = new double[indicatorValues.length];
 
+    for (int p = nextExtremum(bottoms, NOT_FOUND), c = NOT_FOUND;
+         (c = nextExtremum(bottoms, p)) > NOT_FOUND;
+         p = c) {
+      final double lp = bottoms[p];                 // previous bottom
+      final double lc = bottoms[c];                 // current bottom
+      final double lh = max(lows, p, c);            // highest low
+      final double ll = (lc < lp) ? lc : lp;        // lowest low
+
+      final double ip = indicatorValues[p];         // previous bottom
+      final double ic = indicatorValues[c];         // current bottom
+      final double ih = max(indicatorValues, p, c); // highest low
+      final double il = (ic < ip) ? ic : ip;        // lowest low
+
+      divergence[c] = FIFTY_PERCENT * (((ic - ip) / (ih - il)) - ((lc - lp) / (lh - ll)));
+    }
+
+    return divergence;
   }
 
   // Formula:

@@ -5,6 +5,8 @@
  */
 package org.ikankechil.iota.indicators.x;
 
+import static org.ikankechil.iota.indicators.pattern.Extrema.*;
+
 import java.util.Arrays;
 import java.util.List;
 
@@ -23,46 +25,105 @@ import org.ikankechil.iota.indicators.pattern.TopsAndBottoms;
  */
 public class Divergence extends AbstractIndicator {
 
-  private final Indicator ohlcTopsAndBottoms;
-  private final Indicator indicatorTopsAndBottoms;
+  private final Indicator topsAndBottoms;
+  private final Indicator indicator;
 
   public Divergence(final Indicator indicator, final int awayPoints) {
     super(ZERO);
 
-    ohlcTopsAndBottoms = new TopsAndBottoms(awayPoints, null, false);
-    indicatorTopsAndBottoms = new TopsAndBottoms(awayPoints, indicator, false);
+    topsAndBottoms = new TopsAndBottoms(awayPoints, null, false);
+    this.indicator = indicator;
   }
 
   @Override
   public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
     throwExceptionIfShort(ohlcv);
 
+    final int offset = indicator.lookback();
+    final int size = ohlcv.size();
+
     // generate tops and bottoms
-    final List<TimeSeries> ohlcTabs = ohlcTopsAndBottoms.generate(ohlcv);
-    final List<TimeSeries> indicatorTabs = indicatorTopsAndBottoms.generate(ohlcv);
+    final List<TimeSeries> tabs = topsAndBottoms.generate(ohlcv);
+    final double[] tops = Arrays.copyOfRange(tabs.get(ZERO).values(),
+                                             offset,
+                                             size);
+    final double[] bottoms = Arrays.copyOfRange(tabs.get(ONE).values(),
+                                                offset,
+                                                size);
 
-    final double[] ohlcTops = ohlcTabs.get(ZERO).values();
-    final double[] ohlcBottoms = ohlcTabs.get(ONE).values();
-    final double[] indicatorTops = indicatorTabs.get(ZERO).values();
-    final double[] indicatorBottoms = indicatorTabs.get(ONE).values();
+    // apply indicator
+    final TimeSeries indicatorSeries = indicator.generate(ohlcv).get(ZERO);
+    final double[] indicatorValues = indicatorSeries.values();
 
-    final double[] topsDivergences = topsDivergence(ohlcTops, indicatorTops);
-    final double[] bottomsDivergences = bottomsDivergence(ohlcBottoms, indicatorBottoms);
+    // detect divergences
+    final double[] highs = Arrays.copyOfRange(ohlcv.highs(), offset, size);
+    final double[] topsDivergences = detectTopsDivergences(tops,
+                                                           highs,
+                                                           indicatorValues);
+    final double[] lows = Arrays.copyOfRange(ohlcv.lows(), offset, size);
+    final double[] bottomsDivergences = detectBottomsDivergences(bottoms,
+                                                                 lows,
+                                                                 indicatorValues);
 
-    final String[] dates = ohlcv.dates();
+    final String[] dates = indicatorSeries.dates();
 
+    logger.info(GENERATED_FOR, name, ohlcv);
     return Arrays.asList(new TimeSeries(name, dates, topsDivergences),
                          new TimeSeries(name, dates, bottomsDivergences));
   }
 
-  private double[] topsDivergence(final double[] ohlcTops, final double[] indicatorTops) {
-    // TODO Auto-generated method stub
-    return null;
+  /**
+   *
+   * @param tops
+   * @param highs
+   * @param indicatorValues
+   * @return
+   */
+  protected double[] detectTopsDivergences(final double[] tops,
+                                           final double[] highs,
+                                           final double[] indicatorValues) {
+    final double[] divergence = new double[indicatorValues.length];
+
+    for (int p = nextExtremum(tops, NOT_FOUND), c = NOT_FOUND;
+         (c = nextExtremum(tops, p)) > NOT_FOUND;
+         p = c) {
+      final double hp = tops[p];            // previous top
+      final double hc = tops[c];            // current top
+
+      final double ip = indicatorValues[p]; // previous top
+      final double ic = indicatorValues[c]; // current top
+
+      divergence[c] = (hp < hc && ip > ic) ? HUNDRED_PERCENT : -HUNDRED_PERCENT;
+    }
+
+    return divergence;
   }
 
-  private double[] bottomsDivergence(final double[] ohlcBottoms, final double[] indicatorBottoms) {
-    // TODO Auto-generated method stub
-    return null;
+  /**
+   *
+   * @param bottoms
+   * @param lows
+   * @param indicatorValues
+   * @return
+   */
+  protected double[] detectBottomsDivergences(final double[] bottoms,
+                                              final double[] lows,
+                                              final double[] indicatorValues) {
+    final double[] divergence = new double[indicatorValues.length];
+
+    for (int p = nextExtremum(bottoms, NOT_FOUND), c = NOT_FOUND;
+         (c = nextExtremum(bottoms, p)) > NOT_FOUND;
+         p = c) {
+      final double lp = bottoms[p];         // previous bottom
+      final double lc = bottoms[c];         // current bottom
+
+      final double ip = indicatorValues[p]; // previous bottom
+      final double ic = indicatorValues[c]; // current bottom
+
+      divergence[c] = (lp > lc && ip < ic) ? HUNDRED_PERCENT : -HUNDRED_PERCENT;
+    }
+
+    return divergence;
   }
 
   // Classic Divergence
