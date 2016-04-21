@@ -1,5 +1,5 @@
 /**
- * Divergence.java v0.1 20 April 2016 7:36:35 pm
+ * Divergence.java v0.2 20 April 2016 7:36:35 pm
  *
  * Copyright © 2016 Daniel Kuan.  All rights reserved.
  */
@@ -20,7 +20,7 @@ import org.ikankechil.iota.indicators.Indicator;
  * <p>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class Divergence extends AbstractIndicator {
 
@@ -28,7 +28,7 @@ public class Divergence extends AbstractIndicator {
   private final Indicator indicator;
 
   public Divergence(final Indicator indicator, final int awayPoints) {
-    super(ZERO);
+    super(indicator.lookback());
 
     topsAndBottoms = new TopsAndBottoms(awayPoints, null, false);
     this.indicator = indicator;
@@ -38,16 +38,15 @@ public class Divergence extends AbstractIndicator {
   public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
     throwExceptionIfShort(ohlcv);
 
-    final int offset = indicator.lookback();
     final int size = ohlcv.size();
 
     // generate tops and bottoms
     final List<TimeSeries> tabs = topsAndBottoms.generate(ohlcv);
     final double[] tops = Arrays.copyOfRange(tabs.get(ZERO).values(),
-                                             offset,
+                                             lookback,
                                              size);
     final double[] bottoms = Arrays.copyOfRange(tabs.get(ONE).values(),
-                                                offset,
+                                                lookback,
                                                 size);
 
     // apply indicator
@@ -55,11 +54,11 @@ public class Divergence extends AbstractIndicator {
     final double[] indicatorValues = indicatorSeries.values();
 
     // detect divergences
-    final double[] highs = Arrays.copyOfRange(ohlcv.highs(), offset, size);
+    final double[] highs = Arrays.copyOfRange(ohlcv.highs(), lookback, size);
     final double[] topsDivergences = detectTopsDivergences(tops,
                                                            highs,
                                                            indicatorValues);
-    final double[] lows = Arrays.copyOfRange(ohlcv.lows(), offset, size);
+    final double[] lows = Arrays.copyOfRange(ohlcv.lows(), lookback, size);
     final double[] bottomsDivergences = detectBottomsDivergences(bottoms,
                                                                  lows,
                                                                  indicatorValues);
