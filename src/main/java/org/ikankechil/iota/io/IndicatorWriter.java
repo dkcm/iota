@@ -12,10 +12,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.ikankechil.iota.OHLCVTimeSeries;
 import org.ikankechil.iota.TimeSeries;
-import org.ikankechil.iota.indicators.Indicator;
-import org.ikankechil.iota.indicators.momentum.IMI;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -98,14 +95,6 @@ public class IndicatorWriter extends TimeSeriesWriter {
     // TODO combine source code across methods
     writer.write(lines, destination);
     logger.info(INDICATORS_WRITTEN, destination);
-  }
-
-  public static void main(final String... arguments) throws Exception {
-    final Indicator indicator = new IMI();
-    final String directory = "././tst/org/ikankechil/iota/indicators/AbstractIndicatorTest/";
-    final OHLCVTimeSeries ohlcv = new OHLCVReader().read(new File(directory, "IBM_20110103-20141231.csv"));
-    final File destination = new File(directory, indicator.getClass().getSimpleName() + "Test.csv");
-    new IndicatorWriter().write(indicator.generate(ohlcv), destination);
   }
 
 }

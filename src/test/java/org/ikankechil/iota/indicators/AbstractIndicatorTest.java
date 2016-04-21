@@ -18,6 +18,7 @@ import java.util.List;
 import org.ikankechil.iota.OHLCVTimeSeries;
 import org.ikankechil.iota.TimeSeries;
 import org.ikankechil.iota.io.IndicatorReader;
+import org.ikankechil.iota.io.IndicatorWriter;
 import org.ikankechil.iota.io.OHLCVReader;
 import org.junit.After;
 import org.junit.Before;
@@ -49,7 +50,7 @@ public abstract class AbstractIndicatorTest {
 
   protected static final Core     CORE               = new Core();
 
-  private static final File       INPUT_DIRECTORY    = new File(".//./src/test/resources/" + AbstractIndicatorTest.class.getSimpleName().replace('.', '/'));
+  private static final File       INPUT_DIRECTORY    = new File(".//./src/test/resources/" + AbstractIndicatorTest.class.getSimpleName());
   private static final File       OHLCV_FILE         = new File(INPUT_DIRECTORY, "IBM_20110103-20141231.csv");
 
   protected static Class<?>       TEST_CLASS;
@@ -68,6 +69,19 @@ public abstract class AbstractIndicatorTest {
     }
     catch (final IOException ioE) {
       throw new Error("Cannot read OHLCV file: " + OHLCV_FILE, ioE.getCause());
+    }
+  }
+
+  public static void main(final String... arguments) throws Exception {
+    final int parameterCount = arguments.length - 1;
+    final Class<?> clazz = Class.forName(arguments[0]);
+    for (final Constructor<?> constructor : clazz.getConstructors()) {
+      if (constructor.getParameterCount() == parameterCount) {
+        final Indicator indicator = (Indicator) constructor.newInstance((Object[]) Arrays.copyOfRange(arguments, 1, arguments.length));
+        final File destination = new File(INPUT_DIRECTORY, indicator.getClass().getSimpleName() + TEST + CSV);
+        new IndicatorWriter().write(indicator.generate(OHLCV), destination);
+        break;
+      }
     }
   }
 
