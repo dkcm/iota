@@ -3,7 +3,7 @@
  *
  * Copyright © 2016 Daniel Kuan.  All rights reserved.
  */
-package org.ikankechil.iota.indicators.x;
+package org.ikankechil.iota.indicators.pattern;
 
 import static org.ikankechil.iota.indicators.pattern.Extrema.*;
 
@@ -14,7 +14,6 @@ import org.ikankechil.iota.OHLCVTimeSeries;
 import org.ikankechil.iota.TimeSeries;
 import org.ikankechil.iota.indicators.AbstractIndicator;
 import org.ikankechil.iota.indicators.Indicator;
-import org.ikankechil.iota.indicators.pattern.TopsAndBottoms;
 
 /**
  *
