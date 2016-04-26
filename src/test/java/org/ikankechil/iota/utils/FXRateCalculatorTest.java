@@ -42,7 +42,7 @@ public class FXRateCalculatorTest {
   public final ExpectedException                    thrown          = ExpectedException.none();
 
   private static final Map<String, OHLCVTimeSeries> EXPECTEDS       = new HashMap<>();
-  private static final File                         INPUT_DIRECTORY = new File(".//./src/test/resources/" + FXRateCalculatorTest.class.getSimpleName().replace('.', '/'));
+  private static final File                         INPUT_DIRECTORY = new File(".//./src/test/resources/" + FXRateCalculatorTest.class.getSimpleName());
   private static final File                         DERIVED         = INPUT_DIRECTORY.listFiles(new FileFilter() {
                                                                         @Override
                                                                         public boolean accept(final File pathname) {

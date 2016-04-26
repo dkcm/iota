@@ -42,7 +42,7 @@ public class IndicatorWriterTest extends TimeSeriesWriterTest {
   private static final List<TimeSeries> PAYLOADS        = new ArrayList<>();
   private static final List<String>     EXPECTEDS       = new ArrayList<>(LARGE + 1);
 
-  private static final File             INPUT_DIRECTORY = new File(".//./src/test/resources/" + IndicatorWriterTest.class.getSimpleName().replace('.', '/'));
+  private static final File             INPUT_DIRECTORY = new File(".//./src/test/resources/" + IndicatorWriterTest.class.getSimpleName());
   private static final File             READ_ONLY       = new File(INPUT_DIRECTORY, "Read-only.csv");
 
   @BeforeClass

@@ -40,7 +40,7 @@ public class PeriodCompressorTest {
   private static final String    _W              = "_w";
   private static final String    _M              = "_m";
 
-  private static final File      INPUT_DIRECTORY = new File(".//./src/test/resources/" + PeriodCompressorTest.class.getSimpleName().replace('.', '/'));
+  private static final File      INPUT_DIRECTORY = new File(".//./src/test/resources/" + PeriodCompressorTest.class.getSimpleName());
   private static final String    CSV             = ".csv";
 
   @BeforeClass
