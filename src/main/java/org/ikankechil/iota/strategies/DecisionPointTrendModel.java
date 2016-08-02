@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
  * @author Daniel Kuan
  * @version 0.1
  */
-public class DecisionPointTrendModel extends AbstractStrategy {
+class DecisionPointTrendModel extends AbstractStrategy {
 
   private static final Logger logger = LoggerFactory.getLogger(DecisionPointTrendModel.class);
 

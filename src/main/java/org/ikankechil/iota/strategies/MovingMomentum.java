@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
  * @author Daniel Kuan
  * @version 0.1
  */
-public class MovingMomentum extends AbstractStrategy {
+class MovingMomentum extends AbstractStrategy {
 
   private static final int    BOUNCE   = 80;
   private static final int    PULLBACK = 20;

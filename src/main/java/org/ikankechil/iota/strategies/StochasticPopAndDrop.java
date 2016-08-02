@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
  * @author Daniel Kuan
  * @version 0.1
  */
-public class StochasticPopAndDrop extends AbstractStrategy {
+class StochasticPopAndDrop extends AbstractStrategy {
 
   // thresholds
   private static final int    BIAS       = 50;
