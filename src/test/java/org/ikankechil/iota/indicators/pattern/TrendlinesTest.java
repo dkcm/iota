@@ -5,9 +5,10 @@
  */
 package org.ikankechil.iota.indicators.pattern;
 
+import java.io.IOException;
+
 import org.ikankechil.iota.indicators.AbstractIndicatorTest;
 import org.ikankechil.iota.indicators.Indicator;
-import org.ikankechil.iota.indicators.pattern.Trendlines;
 import org.junit.BeforeClass;
 
 /**
@@ -24,7 +25,7 @@ public class TrendlinesTest extends AbstractIndicatorTest {
   }
 
   @BeforeClass
-  public static void setUpBeforeClass() throws Exception {
+  public static void setUpBeforeClass() throws IOException {
     TEST_CLASS = TrendlinesTest.class;
     AbstractIndicatorTest.setUpBeforeClass();
   }

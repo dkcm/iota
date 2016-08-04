@@ -5,7 +5,7 @@
  */
 package org.ikankechil.iota.indicators.trend;
 
-import java.lang.reflect.InvocationTargetException;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -31,13 +31,12 @@ public class EMATest extends AbstractIndicatorTest {
   }
 
   @BeforeClass
-  public static void setUpBeforeClass() throws Exception {
+  public static void setUpBeforeClass() throws IOException {
     TEST_CLASS = EMATest.class;
   }
 
   @Override
-  public Indicator newInstance()
-      throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+  public Indicator newInstance() throws ReflectiveOperationException {
     return newInstance(DEFAULT_PERIOD);
   }
 

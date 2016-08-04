@@ -5,6 +5,8 @@
  */
 package org.ikankechil.iota.indicators.momentum;
 
+import java.io.IOException;
+
 import org.ikankechil.iota.indicators.AbstractIndicatorTest;
 import org.ikankechil.iota.indicators.Indicator;
 import org.junit.BeforeClass;
@@ -23,7 +25,7 @@ public class StochasticRSITest extends AbstractIndicatorTest {
   }
 
   @BeforeClass
-  public static void setUpBeforeClass() throws Exception {
+  public static void setUpBeforeClass() throws IOException {
     TEST_CLASS = StochasticRSITest.class;
     AbstractIndicatorTest.setUpBeforeClass();
   }

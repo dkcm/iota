@@ -8,6 +8,7 @@ package org.ikankechil.iota.utils;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.IOException;
 
 import org.ikankechil.iota.OHLCVTimeSeries;
 import org.ikankechil.iota.io.OHLCVReader;
@@ -44,7 +45,7 @@ public class PeriodCompressorTest {
   private static final String    CSV             = ".csv";
 
   @BeforeClass
-  public static void setUpBeforeClass() throws Exception {
+  public static void setUpBeforeClass() throws IOException {
     final OHLCVReader reader = new OHLCVReader();
     DAILY = reader.read(new File(INPUT_DIRECTORY, SYMBOL + CSV));
     EXPECTED_WEEKLY = reader.read(new File(INPUT_DIRECTORY, SYMBOL + _W + CSV));

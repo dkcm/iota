@@ -5,6 +5,8 @@
  */
 package org.ikankechil.iota.indicators.volume;
 
+import java.io.IOException;
+
 import org.ikankechil.iota.indicators.AbstractIndicatorTest;
 import org.junit.BeforeClass;
 
@@ -22,7 +24,7 @@ public class ForceIndexTest extends AbstractIndicatorTest {
   }
 
   @BeforeClass
-  public static void setUpBeforeClass() throws Exception {
+  public static void setUpBeforeClass() throws IOException {
     TEST_CLASS = ForceIndexTest.class;
     AbstractIndicatorTest.setUpBeforeClass();
   }

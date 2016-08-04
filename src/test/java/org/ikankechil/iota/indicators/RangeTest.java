@@ -5,6 +5,8 @@
  */
 package org.ikankechil.iota.indicators;
 
+import java.io.IOException;
+
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -23,7 +25,7 @@ public class RangeTest extends AbstractIndicatorTest {
   }
 
   @BeforeClass
-  public static void setUpBeforeClass() throws Exception {
+  public static void setUpBeforeClass() throws IOException {
     TEST_CLASS = RangeTest.class;
     AbstractIndicatorTest.setUpBeforeClass();
   }

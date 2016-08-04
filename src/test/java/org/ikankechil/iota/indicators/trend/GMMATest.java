@@ -7,6 +7,7 @@ package org.ikankechil.iota.indicators.trend;
 
 import static org.ikankechil.iota.indicators.trend.EMATest.*;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -38,7 +39,7 @@ public class GMMATest extends AbstractIndicatorTest {
   }
 
   @BeforeClass
-  public static void setUpBeforeClass() throws Exception {
+  public static void setUpBeforeClass() throws IOException {
     TEST_CLASS = GMMATest.class;
     AbstractIndicatorTest.setUpBeforeClass();
   }

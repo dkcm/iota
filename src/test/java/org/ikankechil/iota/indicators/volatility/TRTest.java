@@ -5,6 +5,7 @@
  */
 package org.ikankechil.iota.indicators.volatility;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class TRTest extends AbstractIndicatorTest {
   }
 
   @BeforeClass
-  public static void setUpBeforeClass() throws Exception {
+  public static void setUpBeforeClass() throws IOException {
     TEST_CLASS = TRTest.class;
   }
 

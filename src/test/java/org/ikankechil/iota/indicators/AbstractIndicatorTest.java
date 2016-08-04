@@ -1,5 +1,5 @@
 /**
- * AbstractIndicatorTest.java v0.3 10 January 2015 1:45:25 PM
+ * AbstractIndicatorTest.java v0.4  10 January 2015 1:45:25 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -8,9 +8,9 @@ package org.ikankechil.iota.indicators;
 import static org.junit.Assert.*;
 
 import java.io.File;
+import java.io.IOError;
 import java.io.IOException;
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -26,6 +26,8 @@ import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.tictactec.ta.lib.Core;
 
@@ -34,7 +36,7 @@ import com.tictactec.ta.lib.Core;
  * <p>
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public abstract class AbstractIndicatorTest {
 
@@ -43,36 +45,46 @@ public abstract class AbstractIndicatorTest {
   private Class<Indicator>        classUnderTest;
 
   @Rule
-  public final ExpectedException  thrown             = ExpectedException.none();
+  public final ExpectedException  thrown          = ExpectedException.none();
 
   private static OHLCVTimeSeries  OHLCV;
   private static List<TimeSeries> EXPECTEDS;
 
-  protected static final Core     CORE               = new Core();
+  protected static final Core     CORE            = new Core();
 
-  private static final File       INPUT_DIRECTORY    = new File(".//./src/test/resources/" + AbstractIndicatorTest.class.getSimpleName());
-  private static final File       OHLCV_FILE         = new File(INPUT_DIRECTORY, "IBM_20110103-20141231.csv");
+  private static final File       INPUT_DIRECTORY = new File(".//./src/test/resources/" + AbstractIndicatorTest.class.getSimpleName());
+  private static final File       OHLCV_FILE      = new File(INPUT_DIRECTORY, "IBM_20110103-20141231.csv");
 
   protected static Class<?>       TEST_CLASS;
-  private static final String     TEST               = "Test";
-  private static final String     EMPTY              = "";
-  private static final String     CSV                = ".csv";
+  private static final String     TEST            = "Test";
+  private static final String     EMPTY           = "";
+  private static final String     CSV             = ".csv";
 
-//  private static final String     NEGATIVE_PARAMETER = "Negative parameter: index = 0, value = -1";
-  private static final String     INDICATOR          = "Indicator: ";
+  private static final String     INDICATOR       = "Indicator: ";
 
-  private static final double     DELTA              = 1e-6;
+  private static final double     DELTA           = 1e-6;
+
+  private static final Logger     logger          = LoggerFactory.getLogger(AbstractIndicatorTest.class);
 
   static { // read once across all tests
     try {
       OHLCV = new UnmodifiableOHLCVTimeSeries(new OHLCVReader().read(OHLCV_FILE));
     }
     catch (final IOException ioE) {
-      throw new Error("Cannot read OHLCV file: " + OHLCV_FILE, ioE.getCause());
+      logger.error("Cannot read OHLCV file: {}", OHLCV_FILE, ioE);
+      throw new IOError(ioE);
     }
   }
 
-  public static void main(final String... arguments) throws Exception {
+  /**
+   * Generates <code>Indicator</code> test data.
+   *
+   * @param arguments fully-qualified class name of the target
+   *          <code>Indicator</code>.
+   * @throws IOException
+   * @throws ReflectiveOperationException
+   */
+  public static void main(final String... arguments) throws IOException, ReflectiveOperationException {
     final int parameterCount = arguments.length - 1;
     final Class<?> clazz = Class.forName(arguments[0]);
     for (final Constructor<?> constructor : clazz.getConstructors()) {
@@ -103,7 +115,7 @@ public abstract class AbstractIndicatorTest {
   }
 
   @BeforeClass
-  public static void setUpBeforeClass() throws Exception {
+  public static void setUpBeforeClass() throws IOException {
     final File expecteds = new File(INPUT_DIRECTORY, TEST_CLASS.getSimpleName() + CSV);
     if (expecteds.exists()) {
       EXPECTEDS = Collections.unmodifiableList(new IndicatorReader().read(expecteds));
@@ -123,25 +135,20 @@ public abstract class AbstractIndicatorTest {
     indicator = null;
   }
 
-  public Indicator newInstance()
-      throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+  public Indicator newInstance() throws ReflectiveOperationException {
     final Constructor<Indicator> constructor = classUnderTest.getConstructor();
     constructor.setAccessible(true);
     return constructor.newInstance();
   }
 
-  public Indicator newInstance(final int period)
-      throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+  public Indicator newInstance(final int period) throws ReflectiveOperationException {
     final Constructor<Indicator> constructor = classUnderTest.getConstructor(Integer.TYPE);
     constructor.setAccessible(true);
     return constructor.newInstance(period);
   }
 
-  @Test
-  public void cannotInstantiateWithNegativePeriod() throws Exception {
-    thrown.expect(Exception.class); // TODO to be narrowed
-//    thrown.expect(IllegalArgumentException.class);
-//    thrown.expectMessage(NEGATIVE_PARAMETER);
+  @Test(expected=ReflectiveOperationException.class)
+  public void cannotInstantiateWithNegativePeriod() throws ReflectiveOperationException {
     newInstance(-1);
   }
 
@@ -215,7 +222,7 @@ public abstract class AbstractIndicatorTest {
     private final OHLCVTimeSeries ohlcv;
     private final int             size;
 
-    public UnmodifiableOHLCVTimeSeries(final OHLCVTimeSeries ohlcv) {
+    UnmodifiableOHLCVTimeSeries(final OHLCVTimeSeries ohlcv) {
       super(ohlcv.toString(), 0);
 
       this.ohlcv = ohlcv;

@@ -10,6 +10,7 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.FileFilter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -87,7 +88,7 @@ public class FXRateCalculatorTest {
                                                                         "12", "345", "67890" };
 
   @BeforeClass
-  public static void setUpBeforeClass() throws Exception {
+  public static void setUpBeforeClass() throws IOException {
     final OHLCVReader reader = new OHLCVReader();
     for (final String pair : Arrays.asList(SGDTHB, CHFGBP, GBPSGD, NZDAUD, SGDKRW, THBSGD, KRWSGD, USDGBP, USDAUD)) {
       EXPECTEDS.put(pair, reader.read(new File(DERIVED, pair + CSV)));
@@ -98,7 +99,7 @@ public class FXRateCalculatorTest {
   }
 
   @AfterClass
-  public static void tearDownAfterClass() throws Exception {
+  public static void tearDownAfterClass() {
     EXPECTEDS.clear();
   }
 
@@ -140,7 +141,7 @@ public class FXRateCalculatorTest {
   }
 
   @Test
-  public void cannotComputeFXRatesWithInappropriateBaseCurrency() throws Exception {
+  public void cannotComputeFXRatesWithInappropriateBaseCurrency() throws IOException {
     for (final String inappropriate : INAPPROPRIATES) {
       try {
         fxc.computeFXRates(USD, inappropriate);
@@ -153,7 +154,7 @@ public class FXRateCalculatorTest {
   }
 
   @Test
-  public void cannotComputeFXRatesWithInappropriateQuoteCurrency() throws Exception {
+  public void cannotComputeFXRatesWithInappropriateQuoteCurrency() throws IOException {
     for (final String inappropriate : INAPPROPRIATES) {
       try {
         fxc.computeFXRates(inappropriate, USD);
@@ -166,160 +167,160 @@ public class FXRateCalculatorTest {
   }
 
   @Test
-  public void cannotComputeFXRatesWithNullBaseCurrency() throws Exception {
+  public void cannotComputeFXRatesWithNullBaseCurrency() throws IOException {
     thrown.expect(IllegalArgumentException.class);
     fxc.computeFXRates((String) null, USD);
   }
 
   @Test
-  public void cannotComputeFXRatesWithNullBaseCurrency2() throws Exception {
+  public void cannotComputeFXRatesWithNullBaseCurrency2() throws InterruptedException{
     thrown.expect(IllegalArgumentException.class);
     fxc.computeFXRates((String) null, Collections.singletonList(USD));
   }
 
   @Test
-  public void cannotComputeFXRatesWithNullBaseCurrency3() throws Exception {
+  public void cannotComputeFXRatesWithNullBaseCurrency3() throws InterruptedException{
     thrown.expect(NullPointerException.class);
     fxc.computeFXRates((Collection<String>) null, USD);
   }
 
   @Test
-  public void cannotComputeFXRatesWithNullBaseCurrency4() throws Exception {
+  public void cannotComputeFXRatesWithNullBaseCurrency4() throws InterruptedException{
     thrown.expect(IllegalArgumentException.class);
     fxc.computeFXRates(Collections.<String>singletonList(null), USD);
   }
 
   @Test
-  public void cannotComputeFXRatesWithNullQuoteCurrency() throws Exception {
+  public void cannotComputeFXRatesWithNullQuoteCurrency() throws IOException {
     thrown.expect(IllegalArgumentException.class);
     fxc.computeFXRates(USD, (String) null);
   }
 
   @Test
-  public void cannotComputeFXRatesWithNullQuoteCurrency2() throws Exception {
+  public void cannotComputeFXRatesWithNullQuoteCurrency2() throws InterruptedException{
     thrown.expect(IllegalArgumentException.class);
     fxc.computeFXRates(Collections.singletonList(USD), (String) null);
   }
 
   @Test
-  public void cannotComputeFXRatesWithNullQuoteCurrency3() throws Exception {
+  public void cannotComputeFXRatesWithNullQuoteCurrency3() throws InterruptedException{
     thrown.expect(NullPointerException.class);
     fxc.computeFXRates(USD, (Collection<String>) null);
   }
 
   @Test
-  public void cannotComputeFXRatesWithNullQuoteCurrency4() throws Exception {
+  public void cannotComputeFXRatesWithNullQuoteCurrency4() throws InterruptedException{
     thrown.expect(IllegalArgumentException.class);
     fxc.computeFXRates(USD, Collections.<String>singletonList(null));
   }
 
   @Test
-  public void cannotComputeFXRatesWithEmptyBaseCurrency() throws Exception {
+  public void cannotComputeFXRatesWithEmptyBaseCurrency() throws IOException {
     thrown.expect(IllegalArgumentException.class);
     fxc.computeFXRates(EMPTY, USD);
   }
 
   @Test
-  public void cannotComputeFXRatesWithEmptyBaseCurrency2() throws Exception {
+  public void cannotComputeFXRatesWithEmptyBaseCurrency2() throws InterruptedException{
     thrown.expect(IllegalArgumentException.class);
     fxc.computeFXRates(EMPTY, Collections.singletonList(USD));
   }
 
   @Test
-  public void cannotComputeFXRatesWithEmptyBaseCurrency3() throws Exception {
+  public void cannotComputeFXRatesWithEmptyBaseCurrency3() throws InterruptedException{
     thrown.expect(IllegalArgumentException.class);
     fxc.computeFXRates(Collections.<String>emptyList(), USD);
   }
 
   @Test
-  public void cannotComputeFXRatesWithEmptyBaseCurrency4() throws Exception {
+  public void cannotComputeFXRatesWithEmptyBaseCurrency4() throws InterruptedException{
     thrown.expect(IllegalArgumentException.class);
     fxc.computeFXRates(Collections.singletonList(EMPTY), USD);
   }
 
   @Test
-  public void cannotComputeFXRatesWithEmptyQuoteCurrency() throws Exception {
+  public void cannotComputeFXRatesWithEmptyQuoteCurrency() throws IOException {
     thrown.expect(IllegalArgumentException.class);
     fxc.computeFXRates(USD, EMPTY);
   }
 
   @Test
-  public void cannotComputeFXRatesWithEmptyQuoteCurrency2() throws Exception {
+  public void cannotComputeFXRatesWithEmptyQuoteCurrency2() throws InterruptedException{
     thrown.expect(IllegalArgumentException.class);
     fxc.computeFXRates(Collections.singletonList(USD), EMPTY);
   }
 
   @Test
-  public void cannotComputeFXRatesWithEmptyQuoteCurrency3() throws Exception {
+  public void cannotComputeFXRatesWithEmptyQuoteCurrency3() throws InterruptedException{
     thrown.expect(IllegalArgumentException.class);
     fxc.computeFXRates(USD, Collections.<String>emptyList());
   }
 
   @Test
-  public void cannotComputeFXRatesWithEmptyQuoteCurrency4() throws Exception {
+  public void cannotComputeFXRatesWithEmptyQuoteCurrency4() throws InterruptedException{
     thrown.expect(IllegalArgumentException.class);
     fxc.computeFXRates(USD, Collections.singletonList(EMPTY));
   }
 
   @Test
-  public void cannotComputeFXRatesWithIdenticalBaseAndQuoteCurrencies() throws Exception {
+  public void cannotComputeFXRatesWithIdenticalBaseAndQuoteCurrencies() throws IOException {
     thrown.expect(IllegalArgumentException.class);
     fxc.computeFXRates(USD, USD);
   }
 
   @Test
-  public void cannotComputeFXRatesWithIdenticalBaseAndQuoteCurrencies2() throws Exception {
+  public void cannotComputeFXRatesWithIdenticalBaseAndQuoteCurrencies2() throws InterruptedException{
     thrown.expect(IllegalArgumentException.class);
     fxc.computeFXRates(USD, Collections.singletonList(USD));
   }
 
   @Test
-  public void cannotComputeFXRatesWithIdenticalBaseAndQuoteCurrencies3() throws Exception {
+  public void cannotComputeFXRatesWithIdenticalBaseAndQuoteCurrencies3() throws InterruptedException{
     thrown.expect(IllegalArgumentException.class);
     fxc.computeFXRates(Collections.singletonList(USD), USD);
   }
 
   @Test
-  public void cannotComputeFXRatesWithoutBaseCurrencySource() throws Exception {
+  public void cannotComputeFXRatesWithoutBaseCurrencySource() throws IOException {
     final OHLCVTimeSeries actual = fxc.computeFXRates(ZAR, SGD);
     assertEquals(0, actual.size());
     assertEquals(ZAR + SGD, actual.toString());
   }
 
   @Test
-  public void cannotComputeFXRatesWithoutQuoteCurrencySource() throws Exception {
+  public void cannotComputeFXRatesWithoutQuoteCurrencySource() throws IOException {
     final OHLCVTimeSeries actual = fxc.computeFXRates(SGD, ZAR);  // USDSGD exists
     assertEquals(0, actual.size());
     assertEquals(SGD + ZAR, actual.toString());
   }
 
   @Test
-  public void cannotComputeFXRatesWithoutQuoteCurrencySource2() throws Exception {
+  public void cannotComputeFXRatesWithoutQuoteCurrencySource2() throws IOException {
     final OHLCVTimeSeries actual = fxc.computeFXRates(GBP, ZAR);  // GBPUSD exists
     assertEquals(0, actual.size());
     assertEquals(GBP + ZAR, actual.toString());
   }
 
   @Test
-  public void cannotComputeExistingCommonMajorBase() throws Exception {
+  public void cannotComputeExistingCommonMajorBase() throws IOException {
     final OHLCVTimeSeries actual = fxc.computeFXRates(USD, SGD);
     assertEquals(0, actual.size());
   }
 
   @Test
-  public void cannotComputeExistingCommonMajorBase2() throws Exception {
+  public void cannotComputeExistingCommonMajorBase2() throws InterruptedException{
     final List<OHLCVTimeSeries> actuals = fxc.computeFXRates(USD, Collections.singletonList(SGD));
     assertEquals(0, actuals.get(0).size());
   }
 
   @Test
-  public void cannotComputeExistingCommonMajorBase3() throws Exception {
+  public void cannotComputeExistingCommonMajorBase3() throws InterruptedException{
     final List<OHLCVTimeSeries> actuals = fxc.computeFXRates(Collections.singletonList(USD), SGD);
     assertEquals(0, actuals.get(0).size());
   }
 
   @Test
-  public void computeFXRatesCommonBase() throws Exception {
+  public void computeFXRatesCommonBase() throws IOException {
     // 1. common is "base" of both base and quote -> computation: quote / base
     //    e.g. SGDTHB = USDTHB / USDSGD
     final OHLCVTimeSeries actual = fxc.computeFXRates(SGD, THB);
@@ -327,7 +328,7 @@ public class FXRateCalculatorTest {
   }
 
   @Test
-  public void computeFXRatesDifferentBase1() throws Exception {
+  public void computeFXRatesDifferentBase1() throws IOException {
     // 2. common is "base" of base and "quote" of quote -> computation: 1 / (base * quote)
     //    e.g. CHFGBP = 1 / (USDCHF * GBPUSD)
     final OHLCVTimeSeries actual = fxc.computeFXRates(CHF, GBP);
@@ -335,7 +336,7 @@ public class FXRateCalculatorTest {
   }
 
   @Test
-  public void computeFXRatesDifferentBase2() throws Exception {
+  public void computeFXRatesDifferentBase2() throws IOException {
     // 3. common is "quote" of base and "base" of quote -> computation: base * quote
     //    e.g. GBPSGD = GBPUSD * USDSGD
     final OHLCVTimeSeries actual = fxc.computeFXRates(GBP, SGD);
@@ -343,7 +344,7 @@ public class FXRateCalculatorTest {
   }
 
   @Test
-  public void computeFXRatesCommonQuote() throws Exception {
+  public void computeFXRatesCommonQuote() throws IOException {
     // 4. common is "quote" of both base and quote -> computation: base / quote
     //    e.g. NZDAUD = NZDUSD / AUDUSD
     final OHLCVTimeSeries actual = fxc.computeFXRates(NZD, AUD);
@@ -351,7 +352,7 @@ public class FXRateCalculatorTest {
   }
 
   @Test
-  public void recomputeFXRates() throws Exception {
+  public void recomputeFXRates() throws IOException {
     final OHLCVTimeSeries expected = fxc.computeFXRates(USD, THB);
     final OHLCVTimeSeries actual = fxc.computeFXRates(USD, THB);
     assertNotSame(expected, actual);
@@ -359,7 +360,7 @@ public class FXRateCalculatorTest {
   }
 
   @Ignore@Test
-  public void speed() throws Exception {
+  public void speed() throws InterruptedException{
     final List<OHLCVTimeSeries> fxRates = fxc.computeFXRates(Arrays.asList(THB, KRW, CHF, AUD, GBP, NZD), SGD);
     final long start = System.currentTimeMillis();
     for (int i = 0; i < 1; ++i) {
@@ -369,7 +370,7 @@ public class FXRateCalculatorTest {
   }
 
   @Test
-  public void removeBaseCurrencyWhenInQuoteCurrencies() throws Exception {
+  public void removeBaseCurrencyWhenInQuoteCurrencies() throws InterruptedException{
     final List<String> quoteCurrencies = new ArrayList<>();
     Collections.addAll(quoteCurrencies, THB, KRW, SGD);
     final List<OHLCVTimeSeries> actuals = fxc.computeFXRates(SGD, quoteCurrencies);
@@ -386,7 +387,7 @@ public class FXRateCalculatorTest {
   }
 
   @Test
-  public void removeQuoteCurrencyWhenInBaseCurrencies() throws Exception {
+  public void removeQuoteCurrencyWhenInBaseCurrencies() throws InterruptedException{
     final List<String> baseCurrencies = new ArrayList<>();
     Collections.addAll(baseCurrencies, THB, KRW, SGD);
     final List<OHLCVTimeSeries> actuals = fxc.computeFXRates(baseCurrencies, SGD);
@@ -403,67 +404,67 @@ public class FXRateCalculatorTest {
   }
 
   @Test
-  public void usdIsFirstPreferredCommonCurrency() throws Exception {
+  public void usdIsFirstPreferredCommonCurrency() throws IOException {
     final FXRateCalculator fxcUSD = new FXRateCalculator(INPUT_DIRECTORY, USD);
     compare(fxcUSD.computeFXRates(SGD, THB), fxc.computeFXRates(SGD, THB));
   }
 
   @Test
-  public void eurIsAnotherPreferredCommonCurrency() throws Exception {
+  public void eurIsAnotherPreferredCommonCurrency() throws IOException {
     final FXRateCalculator fxcEUR = new FXRateCalculator(INPUT_DIRECTORY, EUR);
     // no files with common currency EUR
     compare(fxcEUR.computeFXRates(SGD, THB), fxc.computeFXRates(SGD, THB));
   }
 
   @Test
-  public void chfIsAnotherPreferredCommonCurrency() throws Exception {
+  public void chfIsAnotherPreferredCommonCurrency() throws IOException {
     final FXRateCalculator fxcCHF = new FXRateCalculator(INPUT_DIRECTORY, CHF);
     // no files with common currency CHF
     compare(fxcCHF.computeFXRates(SGD, THB), fxc.computeFXRates(SGD, THB));
   }
 
   @Test
-  public void gbpIsAnotherPreferredCommonCurrency() throws Exception {
+  public void gbpIsAnotherPreferredCommonCurrency() throws IOException {
     final FXRateCalculator fxcGBP = new FXRateCalculator(INPUT_DIRECTORY, GBP);
     // no files with common currency GBP
     compare(fxcGBP.computeFXRates(SGD, THB), fxc.computeFXRates(SGD, THB));
   }
 
   @Test
-  public void jpyIsAnotherPreferredCommonCurrency() throws Exception {
+  public void jpyIsAnotherPreferredCommonCurrency() throws IOException {
     final FXRateCalculator fxcJPY = new FXRateCalculator(INPUT_DIRECTORY, JPY);
     // no files with common currency JPY
     compare(fxcJPY.computeFXRates(SGD, THB), fxc.computeFXRates(SGD, THB));
   }
 
   @Test
-  public void computeFXRatesWithPreferredCommonCurrency() throws Exception {
+  public void computeFXRatesWithPreferredCommonCurrency() throws IOException {
     final FXRateCalculator fxcZAR = new FXRateCalculator(INPUT_DIRECTORY, ZAR);
     // no files with common currency ZAR
     compare(fxcZAR.computeFXRates(SGD, THB), fxc.computeFXRates(SGD, THB));
   }
 
   @Test
-  public void lowerCaseCurrenciesConvertedToUpperCase() throws Exception {
+  public void lowerCaseCurrenciesConvertedToUpperCase() throws IOException {
     final OHLCVTimeSeries actual = fxc.computeFXRates(SGD.toLowerCase(), THB.toLowerCase());
     assertEquals(SGDTHB, actual.toString());
     compare(EXPECTEDS.get(SGDTHB), actual);
   }
 
   @Test
-  public void cannotInvertNullFXRates() throws Exception {
+  public void cannotInvertNullFXRates() throws IOException {
     thrown.expect(NullPointerException.class);
     fxc.invertFXRates((OHLCVTimeSeries) null);
   }
 
   @Test
-  public void cannotInvertNullFXRates2() throws Exception {
+  public void cannotInvertNullFXRates2() throws InterruptedException{
     thrown.expect(NullPointerException.class);
     fxc.invertFXRates((Collection<OHLCVTimeSeries>) null);
   }
 
   @Test
-  public void cannotInvertNullFXRates3() throws Exception {
+  public void cannotInvertNullFXRates3() throws InterruptedException{
 //    thrown.expect(NullPointerException.class);
 //    fxc.invertFXRates(Collections.<OHLCVTimeSeries>singletonList(null));
     final List<OHLCVTimeSeries> actuals = fxc.invertFXRates(Collections.<OHLCVTimeSeries>singletonList(null));
@@ -471,25 +472,25 @@ public class FXRateCalculatorTest {
   }
 
   @Test
-  public void cannotInvertEmptyFXRates() throws Exception {
+  public void cannotInvertEmptyFXRates() throws IOException {
     thrown.expect(IllegalArgumentException.class);
     fxc.invertFXRates(new OHLCVTimeSeries(SGDTHB, 0));
   }
 
   @Test
-  public void cannotInvertEmptyFXRates2() throws Exception {
+  public void cannotInvertEmptyFXRates2() throws InterruptedException{
     thrown.expect(IllegalArgumentException.class);
     fxc.invertFXRates(Collections.<OHLCVTimeSeries>emptyList());
   }
 
   @Test
-  public void cannotInvertFXRatesWithBadName() throws Exception {
+  public void cannotInvertFXRatesWithBadName() throws IOException {
     thrown.expect(StringIndexOutOfBoundsException.class);
     fxc.invertFXRates(new OHLCVTimeSeries(EMPTY, 1));
   }
 
   @Test
-  public void invertExistingFXRatesWithoutComputing() throws Exception {
+  public void invertExistingFXRatesWithoutComputing() throws IOException {
     final OHLCVTimeSeries usdGBP = EXPECTEDS.get(USDGBP);
     final OHLCVTimeSeries gbpUSD = EXPECTEDS.get(GBPUSD); // GBPUSD exists
 
@@ -499,7 +500,7 @@ public class FXRateCalculatorTest {
   }
 
   @Test
-  public void invertFXRates() throws Exception {
+  public void invertFXRates() throws IOException {
     final OHLCVTimeSeries usdGBP = EXPECTEDS.get(USDGBP);
     final OHLCVTimeSeries gbpUSD = EXPECTEDS.get(GBPUSD);
 
@@ -507,7 +508,7 @@ public class FXRateCalculatorTest {
   }
 
   @Test
-  public void invertFXRates2() throws Exception {
+  public void invertFXRates2() throws InterruptedException{
     final OHLCVTimeSeries usdGBP = EXPECTEDS.get(USDGBP);
     final OHLCVTimeSeries gbpUSD = EXPECTEDS.get(GBPUSD);
     final OHLCVTimeSeries usdAUD = EXPECTEDS.get(USDAUD);
@@ -520,7 +521,7 @@ public class FXRateCalculatorTest {
   }
 
   @Test
-  public void operators() throws Exception {
+  public void operators() {
     assertEquals(DIVIDE, valueOf("DIVIDE"));
     assertEquals(MULTIPLY, valueOf("MULTIPLY"));
     assertEquals(INVERSE_MULTIPLE, valueOf("INVERSE_MULTIPLE"));
@@ -528,21 +529,21 @@ public class FXRateCalculatorTest {
   }
 
   @Test
-  public void operatorDivide() throws Exception {
+  public void operatorDivide() {
     final double left = Math.random();
     final double right = Math.random();
     assertEquals((left / right), DIVIDE.operate(left, right), 0.0d);
   }
 
   @Test
-  public void operatorMultiply() throws Exception {
+  public void operatorMultiply() {
     final double left = Math.random();
     final double right = Math.random();
     assertEquals((left * right), MULTIPLY.operate(left, right), 0.0d);
   }
 
   @Test
-  public void operatorInverseMultiple() throws Exception {
+  public void operatorInverseMultiple() {
     final double left = Math.random();
     final double right = Math.random();
     assertEquals(1 / (left * right), INVERSE_MULTIPLE.operate(left, right), 0.0d);

@@ -46,7 +46,7 @@ public class IndicatorWriterTest extends TimeSeriesWriterTest {
   private static final File             READ_ONLY       = new File(INPUT_DIRECTORY, "Read-only.csv");
 
   @BeforeClass
-  public static void setUpBeforeClass() throws Exception {
+  public static void setUpBeforeClass() {
     if (READ_ONLY.canWrite()) {
       READ_ONLY.setWritable(false);
     }

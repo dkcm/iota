@@ -27,7 +27,7 @@ public class AveragePriceTest extends AbstractIndicatorTest {
   }
 
   @BeforeClass
-  public static void setUpBeforeClass() throws Exception {
+  public static void setUpBeforeClass() {
     TEST_CLASS = AveragePriceTest.class;
   }
 

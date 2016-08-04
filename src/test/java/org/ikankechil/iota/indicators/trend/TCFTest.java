@@ -5,6 +5,8 @@
  */
 package org.ikankechil.iota.indicators.trend;
 
+import java.io.IOException;
+
 import org.ikankechil.iota.indicators.AbstractIndicatorTest;
 import org.junit.BeforeClass;
 
@@ -22,7 +24,7 @@ public class TCFTest extends AbstractIndicatorTest {
   }
 
   @BeforeClass
-  public static void setUpBeforeClass() throws Exception {
+  public static void setUpBeforeClass() throws IOException {
     TEST_CLASS = TCFTest.class;
     AbstractIndicatorTest.setUpBeforeClass();
   }
