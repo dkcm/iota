@@ -1,5 +1,5 @@
 /**
- * OHLCVReader.java v0.2  16 June 2014 7:06:15 PM
+ * OHLCVReader.java v0.3  16 June 2014 7:06:15 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -7,6 +7,7 @@ package org.ikankechil.iota.io;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.Collections;
 import java.util.List;
 
@@ -23,19 +24,20 @@ import org.slf4j.LoggerFactory;
  * <p>
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class OHLCVReader {
 
   private final TextReader    reader;
 
   // Numeric constants
-  static final int            ZERO   = 0;
+  private static final int    ZERO   = 0;
 
   private static final String EMPTY  = "";
   private static final char   DOT    = '.';
+  private static final char   SLASH  = '/';
 
-  static final Logger         logger = LoggerFactory.getLogger(OHLCVReader.class);
+  private static final Logger logger = LoggerFactory.getLogger(OHLCVReader.class);
 
   public OHLCVReader() {
     reader = new TextReader();
@@ -50,7 +52,7 @@ public class OHLCVReader {
     Collections.reverse(lines);
     logger.debug("Reversed order");
 
-    final OHLCVTimeSeries prices = new OHLCVTimeSeries(name(source), lines.size());
+    final OHLCVTimeSeries prices = new OHLCVTimeSeries(name(source.toPath().normalize()), lines.size());
 
     new TextTransformer(new OHLCVTransform(prices)).transform(lines);
 
@@ -61,12 +63,25 @@ public class OHLCVReader {
     return prices;
   }
 
-  private static final String name(final File source) {
-    final String name = source.getName();
-    return name.substring(ZERO, name.lastIndexOf(DOT));
+  private static final String name(final Path path) {
+    // format: exchange/symbol
+    final StringBuilder ohlcvName = new StringBuilder();
+
+    // exchange
+    final Path exchange = path.getParent();
+    if (exchange != null) {
+      ohlcvName.append(exchange.getFileName().toString())
+               .append(SLASH);
+    }
+
+    // symbol
+    final String name = path.getFileName().toString();
+    ohlcvName.append(name.substring(ZERO, name.lastIndexOf(DOT)));
+
+    return ohlcvName.toString();
   }
 
-  class OHLCVTransform implements TextTransform {
+  static class OHLCVTransform implements TextTransform {
 
     private final OHLCVTimeSeries prices;
     private int                   row   = -1;
@@ -74,7 +89,7 @@ public class OHLCVReader {
     // Constants
     private static final char     COMMA = ',';
 
-    public OHLCVTransform(final OHLCVTimeSeries prices) {
+    OHLCVTransform(final OHLCVTimeSeries prices) {
       this.prices = prices;
     }
 
@@ -105,7 +120,7 @@ public class OHLCVReader {
 
   }
 
-  static final double parseDouble(final String s) {
+  private static final double parseDouble(final String s) {
     double d;
     try {
       d = Double.parseDouble(s); // TODO is it faster to parse in 2 parts (before and after decimal point)?
@@ -117,7 +132,7 @@ public class OHLCVReader {
     return d;
   }
 
-  static final long parseLong(final String s) {
+  private static final long parseLong(final String s) {
     long l;
     try {
       l = Long.parseLong(s);
