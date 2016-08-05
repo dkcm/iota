@@ -1,5 +1,5 @@
 /**
- * AbstractIndicator.java	v0.7	27 November 2014 1:04:00 am
+ * AbstractIndicator.java v0.7  27 November 2014 1:04:00 am
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -54,6 +54,21 @@ public abstract class AbstractIndicator implements Indicator {
   protected static final int    TWELVE          = 12;
   protected static final int    THIRTEEN        = 13;
   protected static final int    FOURTEEN        = 14;
+  protected static final int    FIFTEEN         = 15;
+  protected static final int    TWENTY          = 20;
+  protected static final int    TWENTY_ONE      = 21;
+  protected static final int    TWENTY_TWO      = 22;
+  protected static final int    TWENTY_FIVE     = 25;
+  protected static final int    TWENTY_SIX      = 26;
+  protected static final int    TWENTY_EIGHT    = 28;
+  protected static final int    THIRTY          = 30;
+  protected static final int    THIRTY_TWO      = 32;
+  protected static final int    THIRTY_THREE    = 33;
+  protected static final int    THIRTY_FOUR     = 34;
+  protected static final int    THIRTY_FIVE     = 35;
+  protected static final int    SIXTY           = 60;
+  protected static final int    SIXTY_FOUR      = 64;
+  protected static final int    SIXTY_FIVE      = 65;
 
   protected static final double HALF            = 0.5;
   protected static final double THIRD           = ONE / (double) THREE;
@@ -96,13 +111,7 @@ public abstract class AbstractIndicator implements Indicator {
     return generate(ohlcv, ZERO);
   }
 
-  /**
-   * Generate indicator values from prices and volumes.
-   *
-   * @param ohlcv
-   * @param start
-   * @return
-   */
+  @Override
   public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv, final int start) {
     throwExceptionIfShort(ohlcv);
     final int size = ohlcv.size();
@@ -127,6 +136,8 @@ public abstract class AbstractIndicator implements Indicator {
   }
 
   /**
+   * Compute indicator values from OHLCV.
+   *
    * @param start
    * @param end
    * @param ohlcv
@@ -155,13 +166,7 @@ public abstract class AbstractIndicator implements Indicator {
     return generate(series, ZERO);
   }
 
-  /**
-   * Generate indicator values from prices only.
-   *
-   * @param series
-   * @param start
-   * @return
-   */
+  @Override
   public List<TimeSeries> generate(final TimeSeries series, final int start) {
     throwExceptionIfShort(series);
     final int size = series.size();
@@ -186,6 +191,8 @@ public abstract class AbstractIndicator implements Indicator {
   }
 
   /**
+   * Compute indicator values.
+   *
    * @param start
    * @param end
    * @param values
@@ -215,8 +222,22 @@ public abstract class AbstractIndicator implements Indicator {
   }
 
   protected static final void throwExceptionIfBad(final RetCode outcome, final TimeSeries series) {
-    if (outcome != RetCode.Success) {
-      throw new RuntimeException(String.format("%s: %s", series, outcome));
+    final String errorMessage = String.format("%s: %s", series, outcome);
+    switch (outcome) {
+      case BadParam:
+      case AllocErr:
+        throw new IllegalArgumentException(errorMessage);
+
+      case OutOfRangeStartIndex:
+      case OutOfRangeEndIndex:
+        throw new IndexOutOfBoundsException(errorMessage);
+
+      case InternalError:
+        throw new ArithmeticException(errorMessage);
+
+      case Success:
+      default:
+        break;
     }
   }
 
@@ -329,7 +350,7 @@ public abstract class AbstractIndicator implements Indicator {
   protected static final double max(final double[] doubles, final int from, final int to) {
     int i = from;
     double max = doubles[i];
-    for (; ++i < to; ) {
+    while (++i < to) {
       final double d = doubles[i];
       if (d > max) {
         max = d;
@@ -351,7 +372,7 @@ public abstract class AbstractIndicator implements Indicator {
   protected static final double min(final double[] doubles, final int from, final int to) {
     int i = from;
     double min = doubles[i];
-    for (; ++i < to; ) {
+    while (++i < to) {
       final double d = doubles[i];
       if (d < min) {
         min = d;
