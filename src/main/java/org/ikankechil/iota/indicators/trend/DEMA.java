@@ -1,5 +1,5 @@
 /**
- * DEMA.java v0.2 9 December 2014 12:10:01 PM
+ * DEMA.java  v0.2  9 December 2014 12:10:01 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */

@@ -1,5 +1,5 @@
 /**
- * TCF.java v0.1 9 December 2015 4:13:48 PM
+ * TCF.java  v0.1 9 December 2015 4:13:48 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -26,7 +26,7 @@ public class TCF extends AbstractIndicator {
   private static final String NEGATIVE_TCF = "TCF-";
 
   public TCF() {
-    this(35);
+    this(THIRTY_FIVE);
   }
 
   public TCF(final int period) {

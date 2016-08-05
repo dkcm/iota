@@ -1,5 +1,5 @@
 /**
- * Kendall.java	v0.1	19 July 2015 9:59:43 pm
+ * Kendall.java  v0.1  19 July 2015 9:59:43 pm
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

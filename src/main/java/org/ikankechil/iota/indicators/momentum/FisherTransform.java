@@ -1,5 +1,5 @@
 /**
- * FisherTransform.java	v0.1	16 January 2015 10:14:56 PM
+ * FisherTransform.java v0.1  16 January 2015 10:14:56 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -27,6 +27,7 @@ public class FisherTransform extends AbstractIndicator {
   private final int           ema5Lookback;
 
   private static final double LIMIT           = 0.999;
+  private static final int    _1072632447     = 1072632447;
   private static final double INVERSE_1512775 = ONE / (double) 1512775;
 
   public FisherTransform() {
@@ -156,8 +157,8 @@ public class FisherTransform extends AbstractIndicator {
   }
 
   private static final double ln(final double x) {
-    final double y = (Double.doubleToLongBits(x) >> 32);
-    return (y - 1072632447) * INVERSE_1512775;
+    final double y = (Double.doubleToLongBits(x) >> THIRTY_TWO);
+    return (y - _1072632447) * INVERSE_1512775;
   }
 
   private static final double limit(final double d) {

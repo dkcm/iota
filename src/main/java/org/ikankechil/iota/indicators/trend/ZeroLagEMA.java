@@ -1,5 +1,5 @@
 /**
- * ZeroLagEMA.java	v0.1	20 July 2015 11:18:26 pm
+ * ZeroLagEMA.java  v0.1  20 July 2015 11:18:26 pm
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

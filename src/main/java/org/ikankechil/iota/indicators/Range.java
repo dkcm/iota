@@ -1,5 +1,5 @@
 /**
- * Range.java v0.1 25 November 2015 9:54:20 AM
+ * Range.java  v0.1 25 November 2015 9:54:20 AM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

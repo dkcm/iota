@@ -1,5 +1,5 @@
 /**
- * TrendVolatilityLine.java v0.1 20 October 2015 6:53:47 PM
+ * TrendVolatilityLine.java  v0.1 20 October 2015 6:53:47 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -29,10 +29,6 @@ class TrendVolatilityLine extends AbstractIndicator {
 
   public TrendVolatilityLine() {
     super(GMMA.lookback());
-  }
-
-  public static void main(final String[] args) {
-    // TODO Auto-generated method stub
   }
 
   @Override

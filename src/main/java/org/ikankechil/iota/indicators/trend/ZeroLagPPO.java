@@ -1,5 +1,5 @@
 /**
- * ZeroLagPPO.java	v0.1	21 July 2015 1:31:08 am
+ * ZeroLagPPO.java  v0.1  21 July 2015 1:31:08 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -16,7 +16,7 @@ package org.ikankechil.iota.indicators.trend;
 public class ZeroLagPPO extends ZeroLagPriceOscillator {
 
   public ZeroLagPPO() {
-    this(THIRTEEN, 21, EIGHT);
+    this(THIRTEEN, TWENTY_ONE, EIGHT);
   }
 
   public ZeroLagPPO(final int fast, final int slow, final int signal) {

@@ -1,5 +1,5 @@
 /**
- * DMI.java	v0.1	7 January 2015 11:01:15 pm
+ * DMI.java v0.1  7 January 2015 11:01:15 pm
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -37,7 +37,7 @@ class DMI extends AbstractIndicator {
   }
 
   public DMI(final int rsi, final int sma) {
-    this(rsi, sma, FIVE, FIVE, 30);
+    this(rsi, sma, FIVE, FIVE, THIRTY);
   }
 
   public DMI(final int rsi, final int sma, final int stdDev, final int tdMin, final int tdMax) {

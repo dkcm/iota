@@ -1,5 +1,5 @@
 /**
- * RainbowCharts.java	v0.2	1 March 2015 5:58:00 pm
+ * RainbowCharts.java  v0.2  1 March 2015 5:58:00 pm
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

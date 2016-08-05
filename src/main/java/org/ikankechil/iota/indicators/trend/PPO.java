@@ -1,5 +1,5 @@
 /**
- * PPO.java	v0.1	27 November 2014 5:54:58 pm
+ * PPO.java  v0.1  27 November 2014 5:54:58 pm
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -28,7 +28,7 @@ public class PPO extends IndicatorWithSignalLine {
 //  private final EMA fastEMA;
 
   public PPO() {
-    this(TWELVE, 26, NINE);
+    this(TWELVE, TWENTY_SIX, NINE);
   }
 
   public PPO(final int fast, final int slow, final int signal) {

@@ -1,5 +1,5 @@
 /**
- * InstantaneousTrendline.java v0.1 11 March 2015 10:22:05 AM
+ * InstantaneousTrendline.java  v0.1  11 March 2015 10:22:05 AM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

@@ -1,5 +1,5 @@
 /**
- * Extrema.java	v0.2	7 January 2016 9:53:20 pm
+ * Extrema.java  v0.2  7 January 2016 9:53:20 pm
  *
  * Copyright © 2016 Daniel Kuan.  All rights reserved.
  */

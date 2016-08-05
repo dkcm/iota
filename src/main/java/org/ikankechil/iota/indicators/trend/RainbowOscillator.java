@@ -1,5 +1,5 @@
 /**
- * RainbowOscillator.java	v0.1	1 March 2015 5:57:35 pm
+ * RainbowOscillator.java  v0.1  1 March 2015 5:57:35 pm
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -71,16 +71,16 @@ class RainbowOscillator extends RainbowCharts {
     final double[] upperBand = new double[indicator.length];
     final double[] lowerBand = new double[upperBand.length];
 
-    for (int i = ZERO; i < indicator.length; ++i) {
-      final double max = 0; // TODO incomplete
-      final double min = 0;
-      final double range = 100 / (hhv[0] - llv[0]);
+    for (int i = ZERO, c = ZERO; i < indicator.length; ++i, ++c) {
+      final double max = ZERO; // TODO incomplete
+      final double min = ZERO;
+      final double range = HUNDRED_PERCENT / (hhv[c] - llv[c]);
 
       upperBand[i] = (max - min) * range;
       lowerBand[i] = -upperBand[i];
 
-      final double ave = 0 / TEN;
-      indicator[i] = (closes[0] - ave) * range;
+      final double ave = ZERO / TEN;
+      indicator[i] = (closes[c] - ave) * range;
     }
 
     final String[] dates = Arrays.copyOfRange(ohlcv.dates(), lookback, size);

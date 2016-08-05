@@ -1,5 +1,5 @@
 /**
- * SpecialK.java	v0.1	22 December 2014 12:16:15 pm
+ * SpecialK.java  v0.1  22 December 2014 12:16:15 pm
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -21,8 +21,11 @@ import com.tictactec.ta.lib.RetCode;
  */
 public class SpecialK extends AbstractIndicator {
 
+  private static final int SMA = 195;
+  private static final int ROC = 530;
+
   public SpecialK() {
-    super(195 + 530); // = 725
+    super(SMA + ROC); // = 725
   }
 
   @Override
@@ -57,7 +60,7 @@ public class SpecialK extends AbstractIndicator {
     final double[] sma130Roc195 = smaRoc(ohlcv, 130, 195);
     final double[] sma130Roc265 = smaRoc(ohlcv, 130, 265);
     final double[] sma130Roc390 = smaRoc(ohlcv, 130, 390);
-    final double[] sma195Roc530 = smaRoc(ohlcv, 195, 530);
+    final double[] sma195Roc530 = smaRoc(ohlcv, SMA, ROC);
 
     final int length = output.length;
     for (int k = 0, i1 =   sma10Roc10.length - length,  i2 =   sma10Roc15.length - length,  i3 =   sma10Roc20.length - length,  i4 =   sma15Roc30.length - length,
@@ -67,9 +70,9 @@ public class SpecialK extends AbstractIndicator {
          ++k, ++i1, ++i2, ++i3, ++i4,
               ++i5, ++i6, ++i7, ++i8,
               ++i9, ++i10, ++i11, ++i12) {
-      output[k] =   sma10Roc10[i1] + (  sma10Roc15[i2]  * 2) + (  sma10Roc20[i3]  * 3) + (  sma15Roc30[i4]  * 4) +
-                    sma50Roc40[i5] + (  sma65Roc65[i6]  * 2) + (  sma75Roc75[i7]  * 3) + (sma100Roc100[i8]  * 4) +
-                  sma130Roc195[i9] + (sma130Roc265[i10] * 2) + (sma130Roc390[i11] * 3) + (sma195Roc530[i12] * 4);
+      output[k] =   sma10Roc10[i1] + (  sma10Roc15[i2]  * TWO) + (  sma10Roc20[i3]  * THREE) + (  sma15Roc30[i4]  * FOUR) +
+                    sma50Roc40[i5] + (  sma65Roc65[i6]  * TWO) + (  sma75Roc75[i7]  * THREE) + (sma100Roc100[i8]  * FOUR) +
+                  sma130Roc195[i9] + (sma130Roc265[i10] * TWO) + (sma130Roc390[i11] * THREE) + (sma195Roc530[i12] * FOUR);
     }
 
     outBegIdx.value = lookback;

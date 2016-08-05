@@ -1,5 +1,5 @@
 /**
- * Beta.java v0.1 8 December 2014 8:40:50 PM
+ * Beta.java  v0.1  8 December 2014 8:40:50 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */

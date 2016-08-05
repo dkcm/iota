@@ -1,5 +1,5 @@
 /**
- * TII.java	v0.1	21 January 2015 12:45:00 am
+ * TII.java  v0.1  21 January 2015 12:45:00 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -30,7 +30,7 @@ public class TII extends AbstractIndicator {
   private final int sma;
 
   public TII() {
-    this(30, 60);
+    this(THIRTY, SIXTY);
   }
 
   public TII(final int period, final int sma) {

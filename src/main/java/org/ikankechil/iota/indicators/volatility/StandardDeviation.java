@@ -1,5 +1,5 @@
 /**
- * StandardDeviation.java v0.1 15 December 2014 12:06:24 PM
+ * StandardDeviation.java  v0.1 15 December 2014 12:06:24 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */

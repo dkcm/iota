@@ -1,5 +1,5 @@
 /**
- * BollingerBands.java v0.1  4 December 2014 12:26:06 PM
+ * BollingerBands.java  v0.1  4 December 2014 12:26:06 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -35,7 +35,7 @@ public class BollingerBands extends AbstractIndicator {
   private static final String LOWER_BAND  = "Bollinger Bands Lower Band";
 
   public BollingerBands() {
-    this(20, TWO);
+    this(TWENTY, TWO);
   }
 
   /**

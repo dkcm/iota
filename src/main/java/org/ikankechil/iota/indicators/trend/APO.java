@@ -1,5 +1,5 @@
 /**
- * APO.java v0.1 19 December 2014 5:57:17 PM
+ * APO.java  v0.1 19 December 2014 5:57:17 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -24,7 +24,7 @@ public class APO extends IndicatorWithSignalLine {
   private final int slow;
 
   public APO() {
-    this(TWELVE, 26, NINE);
+    this(TWELVE, TWENTY_SIX, NINE);
   }
 
   public APO(final int fast, final int slow, final int signal) {

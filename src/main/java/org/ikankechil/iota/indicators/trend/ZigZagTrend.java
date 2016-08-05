@@ -1,5 +1,5 @@
 /**
- * ZigZagTrend.java	v0.2	15 December 2015 11:08:56 pm
+ * ZigZagTrend.java  v0.2  15 December 2015 11:08:56 pm
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

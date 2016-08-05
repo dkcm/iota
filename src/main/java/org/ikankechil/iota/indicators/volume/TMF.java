@@ -1,5 +1,5 @@
 /**
- * TMF.java	v0.2	21 January 2015 1:14:06 am
+ * TMF.java  v0.2  21 January 2015 1:14:06 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -26,7 +26,7 @@ class TMF extends AbstractIndicator {
   private final double multiplier;
 
   public TMF() {
-    this(21);
+    this(TWENTY_ONE);
   }
 
   public TMF(final int period) {

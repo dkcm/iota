@@ -1,5 +1,5 @@
 /**
- * BollingerB.java v0.1 19 December 2014 2:58:00 PM
+ * BollingerB.java  v0.1  19 December 2014 2:58:00 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */

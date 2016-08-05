@@ -1,5 +1,5 @@
 /**
- * NormalizedVolatilityIndicator.java v0.1 12 August 2015 1:10:10 PM
+ * NormalizedVolatilityIndicator.java  v0.1 12 August 2015 1:10:10 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -22,8 +22,10 @@ import com.tictactec.ta.lib.RetCode;
  */
 public class NormalizedVolatilityIndicator extends AbstractIndicator {
 
+  private static final int AVE_DAYS_IN_QTR = SIXTY_FOUR;
+
   public NormalizedVolatilityIndicator() {
-    this(64); // average number of trading days in a quarter
+    this(AVE_DAYS_IN_QTR); // average number of trading days in a quarter
   }
 
   public NormalizedVolatilityIndicator(final int period) {

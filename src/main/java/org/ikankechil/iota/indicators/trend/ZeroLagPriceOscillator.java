@@ -1,5 +1,5 @@
 /**
- * ZeroLagPriceOscillator.java	v0.1	21 July 2015 10:36:12 pm
+ * ZeroLagPriceOscillator.java  v0.1  21 July 2015 10:36:12 pm
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

@@ -1,5 +1,5 @@
 /**
- * AroonOscillator.java v0.1 9 December 2014 12:04:45 PM
+ * AroonOscillator.java  v0.1 9 December 2014 12:04:45 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */

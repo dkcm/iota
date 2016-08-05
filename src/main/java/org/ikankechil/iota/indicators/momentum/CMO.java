@@ -1,5 +1,5 @@
 /**
- * CMO.java v0.1 8 December 2014 10:15:02 AM
+ * CMO.java  v0.1 8 December 2014 10:15:02 AM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */

@@ -1,5 +1,5 @@
 /**
- * FastStochastic.java v0.1 8 December 2014 8:49:06 PM
+ * FastStochastic.java  v0.1  8 December 2014 8:49:06 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */

@@ -1,5 +1,5 @@
 /**
- * PGO.java	v0.1	16 January 2015 11:21:44 PM
+ * PGO.java  v0.1  16 January 2015 11:21:44 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -32,7 +32,7 @@ public class PGO extends AbstractIndicator {
   private final int smaLookback;
 
   public PGO() {
-    this(25);
+    this(TWENTY_FIVE);
   }
 
   public PGO(final int period) {

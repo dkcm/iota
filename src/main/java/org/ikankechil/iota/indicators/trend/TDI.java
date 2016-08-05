@@ -1,5 +1,5 @@
 /**
- * TDI.java	v0.1	9 December 2015 12:21:31 am
+ * TDI.java  v0.1  9 December 2015 12:21:31 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -32,7 +32,7 @@ public class TDI extends AbstractIndicator {
   private static final String TDI_DIRECTION_INDICATOR = "TDI Direction Indicator";
 
   public TDI() {
-    this(20);
+    this(TWENTY);
   }
 
   public TDI(final int period) {

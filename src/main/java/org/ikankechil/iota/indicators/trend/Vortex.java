@@ -1,5 +1,5 @@
 /**
- * Vortex.java v0.1 15 December 2014 2:24:23 PM
+ * Vortex.java  v0.1  15 December 2014 2:24:23 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */

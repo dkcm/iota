@@ -1,5 +1,5 @@
 /**
- * AD.java v0.2  5 December 2014 3:23:06 PM
+ * AD.java  v0.2  5 December 2014 3:23:06 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */

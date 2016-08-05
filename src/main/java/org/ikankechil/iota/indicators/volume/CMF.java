@@ -1,5 +1,5 @@
 /**
- * CMF.java	v0.2	3 January 2015 11:21:10 pm
+ * CMF.java  v0.2  3 January 2015 11:21:10 pm
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -35,7 +35,7 @@ public class CMF extends AbstractIndicator {
   private static final MoneyFlowVolume MFV = new MoneyFlowVolume();
 
   public CMF() {
-    this(21);
+    this(TWENTY_ONE);
   }
 
   public CMF(final int period) {

@@ -1,5 +1,5 @@
 /**
- * MoneyFlowVolume.java v0.1 7 December 2015 5:19:51 PM
+ * MoneyFlowVolume.java  v0.1 7 December 2015 5:19:51 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

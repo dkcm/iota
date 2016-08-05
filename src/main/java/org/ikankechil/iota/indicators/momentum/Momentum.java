@@ -1,5 +1,5 @@
 /**
- * Momentum.java v0.2 8 December 2014 6:29:58 PM
+ * Momentum.java  v0.2  8 December 2014 6:29:58 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */

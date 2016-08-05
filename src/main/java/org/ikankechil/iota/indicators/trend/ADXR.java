@@ -1,5 +1,5 @@
 /**
- * ADXR.java	v0.1	10 December 2014 2:04:09 am
+ * ADXR.java  v0.1  10 December 2014 2:04:09 am
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */

@@ -1,5 +1,5 @@
 /**
- * OBVDI.java v0.1 17 July 2015 2:45:29 PM
+ * OBVDI.java  v0.1 17 July 2015 2:45:29 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -31,7 +31,7 @@ public class OBVDI extends AbstractIndicator {
   private static final OBV OBV = new OBV();
 
   public OBVDI() {
-    this(33);
+    this(THIRTY_THREE);
   }
 
   public OBVDI(final int period) {

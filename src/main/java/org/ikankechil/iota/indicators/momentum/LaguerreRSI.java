@@ -1,5 +1,5 @@
 /**
- * LaguerreRSI.java v0.1 2 March 2015 1:12:51 PM
+ * LaguerreRSI.java  v0.1 2 March 2015 1:12:51 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

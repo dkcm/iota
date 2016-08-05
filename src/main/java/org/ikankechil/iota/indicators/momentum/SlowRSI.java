@@ -1,5 +1,5 @@
 /**
- * SlowRSI.java v0.1 3 August 2015 1:42:31 PM
+ * SlowRSI.java  v0.1 3 August 2015 1:42:31 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

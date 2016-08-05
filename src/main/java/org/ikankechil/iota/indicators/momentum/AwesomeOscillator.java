@@ -1,5 +1,5 @@
 /**
- * AwesomeOscillator.java v0.2 9 December 2014 1:14:06 PM
+ * AwesomeOscillator.java  v0.2 9 December 2014 1:14:06 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -31,7 +31,7 @@ public class AwesomeOscillator extends AbstractIndicator {
   private static final MedianPrice MEDIAN = new MedianPrice();
 
   public AwesomeOscillator() {
-    this(FIVE, 34);
+    this(FIVE, THIRTY_FOUR);
   }
 
   public AwesomeOscillator(final int fast, final int slow) {

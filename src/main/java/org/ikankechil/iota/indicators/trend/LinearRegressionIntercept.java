@@ -1,5 +1,5 @@
 /**
- * LinearRegressionIntercept.java v0.1 5 January 2015 9:58:35 AM
+ * LinearRegressionIntercept.java  v0.1 5 January 2015 9:58:35 AM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

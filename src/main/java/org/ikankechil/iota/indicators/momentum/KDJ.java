@@ -1,5 +1,5 @@
 /**
- * KDJ.java	v0.1	26 January 2015 11:20:23 pm
+ * KDJ.java  v0.1  26 January 2015 11:20:23 pm
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

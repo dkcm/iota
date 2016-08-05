@@ -1,5 +1,5 @@
 /**
- * SelfAdjustingRSI.java v0.3 14 January 2015 2:05:43 PM
+ * SelfAdjustingRSI.java  v0.3  14 January 2015 2:05:43 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -32,6 +32,7 @@ public class SelfAdjustingRSI extends AbstractIndicator {
   private final int           rsiLookback;
   private final RSI           rsiIndicator;
 
+  private static final double K           = 1.8;
   private static final int    CENTRE_LINE = 50;
 
   private static final String MIDDLE_BAND = "Self-Adjusting RSI";
@@ -43,7 +44,7 @@ public class SelfAdjustingRSI extends AbstractIndicator {
   }
 
   public SelfAdjustingRSI(final int period) {
-    this(period, 1.8);
+    this(period, K);
   }
 
   public SelfAdjustingRSI(final int period, final double k) {

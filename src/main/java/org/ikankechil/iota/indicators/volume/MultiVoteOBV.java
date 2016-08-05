@@ -1,5 +1,5 @@
 /**
- * MultiVoteOBV.java	v0.1	17 July 2015 1:31:01 am
+ * MultiVoteOBV.java  v0.1  17 July 2015 1:31:01 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

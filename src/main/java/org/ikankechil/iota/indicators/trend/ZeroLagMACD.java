@@ -1,5 +1,5 @@
 /**
- * ZeroLagMACD.java	v0.1	21 July 2015 12:08:46 am
+ * ZeroLagMACD.java  v0.1  21 July 2015 12:08:46 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -16,7 +16,7 @@ package org.ikankechil.iota.indicators.trend;
 public class ZeroLagMACD extends ZeroLagPriceOscillator {
 
   public ZeroLagMACD() {
-    this(13, 21, EIGHT);
+    this(THIRTEEN, TWENTY_ONE, EIGHT);
   }
 
   public ZeroLagMACD(final int fast, final int slow, final int signal) {

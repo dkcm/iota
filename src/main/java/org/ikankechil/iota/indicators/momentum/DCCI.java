@@ -1,5 +1,5 @@
 /**
- * DCCI.java v0.1 25 November 2015 12:12:13 PM
+ * DCCI.java  v0.1  25 November 2015 12:12:13 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -25,7 +25,7 @@ public class DCCI extends IndicatorWithSignalLine {
   private final CCI cci;
 
   public DCCI() {
-    this(20);
+    this(TWENTY);
   }
 
   public DCCI(final int period) {

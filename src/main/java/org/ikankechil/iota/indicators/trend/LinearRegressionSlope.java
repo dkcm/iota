@@ -1,5 +1,5 @@
 /**
- * LinearRegressionSlope.java	v0.1	20 December 2014 12:14:53 am
+ * LinearRegressionSlope.java  v0.1  20 December 2014 12:14:53 am
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */

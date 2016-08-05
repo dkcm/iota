@@ -1,5 +1,5 @@
 /**
- * MACD.java	v0.1	27 November 2014 1:06:03 am
+ * MACD.java  v0.1  27 November 2014 1:06:03 am
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -38,7 +38,7 @@ public class MACD extends AbstractIndicator {
   private static final String MACD_HISTOGRAM = "MACD Histogram";
 
   public MACD() {
-    this(TWELVE, 26, NINE);
+    this(TWELVE, TWENTY_SIX, NINE);
   }
 
   public MACD(final int fast, final int slow, final int signal) {

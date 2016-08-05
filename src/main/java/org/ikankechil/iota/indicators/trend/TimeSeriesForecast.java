@@ -1,5 +1,5 @@
 /**
- * TimeSeriesForecast.java v0.1 8 December 2014 6:25:21 PM
+ * TimeSeriesForecast.java  v0.1  8 December 2014 6:25:21 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */

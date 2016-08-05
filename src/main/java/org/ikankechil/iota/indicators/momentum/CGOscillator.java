@@ -1,5 +1,5 @@
 /**
- * CGOscillator.java v0.1 7 July 2015 3:41:47 PM
+ * CGOscillator.java  v0.1  7 July 2015 3:41:47 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

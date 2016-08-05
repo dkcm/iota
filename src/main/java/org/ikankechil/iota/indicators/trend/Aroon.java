@@ -1,5 +1,5 @@
 /**
- * Aroon.java v0.1  4 December 2014 10:45:54 AM
+ * Aroon.java  v0.1  4 December 2014 10:45:54 AM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -34,7 +34,7 @@ public class Aroon extends AbstractIndicator {
   private static final String AROON_DOWN = "Aroon Down";
 
   public Aroon() {
-    this(25);
+    this(TWENTY_FIVE);
   }
 
   public Aroon(final int period) {

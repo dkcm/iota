@@ -1,5 +1,5 @@
 /**
- * MaddoxMomentum.java v0.1 24 July 2015 12:21:58 PM
+ * MaddoxMomentum.java  v0.1  24 July 2015 12:21:58 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

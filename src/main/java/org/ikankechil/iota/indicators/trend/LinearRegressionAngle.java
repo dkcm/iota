@@ -1,5 +1,5 @@
 /**
- * LinearRegressionAngle.java	v0.1	20 December 2014 12:17:57 am
+ * LinearRegressionAngle.java  v0.1  20 December 2014 12:17:57 am
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */

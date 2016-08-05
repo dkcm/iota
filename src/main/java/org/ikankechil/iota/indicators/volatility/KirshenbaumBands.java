@@ -1,5 +1,5 @@
 /**
- * KirshenbaumBands.java	v0.1	12 January 2015 11:39:32 PM
+ * KirshenbaumBands.java  v0.1  12 January 2015 11:39:32 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -29,12 +29,14 @@ class KirshenbaumBands extends AbstractIndicator {
   private final int           emaLookback;
   private final int           linearRegLookback;
 
-  private static final String UPPER_BAND  = "Kirshenbaum Bands Upper Band";
-  private static final String MIDDLE_BAND = "Kirshenbaum Bands Middle Band";
-  private static final String LOWER_BAND  = "Kirshenbaum Bands Lower Band";
+  private static final double KIRSHENBAUM_DEVS = 1.75;
+
+  private static final String UPPER_BAND       = "Kirshenbaum Bands Upper Band";
+  private static final String MIDDLE_BAND      = "Kirshenbaum Bands Middle Band";
+  private static final String LOWER_BAND       = "Kirshenbaum Bands Lower Band";
 
   public KirshenbaumBands() {
-    this(9, 5, 1.75);
+    this(NINE, FIVE, KIRSHENBAUM_DEVS);
   }
 
   public KirshenbaumBands(final int ema, final int regression, final double deviations) {

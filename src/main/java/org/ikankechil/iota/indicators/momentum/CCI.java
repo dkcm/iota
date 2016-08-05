@@ -1,5 +1,5 @@
 /**
- * CCI.java v0.1  4 December 2014 1:38:57 PM
+ * CCI.java  v0.1  4 December 2014 1:38:57 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -22,7 +22,7 @@ import com.tictactec.ta.lib.RetCode;
 public class CCI extends AbstractIndicator {
 
   public CCI() {
-    this(20);
+    this(TWENTY);
   }
 
   public CCI(final int period) {

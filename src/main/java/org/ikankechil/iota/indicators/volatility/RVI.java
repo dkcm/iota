@@ -1,5 +1,5 @@
 /**
- * RVI.java	v0.1	21 January 2015 1:15:32 am
+ * RVI.java  v0.1  21 January 2015 1:15:32 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -105,7 +105,7 @@ class RVI extends AbstractIndicator {
       sdown += down[i];
     }
     for (int i = ZERO, j = period; i < output.length; ++i, ++j) {
-      output[i] = (100 * sup) / (sup + sdown);
+      output[i] = (HUNDRED_PERCENT * sup) / (sup + sdown);
 
       // smooth ups
       sup *= multiplier;

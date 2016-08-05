@@ -1,5 +1,5 @@
 /**
- * MaximumPriceIndex.java v0.1 27 January 2015 1:00:17 PM
+ * MaximumPriceIndex.java  v0.1 27 January 2015 1:00:17 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

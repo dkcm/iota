@@ -1,5 +1,5 @@
 /**
- * AveragePrice.java	v0.2	12 January 2015 11:04:40 PM
+ * AveragePrice.java  v0.2  12 January 2015 11:04:40 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

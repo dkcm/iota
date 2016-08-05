@@ -1,5 +1,5 @@
 /**
- * AsymmetricalRSI.java	v0.1	23 July 2015 12:29:45 am
+ * AsymmetricalRSI.java  v0.1  23 July 2015 12:29:45 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

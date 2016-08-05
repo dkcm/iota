@@ -1,5 +1,5 @@
 /**
- * NVDI.java v0.1 17 July 2015 2:46:42 PM
+ * NVDI.java  v0.1  17 July 2015 2:46:42 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -28,7 +28,7 @@ class NVDI extends AbstractIndicator {
   private static final NVI NVI = new NVI();
 
   public NVDI() {
-    this(33);
+    this(THIRTY_THREE);
   }
 
   public NVDI(final int period) {

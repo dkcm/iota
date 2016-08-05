@@ -1,5 +1,5 @@
 /**
- * GMMA.java v0.1 4 March 2015 1:05:52 PM
+ * GMMA.java  v0.1  4 March 2015 1:05:52 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -28,11 +28,11 @@ public class GMMA extends AbstractIndicator {
   private static final int SHORT2 = FIVE;
   private static final int SHORT3 = EIGHT;
   private static final int SHORT4 = TEN;
-  private static final int SHORT5 = 12;
-  private static final int SHORT6 = 15;
+  private static final int SHORT5 = TWELVE;
+  private static final int SHORT6 = FIFTEEN;
 
   // long-term EMAs
-  private static final int LONG1  = 30;
+  private static final int LONG1  = THIRTY;
   private static final int LONG2  = 35;
   private static final int LONG3  = 40;
   private static final int LONG4  = 45;

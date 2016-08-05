@@ -1,5 +1,5 @@
 /**
- * RAVI.java v0.1 8 January 2015 3:00:34 PM
+ * RAVI.java  v0.1  8 January 2015 3:00:34 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -24,7 +24,7 @@ public class RAVI extends AbstractIndicator {
   private final int slow;
 
   public RAVI() {
-    this(SEVEN, 65);
+    this(SEVEN, SIXTY_FIVE);
   }
 
   public RAVI(final int fast, final int slow) {

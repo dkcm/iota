@@ -1,5 +1,5 @@
 /**
- * ZigZag.java v0.4 6 August 2015 5:47:20 PM
+ * ZigZag.java  v0.4  6 August 2015 5:47:20 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -24,7 +24,6 @@ import com.tictactec.ta.lib.RetCode;
  */
 public class ZigZag extends AbstractIndicator {
 
-  private final double  threshold;
   private final boolean isInterpolate;
   private final double  upTrendThreshold;
   private final double  downTrendThreshold;
@@ -48,7 +47,7 @@ public class ZigZag extends AbstractIndicator {
     super(ZERO);
     throwExceptionIfNegative(thresholdPercentage);
 
-    threshold = thresholdPercentage / HUNDRED_PERCENT;
+    final double threshold = thresholdPercentage / HUNDRED_PERCENT;
     isInterpolate = interpolate;
     upTrendThreshold = ONE + threshold;
     downTrendThreshold = ONE - threshold;
@@ -98,7 +97,7 @@ public class ZigZag extends AbstractIndicator {
     // compute local minima and maxima
     boolean trendingUpwards = true;
     output[i] = currentLow;
-    for (; ++i < output.length; ) {
+    while (++i < output.length) {
       currentLow = lows[i];
       currentHigh = highs[i];
       if (trendingUpwards) {

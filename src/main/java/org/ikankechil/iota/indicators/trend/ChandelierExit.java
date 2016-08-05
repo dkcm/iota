@@ -1,5 +1,5 @@
 /**
- * ChandelierExit.java	v0.1	30 July 2015 12:30:13 am
+ * ChandelierExit.java  v0.1  30 July 2015 12:30:13 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -32,7 +32,7 @@ public class ChandelierExit extends AbstractIndicator {
   private static final String CHANDELIER_EXIT_SHORT = "Chandelier Exit Short";
 
   public ChandelierExit() {
-    this(22);
+    this(TWENTY_TWO);
   }
 
   public ChandelierExit(final int period) {
@@ -40,7 +40,7 @@ public class ChandelierExit extends AbstractIndicator {
   }
 
   public ChandelierExit(final double multiplier) {
-    this(22, multiplier);
+    this(TWENTY_TWO, multiplier);
   }
 
   public ChandelierExit(final int period, final double multiplier) {

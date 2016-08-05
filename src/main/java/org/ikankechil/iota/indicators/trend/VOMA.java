@@ -1,5 +1,5 @@
 /**
- * VOMA.java	v0.1	10 Dec, 2015 10:12:08 pm
+ * VOMA.java  v0.1  10 December 2015 10:12:08 pm
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

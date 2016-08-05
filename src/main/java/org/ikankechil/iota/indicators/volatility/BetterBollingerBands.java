@@ -1,5 +1,5 @@
 /**
- * BetterBollingerBands.java	v0.1	19 July 2015 12:45:34 am
+ * BetterBollingerBands.java  v0.1  19 July 2015 12:45:34 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -34,7 +34,7 @@ public class BetterBollingerBands extends AbstractIndicator {
   private static final String LOWER_BAND  = "Better Bollinger Bands Lower Band";
 
   public BetterBollingerBands() {
-    this(20, TWO);
+    this(TWENTY, TWO);
   }
 
   public BetterBollingerBands(final int period, final double stdDev) {

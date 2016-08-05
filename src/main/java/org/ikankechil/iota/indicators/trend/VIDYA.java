@@ -1,5 +1,5 @@
 /**
- * VIDYA.java v0.1 8 January 2015 6:56:46 PM
+ * VIDYA.java  v0.1 8 January 2015 6:56:46 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -58,7 +58,7 @@ public class VIDYA extends AbstractIndicator {
                                        outNBElement,
                                        vi);
     for (int i = ZERO; i < vi.length; ++i) {
-      vi[i] /= 100;
+      vi[i] /= HUNDRED_PERCENT;
     }
     // TODO buggy?
     // compute indicator

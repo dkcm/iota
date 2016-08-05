@@ -1,5 +1,5 @@
 /**
- * KaseCD.java	v0.1	6 November 2015 10:05:56 pm
+ * KaseCD.java  v0.1  6 November 2015 10:05:56 pm
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -27,7 +27,7 @@ class KaseCD extends AbstractIndicator {
   private final int                signal;
 
   public KaseCD() {
-    this(30, NINE);
+    this(THIRTY, NINE);
   }
 
   public KaseCD(final int period, final int signal) {

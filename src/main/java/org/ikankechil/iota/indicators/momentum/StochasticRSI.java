@@ -1,5 +1,5 @@
 /**
- * StochasticRSI.java v0.1 9 December 2014 12:25:28 PM
+ * StochasticRSI.java  v0.1 9 December 2014 12:25:28 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */

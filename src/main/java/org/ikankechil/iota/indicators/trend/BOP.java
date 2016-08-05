@@ -1,5 +1,5 @@
 /**
- * BOP.java v0.1 10 December 2014 9:14:07 AM
+ * BOP.java  v0.1 10 December 2014 9:14:07 AM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */

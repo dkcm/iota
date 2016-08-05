@@ -1,5 +1,5 @@
 /**
- * NVI.java v0.1 17 July 2015 3:03:49 PM
+ * NVI.java  v0.1 17 July 2015 3:03:49 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -23,9 +23,10 @@ public class NVI extends IndicatorWithSignalLine {
 
   // scaled down by 100 from original 1000 to reduce computations
   private static final int NVI_START = TEN;
+  private static final int YEAR      = 255;
 
   public NVI() {
-    this(255);
+    this(YEAR);
   }
 
   public NVI(final int signal) {
@@ -53,7 +54,7 @@ public class NVI extends IndicatorWithSignalLine {
     double nvi = output[i] = NVI_START;
     long pv = volumes[i]; // previous volume
 
-    for (; ++i < output.length;) {
+    while (++i < output.length) {
       final long volume = volumes[i];
       if (volume < pv) {
         // price %change

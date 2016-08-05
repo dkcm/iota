@@ -1,5 +1,5 @@
 /**
- * KeltnerChannels.java	v0.1	2 August 2015 10:04:02 pm
+ * KeltnerChannels.java  v0.1  2 August 2015 10:04:02 pm
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -37,7 +37,7 @@ public class KeltnerChannels extends AbstractIndicator {
   private static final String LOWER_BAND  = "Lower Keltner Channel";
 
   public KeltnerChannels() {
-    this(20, TWO, TEN);
+    this(TWENTY, TWO, TEN);
   }
 
   public KeltnerChannels(final int ema, final double multiplier, final int atr) {

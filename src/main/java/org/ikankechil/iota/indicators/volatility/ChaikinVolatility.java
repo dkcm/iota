@@ -1,5 +1,5 @@
 /**
- * ChaikinVolatility.java v0.1 7 January 2015 7:17:18 PM
+ * ChaikinVolatility.java  v0.1 7 January 2015 7:17:18 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

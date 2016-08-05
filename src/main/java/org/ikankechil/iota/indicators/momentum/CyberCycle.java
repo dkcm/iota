@@ -1,5 +1,5 @@
 /**
- * CyberCycle.java v0.2 7 July 2015 8:00:08 PM
+ * CyberCycle.java  v0.2  7 July 2015 8:00:08 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -22,12 +22,14 @@ import com.tictactec.ta.lib.RetCode;
 public class CyberCycle extends AbstractIndicator {
 
   // high-pass filter coefficients: derivatives of alpha
-  private final double c1;
-  private final double c2;
-  private final double c3;
+  private final double        c1;
+  private final double        c2;
+  private final double        c3;
+
+  private static final double ALPHA = 0.07;
 
   public CyberCycle() {
-    this(0.07);
+    this(ALPHA);
   }
 
   public CyberCycle(final int period) {

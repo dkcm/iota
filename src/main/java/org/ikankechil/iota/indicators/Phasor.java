@@ -1,5 +1,5 @@
 /**
- * Phasor.java v0.1 11 March 2015 11:07:37 AM
+ * Phasor.java  v0.1  11 March 2015 11:07:37 AM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

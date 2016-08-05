@@ -1,5 +1,5 @@
 /**
- * DominantCyclePhase.java v0.1 11 March 2015 10:15:21 AM
+ * DominantCyclePhase.java  v0.1  11 March 2015 10:15:21 AM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

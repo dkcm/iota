@@ -1,5 +1,5 @@
 /**
- * RSI.java v0.3  4 December 2014 12:17:42 PM
+ * RSI.java  v0.3  4 December 2014 12:17:42 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */

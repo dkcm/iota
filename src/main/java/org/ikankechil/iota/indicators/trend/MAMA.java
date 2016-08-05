@@ -1,5 +1,5 @@
 /**
- * MAMA.java v0.1 5 January 2015 7:12:17 PM
+ * MAMA.java  v0.1  5 January 2015 7:12:17 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -30,10 +30,12 @@ public class MAMA extends AbstractIndicator {
   private final double        fast;
   private final double        slow;
 
-  private static final String FAMA = "FAMA"; // Following Adaptive Moving Average
+  private static final double SLOW_LIMIT = 0.05;
+
+  private static final String FAMA       = "FAMA"; // Following Adaptive Moving Average
 
   public MAMA() {
-    this(HALF, 0.05);
+    this(HALF, SLOW_LIMIT);
   }
 
   public MAMA(final double fast, final double slow) {

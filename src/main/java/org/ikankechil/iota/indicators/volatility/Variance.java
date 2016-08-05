@@ -1,5 +1,5 @@
 /**
- * Variance.java v0.1 9 December 2014 12:52:05 PM
+ * Variance.java  v0.1  9 December 2014 12:52:05 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */

@@ -1,5 +1,5 @@
 /**
- * AccelerationBands.java v0.1 14 January 2015 9:46:27 AM
+ * AccelerationBands.java  v0.1 14 January 2015 9:46:27 AM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -20,6 +20,7 @@ import com.tictactec.ta.lib.RetCode;
  * <p>
  * http://www.bigtrends.com/accelerationbands.pdf
  * http://www2.wealth-lab.com/WL5Wiki/AccelerationBands.ashx
+ * https://www.tradingtechnologies.com/help/x-study/technical-indicator-definitions/acceleration-bands-abands/
  *
  * @author Daniel Kuan
  * @version 0.1
@@ -29,13 +30,14 @@ public class AccelerationBands extends AbstractIndicator {
   private final double        factor;
 
   private final int           MULTIPLIER  = 4000;
+  private static final double FACTOR      = 0.001;
 
   private static final String UPPER_BAND  = "Upper Acceleration Band";
   private static final String MIDDLE_BAND = "Middle Acceleration Band";
   private static final String LOWER_BAND  = "Lower Acceleration Band";
 
   public AccelerationBands() {
-    this(20, 0.001);
+    this(TWENTY, FACTOR);
   }
 
   public AccelerationBands(final int period, final double factor) {

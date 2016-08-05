@@ -1,5 +1,5 @@
 /**
- * ChaikinOscillator.java v0.1  4 December 2014 3:13:53 PM
+ * ChaikinOscillator.java  v0.1  4 December 2014 3:13:53 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */

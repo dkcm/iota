@@ -1,5 +1,5 @@
 /**
- * KasePeakOscillator.java v0.1 3 August 2015 6:06:29 PM
+ * KasePeakOscillator.java  v0.1  3 August 2015 6:06:29 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -30,7 +30,7 @@ public class KasePeakOscillator extends AbstractIndicator {
   private final RWI rwi;
 
   public KasePeakOscillator() {
-    this(30);
+    this(THIRTY);
   }
 
   public KasePeakOscillator(final int period) {

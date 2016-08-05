@@ -1,5 +1,5 @@
 /**
- * STARCBands.java v0.1 8 January 2015 6:06:28 PM
+ * STARCBands.java  v0.1  8 January 2015 6:06:28 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -40,7 +40,7 @@ public class STARCBands extends AbstractIndicator {
   }
 
   public STARCBands(final int period, final double multiplier) {
-    this(period, 15, multiplier);
+    this(period, FIFTEEN, multiplier);
   }
 
   public STARCBands(final int period, final int atr, final double multiplier) {

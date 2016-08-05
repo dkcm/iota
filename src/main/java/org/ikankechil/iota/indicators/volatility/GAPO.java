@@ -1,5 +1,5 @@
 /**
- * GAPO.java v0.1 8 January 2015 1:12:12 PM
+ * GAPO.java  v0.1  8 January 2015 1:12:12 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

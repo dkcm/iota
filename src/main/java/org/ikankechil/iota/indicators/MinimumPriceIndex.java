@@ -1,5 +1,5 @@
 /**
- * MinimumPriceIndex.java v0.1 27 January 2015 1:05:56 PM
+ * MinimumPriceIndex.java  v0.1 27 January 2015 1:05:56 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

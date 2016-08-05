@@ -1,5 +1,5 @@
 /**
- * T3.java	v0.1	7 January 2015 9:56:35 pm
+ * T3.java  v0.1  7 January 2015 9:56:35 pm
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -13,6 +13,8 @@ import com.tictactec.ta.lib.RetCode;
 /**
  * T3
  * <p>
+ * Volume factor = 0 -> EMA, 1 -> DEMA, 0.7 -> T3
+ * <p>
  * http://www.fmlabs.com/reference/default.htm?url=T3.htm
  * http://www.forexfactory.com/attachment.php?attachmentid=709307&d=1306688278
  *
@@ -21,10 +23,12 @@ import com.tictactec.ta.lib.RetCode;
  */
 public class T3 extends AbstractIndicator {
 
-  private final double volumeFactor;
+  private final double        volumeFactor;
+
+  private static final double T3_VF = 0.7;
 
   public T3(final int period) {
-    this(period, 0.7);
+    this(period, T3_VF);
   }
 
   public T3(final int period, final double volumeFactor) {

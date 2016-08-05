@@ -1,5 +1,5 @@
 /**
- * ZigZagValidity.java	v0.1	15 December 2015 11:22:16 pm
+ * ZigZagValidity.java  v0.1  15 December 2015 11:22:16 pm
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

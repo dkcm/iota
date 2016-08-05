@@ -1,5 +1,5 @@
 /**
- * CoppockCurve.java  v0.1 21 December 2014 12:09:23 am
+ * CoppockCurve.java  v0.1  21 December 2014 12:09:23 am
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */

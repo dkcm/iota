@@ -1,5 +1,5 @@
 /**
- * MinimumPrice.java v0.1 27 January 2015 12:54:40 PM
+ * MinimumPrice.java  v0.1  27 January 2015 12:54:40 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

@@ -1,5 +1,5 @@
 /**
- * TSI.java v0.1 19 December 2014 12:10:13 PM
+ * TSI.java  v0.1 19 December 2014 12:10:13 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -24,7 +24,7 @@ public class TSI extends AbstractIndicator {
   private final int smoothPeriod;
 
   public TSI() {
-    this(25, THIRTEEN);
+    this(TWENTY_FIVE, THIRTEEN);
   }
 
   public TSI(final int period, final int smoothPeriod) {

@@ -1,5 +1,5 @@
 /**
- * SMA.java v0.2 8 December 2014 7:10:55 PM
+ * SMA.java  v0.2 8 December 2014 7:10:55 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */

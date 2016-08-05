@@ -1,5 +1,5 @@
 /**
- * ParabolicSAR.java v0.1  4 December 2014 1:05:02 PM
+ * ParabolicSAR.java  v0.1  4 December 2014 1:05:02 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -21,11 +21,14 @@ import com.tictactec.ta.lib.RetCode;
  */
 public class ParabolicSAR extends AbstractIndicator {
 
-  private final double acceleration;
-  private final double maximum;
+  private final double        acceleration;
+  private final double        maximum;
+
+  private static final double START_AF = 0.02;
+  private static final double MAX_AF   = 0.20;
 
   public ParabolicSAR() {
-    this(0.02, 0.20);
+    this(START_AF, MAX_AF);
   }
 
   public ParabolicSAR(final double acceleration, final double maximum) {

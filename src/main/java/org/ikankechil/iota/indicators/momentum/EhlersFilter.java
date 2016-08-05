@@ -1,5 +1,5 @@
 /**
- * EhlersFilter.java v0.1 7 July 2015 5:57:45 PM
+ * EhlersFilter.java  v0.1  7 July 2015 5:57:45 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

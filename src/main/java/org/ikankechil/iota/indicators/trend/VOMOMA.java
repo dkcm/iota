@@ -1,5 +1,5 @@
 /**
- * VOMOMA.java	v0.1	16 July 2015 12:25:20 am
+ * VOMOMA.java  v0.1  16 July 2015 12:25:20 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

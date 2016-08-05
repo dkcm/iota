@@ -1,5 +1,5 @@
 /**
- * LinearRegression.java v0.1 10 December 2014 10:24:29 AM
+ * LinearRegression.java  v0.1  10 December 2014 10:24:29 AM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */

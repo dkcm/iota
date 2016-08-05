@@ -1,5 +1,5 @@
 /**
- * KST.java v0.1 10 December 2014 10:47:07 AM
+ * KST.java  v0.1  10 December 2014 10:47:07 AM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -15,7 +15,7 @@ import org.ikankechil.iota.indicators.AbstractIndicator;
 /**
  * Know Sure Thing (KST)
  *
- * Time Frames
+ * <p>Time Frames
  * Short-term Daily = KST(10,15,20,30,10,10,10,15,9)
  * Medium-term Weekly = KST(10,13,15,20,10,13,15,20,9)
  * Long-term Monthly = KST(9,12,18,24,6,6,6,9,9)
@@ -127,7 +127,7 @@ public class KST extends AbstractIndicator {
                     i3 = smaRoc3.length - length, i4 = smaRoc4.length - length;
          k < length;
          ++k, ++i1, ++i2, ++i3, ++i4) {
-      kst[k] = smaRoc1[i1] + (smaRoc2[i2] * 2) + (smaRoc3[i3] * 3) + (smaRoc4[i4] * 4);
+      kst[k] = smaRoc1[i1] + (smaRoc2[i2] * TWO) + (smaRoc3[i3] * THREE) + (smaRoc4[i4] * FOUR);
 //      kst[k] = smaRoc1[i1] +
 //              (smaRoc2[i2] + smaRoc2[i2]) +
 //              (smaRoc3[i3] + smaRoc3[i3] + smaRoc3[i3]) +

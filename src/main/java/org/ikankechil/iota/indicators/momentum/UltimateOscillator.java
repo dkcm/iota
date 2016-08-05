@@ -1,5 +1,5 @@
 /**
- * UltimateOscillator.java v0.1  4 December 2014 2:28:28 PM
+ * UltimateOscillator.java  v0.1  4 December 2014 2:28:28 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -27,7 +27,7 @@ public class UltimateOscillator extends AbstractIndicator {
   private final int longPeriod;
 
   public UltimateOscillator() {
-    this(SEVEN, FOURTEEN, 28);
+    this(SEVEN, FOURTEEN, TWENTY_EIGHT);
   }
 
   public UltimateOscillator(final int shortPeriod, final int mediumPeriod, final int longPeriod) {
