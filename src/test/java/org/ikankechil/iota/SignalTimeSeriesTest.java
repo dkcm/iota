@@ -1,5 +1,5 @@
 /**
- * SignalTimeSeriesTest.java	v0.1	11 January 2015 10:45:52 PM
+ * SignalTimeSeriesTest.java  v0.2  11 January 2015 10:45:52 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -9,25 +9,20 @@ import static org.junit.Assert.*;
 
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
-import org.junit.rules.ExpectedException;
 
 /**
  * JUnit test for <code>SignalTimeSeries</code>.
  * <p>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class SignalTimeSeriesTest {
 
   private SignalTimeSeries    signals;
 
   private static final String DATE   = "20150101";
-
-  @Rule
-  public ExpectedException    thrown = ExpectedException.none();
 
   @Before
   public void setUp() throws Exception {
@@ -60,15 +55,13 @@ public class SignalTimeSeriesTest {
     assertEquals(expected, signals.signal(0));
   }
 
-  @Test
+  @Test(expected=NullPointerException.class)
   public final void cannotSetNullSignal() {
-    thrown.expect(NullPointerException.class);
     signals.set(DATE, null, 0);
   }
 
-  @Test
+  @Test(expected=NullPointerException.class)
   public final void cannotSetNullSignal2() {
-    thrown.expect(NullPointerException.class);
     signals.signal(null, 0);
   }
 

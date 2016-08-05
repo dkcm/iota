@@ -1,5 +1,5 @@
 /**
- * FXRateCalculator.java v0.4 11 March 2015 1:08:25 PM
+ * FXRateCalculator.java  v0.4  11 March 2015 1:08:25 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CancellationException;
@@ -49,14 +50,21 @@ public class FXRateCalculator {
   private final TaskExecutor                 executor;
 
   // Currency constants
-  private static final List<String>          MAJORS         = Arrays.asList("USD", "EUR", "CHF", "GBP", "JPY");
-  private static final int                   ISO4217_LENGTH = 3;
-  private static final Pattern               ISO4217_REGEX  = Pattern.compile("\\p{Alpha}{3}"); // ISO 4217: exactly 3 alphabetic characters
+  private static final List<String>          MAJORS               = Arrays.asList("USD", "EUR", "CHF", "GBP", "JPY");
+  private static final int                   ISO4217_LENGTH       = 3;
+  private static final Pattern               ISO4217_REGEX        = Pattern.compile("\\p{Alpha}{3}"); // ISO 4217: exactly 3 alphabetic characters
 
   // File-related constants
-  private static final String                CSV        = ".csv";
+  private static final String                CSV                  = ".csv";
 
-  private static final Logger                logger     = LoggerFactory.getLogger(FXRateCalculator.class);
+  // Log messages
+  private static final String                UNAVAILABLE          = "Unavailable: {}";
+  private static final String                NO_COMMON_FOUND      = "No source with common {} found for quote: {}";
+  private static final String                COMPUTED_FX_RATES    = "Computed FX rates for: {} (size: {})";
+  private static final String                EMPTY_FX_RATES       = "Empty FX rates";
+  private static final String                CURRENCY_PRIORITISED = "Preferred common currency prioritised: {}";
+
+  private static final Logger                logger               = LoggerFactory.getLogger(FXRateCalculator.class);
 
   public FXRateCalculator(final File priceDirectory) {
     this(priceDirectory, null);
@@ -73,7 +81,7 @@ public class FXRateCalculator {
       commonCurrencies = MAJORS;
     }
     else {
-      final String preferred = preferredCommonCurrency.toUpperCase();
+      final String preferred = preferredCommonCurrency.toUpperCase(Locale.ROOT);
       if (MAJORS.contains(preferred)) {
         if (MAJORS.get(0).equals(preferred)) {
           commonCurrencies = MAJORS;
@@ -85,14 +93,14 @@ public class FXRateCalculator {
           commonCurrencies.addAll(MAJORS);
           commonCurrencies.remove(preferred);
           commonCurrencies.add(0, preferred);
-          logger.debug("Preferred common currency prioritised: {}", preferred);
+          logger.debug(CURRENCY_PRIORITISED, preferred);
         }
       }
       else {
         commonCurrencies = newList(MAJORS.size() + 1);
         commonCurrencies.add(preferred);
         commonCurrencies.addAll(MAJORS);
-        logger.debug("Preferred common currency prioritised: {}", preferred);
+        logger.debug(CURRENCY_PRIORITISED, preferred);
       }
     }
 
@@ -103,7 +111,7 @@ public class FXRateCalculator {
 
   public List<OHLCVTimeSeries> invertFXRates(final Collection<OHLCVTimeSeries> fxRates) throws InterruptedException {
     if (fxRates.size() < 1) {
-      throw new IllegalArgumentException("Empty FX rates");
+      throw new IllegalArgumentException(EMPTY_FX_RATES);
     }
 
     final Map<OHLCVTimeSeries, OHLCVTimeSeries> inverseFXRates =
@@ -124,10 +132,10 @@ public class FXRateCalculator {
 
   public OHLCVTimeSeries invertFXRates(final OHLCVTimeSeries fxRates) throws IOException {
     if (fxRates.size() < 1) {
-      throw new IllegalArgumentException("Empty FX rates");
+      throw new IllegalArgumentException(EMPTY_FX_RATES);
     }
     // swap base with quote
-    final String pair = fxRates.toString().toUpperCase();
+    final String pair = fxRates.toString().toUpperCase(Locale.ROOT);
     final String invertedPair = pair.substring(ISO4217_LENGTH, ISO4217_LENGTH << 1) + pair.substring(0, ISO4217_LENGTH);
     logger.info("Inverting FX rates: {} -> {}", pair, invertedPair);
 
@@ -150,7 +158,7 @@ public class FXRateCalculator {
 
         inverseFXRates.set(date, open, high, low, close, volume, i);
       }
-      logger.info("Computed FX rates for: {} (size: {})", invertedPair, inverseFXRates.size());
+      logger.info(COMPUTED_FX_RATES, invertedPair, inverseFXRates.size());
     }
 
     return inverseFXRates;
@@ -162,7 +170,7 @@ public class FXRateCalculator {
     throwExceptionIfInappropriateCurrency(quoteCurrencies.toArray(new String[quoteCurrencies.size()]));
 
     // convert base and quote currencies to upper case
-    final String base = baseCurrency.toUpperCase();
+    final String base = baseCurrency.toUpperCase(Locale.ROOT);
     final List<String> quotes = toUpperCase(quoteCurrencies);
 
     if (quotes.remove(base)) {
@@ -196,7 +204,7 @@ public class FXRateCalculator {
 
     // convert base and quote currencies to upper case
     final List<String> bases = toUpperCase(baseCurrencies);
-    final String quote = quoteCurrency.toUpperCase();
+    final String quote = quoteCurrency.toUpperCase(Locale.ROOT);
 
     if (bases.remove(quote)) {
       logger.info("Removed quote ({}) from bases", quote);
@@ -235,8 +243,8 @@ public class FXRateCalculator {
     throwExceptionIfInappropriateCurrency(baseCurrency, quoteCurrency);
 
     // convert base and quote currencies to upper case
-    final String base = baseCurrency.toUpperCase();
-    final String quote = quoteCurrency.toUpperCase();
+    final String base = baseCurrency.toUpperCase(Locale.ROOT);
+    final String quote = quoteCurrency.toUpperCase(Locale.ROOT);
     final String pair = base + quote;
 
     if (base.equals(quote)) {
@@ -283,7 +291,7 @@ public class FXRateCalculator {
           break;
         }
 
-        logger.debug("No source with common {} found for quote: {}", common, quote);
+        logger.debug(NO_COMMON_FOUND, common, quote);
       }
       else {
         baseSource = new File(priceDirectory, base + common + CSV);
@@ -307,7 +315,7 @@ public class FXRateCalculator {
             break;
           }
 
-          logger.debug("No source with common {} found for quote: {}", common, quote);
+          logger.debug(NO_COMMON_FOUND, common, quote);
         }
       }
     }
@@ -367,13 +375,13 @@ public class FXRateCalculator {
         continue;
       }
       catch (final IOException ioE) {
-        logger.info("Unavailable: {}", common + currency);
+        logger.info(UNAVAILABLE, common + currency);
       }
       try {
         read(new File(priceDirectory, currency + common + CSV));
       }
       catch (final IOException ioE) {
-        logger.info("Unavailable: {}", currency + common);
+        logger.info(UNAVAILABLE, currency + common);
       }
     }
   }
@@ -422,7 +430,7 @@ public class FXRateCalculator {
       fxRates.set(dates[i], open, high, low, close, 0, i);
     }
 
-    logger.info("Computed FX rates for: {} (size: {})", pair, size);
+    logger.info(COMPUTED_FX_RATES, pair, size);
     return fxRates;
 
     // e.g.
@@ -458,7 +466,7 @@ public class FXRateCalculator {
   private static final List<String> toUpperCase(final Collection<String> strings) {
     final List<String> upperCases = newList(strings.size());
     for (final String string : strings) {
-      upperCases.add(string.toUpperCase());
+      upperCases.add(string.toUpperCase(Locale.ROOT));
     }
     return upperCases;
   }
@@ -470,8 +478,6 @@ public class FXRateCalculator {
   private static abstract class FXRCTaskHelper<K> implements TaskHelper<K, OHLCVTimeSeries> {
 
     private static final OHLCVTimeSeries EMPTY_OHLCV = new OHLCVTimeSeries("", 0);
-
-    public FXRCTaskHelper() { /* do nothing */ }
 
     @Override
     public OHLCVTimeSeries handleExecutionFailure(final ExecutionException eE, final K operand) {

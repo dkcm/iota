@@ -1,5 +1,5 @@
 /**
- * TimeSeriesTest.java	v0.1	18 December 2014 12:13:50 am
+ * TimeSeriesTest.java  v0.1  18 December 2014 12:13:50 am
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
