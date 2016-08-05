@@ -8,7 +8,6 @@ package org.ikankechil.iota.io;
 import static org.junit.Assert.*;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -38,6 +37,7 @@ public class IndicatorWriterTest extends TimeSeriesWriterTest {
   private static final int              SMALL           = 5;
   private static final int              MEDIUM          = SMALL << 1;
   private static final int              LARGE           = MEDIUM << 1;
+  private static final int              START_DATE      = 21050100;
 
   private static final List<TimeSeries> PAYLOADS        = new ArrayList<>();
   private static final List<String>     EXPECTEDS       = new ArrayList<>(LARGE + 1);
@@ -57,7 +57,7 @@ public class IndicatorWriterTest extends TimeSeriesWriterTest {
 
     // create time-lines
     final List<String> chrono = new ArrayList<>();
-    for (int i = 0, date = 21050100; i < LARGE; ++i) {
+    for (int i = 0, date = START_DATE; i < LARGE; ++i) {
       chrono.add(String.valueOf(++date));
     }
     final List<String> reverseChrono = new ArrayList<>(chrono);
@@ -97,7 +97,7 @@ public class IndicatorWriterTest extends TimeSeriesWriterTest {
   }
 
   @AfterClass
-  public static void tearDownAfterClass() throws Exception {
+  public static void tearDownAfterClass() {
     PAYLOADS.clear();
     EXPECTEDS.clear();
   }
@@ -117,25 +117,21 @@ public class IndicatorWriterTest extends TimeSeriesWriterTest {
 
   @Override
   public void cannotWriteNullPayload() throws IOException {
-    thrown.expect(NullPointerException.class);
     writer.write(null, destination);
   }
 
   @Override
   public void cannotWriteToNullFile() throws IOException {
-    thrown.expect(NullPointerException.class);
     writer.write(PAYLOADS, null);
   }
 
   @Override
   public void cannotWriteToUnwritableFile() throws IOException {
-    thrown.expect(FileNotFoundException.class);
     writer.write(PAYLOADS, READ_ONLY);
   }
 
   @Override
   public void cannotWriteToDirectory() throws IOException {
-    thrown.expect(FileNotFoundException.class);
     writer.write(PAYLOADS, INPUT_DIRECTORY);
   }
 
