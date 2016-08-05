@@ -1,5 +1,5 @@
 /**
- * UltimateOscillatorTest.java	v0.2	11 July 2015 3:43:16 pm
+ * UltimateOscillatorTest.java  v0.2  11 July 2015 3:43:16 pm
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

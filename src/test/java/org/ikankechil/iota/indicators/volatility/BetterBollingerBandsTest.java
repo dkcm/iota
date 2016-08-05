@@ -1,5 +1,5 @@
 /**
- * BetterBollingerBandsTest.java	v0.2	28 November 2015 10:11:46 pm
+ * BetterBollingerBandsTest.java  v0.2  28 November 2015 10:11:46 pm
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

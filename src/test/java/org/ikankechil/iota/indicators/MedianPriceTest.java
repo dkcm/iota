@@ -1,5 +1,5 @@
 /**
- * MedianPriceTest.java v0.2 9 July 2015 5:22:32 PM
+ * MedianPriceTest.java  v0.2 9 July 2015 5:22:32 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -31,7 +31,8 @@ public class MedianPriceTest extends AbstractIndicatorTest {
     TEST_CLASS = MedianPriceTest.class;
   }
 
-  @Ignore@Override
+  @Ignore
+  @Override
   public void cannotInstantiateWithNegativePeriod() { /* do nothing */ }
 
   @Override

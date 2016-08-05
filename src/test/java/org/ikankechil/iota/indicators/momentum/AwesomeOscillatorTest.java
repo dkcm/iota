@@ -1,5 +1,5 @@
 /**
- * AwesomeOscillatorTest.java v0.2 10 January 2015 2:43:37 PM
+ * AwesomeOscillatorTest.java  v0.2  10 January 2015 2:43:37 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

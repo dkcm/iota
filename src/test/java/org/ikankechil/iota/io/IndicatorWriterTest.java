@@ -1,5 +1,5 @@
 /**
- * IndicatorWriterTest.java	v0.2	20 June 2015 12:04:22 am
+ * IndicatorWriterTest.java  v0.2  20 June 2015 12:04:22 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

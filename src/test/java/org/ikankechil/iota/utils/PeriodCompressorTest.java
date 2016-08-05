@@ -1,5 +1,5 @@
 /**
- * PeriodCompressorTest.java	v0.2	12 November 2015 12:25:55 pm
+ * PeriodCompressorTest.java  v0.2  12 November 2015 12:25:55 pm
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

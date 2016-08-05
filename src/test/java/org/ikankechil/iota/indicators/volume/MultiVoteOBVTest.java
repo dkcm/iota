@@ -1,5 +1,5 @@
 /**
- * MultiVoteOBVTest.java v0.2 24 November 2015 4:46:06 PM
+ * MultiVoteOBVTest.java  v0.2  24 November 2015 4:46:06 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

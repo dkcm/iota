@@ -1,5 +1,5 @@
 /**
- * TimeSeriesWriterTest.java	v0.2	20 June 2015 12:05:41 am
+ * TimeSeriesWriterTest.java  v0.2  20 June 2015 12:05:41 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

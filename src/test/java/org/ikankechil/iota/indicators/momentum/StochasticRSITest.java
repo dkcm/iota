@@ -1,5 +1,5 @@
 /**
- * StochasticRSITest.java v0.2 26 November 2015 2:26:11 PM
+ * StochasticRSITest.java  v0.2 26 November 2015 2:26:11 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

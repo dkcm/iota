@@ -1,5 +1,5 @@
 /**
- * SelfAdjustingRSITest.java	v0.2	13 December 2015 10:49:54 am
+ * SelfAdjustingRSITest.java  v0.2  13 December 2015 10:49:54 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

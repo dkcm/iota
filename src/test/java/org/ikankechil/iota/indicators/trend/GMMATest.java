@@ -1,5 +1,5 @@
 /**
- * GMMATest.java	v0.2	28 November 2015 10:45:25 pm
+ * GMMATest.java  v0.2  28 November 2015 10:45:25 pm
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

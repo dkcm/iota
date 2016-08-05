@@ -1,5 +1,5 @@
 /**
- * ParabolicSARTest.java v0.2 26 November 2015 11:02:43 AM
+ * ParabolicSARTest.java  v0.2 26 November 2015 11:02:43 AM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

@@ -1,5 +1,5 @@
 /**
- * BollingerBandsTest.java	v0.2	28 November 2015 9:33:18 pm
+ * BollingerBandsTest.java  v0.2  28 November 2015 9:33:18 pm
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

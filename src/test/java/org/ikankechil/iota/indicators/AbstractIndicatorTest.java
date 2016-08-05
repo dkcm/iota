@@ -1,5 +1,5 @@
 /**
- * AbstractIndicatorTest.java v0.4  10 January 2015 1:45:25 PM
+ * AbstractIndicatorTest.java  v0.4  10 January 2015 1:45:25 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -147,8 +147,9 @@ public abstract class AbstractIndicatorTest {
     return constructor.newInstance(period);
   }
 
-  @Test(expected=ReflectiveOperationException.class)
+  @Test
   public void cannotInstantiateWithNegativePeriod() throws ReflectiveOperationException {
+    thrown.expect(Exception.class);
     newInstance(-1);
   }
 
