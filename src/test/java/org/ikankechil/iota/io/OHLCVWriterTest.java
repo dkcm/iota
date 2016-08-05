@@ -38,6 +38,11 @@ public class OHLCVWriterTest extends TimeSeriesWriterTest {
   private static final OHLCVTimeSeries OHLCV           = new OHLCVTimeSeries(SYMBOL, LINES);
   private static final List<String>    EXPECTEDS       = new ArrayList<>(OHLCV.size());
   private static final int             START_DATE      = 21230100;
+  private static final double          OPEN            = 10d;
+  private static final double          HIGH            = 1000d;
+  private static final double          LOW             = 0d;
+  private static final double          CLOSE           = 100d;
+  private static final int             VOLUME          = 10000;
 
   private static final File            INPUT_DIRECTORY = new File(".//./src/test/resources/" + OHLCVWriterTest.class.getSimpleName());
   private static final File            READ_ONLY       = new File(INPUT_DIRECTORY, "Read-only.csv");
@@ -51,11 +56,11 @@ public class OHLCVWriterTest extends TimeSeriesWriterTest {
     // prepare expected lines
     final StringBuilder line = new StringBuilder();
     int date = START_DATE;
-    double open = 10d;
-    double high = 1000d;
-    double low = 0d;
-    double close = 100d;
-    long volume = 10000;
+    double open = OPEN;
+    double high = HIGH;
+    double low = LOW;
+    double close = CLOSE;
+    long volume = VOLUME;
     for (int i = 0; i < LINES; ++i) {
       line.append(SYMBOL).append(COMMA)
           .append(++date).append(COMMA)
@@ -73,7 +78,7 @@ public class OHLCVWriterTest extends TimeSeriesWriterTest {
   }
 
   @AfterClass
-  public static void tearDownAfterClass() throws Exception {
+  public static void tearDownAfterClass() {
     EXPECTEDS.clear();
   }
 
