@@ -1,5 +1,5 @@
 /**
- * Trendlines.java v0.1 19 January 2016 4:00:07 PM
+ * Trendlines.java  v0.1  19 January 2016 4:00:07 PM
  *
  * Copyright © 2015 Daniel Kuan.  All rights reserved.
  */

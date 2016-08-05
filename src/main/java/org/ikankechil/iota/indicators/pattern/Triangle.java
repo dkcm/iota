@@ -1,5 +1,5 @@
 /**
- * Triangle.java v0.2 8 January 2016 10:56:34 AM
+ * Triangle.java  v0.2  8 January 2016 10:56:34 AM
  *
  * Copyright © 2016 Daniel Kuan.  All rights reserved.
  */

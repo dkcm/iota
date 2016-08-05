@@ -1,5 +1,5 @@
 /**
- * DivergenceTest.java v0.1 21 April 2016 10:47:38 pm
+ * DivergenceTest.java  v0.1  21 April 2016 10:47:38 pm
  *
  * Copyright © 2016 Daniel Kuan.  All rights reserved.
  */

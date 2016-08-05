@@ -1,5 +1,5 @@
 /**
- * TrendlinesTest.java v0.1 Jan 27, 2016 12:10:35 PM
+ * TrendlinesTest.java  v0.1  27 January 2016 12:10:35 PM
  *
  * Copyright © 2015 Daniel Kuan.  All rights reserved.
  */

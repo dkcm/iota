@@ -1,5 +1,5 @@
 /**
- * Divergence.java v0.3 20 April 2016 7:36:35 pm
+ * Divergence.java  v0.3  20 April 2016 7:36:35 pm
  *
  * Copyright © 2016 Daniel Kuan.  All rights reserved.
  */
@@ -25,8 +25,14 @@ import org.ikankechil.iota.indicators.Indicator;
  */
 public class Divergence extends AbstractIndicator {
 
-  private final Indicator topsAndBottoms;
-  private final Indicator indicator;
+  private final Indicator     topsAndBottoms;
+  private final Indicator     indicator;
+
+  private static final double POSITIVE_DIVERGENCE = HUNDRED_PERCENT;
+  private static final double NEGATIVE_DIVERGENCE = -HUNDRED_PERCENT;
+
+  private static final String PEAK     = "Peak ";
+  private static final String TROUGH   = "Trough ";
 
   public Divergence(final Indicator indicator) {
     this(indicator, FIVE);
@@ -71,8 +77,8 @@ public class Divergence extends AbstractIndicator {
     final String[] dates = indicatorSeries.dates();
 
     logger.info(GENERATED_FOR, name, ohlcv);
-    return Arrays.asList(new TimeSeries(name, dates, topsDivergences),
-                         new TimeSeries(name, dates, bottomsDivergences));
+    return Arrays.asList(new TimeSeries(PEAK + name, dates, topsDivergences),
+                         new TimeSeries(TROUGH + name, dates, bottomsDivergences));
   }
 
   protected double[] detectTopsDivergences(final double[] tops,
@@ -112,15 +118,15 @@ public class Divergence extends AbstractIndicator {
       public double divergence(final double[] globalExtrema,
                                final double[] localExtrema,
                                final double[] indicatorValues,
-                               final int present,
+                               final int previous,
                                final int current) {
-        final double hp = globalExtrema[present];   // previous top
-        final double hc = globalExtrema[current];   // current top
+        final double hp = globalExtrema[previous];    // previous top
+        final double hc = globalExtrema[current];     // current top
 
-        final double ip = indicatorValues[present]; // previous top
-        final double ic = indicatorValues[current]; // current top
+        final double ip = indicatorValues[previous];  // previous top
+        final double ic = indicatorValues[current];   // current top
 
-        return (hp < hc && ip > ic) ? HUNDRED_PERCENT : -HUNDRED_PERCENT;
+        return (hp < hc && ip > ic) ? POSITIVE_DIVERGENCE : NEGATIVE_DIVERGENCE;
       }
     },
     BOTTOMS {
@@ -128,31 +134,31 @@ public class Divergence extends AbstractIndicator {
       public double divergence(final double[] globalExtrema,
                                final double[] localExtrema,
                                final double[] indicatorValues,
-                               final int present,
+                               final int previous,
                                final int current) {
-        final double lp = globalExtrema[present];   // previous bottom
-        final double lc = globalExtrema[current];   // current bottom
+        final double lp = globalExtrema[previous];    // previous bottom
+        final double lc = globalExtrema[current];     // current bottom
 
-        final double ip = indicatorValues[present]; // previous bottom
-        final double ic = indicatorValues[current]; // current bottom
+        final double ip = indicatorValues[previous];  // previous bottom
+        final double ic = indicatorValues[current];   // current bottom
 
-        return (lp > lc && ip < ic) ? HUNDRED_PERCENT : -HUNDRED_PERCENT;
+        return (lp > lc && ip < ic) ? POSITIVE_DIVERGENCE : NEGATIVE_DIVERGENCE;
       }
     };
 
     public abstract double divergence(final double[] globalExtrema,
                                       final double[] localExtrema,
                                       final double[] indicatorValues,
-                                      final int present,
+                                      final int previous,
                                       final int current);
 
     // Classic Divergence
     // Although a positive divergence is a strong signal of price reversal, an
     // even stronger signal occurs when the high at the current peak is higher
-    // than the high at the previous peak (Hc > Hp) and the indicator value at the
-    // current peak is lower than the indicator value at the previous peak (Ic <
-    // Ip). This is the classic divergence most often illustrated in technical
-    // analysis literature.
+    // than the high at the previous peak (Hc > Hp) and the indicator value at
+    // the current peak is lower than the indicator value at the previous peak
+    // (Ic < Ip). This is the classic divergence most often illustrated in
+    // technical analysis literature.
   }
 
 }

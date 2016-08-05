@@ -1,5 +1,5 @@
 /**
- * DivergenceIndex.java	v0.2	22 November 2015 10:41:10 am
+ * DivergenceIndex.java  v0.2  22 November 2015 10:41:10 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -68,19 +68,17 @@ public class DivergenceIndex extends Divergence {
       public double divergence(final double[] globalExtrema,
                                final double[] localExtrema,
                                final double[] indicatorValues,
-                               final int present,
+                               final int previous,
                                final int current) {
-        final double hp = globalExtrema[present];                 // previous top
+        final double hp = globalExtrema[previous];                // previous top
         final double hc = globalExtrema[current];                 // current top
         final double hh = (hc > hp) ? hc : hp;                    // highest high
-        @SuppressWarnings("synthetic-access")
-        final double hl = min(localExtrema, present, current);    // lowest high
+        final double hl = min(localExtrema, previous, current);   // lowest high
 
-        final double ip = indicatorValues[present];               // previous top
+        final double ip = indicatorValues[previous];              // previous top
         final double ic = indicatorValues[current];               // current top
         final double ih = (ic > ip) ? ic : ip;                    // highest high
-        @SuppressWarnings("synthetic-access")
-        final double il = min(indicatorValues, present, current); // lowest high
+        final double il = min(indicatorValues, previous, current);// lowest high
 
         return FIFTY_PERCENT * (((hc - hp) / (hh - hl)) - ((ic - ip) / (ih - il)));
       }
@@ -90,18 +88,16 @@ public class DivergenceIndex extends Divergence {
       public double divergence(final double[] globalExtrema,
                                final double[] localExtrema,
                                final double[] indicatorValues,
-                               final int present,
+                               final int previous,
                                final int current) {
-        final double lp = globalExtrema[present];                 // previous bottom
+        final double lp = globalExtrema[previous];                // previous bottom
         final double lc = globalExtrema[current];                 // current bottom
-        @SuppressWarnings("synthetic-access")
-        final double lh = max(localExtrema, present, current);    // highest low
+        final double lh = max(localExtrema, previous, current);   // highest low
         final double ll = (lc < lp) ? lc : lp;                    // lowest low
 
-        final double ip = indicatorValues[present];               // previous bottom
+        final double ip = indicatorValues[previous];              // previous bottom
         final double ic = indicatorValues[current];               // current bottom
-        @SuppressWarnings("synthetic-access")
-        final double ih = max(indicatorValues, present, current); // highest low
+        final double ih = max(indicatorValues, previous, current);// highest low
         final double il = (ic < ip) ? ic : ip;                    // lowest low
 
         return FIFTY_PERCENT * (((ic - ip) / (ih - il)) - ((lc - lp) / (lh - ll)));
@@ -111,7 +107,7 @@ public class DivergenceIndex extends Divergence {
     public abstract double divergence(final double[] globalExtrema,
                                       final double[] localExtrema,
                                       final double[] indicatorValues,
-                                      final int present,
+                                      final int previous,
                                       final int current);
 
     // Formula:
