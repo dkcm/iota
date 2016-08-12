@@ -26,44 +26,45 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class AbstractStrategy implements Strategy {
 
-  private final String            name         = getClass().getSimpleName();
+  private final String            name     = getClass().getSimpleName();
   protected final List<Indicator> indicators;
 
-  protected static final int      ZERO         = 0;
-  protected static final int      ONE          = 1;
-  protected static final int      TWO          = 2;
-  protected static final int      THREE        = 3;
-  protected static final int      FOUR         = 4;
-  protected static final int      FIVE         = 5;
-  protected static final int      SIX          = 6;
-  protected static final int      SEVEN        = 7;
-  protected static final int      EIGHT        = 8;
-  protected static final int      NINE         = 9;
-  protected static final int      TEN          = 10;
-  protected static final int      ELEVEN       = 11;
-  protected static final int      TWELVE       = 12;
-  protected static final int      THIRTEEN     = 13;
-  protected static final int      FOURTEEN     = 14;
+  // Numeric constants
+  protected static final int      ZERO     = 0;
+  protected static final int      ONE      = 1;
+  protected static final int      TWO      = 2;
+  protected static final int      THREE    = 3;
+  protected static final int      FOUR     = 4;
+  protected static final int      FIVE     = 5;
+  protected static final int      SIX      = 6;
+  protected static final int      SEVEN    = 7;
+  protected static final int      EIGHT    = 8;
+  protected static final int      NINE     = 9;
+  protected static final int      TEN      = 10;
+  protected static final int      ELEVEN   = 11;
+  protected static final int      TWELVE   = 12;
+  protected static final int      THIRTEEN = 13;
+  protected static final int      FOURTEEN = 14;
 
-  protected static final String   SPACE        = " ";
-  protected static final String   TRADE_SIGNAL = "Signal: {} {} (Date: {}, Close: {})";
+  protected static final String   SPACE    = " ";
 
-  private static final Logger     logger       = LoggerFactory.getLogger(AbstractStrategy.class);
+  private static final Logger     logger   = LoggerFactory.getLogger(AbstractStrategy.class);
 
   public AbstractStrategy(final Indicator... indicators) {
     this.indicators = Arrays.asList(indicators);
   }
 
+  @Override
   public SignalTimeSeries execute(final OHLCVTimeSeries ohlcv) {
-    return execute(ohlcv, Integer.MAX_VALUE);
+    return execute(ohlcv, MAX_LOOKBACK);
   }
 
   @Override
   public SignalTimeSeries execute(final OHLCVTimeSeries ohlcv, final int lookback) {
     if (lookback < ZERO) {
-      throw new IllegalArgumentException("Negative lookback");
+      throw new IllegalArgumentException("Negative lookback: " + lookback);
     }
-    logger.info("Executing strategy {} for: {}", toString(), ohlcv);
+    logger.info("Executing strategy {} on {}", toString(), ohlcv);
 
     final List<List<TimeSeries>> indicatorValues = generateIndicatorValues(ohlcv);
     return generateSignals(ohlcv, indicatorValues, lookback);
@@ -71,6 +72,11 @@ public abstract class AbstractStrategy implements Strategy {
   }
 
   protected List<List<TimeSeries>> generateIndicatorValues(final OHLCVTimeSeries ohlcv) {
+    // 3 kinds of lookback:
+    // 1. indicator (number of periods required for 1 data point)
+    // 2. strategy
+    // 3. "window of interest"
+
     final List<List<TimeSeries>> indicatorValues = new ArrayList<>(indicators.size());
     int maxLookback = ZERO;
     for (final Indicator indicator : indicators) {
@@ -154,7 +160,7 @@ public abstract class AbstractStrategy implements Strategy {
   }
 
   /**
-   * A fast time series crosses over a slower one.
+   * The fast time series crosses over the slower one.
    *
    * @param fastYesterday
    * @param slowYesterday
@@ -171,7 +177,7 @@ public abstract class AbstractStrategy implements Strategy {
   }
 
   /**
-   * A fast time series crosses under a slower one.
+   * The fast time series crosses under the slower one.
    *
    * @param fastYesterday
    * @param slowYesterday
@@ -185,6 +191,7 @@ public abstract class AbstractStrategy implements Strategy {
                                             final double slowToday) {
     // 1-value lookback
     return (fastYesterday > slowYesterday) && (fastToday < slowToday);
-  } // TODO support 2-value lookback when determining buy / sell signal?
+  }
+  // TODO support 2-value lookback when determining buy / sell signal?
 
 }
