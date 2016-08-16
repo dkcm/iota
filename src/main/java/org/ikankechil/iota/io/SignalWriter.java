@@ -1,5 +1,5 @@
 /**
- * SignalWriter.java v0.1 12 January 2015 10:03:55 AM
+ * SignalWriter.java  v0.2  12 January 2015 10:03:55 AM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
  * <p>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class SignalWriter extends TimeSeriesWriter {
 
@@ -48,14 +48,15 @@ public class SignalWriter extends TimeSeriesWriter {
       }
       else {
         // write in reverse chronological order
-        final String[] dates = signalSeries.get(ZERO).dates();
+        final StringBuilder line = new StringBuilder();
+        final SignalTimeSeries signals = signalSeries.get(ZERO);
+        final String[] dates = signals.dates();
         for (int d = dates.length - 1; d >= ZERO; --d) {
-          final StringBuilder line = new StringBuilder(dates[d]);
-          for (final SignalTimeSeries signals : signalSeries) {
-            line.append(COMMA);
-            line.append(signals.signal(d));
-          }
+          line.append(dates[d])
+              .append(COMMA)
+              .append(signals.signal(d));
           lines.add(line.toString());
+          line.setLength(ZERO);
         }
         logger.debug("Single strategy");
       }
@@ -71,7 +72,7 @@ public class SignalWriter extends TimeSeriesWriter {
   private static final boolean hasSignals(final List<? extends SignalTimeSeries> signalSeries) {
     boolean hasSignals = false;
     for (final SignalTimeSeries signals : signalSeries) {
-      hasSignals |= signals.size() > ZERO;
+      hasSignals |= (signals.size() > ZERO);
     }
     return hasSignals;
   }
@@ -108,13 +109,15 @@ public class SignalWriter extends TimeSeriesWriter {
 
     // convert table to lines
     final List<String> lines = new ArrayList<>();
+    final StringBuilder line = new StringBuilder();
     for (final Entry<String, Signal[]> entry : table.entrySet()) {
-      final StringBuilder line = new StringBuilder(entry.getKey());
+      line.append(entry.getKey());  // date
       for (final Signal signal : entry.getValue()) {
-        line.append(COMMA);
-        line.append(signal == null ? EMPTY : signal);
+        line.append(COMMA)
+            .append((signal == null) ? EMPTY : signal);
       }
       lines.add(line.toString());
+      line.setLength(ZERO);
     }
 
     return lines;
