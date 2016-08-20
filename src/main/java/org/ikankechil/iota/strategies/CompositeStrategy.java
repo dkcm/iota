@@ -1,5 +1,5 @@
 /**
- * CompositeStrategy.java  v0.2  2 August 2016 6:36:44 pm
+ * CompositeStrategy.java  v0.3  2 August 2016 6:36:44 pm
  *
  * Copyright © 2016 Daniel Kuan.  All rights reserved.
  */
@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
  * <p>
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class CompositeStrategy implements Strategy {
 
@@ -57,69 +57,51 @@ public class CompositeStrategy implements Strategy {
   @Override
   public SignalTimeSeries execute(final OHLCVTimeSeries ohlcv, final int lookback) {
     // generate signals
-    final List<SignalTimeSeries> signals = new ArrayList<>(strategies.size());
-    int shortestLength = Integer.MAX_VALUE;
-    for (final Strategy strategy : strategies) {
-      final SignalTimeSeries timeSeries = strategy.execute(ohlcv, lookback);
-      signals.add(timeSeries);
-      shortestLength = Math.min(timeSeries.size(), shortestLength);
-    }
-
-    // truncate to cater to different signal sizes
-    truncate(signals, shortestLength);
+    final List<SignalTimeSeries> signals = generateSignals(ohlcv, lookback);
 
     // aggregate signals across strategies
     final String ohlcvName = ohlcv.toString();
     final SignalTimeSeries reference = signals.remove(ZERO);
     final String[] dates = reference.dates();
+    final int length = reference.size();
+    final int offset = ohlcv.size() - length;
 
-    final SignalTimeSeries composite = new SignalTimeSeries(name, shortestLength);
-    for (int today = ZERO, c = ohlcv.size() - shortestLength;
-         today < shortestLength;
-         ++today, ++c) {
+    final SignalTimeSeries composite = new SignalTimeSeries(name, length);
+    for (int today = ZERO; today < length; ++today) {
       final Signal signal = reference.signal(today);
       if (signal == BUY || signal == SELL) {
         // search backwards and forwards in other signals series for matching
         // signals, defaulting to Signal.NONE if none are found
 
         // search backwards
-        if (today >= window) {
-          final int backwards = findMaxMatching(signal, today - window, today, signals);
-          if (backwards > NOT_FOUND) { // matching signal found
-            setSignal(signal, today, composite, dates);
+        final int backwards = (today >= window) ?
+                              findMaxMatching(signal, today - window, today, signals) :
+                              NOT_FOUND;
+        // search forwards
+        final int forwards = (today + window < length) ?
+                             findMaxMatching(signal, today, today + window, signals) :
+                             NOT_FOUND;
 
-            final double close = ohlcv.close(c);
-            logger.info(TRADE_SIGNAL, signal, ohlcvName, dates[today], close);
-          }
-          else {
-            setSignal(NONE, today, composite, dates);
-          }
+        if (backwards > NOT_FOUND) { // matching signal found
+          setSignal(signal, today, composite, dates);
+          logger.info(TRADE_SIGNAL, signal, ohlcvName, dates[today], ohlcv.close(today + offset));
+        }
+        else {
+          setSignal(NONE, today, composite, dates);
         }
 
-        // search forwards
-        if (today + window < shortestLength) {
-          final int forwards = findMaxMatching(signal, today, today + window, signals);
-          if (forwards > NOT_FOUND) { // matching signal found
-            final double close = ohlcv.close(c + forwards - today);
-
-            // backfill skipped indices
-            for (; today < forwards; ++today) {
-              setSignal(NONE, today, composite, dates);
-            }
-
-            // skip forward
-            setSignal(signal, today, composite, dates);
-            logger.info(TRADE_SIGNAL, signal, ohlcvName, dates[today], close);
-          }
-          else {
+        if (forwards > NOT_FOUND) {  // matching signal found
+          // skip forward and backfill
+          while (++today < forwards) {
             setSignal(NONE, today, composite, dates);
           }
+          setSignal(signal, today, composite, dates);
+          logger.info(TRADE_SIGNAL, signal, ohlcvName, dates[today], ohlcv.close(today + offset));
         }
       }
       else {  // no buy / sell signal
         setSignal(NONE, today, composite, dates);
       }
-
       // Algorithm:
       // 1. Pick signals series with fewest buys & sells
       // 2. Iterate through series until next buy / sell
@@ -130,6 +112,22 @@ public class CompositeStrategy implements Strategy {
     }
 
     return composite;
+  }
+
+  private final List<SignalTimeSeries> generateSignals(final OHLCVTimeSeries ohlcv, final int lookback) {
+    final List<SignalTimeSeries> signals = new ArrayList<>(strategies.size());
+
+    int shortestLength = Integer.MAX_VALUE;
+    for (final Strategy strategy : strategies) {
+      final SignalTimeSeries timeSeries = strategy.execute(ohlcv, lookback);
+      signals.add(timeSeries);
+      shortestLength = Math.min(timeSeries.size(), shortestLength);
+    }
+
+    // truncate to cater to different signal sizes
+    truncate(signals, shortestLength);
+
+    return signals;
   }
 
   private static final void truncate(final List<SignalTimeSeries> signals, final int shortestLength) {
