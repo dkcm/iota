@@ -1,5 +1,5 @@
 /**
- * CompoundStrategy.java  v0.1  2 August 2016 6:36:44 pm
+ * CompositeStrategy.java  v0.2  2 August 2016 6:36:44 pm
  *
  * Copyright © 2016 Daniel Kuan.  All rights reserved.
  */
@@ -19,30 +19,32 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- *
+ * A <code>Strategy</code> of strategies.
  * <p>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
-public class CompoundStrategy implements Strategy {
+public class CompositeStrategy implements Strategy {
 
   private final int            window;
   private final List<Strategy> strategies;
+  private final String         name      = getClass().getSimpleName();
 
   private static final int     ZERO      = 0;
   private static final int     ONE       = 1;
   private static final int     NOT_FOUND = -1;
 
-  private static final Logger  logger    = LoggerFactory.getLogger(CompoundStrategy.class);
+  private static final Logger  logger    = LoggerFactory.getLogger(CompositeStrategy.class);
 
-  public CompoundStrategy(final int window, final Strategy... strategies) {
+  public CompositeStrategy(final int window, final Strategy... strategies) {
     if (window < ZERO) {
       throw new IllegalArgumentException("Negative window of interest");
     }
     if (strategies.length <= ONE) {
       throw new IllegalArgumentException("Two or more strategies required");
     }
+
     this.window = window;
     this.strategies = Arrays.asList(strategies);
   }
@@ -54,8 +56,6 @@ public class CompoundStrategy implements Strategy {
 
   @Override
   public SignalTimeSeries execute(final OHLCVTimeSeries ohlcv, final int lookback) {
-    final String ohlcvName = ohlcv.toString();
-
     // generate signals
     final List<SignalTimeSeries> signals = new ArrayList<>(strategies.size());
     int shortestLength = Integer.MAX_VALUE;
@@ -69,42 +69,55 @@ public class CompoundStrategy implements Strategy {
     truncate(signals, shortestLength);
 
     // aggregate signals across strategies
-    final SignalTimeSeries compoundSignals = new SignalTimeSeries(toString(), shortestLength);
-    final SignalTimeSeries signals1 = signals.remove(ZERO);
+    final String ohlcvName = ohlcv.toString();
+    final SignalTimeSeries reference = signals.remove(ZERO);
+    final String[] dates = reference.dates();
+
+    final SignalTimeSeries composite = new SignalTimeSeries(name, shortestLength);
     for (int today = ZERO, c = ohlcv.size() - shortestLength;
          today < shortestLength;
          ++today, ++c) {
-      final double close = ohlcv.close(c);
-
-      final Signal signal = signals1.signal(today);
+      final Signal signal = reference.signal(today);
       if (signal == BUY || signal == SELL) {
+        // search backwards and forwards in other signals series for matching
+        // signals, defaulting to Signal.NONE if none are found
+
         // search backwards
-        if (today > window) {
+        if (today >= window) {
           final int backwards = findMaxMatching(signal, today - window, today, signals);
-          if (backwards > NOT_FOUND) {
-            final String date = signals1.date(today);
-            compoundSignals.set(date, signal, today);
-            logger.info(TRADE_SIGNAL, signal, ohlcvName, date, close);
+          if (backwards > NOT_FOUND) { // matching signal found
+            setSignal(signal, today, composite, dates);
+
+            final double close = ohlcv.close(c);
+            logger.info(TRADE_SIGNAL, signal, ohlcvName, dates[today], close);
+          }
+          else {
+            setSignal(NONE, today, composite, dates);
           }
         }
 
         // search forwards
         if (today + window < shortestLength) {
           final int forwards = findMaxMatching(signal, today, today + window, signals);
-          if (forwards > NOT_FOUND) {
-            today = forwards; // skip forwards
-            // TODO need to backfill skipped indices with NONE
-            final String date = signals1.date(today);
-            compoundSignals.set(date, signal, today);
-            logger.info(TRADE_SIGNAL, signal, ohlcvName, date, close);
+          if (forwards > NOT_FOUND) { // matching signal found
+            final double close = ohlcv.close(c + forwards - today);
+
+            // backfill skipped indices
+            for (; today < forwards; ++today) {
+              setSignal(NONE, today, composite, dates);
+            }
+
+            // skip forward
+            setSignal(signal, today, composite, dates);
+            logger.info(TRADE_SIGNAL, signal, ohlcvName, dates[today], close);
+          }
+          else {
+            setSignal(NONE, today, composite, dates);
           }
         }
       }
       else {  // no buy / sell signal
-        // TODO possible to skip forward?
-        final String date = signals1.date(today);
-        compoundSignals.set(date, NONE, today);
-        logger.debug(TRADE_SIGNAL, NONE, ohlcvName, date, close);
+        setSignal(NONE, today, composite, dates);
       }
 
       // Algorithm:
@@ -116,7 +129,7 @@ public class CompoundStrategy implements Strategy {
       // b) Else go to step 2
     }
 
-    return compoundSignals;
+    return composite;
   }
 
   private static final void truncate(final List<SignalTimeSeries> signals, final int shortestLength) {
@@ -134,6 +147,7 @@ public class CompoundStrategy implements Strategy {
         iterator.set(newSeries);
       }
     }
+    logger.debug("Signals truncated to length: {}", shortestLength);
   }
 
   private static final int findMaxMatching(final Signal reference,
@@ -143,11 +157,15 @@ public class CompoundStrategy implements Strategy {
     int maxMatchingSignalIndex = NOT_FOUND;
     for (final SignalTimeSeries other : others) {
       // find maximum matching index across all signal series
-      maxMatchingSignalIndex = Math.max(maxMatchingSignalIndex,
-                                        findMatching(reference,
-                                                     start,
-                                                     end,
-                                                     other));
+      final int matchingSignalIndex = findMatching(reference, start, end, other);
+      if (matchingSignalIndex > NOT_FOUND) {
+        maxMatchingSignalIndex = Math.max(maxMatchingSignalIndex, matchingSignalIndex);
+      }
+      else {
+        maxMatchingSignalIndex = NOT_FOUND;
+        logger.debug("No matching {} found in {}", reference, other);
+        break;
+      }
     }
     return maxMatchingSignalIndex;
   }
@@ -160,10 +178,24 @@ public class CompoundStrategy implements Strategy {
     for (int i = start; i < end; ++i) {
       if (reference == signals.signal(i)) {
         matchingSignalIndex = i;
+        logger.debug("Matching {} found at index {} in {}", reference, matchingSignalIndex, signals);
         break;
       }
     }
     return matchingSignalIndex;
+  }
+
+  private static final void setSignal(final Signal signal,
+                                      final int index,
+                                      final SignalTimeSeries signals,
+                                      final String[] dates) {
+    final String date = dates[index];
+    signals.set(date, signal, index);
+  }
+
+  @Override
+  public String toString() {
+    return name;
   }
 
 }
