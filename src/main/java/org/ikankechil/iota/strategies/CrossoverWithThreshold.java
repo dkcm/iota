@@ -1,5 +1,5 @@
 /**
- * CrossoverWithThreshold.java  v0.1  30 July 2015 3:56:25 PM
+ * CrossoverWithThreshold.java  v0.2  30 July 2015 3:56:25 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -14,55 +14,58 @@ import org.ikankechil.iota.indicators.Indicator;
  * <p>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class CrossoverWithThreshold extends Crossover {
 
-  private final double low;
-  private final double high;
+  private final double buy;
+  private final double sell;
 
   public CrossoverWithThreshold(final Indicator indicator, final double threshold) {
     this(indicator, -threshold, threshold);
   }
 
-  public CrossoverWithThreshold(final Indicator indicator, final double low, final double high) {
+  public CrossoverWithThreshold(final Indicator indicator, final double buy, final double sell) {
     super(indicator);
 
-    this.low = low;
-    this.high = high;
+    this.buy = buy;
+    this.sell = sell;
+  }
+
+  public CrossoverWithThreshold(final Indicator indicator, final int fastIndex, final int slowIndex, final double threshold) {
+    this(indicator, fastIndex, slowIndex, -threshold, threshold);
+  }
+
+  public CrossoverWithThreshold(final Indicator indicator, final int fastIndex, final int slowIndex, final double buy, final double sell) {
+    super(indicator, fastIndex, slowIndex);
+
+    this.buy = buy;
+    this.sell = sell;
   }
 
   public CrossoverWithThreshold(final Indicator fast, final Indicator slow, final double threshold) {
     this(fast, slow, -threshold, threshold);
   }
 
-  public CrossoverWithThreshold(final Indicator fast, final Indicator slow, final double low, final double high) {
+  public CrossoverWithThreshold(final Indicator fast, final Indicator slow, final double buy, final double sell) {
     super(fast, slow);
 
-    this.low = low;
-    this.high = high;
+    this.buy = buy;
+    this.sell = sell;
   }
 
   @Override
   protected boolean buy(final double... doubles) {
-    final double fastYesterday = doubles[ZERO];
-    final double slowYesterday = doubles[ONE];
+    // fast indicator after crossover is below threshold
     final double fastToday = doubles[TWO];
-    final double slowToday = doubles[THREE];
-
-    return (fastToday < low) &&
-           super.buy(fastYesterday, slowYesterday, fastToday, slowToday);
+    return (fastToday < buy) && super.buy(doubles);
   }
 
   @Override
   protected boolean sell(final double... doubles) {
-    final double fastYesterday = doubles[ZERO];
-    final double slowYesterday = doubles[ONE];
+    // fast indicator after crossunder is above threshold
     final double fastToday = doubles[TWO];
-    final double slowToday = doubles[THREE];
-
-    return (fastToday > high) &&
-           super.sell(fastYesterday, slowYesterday, fastToday, slowToday);
+    return (fastToday > sell) && super.sell(doubles);
   }
 
 }
