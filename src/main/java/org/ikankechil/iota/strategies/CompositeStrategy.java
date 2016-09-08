@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
  * @version 0.3
  */
 public class CompositeStrategy implements Strategy {
+  // TODO v0.4 modes: AND, OR, XOR; search forward- or backward-only
 
   private final int            window;
   private final List<Strategy> strategies;
@@ -56,6 +57,14 @@ public class CompositeStrategy implements Strategy {
 
   @Override
   public SignalTimeSeries execute(final OHLCVTimeSeries ohlcv, final int lookback) {
+    // Algorithm:
+    // 1. Pick signals series with fewest buys & sells
+    // 2. Iterate through series until next buy / sell
+    // 3. Search next signals series forwards and backwards for buy / sell
+    //    within window of interest
+    // a) If matching signal found, continue step 3 until last signals series
+    // b) Else go to step 2
+
     // generate signals
     final List<SignalTimeSeries> signals = generateSignals(ohlcv, lookback);
 
@@ -102,13 +111,6 @@ public class CompositeStrategy implements Strategy {
       else {  // no buy / sell signal
         setSignal(NONE, today, composite, dates);
       }
-      // Algorithm:
-      // 1. Pick signals series with fewest buys & sells
-      // 2. Iterate through series until next buy / sell
-      // 3. Search next signals series forwards and backwards for buy / sell
-      //    within window of interest
-      // a) If matching signal found, continue step 3 until last signals series
-      // b) Else go to step 2
     }
 
     return composite;

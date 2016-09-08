@@ -68,7 +68,6 @@ public abstract class AbstractStrategy implements Strategy {
 
     final List<List<TimeSeries>> indicatorValues = generateIndicatorValues(ohlcv);
     return generateSignals(ohlcv, indicatorValues, lookback);
-    // TODO chain conditions up to leverage && and || "short-circuit" logic
   }
 
   protected List<List<TimeSeries>> generateIndicatorValues(final OHLCVTimeSeries ohlcv) {
@@ -132,31 +131,31 @@ public abstract class AbstractStrategy implements Strategy {
   /**
    * Values cross over a threshold.
    *
-   * @param less
-   * @param more
+   * @param yesterday
+   * @param today
    * @param threshold
    * @return
    */
-  protected static final boolean crossover(final double less,
-                                           final double more,
+  protected static final boolean crossover(final double yesterday,
+                                           final double today,
                                            final double threshold) {
     // values cross over a threshold
-    return (less < threshold) && (more > threshold);
+    return (yesterday < threshold) && (today > threshold);
   }
 
   /**
    * Values cross under a threshold.
    *
-   * @param less
-   * @param more
+   * @param yesterday
+   * @param today
    * @param threshold
    * @return
    */
-  protected static final boolean crossunder(final double less,
-                                            final double more,
+  protected static final boolean crossunder(final double yesterday,
+                                            final double today,
                                             final double threshold) {
     // values cross under a threshold
-    return (less > threshold) && (more < threshold);
+    return (yesterday > threshold) && (today < threshold);
   }
 
   /**
