@@ -1,10 +1,12 @@
 /**
- * ChaikinOscillatorDivergenceAndCrossover.java  v0.1  8 September 2016 7:32:30 pm
+ * ChaikinOscillatorDivergenceAndCrossover.java  v0.2  8 September 2016 7:32:30 pm
  *
  * Copyright © 2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.strategies;
 
+import org.ikankechil.iota.OHLCVTimeSeries;
+import org.ikankechil.iota.SignalTimeSeries;
 import org.ikankechil.iota.indicators.volume.ChaikinOscillator;
 
 /**
@@ -24,9 +26,11 @@ import org.ikankechil.iota.indicators.volume.ChaikinOscillator;
  * <p>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
-public class ChaikinOscillatorDivergenceAndCrossover extends CompositeStrategy {
+public class ChaikinOscillatorDivergenceAndCrossover implements Strategy {
+
+  private final Strategy   divergenceAndZeroLineCross;
 
   private static final int ZERO_LINE = 0;
 
@@ -39,9 +43,20 @@ public class ChaikinOscillatorDivergenceAndCrossover extends CompositeStrategy {
   }
 
   public ChaikinOscillatorDivergenceAndCrossover(final ChaikinOscillator chaikinOscillator, final int window, final int awayPoints) {
-    super(window,
-          new DivergenceStrategy(chaikinOscillator, awayPoints),
-          new ThresholdCrossover(chaikinOscillator, ZERO_LINE));
+    final Strategy divergence = new DivergenceStrategy(chaikinOscillator, awayPoints);
+    final Strategy zeroLineCross = new ThresholdCrossover(chaikinOscillator, ZERO_LINE);
+
+    divergenceAndZeroLineCross = new CompositeStrategy(window, divergence, zeroLineCross);
+  }
+
+  @Override
+  public SignalTimeSeries execute(final OHLCVTimeSeries ohlcv) {
+    return divergenceAndZeroLineCross.execute(ohlcv);
+  }
+
+  @Override
+  public SignalTimeSeries execute(final OHLCVTimeSeries ohlcv, final int lookback) {
+    return divergenceAndZeroLineCross.execute(ohlcv, lookback);
   }
 
 }
