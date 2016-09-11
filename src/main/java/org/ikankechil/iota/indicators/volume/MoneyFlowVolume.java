@@ -1,5 +1,5 @@
 /**
- * MoneyFlowVolume.java  v0.1 7 December 2015 5:19:51 PM
+ * MoneyFlowVolume.java  v0.2 7 December 2015 5:19:51 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -14,9 +14,10 @@ import com.tictactec.ta.lib.RetCode;
 /**
  * Money Flow Volume
  * <p>
+ * https://www.tradingview.com/stock-charts-support/index.php/Money_Flow_Volume
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class MoneyFlowVolume extends AbstractIndicator {
 
@@ -35,18 +36,15 @@ public class MoneyFlowVolume extends AbstractIndicator {
     // 1. Money Flow Multiplier = [(Close - Low) - (High - Close)] / (High - Low)
     // 2. Money Flow Volume = Money Flow Multiplier x Volume for the Period
 
-    final double[] highs = ohlcv.highs();
-    final double[] lows = ohlcv.lows();
-    final double[] closes = ohlcv.closes();
-    final long[] volumes = ohlcv.volumes();
-
     // compute indicator
     for (int i = ZERO; i < output.length; ++i) {
-      final double high = highs[i];
-      final double low = lows[i];
-      final double close = closes[i];
-
-      output[i] = (((close - low) - (high - close)) / (high - low)) * volumes[i];
+      final double high = ohlcv.high(i);
+      final double low = ohlcv.low(i);
+      final double range = high - low;
+      if (range > ZERO) {
+        final double close = ohlcv.close(i);
+        output[i] = (((close - low) - (high - close)) / range) * ohlcv.volume(i);
+      }
     }
 
     outBegIdx.value = lookback;
