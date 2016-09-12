@@ -1,5 +1,5 @@
 /**
- * GMMA.java  v0.1  4 March 2015 1:05:52 PM
+ * GMMA.java  v0.2  4 March 2015 1:05:52 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -19,7 +19,7 @@ import org.ikankechil.iota.indicators.AbstractIndicator;
  * http://www.investopedia.com/terms/g/guppy-multiple-moving-average.asp
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class GMMA extends AbstractIndicator {
 
@@ -33,14 +33,14 @@ public class GMMA extends AbstractIndicator {
 
   // long-term EMAs
   private static final int LONG1  = THIRTY;
-  private static final int LONG2  = 35;
-  private static final int LONG3  = 40;
-  private static final int LONG4  = 45;
-  private static final int LONG5  = 50;
-  private static final int LONG6  = 60;
+  private static final int LONG2  = THIRTY_FIVE;
+  private static final int LONG3  = FORTY;
+  private static final int LONG4  = FORTY_FIVE;
+  private static final int LONG5  = FIFTY;
+  private static final int LONG6  = SIXTY;
 
   public GMMA() {
-    super(TA_LIB.emaLookback(LONG6));
+    super(LONG6 - ONE);
   }
 
   @Override

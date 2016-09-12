@@ -41,10 +41,11 @@ public class GMMATest extends AbstractIndicatorTest {
   @BeforeClass
   public static void setUpBeforeClass() throws IOException {
     TEST_CLASS = GMMATest.class;
-    AbstractIndicatorTest.setUpBeforeClass();
   }
 
-  @Ignore@Override@Test
+  @Ignore
+  @Override
+  @Test
   public void cannotInstantiateWithNegativePeriod() {
     // not supported
   }
