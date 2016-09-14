@@ -1,5 +1,5 @@
 /**
- * Stochastic.java  v0.1  4 December 2014 2:05:03 PM
+ * Stochastic.java  v0.2  4 December 2014 2:05:03 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -12,17 +12,13 @@ import org.ikankechil.iota.OHLCVTimeSeries;
 import org.ikankechil.iota.TimeSeries;
 import org.ikankechil.iota.indicators.AbstractIndicator;
 
-import com.tictactec.ta.lib.MAType;
-import com.tictactec.ta.lib.MInteger;
-import com.tictactec.ta.lib.RetCode;
-
 /**
- * Stochastic Oscillator by J. Welles Wilder
+ * Stochastic Oscillator by George C. Lane
  * <p>
  * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:stochastic_oscillator_fast_slow_and_full
  *
  * @author Daniel Kuan
- * @version
+ * @version 0.2
  */
 public class Stochastic extends AbstractIndicator {
 
@@ -38,16 +34,14 @@ public class Stochastic extends AbstractIndicator {
   }
 
   /**
-   * @param fastK period
-   * @param slowK period
-   * @param slowD period
+   *
+   *
+   * @param fastK lookback period for computing fast %K
+   * @param slowK smoothing factor for fast %K (to get slow %K)
+   * @param slowD number of periods for the %D moving average
    */
   public Stochastic(final int fastK, final int slowK, final int slowD) {
-    super(TA_LIB.stochLookback(fastK,
-                               slowK,
-                               MAType.Sma,
-                               slowD,
-                               MAType.Sma));
+    super(fastK + slowK + slowD - THREE);
     throwExceptionIfNegative(fastK, slowK, slowD);
 
     this.fastK = fastK;
@@ -58,39 +52,42 @@ public class Stochastic extends AbstractIndicator {
   @Override
   public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
     // Formula:
-    // %K = 100 * ((Current Close +/- Lowest Low(n)) / (Highest High(n) +/- Lowest Low(n)))
-    // %D = 100 * (Sum(Current Close +/- Lowest Low(n)) / Sum(Highest High(n) +/- Lowest Low(n)))
+    // Fast Stochastic
+    // %K = (Current Close - Lowest Low)/(Highest High - Lowest Low) * 100
+    // %D = n-day SMA of %K
+    //
+    // Lowest Low = lowest low for the lookback period
+    // Highest High = highest high for the lookback period
+    // %K is multiplied by 100 to move the decimal point two places
 
     throwExceptionIfShort(ohlcv);
     final int size = ohlcv.size();
 
-    final MInteger outBegIdx = new MInteger();
-    final MInteger outNBElement = new MInteger();
+    // compute fast %K
+    int c = fastK - ONE;
+    final double[] fastKs = new double[size - c];
+    for (int i = ZERO, j = c + ONE; i < fastKs.length; ++i, ++j, ++c) {
+      final double max = max(ohlcv.highs(), i, j);
+      final double min = min(ohlcv.lows(), i, j);
+      fastKs[i] = (ohlcv.close(c) - min) / (max - min) * HUNDRED_PERCENT;
+    }
 
-    final double[] outSlowK = new double[size - lookback];
-    final double[] outSlowD = new double[outSlowK.length];
-
-    final RetCode outcome = TA_LIB.stoch(ZERO,
-                                         size - ONE,
-                                         ohlcv.highs(),
-                                         ohlcv.lows(),
-                                         ohlcv.closes(),
-                                         fastK,
-                                         slowK,
-                                         MAType.Sma,
-                                         slowD,
-                                         MAType.Sma,
-                                         outBegIdx,
-                                         outNBElement,
-                                         outSlowK,
-                                         outSlowD);
-    throwExceptionIfBad(outcome, ohlcv);
+    // smooth fast %K = fast %D = slow %K
+    final double[] slowKs = sma(fastKs, slowK);
+    // smooth slow %K = slow %D
+    final double[] slowDs = sma(slowKs, slowD);
 
     final String[] dates = Arrays.copyOfRange(ohlcv.dates(), lookback, size);
 
     logger.info(GENERATED_FOR, name, ohlcv);
-    return Arrays.asList(new TimeSeries(K, dates, outSlowK),
-                         new TimeSeries(D, dates, outSlowD));
+    return Arrays.asList(new TimeSeries(K,
+                                        dates,
+                                        Arrays.copyOfRange(slowKs,
+                                                           slowD - ONE,
+                                                           slowKs.length)),
+                         new TimeSeries(D,
+                                        dates,
+                                        slowDs));
   }
 
 }
