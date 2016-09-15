@@ -30,9 +30,7 @@ import org.ikankechil.iota.indicators.volume.ChaikinOscillator;
  */
 public class ChaikinOscillatorDivergenceAndCrossover implements Strategy {
 
-  private final Strategy   divergenceAndZeroLineCross;
-
-  private static final int ZERO_LINE = 0;
+  private final Strategy divergenceAndZeroLineCross;
 
   public ChaikinOscillatorDivergenceAndCrossover(final int window, final int awayPoints) {
     this(6, 20, window, awayPoints);
@@ -44,7 +42,7 @@ public class ChaikinOscillatorDivergenceAndCrossover implements Strategy {
 
   public ChaikinOscillatorDivergenceAndCrossover(final ChaikinOscillator chaikinOscillator, final int window, final int awayPoints) {
     final Strategy divergence = new DivergenceStrategy(chaikinOscillator, awayPoints);
-    final Strategy zeroLineCross = new ThresholdCrossover(chaikinOscillator, ZERO_LINE);
+    final Strategy zeroLineCross = new ChaikinOscillatorZeroLineCrossover(chaikinOscillator);
 
     divergenceAndZeroLineCross = new CompositeStrategy(window, divergence, zeroLineCross);
   }
