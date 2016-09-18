@@ -1,5 +1,5 @@
 /**
- * LaguerreRSI.java  v0.1 2 March 2015 1:12:51 PM
+ * LaguerreRSI.java  v0.2  2 March 2015 1:12:51 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -17,7 +17,7 @@ import com.tictactec.ta.lib.RetCode;
  * https://forex-strategies-revealed.com/files/user/TimeWarp.doc
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class LaguerreRSI extends AbstractIndicator {
 
@@ -87,30 +87,9 @@ public class LaguerreRSI extends AbstractIndicator {
 //      final double l3 = (gamma * (previousL3 - l2)) + previousL2;
 
       // rsi
-      double cu = ZERO;
-      double cd = ZERO;
-      if (l0 >= l1) {
-        cu = l0 - l1;
-      }
-      else {
-        cd = l1 - l0;
-      }
-      if (l1 >= l2) {
-        cu += l1 - l2;
-      }
-      else {
-        cd += l2 - l1;
-      }
-      if (l2 >= l3) {
-        cu += l2 - l3;
-      }
-      else {
-        cd += l3 - l2;
-      }
+      output[i] = rsi(l0, l1, l2, l3);
 
-      final double cuPlusCd = cu + cd;
-      output[i] = (cuPlusCd == ZERO) ? ZERO : (cu / cuPlusCd);
-
+      // shift forward in time
       previousL0 = l0;
       previousL1 = l1;
       previousL2 = l2;
@@ -120,6 +99,32 @@ public class LaguerreRSI extends AbstractIndicator {
     outBegIdx.value = lookback;
     outNBElement.value = output.length;
     return RetCode.Success;
+  }
+
+  private static final double rsi(final double l0, final double l1, final double l2, final double l3) {
+    double cu = ZERO;
+    double cd = ZERO;
+    if (l0 >= l1) {
+      cu = l0 - l1;
+    }
+    else {
+      cd = l1 - l0;
+    }
+    if (l1 >= l2) {
+      cu += l1 - l2;
+    }
+    else {
+      cd += l2 - l1;
+    }
+    if (l2 >= l3) {
+      cu += l2 - l3;
+    }
+    else {
+      cd += l3 - l2;
+    }
+
+    final double cuPlusCd = cu + cd;
+    return (cuPlusCd == ZERO) ? ZERO : (cu / cuPlusCd);
   }
 
 }
