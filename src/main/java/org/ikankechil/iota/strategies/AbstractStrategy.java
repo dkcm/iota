@@ -26,29 +26,48 @@ import org.slf4j.LoggerFactory;
  */
 public abstract class AbstractStrategy implements Strategy {
 
-  private final String            name     = getClass().getSimpleName();
+  private final String            name         = getClass().getSimpleName();
   protected final List<Indicator> indicators;
 
   // Numeric constants
-  protected static final int      ZERO     = 0;
-  protected static final int      ONE      = 1;
-  protected static final int      TWO      = 2;
-  protected static final int      THREE    = 3;
-  protected static final int      FOUR     = 4;
-  protected static final int      FIVE     = 5;
-  protected static final int      SIX      = 6;
-  protected static final int      SEVEN    = 7;
-  protected static final int      EIGHT    = 8;
-  protected static final int      NINE     = 9;
-  protected static final int      TEN      = 10;
-  protected static final int      ELEVEN   = 11;
-  protected static final int      TWELVE   = 12;
-  protected static final int      THIRTEEN = 13;
-  protected static final int      FOURTEEN = 14;
+  protected static final int      ZERO         = 0;
+  protected static final int      ONE          = 1;
+  protected static final int      TWO          = 2;
+  protected static final int      THREE        = 3;
+  protected static final int      FOUR         = 4;
+  protected static final int      FIVE         = 5;
+  protected static final int      SIX          = 6;
+  protected static final int      SEVEN        = 7;
+  protected static final int      EIGHT        = 8;
+  protected static final int      NINE         = 9;
+  protected static final int      TEN          = 10;
+  protected static final int      ELEVEN       = 11;
+  protected static final int      TWELVE       = 12;
+  protected static final int      THIRTEEN     = 13;
+  protected static final int      FOURTEEN     = 14;
+  protected static final int      FIFTEEN      = 15;
+  protected static final int      SIXTEEN      = 16;
+  protected static final int      SEVENTEEN    = 17;
+  protected static final int      EIGHTEEN     = 18;
+  protected static final int      NINETEEN     = 19;
+  protected static final int      TWENTY       = 20;
+  protected static final int      TWENTY_ONE   = 21;
+  protected static final int      TWENTY_TWO   = 22;
+  protected static final int      TWENTY_FIVE  = 25;
+  protected static final int      TWENTY_SIX   = 26;
+  protected static final int      TWENTY_EIGHT = 28;
+  protected static final int      THIRTY       = 30;
+  protected static final int      THIRTY_TWO   = 32;
+  protected static final int      THIRTY_THREE = 33;
+  protected static final int      THIRTY_FOUR  = 34;
+  protected static final int      THIRTY_FIVE  = 35;
+  protected static final int      FORTY        = 40;
+  protected static final int      FORTY_FIVE   = 45;
+  protected static final int      FIFTY        = 50;
 
-  protected static final String   SPACE    = " ";
+  protected static final String   SPACE        = " ";
 
-  private static final Logger     logger   = LoggerFactory.getLogger(AbstractStrategy.class);
+  private static final Logger     logger       = LoggerFactory.getLogger(AbstractStrategy.class);
 
   public AbstractStrategy(final Indicator... indicators) {
     this.indicators = Arrays.asList(indicators);

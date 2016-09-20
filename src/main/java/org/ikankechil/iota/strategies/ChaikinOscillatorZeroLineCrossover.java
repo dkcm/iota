@@ -1,30 +1,26 @@
 /**
- * ChaikinOscillatorZeroLineCrossover.java	v0.1	16 September 2016 12:46:43 am
+ * ChaikinOscillatorZeroLineCrossover.java  v0.2  16 September 2016 12:46:43 am
  *
  * Copyright © 2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.strategies;
 
-import org.ikankechil.iota.OHLCVTimeSeries;
-import org.ikankechil.iota.SignalTimeSeries;
 import org.ikankechil.iota.indicators.volume.ChaikinOscillator;
 
 /**
- *
+ * Signals when the Chaikin Oscillator crosses over / under zero.
+ * <p>
+ * Buys when the Chaikin Oscillator crosses over zero<br>
+ * Sells when the Chaikin Oscillator crosses under zero<br>
  * <p>
  *
- *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
-public class ChaikinOscillatorZeroLineCrossover implements Strategy {
-
-  private final Strategy   zeroLineCross;
-
-  private static final int ZERO_LINE = 0;
+public class ChaikinOscillatorZeroLineCrossover extends ZeroLineCrossover {
 
   public ChaikinOscillatorZeroLineCrossover() {
-    this(6, 20);
+    this(SIX, TWENTY);
   }
 
   public ChaikinOscillatorZeroLineCrossover(final int fast, final int slow) {
@@ -32,17 +28,7 @@ public class ChaikinOscillatorZeroLineCrossover implements Strategy {
   }
 
   public ChaikinOscillatorZeroLineCrossover(final ChaikinOscillator chaikinOscillator) {
-    zeroLineCross = new ThresholdCrossover(chaikinOscillator, ZERO_LINE);
-  }
-
-  @Override
-  public SignalTimeSeries execute(final OHLCVTimeSeries ohlcv) {
-    return zeroLineCross.execute(ohlcv);
-  }
-
-  @Override
-  public SignalTimeSeries execute(final OHLCVTimeSeries ohlcv, final int lookback) {
-    return zeroLineCross.execute(ohlcv, lookback);
+    super(chaikinOscillator);
   }
 
 }
