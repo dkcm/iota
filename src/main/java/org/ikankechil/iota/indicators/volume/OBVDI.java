@@ -1,5 +1,5 @@
 /**
- * OBVDI.java  v0.1 17 July 2015 2:45:29 PM
+ * OBVDI.java  v0.1  17 July 2015 2:45:29 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -66,15 +66,15 @@ public class OBVDI extends AbstractIndicator {
     // %B of price / %B of on-balance volume
 
     // Bollinger %b of closing price
-    final double[] bollingerBPrice = bollingerB.generate(ohlcv).get(ZERO).values();
+    final TimeSeries bollingerBPrice = bollingerB.generate(ohlcv).get(ZERO);
 
     // Bollinger %b of OBV
     final TimeSeries obv = OBV.generate(ohlcv).get(ZERO);  // OBV lookback == 0
-    final double[] bollingerBOBV = bollingerB.generate(obv).get(ZERO).values();
+    final TimeSeries bollingerBOBV = bollingerB.generate(obv).get(ZERO);
 
     // compute indicator
     for (int i = ZERO; i < output.length; ++i) {
-      output[i] = (ONE + bollingerBPrice[i]) / (ONE + bollingerBOBV[i]);
+      output[i] = (ONE + bollingerBPrice.value(i)) / (ONE + bollingerBOBV.value(i));
     }
 
     outBegIdx.value = lookback;

@@ -76,6 +76,18 @@ public class ChaikinOscillator extends AbstractIndicator {
     outBegIdx.value = lookback;
     outNBElement.value = output.length;
     return RetCode.Success;
+
+//    return TA_LIB.adOsc(start,
+//                        end,
+//                        ohlcv.highs(),
+//                        ohlcv.lows(),
+//                        ohlcv.closes(),
+//                        toDoubles(ohlcv.volumes()), // copy volumes
+//                        fast,
+//                        slow,
+//                        outBegIdx,
+//                        outNBElement,
+//                        output);
   }
 
 }

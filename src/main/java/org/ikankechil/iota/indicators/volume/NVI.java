@@ -1,5 +1,5 @@
 /**
- * NVI.java  v0.1 17 July 2015 3:03:49 PM
+ * NVI.java  v0.1  17 July 2015 3:03:49 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -30,7 +30,7 @@ public class NVI extends IndicatorWithSignalLine {
   }
 
   public NVI(final int signal) {
-    super(signal, TA_LIB.emaLookback(signal));
+    super(signal, signal - ONE);
   }
 
   @Override
@@ -46,21 +46,20 @@ public class NVI extends IndicatorWithSignalLine {
     // 3. Cumulative NVI is Unchanged when Volume Increases
     // 4. Apply a 255-day EMA for Signals
 
-    final double[] closes = ohlcv.closes();
-    final long[] volumes = ohlcv.volumes();
-
     // compute indicator
     int i = ZERO;
     double nvi = output[i] = NVI_START;
-    long pv = volumes[i]; // previous volume
+    long pv = ohlcv.volume(i); // previous volume
 
     while (++i < output.length) {
-      final long volume = volumes[i];
+      final long volume = ohlcv.volume(i);
       if (volume < pv) {
         // price %change
-        nvi += (closes[i] / closes[i - ONE]) - ONE;
+        nvi += (ohlcv.close(i) / ohlcv.close(i - ONE)) - ONE;
       }
       output[i] = nvi;
+
+      // shift forward in time
       pv = volume;
     }
 

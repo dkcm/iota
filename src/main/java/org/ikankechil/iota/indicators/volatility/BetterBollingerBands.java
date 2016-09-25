@@ -52,20 +52,19 @@ public class BetterBollingerBands extends AbstractIndicator {
   public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
     throwExceptionIfShort(ohlcv);
     final int size = ohlcv.size();
-    final double[] closes = ohlcv.closes();
 
     final double[] upperBand = new double[size - lookback];
     final double[] middleBand = new double[upperBand.length];
     final double[] lowerBand = new double[upperBand.length];
 
     int i = ZERO;
-    double pmt = closes[i];
+    double pmt = ohlcv.close(i);
     double put = pmt;
     double pmt2 = ZERO;
     double put2 = pmt2;
 
     for (int b = ZERO; b < upperBand.length; ++b, ++i) {
-      final double close = closes[i];
+      final double close = ohlcv.close(i);
 
       final double mt = alpha * close + one_alpha * pmt;
       final double ut = alpha * mt + one_alpha * put;

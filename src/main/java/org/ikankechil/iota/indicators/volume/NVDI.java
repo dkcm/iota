@@ -63,15 +63,15 @@ class NVDI extends AbstractIndicator {
     // %B of price / %B of negative volume
 
     // Bollinger %b of closing price
-    final double[] bollingerBPrice = bollingerB.generate(ohlcv).get(ZERO).values();
+    final TimeSeries bollingerBPrice = bollingerB.generate(ohlcv).get(ZERO);
 
     // Bollinger %b of NVI
     final TimeSeries obv = NVI.generate(ohlcv).get(ZERO);
-    final double[] bollingerBNVI = bollingerB.generate(obv).get(ZERO).values();
+    final TimeSeries bollingerBNVI = bollingerB.generate(obv).get(ZERO);
 
     // compute indicator
     for (int i = ZERO; i < output.length; ++i) {
-      output[i] = (ONE + bollingerBPrice[i]) / (ONE + bollingerBNVI[i]);
+      output[i] = (ONE + bollingerBPrice.value(i)) / (ONE + bollingerBNVI.value(i));
     }
 
     outBegIdx.value = lookback;

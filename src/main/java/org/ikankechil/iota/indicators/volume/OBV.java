@@ -42,25 +42,23 @@ public class OBV extends AbstractIndicator {
     // If the closing prices equals the prior close price then:
     // Current OBV = Previous OBV (no change)
 
-    final double[] closes = ohlcv.closes();
-    final long[] volumes = ohlcv.volumes();
-
     // compute indicator
     int i = ZERO;
-    double pc = closes[i];
-    double pobv = output[i] = volumes[i];
+    double pc = ohlcv.close(i);
+    double pobv = output[i] = ohlcv.volume(i);
 
-    for (; ++i < output.length; ) {
-      final double close = closes[i];
+    while (++i < output.length) {
+      final double close = ohlcv.close(i);
 
       if (close > pc) {
-        pobv += volumes[i];
+        pobv += ohlcv.volume(i);
       }
       else if (close < pc) {
-        pobv -= volumes[i];
+        pobv -= ohlcv.volume(i);
       }
       output[i] = pobv;
 
+      // shift forward in time
       pc = close;
     }
 

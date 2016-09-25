@@ -79,11 +79,9 @@ public class AccelerationBands extends AbstractIndicator {
     throwExceptionIfBad(outcome, ohlcv);
 
     // compute indicator
-    final double[] highs = ohlcv.highs();
-    final double[] lows = ohlcv.lows();
     for (int i = ZERO, j = lookback; i < upperBand.length; ++i, ++j) {
-      final double high = highs[j];
-      final double low = lows[j];
+      final double high = ohlcv.high(j);
+      final double low = ohlcv.low(j);
       final double ratio = ((high - low) / (high + low)) * factor;
 
       upperBand[i] = high * (ONE + ratio); // TODO SMA required here?

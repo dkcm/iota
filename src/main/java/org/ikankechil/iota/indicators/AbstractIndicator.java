@@ -1,5 +1,5 @@
 /**
- * AbstractIndicator.java v0.7  27 November 2014 1:04:00 am
+ * AbstractIndicator.java  v0.7  27 November 2014 1:04:00 am
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -55,6 +55,10 @@ public abstract class AbstractIndicator implements Indicator {
   protected static final int    THIRTEEN        = 13;
   protected static final int    FOURTEEN        = 14;
   protected static final int    FIFTEEN         = 15;
+  protected static final int    SIXTEEN         = 16;
+  protected static final int    SEVENTEEN       = 17;
+  protected static final int    EIGHTEEN        = 18;
+  protected static final int    NINETEEN        = 19;
   protected static final int    TWENTY          = 20;
   protected static final int    TWENTY_ONE      = 21;
   protected static final int    TWENTY_TWO      = 22;
@@ -66,6 +70,9 @@ public abstract class AbstractIndicator implements Indicator {
   protected static final int    THIRTY_THREE    = 33;
   protected static final int    THIRTY_FOUR     = 34;
   protected static final int    THIRTY_FIVE     = 35;
+  protected static final int    FORTY           = 40;
+  protected static final int    FORTY_FIVE      = 45;
+  protected static final int    FIFTY           = 50;
   protected static final int    SIXTY           = 60;
   protected static final int    SIXTY_FOUR      = 64;
   protected static final int    SIXTY_FIVE      = 65;
@@ -301,7 +308,7 @@ public abstract class AbstractIndicator implements Indicator {
   }
 
   protected static final double[] sma(final double[] input, final int sma) {
-    final double[] ma = new double[input.length - TA_LIB.smaLookback(sma)];
+    final double[] ma = new double[input.length - (sma - ONE)];
 
     final MInteger outBegIdx = new MInteger();
     final MInteger outNBElement = new MInteger();
@@ -319,7 +326,7 @@ public abstract class AbstractIndicator implements Indicator {
   }
 
   protected static final double[] ema(final double[] input, final int ema) {
-    final double[] ma = new double[input.length - TA_LIB.emaLookback(ema)];
+    final double[] ma = new double[input.length - (ema - ONE)];
 
     final MInteger outBegIdx = new MInteger();
     final MInteger outNBElement = new MInteger();
@@ -393,7 +400,7 @@ public abstract class AbstractIndicator implements Indicator {
     final double[] sums = new double[doubles.length - period + ONE];
     int d = ZERO;
     double sum = doubles[d];
-    for (; ++d < period; ) {
+    while (++d < period) {
       sum += doubles[d];
     }
     int i = ZERO;

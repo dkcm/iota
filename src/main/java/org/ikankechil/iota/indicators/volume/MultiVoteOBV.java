@@ -32,27 +32,23 @@ public class MultiVoteOBV extends AbstractIndicator {
                             final MInteger outBegIdx,
                             final MInteger outNBElement,
                             final double[] output) {
-    final double[] highs = ohlcv.highs();
-    final double[] lows = ohlcv.lows();
-    final double[] closes = ohlcv.closes();
-    final long[] volumes = ohlcv.volumes();
-
     // compute indicator
     int i = ZERO;
-    double ph = highs[i];
-    double pl = lows[i];
-    double pc = closes[i];
-    double pmvobv = output[i] = volumes[i];
+    double ph = ohlcv.high(i);
+    double pl = ohlcv.low(i);
+    double pc = ohlcv.close(i);
+    double pmvobv = output[i] = ohlcv.volume(i);
 
-    for (; ++i < output.length; ) {
-      final double high = highs[i];
-      final double low = lows[i];
-      final double close = closes[i];
+    while (++i < output.length) {
+      final double high = ohlcv.high(i);
+      final double low = ohlcv.low(i);
+      final double close = ohlcv.close(i);
 
       // multi-vote
       final int vote = vote(ph, high) + vote(pl, low) + vote(pc, close);
-      output[i] = pmvobv += (volumes[i] * vote);
+      output[i] = pmvobv += (ohlcv.volume(i) * vote);
 
+      // shift forward in time
       ph = high;
       pl = low;
       pc = close;

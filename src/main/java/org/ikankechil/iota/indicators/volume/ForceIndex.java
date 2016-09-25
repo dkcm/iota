@@ -46,18 +46,18 @@ public class ForceIndex extends AbstractIndicator {
                             final double[] output) {
     // Formula:
     // Force index = (today's close – previous close) * today's volume
-    final double[] closes = ohlcv.closes();
-    final long[] volumes = ohlcv.volumes();
 
     // compute indicator
-    final double[] fi = new double[closes.length - ONE];
+    final int size = ohlcv.size();
+    final double[] fi = new double[size - ONE];
     int c = ZERO;
-    double previousClose = closes[c];
-    for (int i = ZERO; ++c < closes.length; ++i) {
-      final double todaysClose = closes[c];
+    double previousClose = ohlcv.close(c);
+    for (int i = ZERO; ++c < size; ++i) {
+      final double todaysClose = ohlcv.close(c);
 
-      fi[i] = (todaysClose - previousClose) * volumes[c];
+      fi[i] = (todaysClose - previousClose) * ohlcv.volume(c);
 
+      // shift forward in time
       previousClose = todaysClose;
     }
 

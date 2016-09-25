@@ -17,13 +17,13 @@ import com.tictactec.ta.lib.MInteger;
 import com.tictactec.ta.lib.RetCode;
 
 /**
- * Bollinger Bands
+ * Bollinger Bands by John Bollinger
  * <p>
  * <a href="http://www.bollingerbands.com/services/bb/">Bollinger Bands Tutorial</a><br>
  * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:bollinger_bands
  *
  * @author Daniel Kuan
- * @version
+ * @version 0.1
  */
 public class BollingerBands extends AbstractIndicator {
 

@@ -54,8 +54,6 @@ public class CMF extends AbstractIndicator {
     // 2. Money Flow Volume = Money Flow Multiplier x Volume for the Period
     // 3. n-period CMF = n-period Sum of Money Flow Volume / n-period Sum of Volume
 
-    final long[] volumes = ohlcv.volumes();
-
     // compute Money Flow Volume
     final double[] mfv = new double[ohlcv.size()];
     MFV.compute(start, end, ohlcv, outBegIdx, outNBElement, mfv);
@@ -65,13 +63,13 @@ public class CMF extends AbstractIndicator {
     long sv = ZERO;
     for (int j = ZERO; j < period; ++j) {
       smfv += mfv[j];
-      sv += volumes[j];
+      sv += ohlcv.volume(j);
     }
     int i = ZERO;
     output[i] = smfv / sv;
     for (int j = period, k = ZERO; ++i < output.length; ++j, ++k) {
       smfv += mfv[j] - mfv[k];
-      sv += volumes[j] - volumes[k];
+      sv += ohlcv.volume(j) - ohlcv.volume(k);
 
       output[i] = smfv / sv;
     }

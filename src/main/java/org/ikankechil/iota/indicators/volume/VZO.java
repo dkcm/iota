@@ -44,17 +44,19 @@ public class VZO extends AbstractIndicator {
     // VP (Volume Position) = X-days EMA (± volume)
     // TV (Total Volume) = X-days EMA (volume)
 
-    final double[] closes = ohlcv.closes();
-    final double[] volumes = toDoubles(ohlcv.volumes());
-    final int size = closes.length;
+    final int size = ohlcv.size();
+    final double[] volumes = new double[size];
 
     // compute R
     final double[] r = new double[size];
     int c = ZERO;
-    r[c] = volumes[c];
-    for (double pc = closes[c]; ++c < size; ) {
-      final double close = closes[c];
-      r[c] = (close > pc) ? volumes[c] : -volumes[c];
+    r[c] = volumes[c] = ohlcv.volume(c);
+    for (double pc = ohlcv.close(c); ++c < size; ) {
+      final double close = ohlcv.close(c);
+      final double volume = volumes[c] = ohlcv.volume(c);
+      r[c] = (close > pc) ? volume : -volume;
+
+      // shift forward in time
       pc = close;
     }
 

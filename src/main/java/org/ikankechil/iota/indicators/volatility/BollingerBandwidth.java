@@ -38,20 +38,19 @@ public class BollingerBandwidth extends BollingerBands {
   public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
     final List<TimeSeries> bollingerBands = super.generate(ohlcv);
 
-    final TimeSeries upperBand = bollingerBands.get(ZERO);
-    final double[] upper = upperBand.values();
-    final double[] middle = bollingerBands.get(ONE).values();
-    final double[] lower = bollingerBands.get(TWO).values();
+    final TimeSeries upper = bollingerBands.get(ZERO);
+    final TimeSeries middle = bollingerBands.get(ONE);
+    final TimeSeries lower = bollingerBands.get(TWO);
 
     // Formula
     // Bandwidth = (Upper Band - Lower Band) / Middle Band
-    final double[] bandwidth = new double[upperBand.size()];
+    final double[] bandwidth = new double[upper.size()];
     for (int i = ZERO; i < bandwidth.length; ++i) {
-      bandwidth[i] = (upper[i] - lower[i]) / middle[i];
+      bandwidth[i] = (upper.value(i) - lower.value(i)) / middle.value(i);
     }
 
     logger.info(GENERATED_FOR, name, ohlcv);
-    return Arrays.asList(new TimeSeries(name, upperBand.dates(), bandwidth));
+    return Arrays.asList(new TimeSeries(name, upper.dates(), bandwidth));
   }
 
 }

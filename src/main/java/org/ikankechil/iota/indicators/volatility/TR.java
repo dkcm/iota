@@ -41,22 +41,17 @@ public class TR extends AbstractIndicator {
     // Alternative:
     // max(today's high and yesterday's close) - min(today's low and yesterday's close)
 
-    final double[] highs = ohlcv.highs();
-    final double[] lows = ohlcv.lows();
-    final double[] closes = ohlcv.closes();
-
     // compute indicator
     int i = ZERO;
-    double close = closes[i];
-    for (; i < output.length; ) {
-      output[i++] = max(highs[i], close) - min(lows[i], close);
-      close = closes[i];
+    double close = ohlcv.close(i);
+    while (i < output.length) {
+      output[i++] = max(ohlcv.high(i), close) - min(ohlcv.low(i), close);
+      close = ohlcv.close(i);
     }
 
     outBegIdx.value = lookback;
     outNBElement.value = output.length;
     return RetCode.Success;
-
   }
 
   private static final double max(final double a, final double b) {
