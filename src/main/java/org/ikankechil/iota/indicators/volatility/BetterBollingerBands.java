@@ -1,5 +1,5 @@
 /**
- * BetterBollingerBands.java  v0.1  19 July 2015 12:45:34 am
+ * BetterBollingerBands.java  v0.2  19 July 2015 12:45:34 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -18,7 +18,7 @@ import org.ikankechil.iota.indicators.AbstractIndicator;
  * http://www.futuresmag.com/2010/04/30/fixing-bollinger-bands
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class BetterBollingerBands extends AbstractIndicator {
 
@@ -28,6 +28,7 @@ public class BetterBollingerBands extends AbstractIndicator {
   private final double        alpha;
   private final double        one_alpha;
   private final double        two_alpha;
+  private final double        inverseOne_alpha;
 
   private static final String UPPER_BAND  = "Better Bollinger Bands Upper Band";
   private static final String MIDDLE_BAND = "Better Bollinger Bands Middle Band";
@@ -41,9 +42,10 @@ public class BetterBollingerBands extends AbstractIndicator {
     super(period, TWO); // limits 2 to 200
     throwExceptionIfNegative(stdDev);
 
-    alpha = 2.0 / (period + ONE);
+    alpha = TWO / (double) (period + ONE);
     one_alpha = ONE - alpha;
     two_alpha = TWO - alpha;
+    inverseOne_alpha = ONE / one_alpha;
 
     this.stdDev = stdDev; // limits .01 to 10
   }
@@ -66,13 +68,13 @@ public class BetterBollingerBands extends AbstractIndicator {
     for (int b = ZERO; b < upperBand.length; ++b, ++i) {
       final double close = ohlcv.close(i);
 
-      final double mt = alpha * close + one_alpha * pmt;
-      final double ut = alpha * mt + one_alpha * put;
-      final double centre = (two_alpha * mt - ut) / one_alpha;
+      final double mt = (alpha * close) + (one_alpha * pmt);
+      final double ut = (alpha * mt) + (one_alpha * put);
+      final double centre = ((two_alpha * mt) - ut) * inverseOne_alpha;
 
-      final double mt2 = alpha * Math.abs(close - centre) + one_alpha * pmt2;
-      final double ut2 = alpha * mt2 + one_alpha * put2;
-      final double dt2 = stdDev * (two_alpha * mt2 - ut2) / one_alpha;
+      final double mt2 = (alpha * Math.abs(close - centre)) + (one_alpha * pmt2);
+      final double ut2 = (alpha * mt2) + (one_alpha * put2);
+      final double dt2 = stdDev * ((two_alpha * mt2) - ut2) * inverseOne_alpha;
 
       middleBand[b] = centre;
       upperBand[b] = centre + dt2;
