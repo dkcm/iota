@@ -1,5 +1,5 @@
 /**
- * KeltnerChannels.java  v0.1  2 August 2015 10:04:02 pm
+ * KeltnerChannels.java  v0.2  2 August 2015 10:04:02 pm
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -11,9 +11,8 @@ import java.util.List;
 import org.ikankechil.iota.OHLCVTimeSeries;
 import org.ikankechil.iota.TimeSeries;
 import org.ikankechil.iota.indicators.AbstractIndicator;
-
-import com.tictactec.ta.lib.MInteger;
-import com.tictactec.ta.lib.RetCode;
+import org.ikankechil.iota.indicators.TypicalPrice;
+import org.ikankechil.iota.indicators.volatility.ATR;
 
 /**
  * Keltner Channels by Chester Keltner and Linda Bradford Raschke
@@ -24,83 +23,55 @@ import com.tictactec.ta.lib.RetCode;
  * http://edmond.mires.co/GES816/39-Trade%20Breakouts%20And%20Retracements%20With%20TMV.pdf
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class KeltnerChannels extends AbstractIndicator {
 
-  private final double        multiplier;
-  private final int           atrPeriod;
-  private final int           atrLookback;
+  private final ATR                 averageTrueRange;
+  private final double              volatilityMultiplier;
 
-  private static final String UPPER_BAND  = "Upper Keltner Channel";
-  private static final String MIDDLE_BAND = "Middle Keltner Channel";
-  private static final String LOWER_BAND  = "Lower Keltner Channel";
+  private static final TypicalPrice TYPICAL_PRICE = new TypicalPrice();
+
+  private static final String       UPPER_BAND    = "Upper Keltner Channel";
+  private static final String       MIDDLE_BAND   = "Middle Keltner Channel";
+  private static final String       LOWER_BAND    = "Lower Keltner Channel";
 
   public KeltnerChannels() {
     this(TWENTY, TWO, TEN);
   }
 
-  public KeltnerChannels(final int ema, final double multiplier, final int atr) {
-    super(ema, Math.max(TA_LIB.emaLookback(ema), TA_LIB.atrLookback(atr)));
-    throwExceptionIfNegative(multiplier, atr);
+  public KeltnerChannels(final int ema, final double volatilityMultiplier, final int atr) {
+    super(ema, Math.max(ema - ONE, atr));
+    throwExceptionIfNegative(volatilityMultiplier, atr);
 
-    atrPeriod = atr;
-    atrLookback = TA_LIB.atrLookback(atr);
-    this.multiplier = multiplier;
+    averageTrueRange = new ATR(atr);
+    this.volatilityMultiplier = volatilityMultiplier;
   }
 
   @Override
   public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
-    throwExceptionIfShort(ohlcv);
-    final int size = ohlcv.size();
-
-    final MInteger outBegIdx = new MInteger();
-    final MInteger outNBElement = new MInteger();
-
     // Formula:
     // Middle Line: 20-day exponential moving average
     // Upper Channel Line: 20-day EMA + (2 x ATR(10))
     // Lower Channel Line: 20-day EMA - (2 x ATR(10))
 
-    final double[] highs = ohlcv.highs();
-    final double[] lows = ohlcv.lows();
-    final double[] closes = ohlcv.closes();
+    throwExceptionIfShort(ohlcv);
 
-    // compute typical prices
-    final double[] typical = new double[size];
-    RetCode outcome = TA_LIB.typPrice(ZERO,
-                                      size - ONE,
-                                      highs,
-                                      lows,
-                                      closes,
-                                      outBegIdx,
-                                      outNBElement,
-                                      typical);
-    throwExceptionIfBad(outcome, ohlcv);
-
-    // compute EMA
+    // compute EMA of typical prices
+    final double[] typical = TYPICAL_PRICE.generate(ohlcv).get(ZERO).values();
     final double[] ema = ema(typical, period);
 
     // compute ATR
-    final double[] atr = new double[size - atrLookback];
-    outcome = TA_LIB.atr(ZERO,
-                         size - ONE,
-                         highs,
-                         lows,
-                         closes,
-                         atrPeriod,
-                         outBegIdx,
-                         outNBElement,
-                         atr);
-    throwExceptionIfBad(outcome, ohlcv);
+    final TimeSeries atr = averageTrueRange.generate(ohlcv).get(ZERO);
 
     // compute indicator
+    final int size = ohlcv.size();
     final double[] keltnerUpperChannel = new double[size - lookback];
     final double[] keltnerLowerChannel = new double[keltnerUpperChannel.length];
-    for (int i = ZERO, a = atr.length - keltnerUpperChannel.length, m = ema.length - keltnerUpperChannel.length;
+    for (int i = ZERO, a = atr.size() - keltnerUpperChannel.length, m = ema.length - keltnerUpperChannel.length;
          i < keltnerUpperChannel.length;
          ++i, ++a, ++m) {
-      final double buffer = atr[a] * multiplier;
+      final double buffer = atr.value(a) * volatilityMultiplier;
       final double middle = ema[m];
       keltnerUpperChannel[i] = middle + buffer;
       keltnerLowerChannel[i] = middle - buffer;
