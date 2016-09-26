@@ -64,6 +64,8 @@ public abstract class AbstractStrategy implements Strategy {
   protected static final int      FORTY        = 40;
   protected static final int      FORTY_FIVE   = 45;
   protected static final int      FIFTY        = 50;
+  protected static final int      SIXTY        = 60;
+  protected static final int      SEVENTY      = 70;
 
   protected static final String   SPACE        = " ";
 
