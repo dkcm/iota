@@ -3,7 +3,7 @@
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
-package org.ikankechil.iota.strategies;
+package org.ikankechil.iota.strategies.composite;
 
 import java.util.List;
 
@@ -13,6 +13,7 @@ import org.ikankechil.iota.SignalTimeSeries;
 import org.ikankechil.iota.TimeSeries;
 import org.ikankechil.iota.indicators.momentum.Stochastic;
 import org.ikankechil.iota.indicators.trend.ADX;
+import org.ikankechil.iota.strategies.AbstractStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -36,9 +37,9 @@ class StochasticPopAndDrop extends AbstractStrategy {
   private static final Logger logger     = LoggerFactory.getLogger(StochasticPopAndDrop.class);
 
   public StochasticPopAndDrop() {
-    super(new Stochastic(70, 3, 3),
-          new ADX(),
-          new Stochastic(14, 3, 3));
+    super(new Stochastic(SEVENTY, THREE, THREE),
+          new ADX(FOURTEEN),
+          new Stochastic(FOURTEEN, THREE, THREE));
   }
 
   @Override

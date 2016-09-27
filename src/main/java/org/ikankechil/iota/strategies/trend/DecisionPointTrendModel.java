@@ -3,7 +3,7 @@
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
-package org.ikankechil.iota.strategies;
+package org.ikankechil.iota.strategies.trend;
 
 import static org.ikankechil.iota.Signal.*;
 
@@ -14,6 +14,7 @@ import org.ikankechil.iota.Signal;
 import org.ikankechil.iota.SignalTimeSeries;
 import org.ikankechil.iota.TimeSeries;
 import org.ikankechil.iota.indicators.trend.EMA;
+import org.ikankechil.iota.strategies.AbstractStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -3,7 +3,7 @@
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
-package org.ikankechil.iota.strategies;
+package org.ikankechil.iota.strategies.composite;
 
 import static org.ikankechil.iota.Signal.*;
 
@@ -16,6 +16,7 @@ import org.ikankechil.iota.TimeSeries;
 import org.ikankechil.iota.indicators.momentum.Stochastic;
 import org.ikankechil.iota.indicators.trend.MACD;
 import org.ikankechil.iota.indicators.trend.SMA;
+import org.ikankechil.iota.strategies.AbstractStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -55,55 +56,68 @@ class MovingMomentum extends AbstractStrategy {
     // 2. Stochastic Oscillator moves above 80 to signal a bounce
     // 3. MACD-Histogram moves into negative territory to signal a downturn
     //    after the bounce
-    final double[] shortSMA = indicatorValues.get(ZERO).get(ZERO).values();
-    final double[] longSMA = indicatorValues.get(ONE).get(ZERO).values();
-    final double[] stochastic = indicatorValues.get(TWO).get(ZERO).values();
-    final double[] macdHistogram = indicatorValues.get(THREE).get(THREE).values();
+    final TimeSeries shortSMA = indicatorValues.get(ZERO).get(ZERO);
+    final TimeSeries longSMA = indicatorValues.get(ONE).get(ZERO);
+    final TimeSeries stochastic = indicatorValues.get(TWO).get(ZERO);
+    final TimeSeries macdHistogram = indicatorValues.get(THREE).get(THREE);
 
     // generate signals
+    final SignalTimeSeries signals = null;
     final String ohlcvName = ohlcv.toString();
-    final int size = shortSMA.length;
+    final int size = shortSMA.size();
     for (int today = ONE, yesterday = ZERO, c = today + ohlcv.size() - size;
-        today < size;
-        ++today, ++yesterday, ++c) {
+         today < size;
+         ++today, ++yesterday, ++c) {
       final String date = ohlcv.date(c);
       final double close = ohlcv.close(c);
 
       Signal signal;
       // long
-      if (shortSMA[today] > longSMA[today]) {
-        if (crossover(stochastic[today], stochastic[yesterday], PULLBACK)) {
-          if (crossover(macdHistogram[yesterday], macdHistogram[today], ZERO)) { // TODO make it after pullback
-            signal = BUY;
-            logger.info(TRADE_SIGNAL, signal, ohlcvName, date, close);
-          }
+      if (buy(shortSMA.value(today),
+              longSMA.value(today),
+              stochastic.value(yesterday),
+              stochastic.value(today))) {
+        if (crossover(macdHistogram.value(yesterday), macdHistogram.value(today), ZERO)) { // TODO make it after pullback
+          signal = BUY;
+          logger.info(TRADE_SIGNAL, signal, ohlcvName, date, close);
         }
       }
       // short
-      else if (shortSMA[today] < longSMA[today]) {
-        if (crossover(stochastic[yesterday], stochastic[today], BOUNCE)) {
-          if (crossover(macdHistogram[today], macdHistogram[yesterday], ZERO)) {
-            signal = SELL;
-            logger.info(TRADE_SIGNAL, signal, ohlcvName, date, close);
-          }
+      else if (sell(shortSMA.value(today),
+                    longSMA.value(today),
+                    stochastic.value(yesterday),
+                    stochastic.value(today))) {
+        if (crossunder(macdHistogram.value(yesterday), macdHistogram.value(today), ZERO)) {
+          signal = SELL;
+          logger.info(TRADE_SIGNAL, signal, ohlcvName, date, close);
         }
       }
 
     }
 
-    return null; // TODO complete!
+    return signals;
   }
 
   @Override
   protected boolean buy(final double... doubles) {
-    // TODO Auto-generated method stub
-    return false;
+    final double shortSMA = doubles[ZERO];
+    final double longSMA = doubles[ONE];
+    final double stochasticYesterday = doubles[TWO];
+    final double stochasticToday = doubles[THREE];
+
+    return ((shortSMA > longSMA) &&
+            crossunder(stochasticYesterday, stochasticToday, PULLBACK));
   }
 
   @Override
   protected boolean sell(final double... doubles) {
-    // TODO Auto-generated method stub
-    return false;
+    final double shortSMA = doubles[ZERO];
+    final double longSMA = doubles[ONE];
+    final double stochasticYesterday = doubles[TWO];
+    final double stochasticToday = doubles[THREE];
+
+    return ((shortSMA < longSMA) &&
+            crossover(stochasticYesterday, stochasticToday, BOUNCE));
   }
 
 }

@@ -1,11 +1,11 @@
 /**
- * CCICorrection.java v0.1 8 December 2014 8:55:54 PM
+ * CCICorrection.java  v0.1  8 December 2014 8:55:54 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
-package org.ikankechil.iota.strategies;
+package org.ikankechil.iota.strategies.momentum;
 
-import static org.ikankechil.iota.strategies.CCICorrection.Bias.*;
+import static org.ikankechil.iota.strategies.momentum.CCICorrection.Bias.*;
 
 import java.util.List;
 
@@ -14,6 +14,7 @@ import org.ikankechil.iota.Signal;
 import org.ikankechil.iota.SignalTimeSeries;
 import org.ikankechil.iota.TimeSeries;
 import org.ikankechil.iota.indicators.momentum.CCI;
+import org.ikankechil.iota.strategies.AbstractStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,7 +35,7 @@ class CCICorrection extends AbstractStrategy {
   private static final Logger logger    = LoggerFactory.getLogger(CCICorrection.class);
 
   public CCICorrection() {
-    super(new CCI(26 * 5), new CCI(26));
+    super(new CCI(TWENTY_SIX * FIVE), new CCI(TWENTY_SIX));
 //    super(new CCI(200), new CCI(5));
   }
 
@@ -49,29 +50,32 @@ class CCICorrection extends AbstractStrategy {
     //
     //
     //
-    final String ohlcvName = ohlcv.toString();
 
-    final double[] longCCI = indicatorValues.get(ZERO).get(ZERO).values();
-    final double[] shortCCI = indicatorValues.get(ONE).get(ZERO).values();
+    final TimeSeries longCCI = indicatorValues.get(ZERO).get(ZERO);
+    final TimeSeries shortCCI = indicatorValues.get(ONE).get(ZERO);
 
     Bias bias = NONE;
     Bias counterTrend = NONE;
 
-    final int size = longCCI.length;
-    for (int today = ONE, yesterday = ZERO, c = today + ohlcv.size() - size;
-         today < size;
-         ++today, ++yesterday, ++c) {
+    final int size = longCCI.size();
+    int today = ZERO;
+    double longCCIYesterday = longCCI.value(today);
+    double shortCCIYesterday = shortCCI.value(today);
+
+    for (int c = ohlcv.size() - size; ++today < size; ++c) {
       final String date = ohlcv.date(c);
       final double close = ohlcv.close(c);
 
       // establish bias
-      bias = establishBias(longCCI[yesterday], longCCI[today], bias);
+      final double longCCIToday = longCCI.value(today);
+      bias = establishBias(longCCIYesterday, longCCIToday, bias);
 
       // look for a smaller counter trend
+      final double shortCCIToday = shortCCI.value(today);
       switch (bias) {
         case BULLISH:
           // pullback
-          if (crossover(shortCCI[today], shortCCI[yesterday], DOWNTREND)) {
+          if (buy(shortCCIToday, shortCCIYesterday, DOWNTREND)) {
             counterTrend = BEARISH;
             continue;
           }
@@ -79,7 +83,7 @@ class CCICorrection extends AbstractStrategy {
 
         case BEARISH:
           // bounce
-          if (crossover(shortCCI[yesterday], shortCCI[today], UPTREND)) {
+          if (sell(shortCCIToday, shortCCIYesterday, UPTREND)) {
             counterTrend = BULLISH;
             continue;
           }
@@ -89,46 +93,49 @@ class CCICorrection extends AbstractStrategy {
           break;
       }
 
+      final String ohlcvName = ohlcv.toString();
       Signal signal = Signal.NONE;
       // look for the reversal in the counter trend
       // long
       if (bias == BULLISH && counterTrend == BEARISH) {
-        if (crossover(shortCCI[yesterday], shortCCI[today], ZERO)) {
+        if (buy(shortCCIYesterday, shortCCIToday, ZERO)) {
           signal = Signal.BUY;
           logger.info(TRADE_SIGNAL, signal, ohlcvName, date, close);
         }
       }
       // short
       else if (bias == BEARISH && counterTrend == BULLISH) {
-        if (crossover(shortCCI[today], shortCCI[yesterday], ZERO)) {
+        if (sell(shortCCIYesterday, shortCCIToday, ZERO)) {
           signal = Signal.SELL;
           logger.info(TRADE_SIGNAL, signal, ohlcvName, date, close);
         }
       }
+
+      // shift forward in time
+      longCCIYesterday = longCCIToday;
+      shortCCIYesterday = shortCCIToday;
     }
 
     final SignalTimeSeries signals = null;
     return signals;
   }
 
-  private static final Bias establishBias(final double yesterday,
-                                          final double today,
-                                          final Bias current) {
-    return crossover(yesterday, today, UPTREND)   ? BULLISH :
-           crossover(today, yesterday, DOWNTREND) ? BEARISH :
-                                                    current;
+  private final Bias establishBias(final double yesterday,
+                                   final double today,
+                                   final Bias current) {
+    return buy(yesterday, today, UPTREND)    ? BULLISH :
+           sell(yesterday, today, DOWNTREND) ? BEARISH :
+                                               current;
   }
 
   @Override
   protected boolean buy(final double... doubles) {
-    // TODO Auto-generated method stub
-    return false;
+    return crossover(doubles[ZERO], doubles[ONE], doubles[TWO]);
   }
 
   @Override
   protected boolean sell(final double... doubles) {
-    // TODO Auto-generated method stub
-    return false;
+    return crossunder(doubles[ZERO], doubles[ONE], doubles[TWO]);
   }
 
 }

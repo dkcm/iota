@@ -3,10 +3,14 @@
  *
  * Copyright © 2016 Daniel Kuan.  All rights reserved.
  */
-package org.ikankechil.iota.strategies;
+package org.ikankechil.iota.strategies.trend;
 
 import org.ikankechil.iota.indicators.Indicator;
 import org.ikankechil.iota.indicators.trend.Aroon;
+import org.ikankechil.iota.strategies.CompositeStrategy;
+import org.ikankechil.iota.strategies.Crossover;
+import org.ikankechil.iota.strategies.Strategy;
+import org.ikankechil.iota.strategies.ThresholdCrossover;
 
 /**
  *

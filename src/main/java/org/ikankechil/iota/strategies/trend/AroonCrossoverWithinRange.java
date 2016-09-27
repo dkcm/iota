@@ -3,9 +3,10 @@
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
-package org.ikankechil.iota.strategies;
+package org.ikankechil.iota.strategies.trend;
 
 import org.ikankechil.iota.indicators.trend.Aroon;
+import org.ikankechil.iota.strategies.Crossover;
 
 /**
  * Aroon crossover occurring within a range.
@@ -22,10 +23,8 @@ public class AroonCrossoverWithinRange extends Crossover {
   private final double        strong;
 
   // thresholds
-  private static final double WEAK        = 30.0;
-  private static final double STRONG      = 70.0;
-
-  private static final int    TWENTY_FIVE = 25;
+  private static final double WEAK   = 30.0;
+  private static final double STRONG = 70.0;
 
   public AroonCrossoverWithinRange() {
     this(TWENTY_FIVE);

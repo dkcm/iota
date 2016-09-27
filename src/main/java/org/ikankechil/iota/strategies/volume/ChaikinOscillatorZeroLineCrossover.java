@@ -3,9 +3,10 @@
  *
  * Copyright © 2016 Daniel Kuan.  All rights reserved.
  */
-package org.ikankechil.iota.strategies;
+package org.ikankechil.iota.strategies.volume;
 
 import org.ikankechil.iota.indicators.volume.ChaikinOscillator;
+import org.ikankechil.iota.strategies.ZeroLineCrossover;
 
 /**
  * Signals when the Chaikin Oscillator crosses over / under zero.
