@@ -1,5 +1,5 @@
 /**
- * Crossover.java v0.3  24 November 2014 11:11:43 pm
+ * Crossover.java  v0.4  24 November 2014 11:11:43 pm
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -27,7 +27,7 @@ import org.slf4j.LoggerFactory;
  * <p>
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class Crossover extends AbstractStrategy {
 
@@ -51,10 +51,14 @@ public class Crossover extends AbstractStrategy {
   }
 
   public Crossover(final Indicator fast, final Indicator slow) {
+    this(fast, slow, ZERO, ZERO);
+  }
+
+  public Crossover(final Indicator fast, final Indicator slow, final int fastIndex, final int slowIndex) {
     super(fast, slow);
 
-    fastIndex = ZERO;
-    slowIndex = ONE;
+    this.fastIndex = fastIndex;
+    this.slowIndex = slowIndex;
   }
 
   @Override
@@ -67,8 +71,8 @@ public class Crossover extends AbstractStrategy {
     final TimeSeries fast;
     final TimeSeries slow;
     if (indicators.size() > ONE) {
-      fast = indicatorValues.get(fastIndex).get(ZERO);
-      slow = indicatorValues.get(slowIndex).get(ZERO);
+      fast = indicatorValues.get(ZERO).get(fastIndex);
+      slow = indicatorValues.get(ONE).get(slowIndex);
     }
     else {
       final List<TimeSeries> indicatorComponents = indicatorValues.get(ZERO);
