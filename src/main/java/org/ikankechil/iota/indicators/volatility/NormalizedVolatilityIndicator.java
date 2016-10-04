@@ -1,11 +1,12 @@
 /**
- * NormalizedVolatilityIndicator.java  v0.1 12 August 2015 1:10:10 PM
+ * NormalizedVolatilityIndicator.java  v0.2  12 August 2015 1:10:10 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.volatility;
 
 import org.ikankechil.iota.OHLCVTimeSeries;
+import org.ikankechil.iota.TimeSeries;
 import org.ikankechil.iota.indicators.AbstractIndicator;
 
 import com.tictactec.ta.lib.MInteger;
@@ -18,9 +19,11 @@ import com.tictactec.ta.lib.RetCode;
  * http://traders.com/Documentation/FEEDbk_docs/2010/08/TradersTips.html
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class NormalizedVolatilityIndicator extends AbstractIndicator {
+
+  private final ATR        atr;
 
   private static final int AVE_DAYS_IN_QTR = SIXTY_FOUR;
 
@@ -29,7 +32,9 @@ public class NormalizedVolatilityIndicator extends AbstractIndicator {
   }
 
   public NormalizedVolatilityIndicator(final int period) {
-    super(period, TA_LIB.atrLookback(period));
+    super(period, period);
+
+    atr = new ATR(period);
   }
 
   @Override
@@ -43,27 +48,16 @@ public class NormalizedVolatilityIndicator extends AbstractIndicator {
     // NormalizedVolatilityIndicator = 64-Day average true range / End-of-day price * 100
 
     // compute ATR
-    final double[] closes = ohlcv.closes();
-    final double[] atr = new double[ohlcv.size() - lookback];
-    final RetCode outcome = TA_LIB.atr(start,
-                                       end,
-                                       ohlcv.highs(),
-                                       ohlcv.lows(),
-                                       closes,
-                                       period,
-                                       outBegIdx,
-                                       outNBElement,
-                                       atr);
-    throwExceptionIfBad(outcome, ohlcv);
+    final TimeSeries atrs = atr.generate(ohlcv).get(ZERO);
 
     // compute indicator
     for (int i = ZERO, c = i + lookback; i < output.length; ++i, ++c) {
-      output[i] = atr[i] / closes[c] * HUNDRED_PERCENT;
+      output[i] = atrs.value(i) / ohlcv.close(c) * HUNDRED_PERCENT;
     }
 
     outBegIdx.value = lookback;
     outNBElement.value = output.length;
-    return outcome;
+    return RetCode.Success;
   }
 
 }

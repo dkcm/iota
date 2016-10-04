@@ -15,9 +15,10 @@ import com.tictactec.ta.lib.RetCode;
 /**
  * Average True Range (ATR) by J. Welles Wilder
  * <p>
- * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:average_true_range_atr
- * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V20/C03/054ATR.pdf
- * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V19/C06/067VOL.pdf
+ * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:average_true_range_atr<br>
+ * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V20/C03/054ATR.pdf<br>
+ * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V19/C06/067VOL.pdf<br>
+ * https://www.fidelity.com/bin-public/060_www_fidelity_com/documents/AverageTrueRange.pdf<br>
  *
  * @author Daniel Kuan
  * @version 0.2

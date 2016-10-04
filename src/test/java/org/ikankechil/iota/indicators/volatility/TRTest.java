@@ -33,7 +33,8 @@ public class TRTest extends AbstractIndicatorTest {
     TEST_CLASS = TRTest.class;
   }
 
-  @Ignore@Override
+  @Ignore
+  @Override
   public void cannotInstantiateWithNegativePeriod() { /* do nothing */ }
 
   @Override
