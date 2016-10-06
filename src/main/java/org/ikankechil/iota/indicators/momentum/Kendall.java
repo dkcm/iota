@@ -1,5 +1,5 @@
 /**
- * Kendall.java  v0.1  19 July 2015 9:59:43 pm
+ * Kendall.java  v0.2  19 July 2015 9:59:43 pm
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -14,11 +14,11 @@ import com.tictactec.ta.lib.RetCode;
 /**
  * Kendall Indicator by Eric Kendall
  * <p>
- * http://www.addownload.eu/metaK.htm#Kendall Indicator
- * http://exceltechnical.web.fc2.com/kendall.html
+ * http://www.addownload.eu/metaK.htm#Kendall Indicator<br>
+ * http://exceltechnical.web.fc2.com/kendall.html<br>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class Kendall extends AbstractIndicator {
 
@@ -29,7 +29,7 @@ public class Kendall extends AbstractIndicator {
   }
 
   public Kendall(final int roc, final int sma) {
-    super(sma, TA_LIB.rocLookback(roc) + TA_LIB.smaLookback(sma));
+    super(sma, roc + (sma - ONE));
     throwExceptionIfNegative(roc);
 
     this.roc = roc;

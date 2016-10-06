@@ -1,7 +1,7 @@
 /**
- * CMOTest.java  v0.1  26 January 2016 8:27:16 PM
+ * CoppockCurveTest.java  v0.1  6 October 2016 9:46:03 pm
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.momentum;
 
@@ -11,21 +11,22 @@ import org.ikankechil.iota.indicators.AbstractIndicatorTest;
 import org.junit.BeforeClass;
 
 /**
- * JUnit test for <code>CMO</code>.
+ * JUnit test for <code>CoppockCurve</code>.
  * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.1
  */
-public class CMOTest extends AbstractIndicatorTest {
+public class CoppockCurveTest extends AbstractIndicatorTest {
 
-  public CMOTest() {
-    super(14);
+  public CoppockCurveTest() {
+    super(23);
   }
 
   @BeforeClass
   public static void setUpBeforeClass() throws IOException {
-    TEST_CLASS = CMOTest.class;
+    TEST_CLASS = CoppockCurveTest.class;
     AbstractIndicatorTest.setUpBeforeClass();
   }
 

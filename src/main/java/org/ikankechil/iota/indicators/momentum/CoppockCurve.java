@@ -6,7 +6,9 @@
 package org.ikankechil.iota.indicators.momentum;
 
 import org.ikankechil.iota.OHLCVTimeSeries;
+import org.ikankechil.iota.TimeSeries;
 import org.ikankechil.iota.indicators.AbstractIndicator;
+import org.ikankechil.iota.indicators.trend.WMA;
 
 import com.tictactec.ta.lib.MInteger;
 import com.tictactec.ta.lib.RetCode;
@@ -23,17 +25,19 @@ public class CoppockCurve extends AbstractIndicator {
 
   private final ROC roc1;
   private final ROC roc2;
+  private final WMA wma;
 
   public CoppockCurve() {
     this(FOURTEEN, ELEVEN, TEN);
   }
 
   public CoppockCurve(final int roc1, final int roc2, final int wma) {
-    super(wma, Math.max(roc1, roc2) + TA_LIB.wmaLookback(wma));
+    super(wma, Math.max(roc1, roc2) + (wma - ONE));
     throwExceptionIfNegative(roc1, roc2);
 
     this.roc1 = new ROC(roc1);
     this.roc2 = new ROC(roc2);
+    this.wma = new WMA(wma);
   }
 
   @Override
@@ -46,25 +50,27 @@ public class CoppockCurve extends AbstractIndicator {
     // Formula:
     // Coppock Curve = 10-period WMA of (14-period RoC + 11-perod RoC)
 
-    final double[] roc1s = roc1.generate(ohlcv).get(ZERO).values();
-    final double[] roc2s = roc2.generate(ohlcv).get(ZERO).values();
+    // compute RoCs
+    final TimeSeries roc1s = roc1.generate(ohlcv).get(ZERO);
+    final TimeSeries roc2s = roc2.generate(ohlcv).get(ZERO);
 
-    final int length = Math.min(roc1s.length, roc2s.length);
+    final int length = Math.min(roc1s.size(), roc2s.size());
 
-    final double[] rocSum = new double[length];
-    for (int i = ZERO, r1 = roc1s.length - length, r2 = roc2s.length - length;
-         i < rocSum.length;
+    // compute sum of RoCs
+    final TimeSeries rocSum = new TimeSeries(EMPTY, length);
+    for (int i = ZERO, r1 = roc1s.size() - length, r2 = roc2s.size() - length;
+         i < rocSum.size();
          ++i, ++r1, ++r2) {
-      rocSum[i] = roc1s[r1] + roc2s[r2];
+      rocSum.value(roc1s.value(r1) + roc2s.value(r2), i);
     }
 
-    return TA_LIB.wma(ZERO,
-                      rocSum.length - ONE,
-                      rocSum,
-                      period,
-                      outBegIdx,
-                      outNBElement,
-                      output);
+    // compute WMA
+    final double[] cc = wma.generate(rocSum).get(ZERO).values();
+    System.arraycopy(cc, ZERO, output, ZERO, cc.length);
+
+    outBegIdx.value = lookback;
+    outNBElement.value = output.length;
+    return RetCode.Success;
   }
 
 }

@@ -87,6 +87,7 @@ public abstract class AbstractIndicator implements Indicator {
   protected static final char   SPACE           = ' ';
 //  protected static final char   LEFT_BRACKET    = '(';
 //  protected static final char   RIGHT_BRACKET   = ')';
+  protected static final String EMPTY           = "";
   protected static final String GENERATED_FOR   = "{} generated for: {}";
 
   protected static final Logger logger          = LoggerFactory.getLogger(AbstractIndicator.class);
