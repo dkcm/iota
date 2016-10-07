@@ -1,5 +1,5 @@
 /**
- * ChandelierExit.java  v0.1  30 July 2015 12:30:13 am
+ * ChandelierExit.java  v0.2  30 July 2015 12:30:13 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -11,21 +11,24 @@ import java.util.List;
 import org.ikankechil.iota.OHLCVTimeSeries;
 import org.ikankechil.iota.TimeSeries;
 import org.ikankechil.iota.indicators.AbstractIndicator;
-
-import com.tictactec.ta.lib.MInteger;
-import com.tictactec.ta.lib.RetCode;
+import org.ikankechil.iota.indicators.MaximumPrice;
+import org.ikankechil.iota.indicators.MinimumPrice;
+import org.ikankechil.iota.indicators.volatility.ATR;
 
 /**
  * Chandelier Exit by Charles LeBeau
  * <p>
- * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:chandelier_exit
- * https://www.incrediblecharts.com/indicators/chandelier_exits.php
+ * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:chandelier_exit<br>
+ * https://www.incrediblecharts.com/indicators/chandelier_exits.php<br>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class ChandelierExit extends AbstractIndicator {
 
+  private final MaximumPrice  maxPrice;
+  private final MinimumPrice  minPrice;
+  private final ATR           atr;
   private final double        multiplier;
 
   private static final String CHANDELIER_EXIT_LONG  = "Chandelier Exit Long";
@@ -44,9 +47,12 @@ public class ChandelierExit extends AbstractIndicator {
   }
 
   public ChandelierExit(final int period, final double multiplier) {
-    super(period, TA_LIB.atrLookback(period));
+    super(period, period);
     throwExceptionIfNegative(multiplier);
 
+    maxPrice = new MaximumPrice(period);
+    minPrice = new MinimumPrice(period);
+    atr = new ATR(period);
     this.multiplier = multiplier;
   }
 
@@ -55,57 +61,30 @@ public class ChandelierExit extends AbstractIndicator {
     throwExceptionIfShort(ohlcv);
     final int size = ohlcv.size();
 
-    final MInteger outBegIdx = new MInteger();
-    final MInteger outNBElement = new MInteger();
-
     // Formula:
     // Chandelier Exit (long) = 22-day High - ATR(22) x 3
     // Chandelier Exit (short) = 22-day Low + ATR(22) x 3
 
-    // compute highs
-    final double[] highs = ohlcv.highs();
-    final double[] max = new double[size - lookback + ONE];
-    RetCode outcome = TA_LIB.max(ZERO,
-                                 size - ONE,
-                                 highs,
-                                 period,
-                                 outBegIdx,
-                                 outNBElement,
-                                 max);
-    throwExceptionIfBad(outcome, ohlcv);
-
-    // compute lows
-    final double[] lows = ohlcv.lows();
-    final double[] min = new double[max.length];
-    outcome = TA_LIB.min(ZERO,
-                         size - ONE,
-                         lows,
-                         period,
-                         outBegIdx,
-                         outNBElement,
-                         min);
-    throwExceptionIfBad(outcome, ohlcv);
+    // compute highs and lows
+    final TimeSeries highs = new TimeSeries(EMPTY, size);
+    final TimeSeries lows = new TimeSeries(EMPTY, size);
+    for (int i = ZERO; i < size; ++i) {
+      highs.value(ohlcv.high(i), i);
+      lows.value(ohlcv.low(i), i);
+    }
+    final TimeSeries max = maxPrice.generate(highs).get(ZERO);
+    final TimeSeries min = minPrice.generate(lows).get(ZERO);
 
     // compute ATR
-    final double[] atr = new double[size - lookback];
-    outcome = TA_LIB.atr(ZERO,
-                         size - ONE,
-                         highs,
-                         lows,
-                         ohlcv.closes(),
-                         period,
-                         outBegIdx,
-                         outNBElement,
-                         atr);
-    throwExceptionIfBad(outcome, ohlcv);
+    final TimeSeries atrs = atr.generate(ohlcv).get(ZERO);
 
     // compute indicator
-    final double[] chandelierExitLong = new double[atr.length];
+    final double[] chandelierExitLong = new double[atrs.size()];
     final double[] chandelierExitShort = new double[chandelierExitLong.length];
     for (int i = ZERO, m = ONE; i < chandelierExitLong.length; ++i, ++m) {
-      final double buffer = atr[i] * multiplier;
-      chandelierExitLong[i] = max[m] - buffer;
-      chandelierExitShort[i] = min[m] + buffer;
+      final double buffer = atrs.value(i) * multiplier;
+      chandelierExitLong[i] = max.value(m) - buffer;
+      chandelierExitShort[i] = min.value(m) + buffer;
     }
 
     final String[] dates = Arrays.copyOfRange(ohlcv.dates(), lookback, size);

@@ -1,37 +1,43 @@
 /**
- * VHF.java  v0.1 22 January 2015 7:48:04 PM
+ * VHF.java  v0.2  22 January 2015 7:48:04 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.trend;
 
+import org.ikankechil.iota.TimeSeries;
 import org.ikankechil.iota.indicators.AbstractIndicator;
+import org.ikankechil.iota.indicators.MaximumPrice;
+import org.ikankechil.iota.indicators.MinimumPrice;
 
 import com.tictactec.ta.lib.MInteger;
 import com.tictactec.ta.lib.RetCode;
 
 /**
- * Vertical Horizontal Filter (VHF)
+ * Vertical Horizontal Filter (VHF) by Adam White
  * <p>
- * http://www.incrediblecharts.com/indicators/vertical_horizontal_filter.php
- * http://www.ta-guru.com/Book/TechnicalAnalysis/TechnicalIndicators/VerticalHorizontalFilter.php5
- * http://etfhq.com/blog/2011/02/09/vertical-horizontal-filter/
+ * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V18/C07/063VERT.pdf<br>
+ * http://www.incrediblecharts.com/indicators/vertical_horizontal_filter.php<br>
+ * http://www.ta-guru.com/Book/TechnicalAnalysis/TechnicalIndicators/VerticalHorizontalFilter.php5<br>
+ * http://etfhq.com/blog/2011/02/09/vertical-horizontal-filter/<br>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class VHF extends AbstractIndicator {
 
-  private final int maxLookback;
+  private final MinimumPrice minPrice;
+  private final MaximumPrice maxPrice;
 
   public VHF() {
     this(TWENTY_EIGHT);
   }
 
   public VHF(final int period) {
-    super(period, TA_LIB.sumLookback(period) + ONE);
+    super(period, period);
 
-    maxLookback = TA_LIB.maxLookback(period);
+    minPrice = new MinimumPrice(period);
+    maxPrice = new MaximumPrice(period);
   }
 
   @Override
@@ -57,61 +63,53 @@ public class VHF extends AbstractIndicator {
 
     final int size = values.length;
 
-    // compute highest closing price
-    final double[] hcp = new double[size - maxLookback];
-    RetCode outcome = TA_LIB.max(start,
-                                 end,
-                                 values,
-                                 period,
-                                 outBegIdx,
-                                 outNBElement,
-                                 hcp);
-    throwExceptionIfBad(outcome, null);
-
-    // compute lowest closing price
-    final double[] lcp = new double[hcp.length];
-    outcome = TA_LIB.min(start,
-                         end,
-                         values,
-                         period,
-                         outBegIdx,
-                         outNBElement,
-                         lcp);
-    throwExceptionIfBad(outcome, null);
+    // compute highs and lows
+    final TimeSeries closes = new TimeSeries(EMPTY, size);
+    for (int i = ZERO; i < size; ++i) {
+      closes.value(values[i], i);
+    }
+    final TimeSeries min = minPrice.generate(closes).get(ZERO);
+    final TimeSeries max = maxPrice.generate(closes).get(ZERO);
 
     // compute range of closing prices
-    final double[] range = new double[lcp.length];
-    for (int i = ZERO; i < range.length; ++i) {
-      range[i] = hcp[i] - lcp[i];
-    }
+    final double[] range = computeRange(min, max);
 
     // compute absolute movement in closing price
-    double cpYesterday = values[ZERO];
-    final double[] cpm = new double[size - ONE];
-    for (int i = ZERO, today = ONE; i < cpm.length; ++i, ++today) {
-      final double cpToday = values[today];
-      cpm[i] = Math.abs(cpToday - cpYesterday);
-      cpYesterday = cpToday;
-    }
+    final double[] cpm = computeAbsoluteMovement(values);
 
     // compute sum
-    final double[] sum = new double[cpm.length - maxLookback];
-    outcome = TA_LIB.sum(ZERO,
-                         cpm.length - ONE,
-                         cpm,
-                         period,
-                         outBegIdx,
-                         outNBElement,
-                         sum);
+    final double[] sum = sum(period, cpm);
 
     // compute indicator
-    for (int i = 0, j = ONE; i < output.length; ++i, ++j) {
+    for (int i = ZERO, j = ONE; i < output.length; ++i, ++j) {
       output[i] = range[j] / sum[i];
     }
 
     outBegIdx.value = lookback;
     outNBElement.value = output.length;
     return RetCode.Success;
+  }
+
+  private static final double[] computeRange(final TimeSeries min, final TimeSeries max) {
+    final double[] range = new double[max.size()];
+    for (int i = ZERO; i < range.length; ++i) {
+      final double hcp = max.value(i); // highest closing price
+      final double lcp = min.value(i); // lowest closing price
+      range[i] = hcp - lcp;
+    }
+    return range;
+  }
+
+  private static final double[] computeAbsoluteMovement(final double[] prices) {
+    int day = ZERO;
+    double yesterday = prices[day];
+    final double[] movements = new double[prices.length - ONE];
+    for (int i = ZERO; i < movements.length; ++i) {
+      final double today = prices[++day];
+      movements[i] = Math.abs(today - yesterday);
+      yesterday = today;
+    }
+    return movements;
   }
 
 }
