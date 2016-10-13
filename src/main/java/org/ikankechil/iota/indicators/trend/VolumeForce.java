@@ -1,5 +1,5 @@
 /**
- * VolumeForce.java  v0.1 8 January 2015 10:59:56 AM
+ * VolumeForce.java  v0.2  8 January 2015 10:59:56 AM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -14,18 +14,18 @@ import com.tictactec.ta.lib.RetCode;
 /**
  * Volume Force by Stephen J. Klinger
  * <p>
- * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V15/C12/IDENTIF.pdf
- * http://wiki.timetotrade.eu/Volume_Force
- * http://www.motivewave.com/studies/klinger_volume_oscillator.htm
- * http://www.fmlabs.com/reference/default.htm?url=KO.htm
+ * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V15/C12/IDENTIF.pdf<br>
+ * http://wiki.timetotrade.eu/Volume_Force<br>
+ * http://www.motivewave.com/studies/klinger_volume_oscillator.htm<br>
+ * http://www.fmlabs.com/reference/default.htm?url=KO.htm<br>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class VolumeForce extends AbstractIndicator {
 
   public VolumeForce() {
-    super(TWO);
+    super(ONE);
   }
 
   @Override
@@ -54,35 +54,32 @@ public class VolumeForce extends AbstractIndicator {
     final double[] highs = ohlcv.highs();
     final double[] lows = ohlcv.lows();
     final double[] closes = ohlcv.closes();
-
-    // compute trend
-    final int[] trend = new int[ohlcv.size() - ONE];
-    double phlc = (highs[ZERO] + lows[ZERO] + closes[ZERO]);
-    for (int i = ZERO, j = ONE; i < trend.length; ++i, ++j) {
-      final double chlc = (highs[j] + lows[j] + closes[j]);
-      trend[i] = (chlc > phlc) ? 100 : -100;
-      phlc = chlc;
-    }
-
-    // compute daily measurement (range)
-    final double[] dm = new double[trend.length];
-    for (int i = ZERO; i < dm.length; ++i) {
-      dm[i] = highs[i] - lows[i];
-    }
-
-    // compute cumulative measurement
-    final double[] cm = new double[dm.length - ONE];
-    cm[ZERO] = dm[ZERO];  // seed
-    for (int today = ONE, yesterday = ZERO; today < cm.length; ++today, ++yesterday) {
-      cm[today] = ((trend[today] == trend[yesterday]) ? cm[yesterday]
-                                                      : dm[yesterday]) + dm[today];
-    }
-
-    // compute indicator
     final long[] volumes = ohlcv.volumes();
-    // cm.length = trend.length - 1 = ohlcv.size() - 2
-    for (int i = ZERO, j = ONE, k = TWO; i < output.length; ++i, ++j, ++k) {
-      output[i] = volumes[k] * Math.abs((TWO * dm[j] / cm[i]) - ONE) * trend[j];
+
+    int pt = ZERO, ct;      // trend
+    double pdm = ZERO, cdm; // daily measurement (range)
+    double pcm = ZERO, ccm; // cumulative measurement
+
+    int t = ZERO;
+    double phlc = (highs[t] + lows[t] + closes[t]);
+
+    for (int i = ZERO; ++t < volumes.length; ++i) {
+      // compute trend
+      final double chlc = (highs[t] + lows[t] + closes[t]);
+      ct = (chlc > phlc) ? 100 : -100;
+
+      // compute daily measurement (range) and cumulative measurement
+      cdm = highs[t] - lows[t];
+      ccm = ((pt == ct) ? pcm : pdm) + cdm;
+
+      // compute indicator
+      output[i] = volumes[t] * Math.abs((TWO * cdm / ccm) - ONE) * ct;
+
+      // shift forward in time
+      phlc = chlc;
+      pt = ct;
+      pdm = cdm;
+      pcm = ccm;
     }
 
     outBegIdx.value = lookback;
