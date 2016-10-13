@@ -1,18 +1,21 @@
 /**
- * EhlersDistanceCoefficientFilter.java  v0.2 8 July 2015 3:07:41 PM
+ * EhlersDistanceCoefficientFilter.java  v0.3  8 July 2015 3:07:41 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.momentum;
 
+import org.ikankechil.iota.indicators.EhlersFilter;
+
 /**
  * Ehlers Distance Coefficient Filter by John Ehlers.
  * <p>
- * http://www.mesasoftware.com/papers/EhlersFilters.pdf
- * http://traders.com/Documentation/FEEDbk_docs/2001/04/TradersTips/TradersTips.html
+ * http://www.mesasoftware.com/papers/EhlersFilters.pdf<br>
+ * http://traders.com/Documentation/FEEDbk_docs/2001/04/TradersTips/TradersTips.html<br>
+ * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V19/C04/040NON.pdf<br>
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class EhlersDistanceCoefficientFilter extends EhlersFilter {
 
@@ -22,7 +25,7 @@ public class EhlersDistanceCoefficientFilter extends EhlersFilter {
 //  private static final String DISTANCE_COEFFICIENTS = "Distance Coefficients[{}] = {}";
 
   public EhlersDistanceCoefficientFilter(final int period) {
-    super(period, (period << ONE) - ONE); // lookback = 2 * period - 1
+    super(period, period, (period << ONE) - ONE); // lookback = 2 * period - 1
   }
 
   @Override

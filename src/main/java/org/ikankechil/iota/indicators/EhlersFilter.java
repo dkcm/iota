@@ -1,12 +1,11 @@
 /**
- * EhlersFilter.java  v0.1  7 July 2015 5:57:45 PM
+ * EhlersFilter.java  v0.2  7 July 2015 5:57:45 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
-package org.ikankechil.iota.indicators.momentum;
+package org.ikankechil.iota.indicators;
 
 import org.ikankechil.iota.OHLCVTimeSeries;
-import org.ikankechil.iota.indicators.AbstractIndicator;
 
 import com.tictactec.ta.lib.MInteger;
 import com.tictactec.ta.lib.RetCode;
@@ -14,18 +13,24 @@ import com.tictactec.ta.lib.RetCode;
 /**
  * Ehlers Filter by John Ehlers.  Nonlinear FIR, Order Statistic (OS) filters.
  * <p>
- * http://www.mesasoftware.com/papers/EhlersFilter.pdf
+ * http://www.mesasoftware.com/papers/EhlersFilters.pdf<br>
+ * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V19/C04/040NON.pdf<br>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public abstract class EhlersFilter extends AbstractIndicator {
+
+  private final int           priceOffset;
 
   private static final String USING_MEDIAN_PRICE = "Using median price";
 //  private static final String NUMERATOR_AND_DENOMINATOR = "Numerator / Denominator [{}] = {} / {} = {}";
 
-  public EhlersFilter(final int period, final int lookback) {
+  public EhlersFilter(final int period, final int priceOffset, final int lookback) {
     super(period, lookback);
+    throwExceptionIfNegative(priceOffset);
+
+    this.priceOffset = priceOffset;
   }
 
   @Override
@@ -75,7 +80,7 @@ public abstract class EhlersFilter extends AbstractIndicator {
 
       // compute numerator - sum product of coefficients and values
       double numerator = ZERO;
-      for (int c = ZERO, v = i + period; c < period; ++c, ++v) {
+      for (int c = ZERO, v = i + priceOffset; c < coefficients.length; ++c, ++v) {
         numerator += (coefficients[c] * values[v]);
       }
 
@@ -100,6 +105,8 @@ public abstract class EhlersFilter extends AbstractIndicator {
     return sum(coefficients);
   }
 
-  protected abstract void cleanUp();
+  protected void cleanUp() {
+    // do nothing
+  }
 
 }
