@@ -1,5 +1,5 @@
 /**
- * PeriodCompressor.java	v0.1	22 September 2014 3:49:04 pm
+ * PeriodCompressor.java  v0.1  22 September 2014 3:49:04 pm
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -15,7 +15,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Compresses OHLCV periods.
- * <p>
+ *
  *
  *
  * @author Daniel Kuan

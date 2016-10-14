@@ -10,17 +10,17 @@ import org.ikankechil.iota.strategies.CrossoverWithThreshold;
 
 /**
  * Simple Stochastic Oscillator Crossover strategy.
- * <p>
- * Buy:
+ *
+ * <p>Buy:
  * 1. SlowK crosses over SlowD
  * 2. SlowK < 20
  * Sell:
  * 1. SlowK crosses under SlowD
  * 2. SlowK > 80
  *
- * http://www.futuresmag.com/2012/09/30/complementary-approach-trading-technical-indicators?page=2
- * https://www.tradingview.com/script/dtrRRU3z-Strategy-Stochastic-Crossover/
- * http://www.investopedia.com/articles/trading/08/macd-stochastic-double-cross.asp
+ * <p>http://www.futuresmag.com/2012/09/30/complementary-approach-trading-technical-indicators?page=2<br>
+ * https://www.tradingview.com/script/dtrRRU3z-Strategy-Stochastic-Crossover/<br>
+ * http://www.investopedia.com/articles/trading/08/macd-stochastic-double-cross.asp<br>
  *
  * @author Daniel Kuan
  * @version 0.1

@@ -10,9 +10,9 @@ import org.ikankechil.iota.strategies.Crossover;
 
 /**
  * Aroon crossover occurring within a range.
- * <p>
- * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:aroon
- * http://www.investopedia.com/articles/trading/06/aroon.asp
+ *
+ * <p>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:aroon<br>
+ * http://www.investopedia.com/articles/trading/06/aroon.asp<br>
  *
  * @author Daniel Kuan
  * @version 0.1

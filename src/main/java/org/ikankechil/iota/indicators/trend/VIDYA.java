@@ -1,5 +1,5 @@
 /**
- * VIDYA.java  v0.1 8 January 2015 6:56:46 PM
+ * VIDYA.java  v0.1  8 January 2015 6:56:46 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -12,11 +12,11 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Variable Index Dynamic Average (VIDYA)
- * <p>
- * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V13/C10/SIDEVAR.pdf
- * http://www.straticator.com/vidya-variable-index-dynamic-average/
- * http://www.fmlabs.com/reference/default.htm?url=VIDYA.htm
- * http://www.thewizardtrader.com/Education/TechnicalIndicators/Indicators/VIDYA.aspx
+ *
+ * <p>ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V13/C10/SIDEVAR.pdf<br>
+ * http://www.straticator.com/vidya-variable-index-dynamic-average/<br>
+ * http://www.fmlabs.com/reference/default.htm?url=VIDYA.htm<br>
+ * http://www.thewizardtrader.com/Education/TechnicalIndicators/Indicators/VIDYA.aspx<br>
  *
  * @author Daniel Kuan
  * @version 0.1
@@ -50,7 +50,7 @@ public class VIDYA extends AbstractIndicator {
 
     // compute Volatility Index
     final double[] vi = new double[values.length - (lookback + ONE)];
-    final RetCode outcome = TA_LIB.cmo(start,
+    final RetCode outcome = TA_LIB.cmo(start, // TODO buggy!
                                        end,
                                        values,
                                        period,

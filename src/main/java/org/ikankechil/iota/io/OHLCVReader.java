@@ -1,5 +1,5 @@
 /**
- * OHLCVReader.java v0.3  16 June 2014 7:06:15 PM
+ * OHLCVReader.java  v0.3  16 June 2014 7:06:15 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Reads open, high, low and closing prices as well as volumes.
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.3

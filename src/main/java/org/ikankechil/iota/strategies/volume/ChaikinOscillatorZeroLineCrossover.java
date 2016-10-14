@@ -10,10 +10,10 @@ import org.ikankechil.iota.strategies.ZeroLineCrossover;
 
 /**
  * Signals when the Chaikin Oscillator crosses over / under zero.
- * <p>
- * Buys when the Chaikin Oscillator crosses over zero<br>
+ *
+ * <p>Buys when the Chaikin Oscillator crosses over zero<br>
  * Sells when the Chaikin Oscillator crosses under zero<br>
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.2

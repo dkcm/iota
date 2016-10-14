@@ -13,7 +13,7 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Directional Movement Index (DX)
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.1

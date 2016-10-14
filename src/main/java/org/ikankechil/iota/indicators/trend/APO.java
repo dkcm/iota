@@ -1,5 +1,5 @@
 /**
- * APO.java  v0.1 19 December 2014 5:57:17 PM
+ * APO.java  v0.1  19 December 2014 5:57:17 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -13,7 +13,7 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Absolute Price Oscillator (APO)
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.1

@@ -13,8 +13,8 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Kendall Indicator by Eric Kendall
- * <p>
- * http://www.addownload.eu/metaK.htm#Kendall Indicator<br>
+ *
+ * <p>http://www.addownload.eu/metaK.htm#Kendall Indicator<br>
  * http://exceltechnical.web.fc2.com/kendall.html<br>
  *
  * @author Daniel Kuan

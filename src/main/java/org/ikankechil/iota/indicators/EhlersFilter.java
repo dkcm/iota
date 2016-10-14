@@ -12,8 +12,8 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Ehlers Filter by John Ehlers.  Nonlinear FIR, Order Statistic (OS) filters.
- * <p>
- * http://www.mesasoftware.com/papers/EhlersFilters.pdf<br>
+ *
+ * <p>http://www.mesasoftware.com/papers/EhlersFilters.pdf<br>
  * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V19/C04/040NON.pdf<br>
  *
  * @author Daniel Kuan

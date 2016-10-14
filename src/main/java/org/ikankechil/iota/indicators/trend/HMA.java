@@ -14,8 +14,8 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Hull Moving Average (HMA) by Alan Hull
- * <p>
- * http://www.alanhull.com/hull-moving-average<br>
+ *
+ * <p>http://www.alanhull.com/hull-moving-average<br>
  * http://www.technicalindicators.net/indicators-technical-analysis/143-hma-hull-moving-average<br>
  *
  * @author Daniel Kuan

@@ -1,5 +1,5 @@
 /**
- * ClosePrice.java	v0.1	10 September 2016 11:52:15 pm
+ * ClosePrice.java  v0.1  10 September 2016 11:52:15 pm
  *
  * Copyright © 2016 Daniel Kuan.  All rights reserved.
  */
@@ -10,7 +10,6 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  *
- * <p>
  *
  *
  * @author Daniel Kuan

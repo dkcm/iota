@@ -1,5 +1,5 @@
 /**
- * OHLCVWriter.java v0.3  11 March 2015 4:49:46 PM
+ * OHLCVWriter.java  v0.3  11 March 2015 4:49:46 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -16,7 +16,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Writes open, high, low and closing prices as well as volumes.
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.3

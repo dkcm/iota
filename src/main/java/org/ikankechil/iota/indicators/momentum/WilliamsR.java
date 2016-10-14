@@ -13,8 +13,8 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Williams %R by Larry Williams
- * <p>
- * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:williams_r
+ *
+ * <p>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:williams_r<br>
  *
  * @author Daniel Kuan
  * @version 0.2

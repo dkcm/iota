@@ -10,8 +10,8 @@ import org.ikankechil.iota.strategies.ThresholdCrossover;
 
 /**
  *
- * <p>
- * https://traderedge.net/2013/01/19/modified-chartmill-value-indicator-mcvi/
+ *
+ * <p>https://traderedge.net/2013/01/19/modified-chartmill-value-indicator-mcvi/<br>
  *
  * @author Daniel Kuan
  * @version 0.2

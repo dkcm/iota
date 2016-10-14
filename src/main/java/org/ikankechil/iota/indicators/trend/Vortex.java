@@ -15,8 +15,8 @@ import org.ikankechil.iota.indicators.volatility.TR;
 
 /**
  * Vortex Indicator by Etienne Botes and Douglas Siepman
- * <p>
- * http://www.traders.com/Reprints/PDF_reprints/VFX_VORTEX.PDF<br>
+ *
+ * <p>http://www.traders.com/Reprints/PDF_reprints/VFX_VORTEX.PDF<br>
  *
  * @author Daniel Kuan
  * @version 0.2

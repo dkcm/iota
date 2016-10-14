@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Writes trading signals.
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.2

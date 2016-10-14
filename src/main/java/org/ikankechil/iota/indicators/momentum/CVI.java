@@ -15,14 +15,14 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Chartmill Value Indicator (CVI) by Dirk Vandycke
- * <p>
- * http://edmond.mires.co/GES816/49-The%20Chartmill%20Value%20Indicator.pdf
- * http://edmond.mires.co/GES816/59-The%20Chartmill%20Value%20Indicator.pdf
- * http://www.chartmill.com/blog/wp-content/uploads/2014/04/TM201111R.pdf
- * http://www.chartmill.com/blog/wp-content/uploads/2014/04/TM201112R.pdf
- * http://www.chartmill.com/blog/wp-content/uploads/2014/04/TM201201R.pdf
- * http://www.trend-friends.be/sites/default/files/9/511VAND.pdf
- * http://traders.com/Documentation/FEEDbk_docs/2013/05/TradersTips.html
+ *
+ * <p>http://edmond.mires.co/GES816/49-The%20Chartmill%20Value%20Indicator.pdf<br>
+ * http://edmond.mires.co/GES816/59-The%20Chartmill%20Value%20Indicator.pdf<br>
+ * http://www.chartmill.com/blog/wp-content/uploads/2014/04/TM201111R.pdf<br>
+ * http://www.chartmill.com/blog/wp-content/uploads/2014/04/TM201112R.pdf<br>
+ * http://www.chartmill.com/blog/wp-content/uploads/2014/04/TM201201R.pdf<br>
+ * http://www.trend-friends.be/sites/default/files/9/511VAND.pdf<br>
+ * http://traders.com/Documentation/FEEDbk_docs/2013/05/TradersTips.html<br>
  *
  * @author Daniel Kuan
  * @version 0.2

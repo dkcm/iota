@@ -17,7 +17,7 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Kirshenbaum Bands
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.1

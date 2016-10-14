@@ -12,8 +12,8 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * ZigZag Validity (ZZV) by Spyros Raftopoulos
- * <p>
- * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V20/C08/159ZIG.pdf
+ *
+ * <p>ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V20/C08/159ZIG.pdf<br>
  *
  * @author Daniel Kuan
  * @version 0.1

@@ -13,9 +13,9 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * DeMarker Indicator by Tom DeMark
- * <p>
- * http://ta.mql4.com/indicators/oscillators/DeMarker
- * http://www.investopedia.com/ask/answers/120514/what-demarker-indicator-formula-and-how-it-calculated.asp
+ *
+ * <p>http://ta.mql4.com/indicators/oscillators/DeMarker<br>
+ * http://www.investopedia.com/ask/answers/120514/what-demarker-indicator-formula-and-how-it-calculated.asp<br>
  *
  * @author Daniel Kuan
  * @version 0.2

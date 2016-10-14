@@ -13,8 +13,8 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Gopalakrishnan Range Index (GAPO) by Jayanthi Gopalakrishnan
- * <p>
- * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V19/C01/003GOPA.pdf<br>
+ *
+ * <p>ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V19/C01/003GOPA.pdf<br>
  * http://www.geniustrader.org/doc/GT/Indicators/GAPO.pm.html<br>
  * http://user42.tuxfamily.org/chart/manual/Gopalakrishnan-Range-Index.html<br>
  *

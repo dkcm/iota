@@ -9,9 +9,9 @@ import org.ikankechil.iota.indicators.Indicator;
 
 /**
  * Crossover with threshold strategy.
- * <p>
- * Cross overs / unders must be below / above a threshold.
- * <p>
+ *
+ * <p>Cross overs / unders must be below / above a threshold.
+ *
  *
  * @author Daniel Kuan
  * @version 0.2

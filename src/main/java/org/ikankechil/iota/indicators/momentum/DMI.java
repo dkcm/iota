@@ -1,5 +1,5 @@
 /**
- * DMI.java v0.1  7 January 2015 11:01:15 pm
+ * DMI.java  v0.1  7 January 2015 11:01:15 pm
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -12,10 +12,10 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Dynamic Momentum Index (DMI), a variable term RSI
- * <p>
- * http://www.fmlabs.com/reference/default.htm?url=DMI.htm
- * http://www.sierrachart.com/Download.php?Folder=SupportBoard&download=1446
- * http://www.tradesignalonline.com/en/lexicon/view.aspx?id=Dynamic+Momentum+Index+%28DYMOI%29
+ *
+ * <p>http://www.fmlabs.com/reference/default.htm?url=DMI.htm<br>
+ * http://www.sierrachart.com/Download.php?Folder=SupportBoard&download=1446<br>
+ * http://www.tradesignalonline.com/en/lexicon/view.aspx?id=Dynamic+Momentum+Index+%28DYMOI%29<br>
  *
  * @author Daniel Kuan
  * @version 0.1

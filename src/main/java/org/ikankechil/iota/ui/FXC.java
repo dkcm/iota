@@ -1,5 +1,5 @@
 /**
- * FXC.java v0.2 2 April 2015 3:40:09 PM
+ * FXC.java  v0.2  2 April 2015 3:40:09 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -11,20 +11,20 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import joptsimple.OptionException;
-import joptsimple.OptionParser;
-import joptsimple.OptionSet;
-import joptsimple.OptionSpec;
-
 import org.ikankechil.iota.OHLCVTimeSeries;
 import org.ikankechil.iota.io.OHLCVWriter;
 import org.ikankechil.iota.utils.FXRateCalculator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import joptsimple.OptionException;
+import joptsimple.OptionParser;
+import joptsimple.OptionSet;
+import joptsimple.OptionSpec;
+
 /**
  * A command-line application that computes currency cross rates.
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.2

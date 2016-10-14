@@ -15,9 +15,9 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Zig Zag by Arthur A. Merrill
- * <p>
- * http://tadoc.org/indicator/ZIGZAG.htm
- * http://stockcharts.com/school/doku.php?id=chart_school:trading_strategies:swing_charting
+ *
+ * <p>http://tadoc.org/indicator/ZIGZAG.htm<br>
+ * http://stockcharts.com/school/doku.php?id=chart_school:trading_strategies:swing_charting<br>
  *
  * @author Daniel Kuan
  * @version 0.4

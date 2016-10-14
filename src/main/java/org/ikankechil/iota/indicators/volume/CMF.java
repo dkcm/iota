@@ -13,19 +13,19 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Chaikin Money Flow (CMF) by Marc Chaikin
- * <p>
- * "Chaikin Money Flow measures buying and selling pressure for a given period
+ *
+ * <p>"Chaikin Money Flow measures buying and selling pressure for a given period
  * of time. A move into positive territory indicates buying pressure, while a
  * move into negative territory indicates selling pressure. Chartists can use
  * the absolute value of Chaikin Money Flow to confirm or question the price
  * action of the underlying. Positive CMF would confirm an uptrend, but negative
  * CMF would call into question the strength behind an uptrend. The reverse
  * holds true for downtrends."
- * <p>
- * http://www.chaikinpowertools.com/education_chaikin-money-flow-technical-indicator.shtml
- * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:chaikin_money_flow_cmf
- * http://www.incrediblecharts.com/indicators/chaikin_money_flow.php
- * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V18/C08/072CHA.pdf
+ *
+ * <p>http://www.chaikinpowertools.com/education_chaikin-money-flow-technical-indicator.shtml<br>
+ * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:chaikin_money_flow_cmf<br>
+ * http://www.incrediblecharts.com/indicators/chaikin_money_flow.php<br>
+ * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V18/C08/072CHA.pdf<br>
  *
  * @author Daniel Kuan
  * @version 0.2

@@ -9,8 +9,8 @@ import org.ikankechil.iota.OHLCVTimeSeries;
 
 /**
  * Modified Chartmill Value Indicator (MCVI) by Brian Johnson
- * <p>
- * http://traderedge.net/2013/01/19/modified-chartmill-value-indicator-mcvi/
+ *
+ * <p>http://traderedge.net/2013/01/19/modified-chartmill-value-indicator-mcvi/<br>
  *
  * @author Daniel Kuan
  * @version 0.1

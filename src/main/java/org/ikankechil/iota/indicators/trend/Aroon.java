@@ -17,11 +17,11 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Aroon by Tushar Chande
- * <p>
- * <a href=
+ *
+ * <p><a href=
  * "http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:aroon"
  * >http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:
- * aroon</a>
+ * aroon</a><br>
  *
  * @author Daniel Kuan
  * @version 0.1

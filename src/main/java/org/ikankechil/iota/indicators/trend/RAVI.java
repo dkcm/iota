@@ -12,8 +12,8 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Range Action Verification Index (RAVI)
- * <p>
- * http://www.tradesignalonline.com/en/lexicon/view.aspx?id=RAVI+Indicator+(RAVI)
+ *
+ * <p>http://www.tradesignalonline.com/en/lexicon/view.aspx?id=RAVI+Indicator+(RAVI)<br>
  *
  * @author Daniel Kuan
  * @version 0.1

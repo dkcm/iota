@@ -15,8 +15,8 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Money Flow Index (MFI) by Gene Quong and Avrum Soudack
- * <p>
- * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:money_flow_index_mfi
+ *
+ * <p>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:money_flow_index_mfi<br>
  *
  * @author Daniel Kuan
  * @version 0.2

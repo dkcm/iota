@@ -13,9 +13,9 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Dual Commodity Channel Index (DCCI) by D.W. Davies
- * <p>
- * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V13/C01/DEFININ.PDF
- * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V13/C12/THECOMM.pdf
+ *
+ * <p>ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V13/C01/DEFININ.PDF<br>
+ * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V13/C12/THECOMM.pdf<br>
  *
  * @author Daniel Kuan
  * @version 0.1

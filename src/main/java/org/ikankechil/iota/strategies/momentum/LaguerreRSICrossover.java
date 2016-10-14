@@ -10,12 +10,12 @@ import org.ikankechil.iota.strategies.ThresholdCrossover;
 
 /**
  *
- * <p>
- * "A typical use of the Laguerre RSI is to buy after the line crosses back over
+ *
+ * <p>"A typical use of the Laguerre RSI is to buy after the line crosses back over
  * the 20 percent level and sell after the price crosses back down over the 80
  * percent level."
- * <p>
- * http://xa.yimg.com/kq/groups/17324418/1380195797/name/cybernetic+analysis+for+stocks+and+futures+cutting-edge+dsp+technology+to+improve+your+trading+(0471463078).pdf
+ *
+ * <p>http://xa.yimg.com/kq/groups/17324418/1380195797/name/cybernetic+analysis+for+stocks+and+futures+cutting-edge+dsp+technology+to+improve+your+trading+(0471463078).pdf<br>
  *
  * @author Daniel Kuan
  * @version 0.1

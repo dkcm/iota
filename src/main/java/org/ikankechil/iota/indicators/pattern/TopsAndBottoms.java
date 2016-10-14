@@ -12,7 +12,7 @@ import org.ikankechil.iota.indicators.Indicator;
 /**
  * <code>Tops</code> and <code>Bottoms</code> combined into one
  * <code>Indicator</code>.
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.4

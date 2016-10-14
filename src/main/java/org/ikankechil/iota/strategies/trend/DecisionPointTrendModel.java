@@ -1,5 +1,5 @@
 /**
- * DecisionPointTrendModel.java v0.1  31 December 2015 1:14:01 am
+ * DecisionPointTrendModel.java  v0.1  31 December 2015 1:14:01 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -20,8 +20,8 @@ import org.slf4j.LoggerFactory;
 
 /**
  * DecisionPoint Trend Analysis
- * <p>
- * http://stockcharts.com/school/doku.php?id=chart_school:trading_strategies:decisionpoint_trend_model
+ *
+ * <p>http://stockcharts.com/school/doku.php?id=chart_school:trading_strategies:decisionpoint_trend_model<br>
  *
  * @author Daniel Kuan
  * @version 0.1

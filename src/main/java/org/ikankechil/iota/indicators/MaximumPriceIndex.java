@@ -1,5 +1,5 @@
 /**
- * MaximumPriceIndex.java  v0.1 27 January 2015 1:00:17 PM
+ * MaximumPriceIndex.java  v0.1  27 January 2015 1:00:17 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -10,7 +10,7 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Maximum Price Index
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.1

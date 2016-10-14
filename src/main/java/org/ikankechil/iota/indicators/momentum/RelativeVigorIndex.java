@@ -1,5 +1,5 @@
 /**
- * RelativeVigorIndex.java  v0.2 7 July 2015 8:00:43 PM
+ * RelativeVigorIndex.java  v0.2  7 July 2015 8:00:43 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -16,8 +16,8 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Relative Vigor Index by John Ehlers
- * <p>
- * http://xa.yimg.com/kq/groups/17324418/1380195797/name/cybernetic+analysis+for+stocks+and+futures+cutting-edge+dsp+technology+to+improve+your+trading+(0471463078).pdf
+ *
+ * <p>http://xa.yimg.com/kq/groups/17324418/1380195797/name/cybernetic+analysis+for+stocks+and+futures+cutting-edge+dsp+technology+to+improve+your+trading+(0471463078).pdf<br>
  *
  * @author Daniel Kuan
  * @version 0.2

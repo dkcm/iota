@@ -14,9 +14,9 @@ import org.ikankechil.iota.indicators.AbstractIndicator;
 
 /**
  * Guppy Multiple Moving Average (GMMA) by Darryl Guppy
- * <p>
- * http://www.chartnexus.com.sg/learning/gmma.php
- * http://www.investopedia.com/terms/g/guppy-multiple-moving-average.asp
+ *
+ * <p>http://www.chartnexus.com.sg/learning/gmma.php<br>
+ * http://www.investopedia.com/terms/g/guppy-multiple-moving-average.asp<br>
  *
  * @author Daniel Kuan
  * @version 0.2

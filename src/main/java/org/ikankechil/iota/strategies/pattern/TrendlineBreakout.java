@@ -13,7 +13,7 @@ import org.ikankechil.iota.strategies.Crossover;
 
 /**
  *
- * <p>
+ *
  *
  *
  * @author Daniel Kuan

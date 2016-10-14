@@ -13,8 +13,8 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Average Directional Movement Rating (ADXR)
- * <p>
- * Quantifies momentum change in the ADX.
+ *
+ * <p>Quantifies momentum change in the ADX.
  *
  * @author Daniel Kuan
  * @version 0.1

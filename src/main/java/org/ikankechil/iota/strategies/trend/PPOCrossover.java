@@ -10,10 +10,10 @@ import org.ikankechil.iota.strategies.CrossoverWithThreshold;
 
 /**
  * PPO Crossover strategy.
- * <p>
- * Buy when PPO crosses over PPO signal line while under a threshold<br>
+ *
+ * <p>Buy when PPO crosses over PPO signal line while under a threshold<br>
  * Sell when PPO crosses PPO signal line while above a threshold<br>
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.1

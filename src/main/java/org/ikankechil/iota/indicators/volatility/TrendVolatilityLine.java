@@ -1,5 +1,5 @@
 /**
- * TrendVolatilityLine.java  v0.1 20 October 2015 6:53:47 PM
+ * TrendVolatilityLine.java  v0.1  20 October 2015 6:53:47 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -17,8 +17,8 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Trend Volatility Line (TVL) by Darryl Guppy
- * <p>
- * http://www.omnitrader.com/PDFs/GMMA2.pdf
+ *
+ * <p>http://www.omnitrader.com/PDFs/GMMA2.pdf<br>
  *
  * @author Daniel Kuan
  * @version 0.1

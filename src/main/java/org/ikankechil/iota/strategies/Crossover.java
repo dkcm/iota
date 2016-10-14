@@ -19,12 +19,12 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Crossover strategy.
- * <p>
- * Buys when the fast time series crosses over the slow time series from below<br>
+ *
+ * <p>Buys when the fast time series crosses over the slow time series from below<br>
  * Sells when the fast time series crosses under the slow time series from above<br>
- * <p>
- * Supports 1-value lookback.
- * <p>
+ *
+ * <p>Supports 1-value lookback.
+ *
  *
  * @author Daniel Kuan
  * @version 0.4

@@ -12,7 +12,7 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Typical Price
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.2

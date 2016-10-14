@@ -14,8 +14,8 @@ import com.tictactec.ta.lib.RetCode;
 /**
  * Arnaud Legoux Moving Average (ALMA) by Arnaud Legoux, Dimitrios Kouzis-Loukas
  * and Anthony Cascino
- * <p>
- * http://www.arnaudlegoux.com/img/ALMA-Arnaud-Legoux-Moving-Average.pdf<br>
+ *
+ * <p>http://www.arnaudlegoux.com/img/ALMA-Arnaud-Legoux-Moving-Average.pdf<br>
  * http://www.wisestocktrader.com/indicators/1477-arnaud-legoux-moving-average<br>
  *
  * @author Daniel Kuan

@@ -1,5 +1,5 @@
 /**
- * OpenPrice.java	v0.1	11 September 2016 12:05:47 am
+ * OpenPrice.java  v0.1  11 September 2016 12:05:47 am
  *
  * Copyright © 2016 Daniel Kuan.  All rights reserved.
  */
@@ -12,7 +12,6 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  *
- * <p>
  *
  *
  * @author Daniel Kuan

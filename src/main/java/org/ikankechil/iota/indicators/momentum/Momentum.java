@@ -12,7 +12,7 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Momentum
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.2

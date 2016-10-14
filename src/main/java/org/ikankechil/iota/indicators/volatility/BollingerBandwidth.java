@@ -13,9 +13,9 @@ import org.ikankechil.iota.TimeSeries;
 
 /**
  * Bollinger Bandwidth
- * <p>
- * http://www.bollingerbands.com/services/bb/
- * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:bollinger_band_width
+ *
+ * <p>http://www.bollingerbands.com/services/bb/<br>
+ * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:bollinger_band_width<br>
  *
  * @author Daniel Kuan
  * @version 0.1

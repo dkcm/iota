@@ -12,9 +12,9 @@ import com.tictactec.ta.lib.MInteger;
 import com.tictactec.ta.lib.RetCode;
 
 /**
- * Martin Pring's Special K
- * <p>
- * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:pring_s_special_k
+ * Special K by Martin Pring
+ *
+ * <p>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:pring_s_special_k<br>
  *
  * @author Daniel Kuan
  * @version 0.1

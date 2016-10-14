@@ -13,8 +13,8 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Balance Of Power (BOP) by Igor Livshin
- * <p>
- * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V19/C08/086BMP.pdf<br>
+ *
+ * <p>ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V19/C08/086BMP.pdf<br>
  * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V19/C08/094TIPS.pdf<br>
  * https://www.linnsoft.com/techind/balance-power-bop<br>
  *

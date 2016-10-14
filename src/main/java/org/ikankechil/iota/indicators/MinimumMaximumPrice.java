@@ -1,5 +1,5 @@
 /**
- * MinimumMaximumPrice.java  v0.1 27 January 2015 12:56:59 PM
+ * MinimumMaximumPrice.java  v0.1  27 January 2015 12:56:59 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -16,7 +16,7 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Minimum and Maximum Price
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.1

@@ -17,16 +17,15 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Moving Average Convergence/Divergence (MACD) by Gerald Appel
- * <p>
- * <a href=
+ *
+ * <p><a href=
  * "http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:moving_average_convergence_divergence_macd"
  * >http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:
- * moving_average_convergence_divergence_macd</a>
- * <p>
+ * moving_average_convergence_divergence_macd</a><br>
  * <a href="http://www.investopedia.com/terms/m/macd.asp">http://www.investopedia.com/terms/m/macd.asp</a>
  *
  * @author Daniel Kuan
- * @version
+ * @version 0.1
  */
 public class MACD extends AbstractIndicator {
 

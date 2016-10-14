@@ -1,5 +1,5 @@
 /**
- * TSI.java  v0.1 19 December 2014 12:10:13 PM
+ * TSI.java  v0.1  19 December 2014 12:10:13 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -12,9 +12,9 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * True Strength Index (TSI) by William Blau
- * <p>
- * https://community.tradestation.com/discussions/data/2002125162918_at-tsi%20jan2002.pdf
- * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:true_strength_index
+ *
+ * <p>https://community.tradestation.com/discussions/data/2002125162918_at-tsi%20jan2002.pdf<br>
+ * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:true_strength_index<br>
  *
  * @author Daniel Kuan
  * @version 0.1

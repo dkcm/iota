@@ -18,7 +18,7 @@ import org.ikankechil.iota.indicators.Indicator;
 
 /**
  * Triangle pattern recognition algorithm.  Covers triangles and wedges.
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.2

@@ -1,7 +1,7 @@
 /**
- * IMI.java  v0.1 11 February 2016 2:35:50 PM
+ * IMI.java  v0.1  11 February 2016 2:35:50 PM
  *
- * Copyright © 2015 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.momentum;
 
@@ -13,10 +13,10 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Intraday Momentum Index (IMI) by Tushar Chande and Stanley Kroll
- * <p>
- * http://www.fxf1.com/english-books/Chande%20Kroll%20-%20The%20New%20Technical%20Trader.pdf
- * http://www.technicalindicators.net/indicators-technical-analysis/173-imi-intraday-momentum-index
- * http://technical.traders.com/tradersonline/display.asp?art=609
+ *
+ * <p>http://www.fxf1.com/english-books/Chande%20Kroll%20-%20The%20New%20Technical%20Trader.pdf<br>
+ * http://www.technicalindicators.net/indicators-technical-analysis/173-imi-intraday-momentum-index<br>
+ * http://technical.traders.com/tradersonline/display.asp?art=609<br>
  *
  * @author Daniel Kuan
  * @version 0.1

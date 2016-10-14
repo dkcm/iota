@@ -19,8 +19,8 @@ import org.ikankechil.iota.indicators.AbstractIndicator;
  * Short-term Daily = KST(10,15,20,30,10,10,10,15,9)<br>
  * Medium-term Weekly = KST(10,13,15,20,10,13,15,20,9)<br>
  * Long-term Monthly = KST(9,12,18,24,6,6,6,9,9)<br>
- * <p>
- * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:know_sure_thing_kst<br>
+ *
+ * <p>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:know_sure_thing_kst<br>
  * http://en.wikipedia.org/wiki/KST_oscillator<br>
  *
  * @author Daniel Kuan

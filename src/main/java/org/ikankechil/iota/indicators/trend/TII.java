@@ -12,14 +12,12 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Trend Intensity Index (TII) by M. H. Pee
- * <p>
- * http://user42.tuxfamily.org/chart/manual/Trend-Intensity-Index.html
- * https://www.forex-tsd.com/filedata/fetch?id=971632
- * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V20/C06/113TRND.pdf
+ * <p>http://user42.tuxfamily.org/chart/manual/Trend-Intensity-Index.html<br>
+ * https://www.forex-tsd.com/filedata/fetch?id=971632<br>
+ * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V20/C06/113TRND.pdf<br>
  *
- * </p>
- * "Pee recommended entering trades when levels of 80 on the upside or 20 on the
- * downside are reached. Lines are shown in Chart at those levels, as is 50
+ * <p>"Pee recommended entering trades when levels of 80 on the upside or 20 on
+ * the downside are reached. Lines are shown in Chart at those levels, as is 50
  * which is a neutral level."
  *
  * @author Daniel Kuan

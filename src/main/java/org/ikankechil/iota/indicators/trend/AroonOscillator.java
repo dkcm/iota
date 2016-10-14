@@ -13,9 +13,9 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Aroon Oscillator
- * <p>
- * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:aroon_oscillator
- * https://www.incrediblecharts.com/indicators/aroon_oscillator.php
+ *
+ * <p>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:aroon_oscillator<br>
+ * https://www.incrediblecharts.com/indicators/aroon_oscillator.php<br>
  *
  * @author Daniel Kuan
  * @version 0.2

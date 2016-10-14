@@ -15,8 +15,8 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Coppock Curve by Edwin "Sedge" Coppock
- * <p>
- * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:coppock_curve
+ *
+ * <p>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:coppock_curve
  *
  * @author Daniel Kuan
  * @version 0.1

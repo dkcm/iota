@@ -12,8 +12,8 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Chande Momentum Oscillator (CMO) by Tushar Chande
- * <p>
- * https://www.incrediblecharts.com/indicators/chande-momentum-oscillator.php<br>
+ *
+ * <p>https://www.incrediblecharts.com/indicators/chande-momentum-oscillator.php<br>
  * https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/cmo<br>
  * http://www.technicalindicators.net/indicators-technical-analysis/144-cmo-chande-momentum-oscillator<br>
  * http://www.motivewave.com/studies/chande_momentum_oscillator.htm<br>

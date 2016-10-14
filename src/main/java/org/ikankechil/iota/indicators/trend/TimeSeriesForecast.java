@@ -12,10 +12,10 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Time Series Forecast (TSF)
- * <p>
+ *
  *
  * @author Daniel Kuan
- * @version
+ * @version 0.1
  */
 public class TimeSeriesForecast extends AbstractIndicator {
 

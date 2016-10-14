@@ -1,5 +1,5 @@
 /**
- * KVO.java  v0.1 8 January 2015 2:04:34 PM
+ * KVO.java  v0.1  8 January 2015 2:04:34 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -13,9 +13,9 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Klinger Volume Oscillator (KVO) by Stephen J. Klinger
- * <p>
- * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V15/C12/IDENTIF.pdf
- * http://www.fmlabs.com/reference/default.htm?url=KO.htm
+ *
+ * <p>ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V15/C12/IDENTIF.pdf<br>
+ * http://www.fmlabs.com/reference/default.htm?url=KO.htm<br>
  *
  * @author Daniel Kuan
  * @version 0.1

@@ -19,10 +19,10 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Signals when an indicator crosses over / under a threshold.
- * <p>
- * Buys when indicator crosses over a threshold<br>
+ *
+ * <p>Buys when indicator crosses over a threshold<br>
  * Sells when indicator crosses under a threshold<br>
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.1

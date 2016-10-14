@@ -12,8 +12,8 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Kaufman Adaptive Moving Average (KAMA)
- * <p>
- * http://www.investopedia.com/articles/trading/08/adaptive-moving-averages.asp
+ *
+ * <p>http://www.investopedia.com/articles/trading/08/adaptive-moving-averages.asp<br>
  *
  * @author Daniel Kuan
  * @version 0.2

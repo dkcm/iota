@@ -1,5 +1,5 @@
 /**
- * IndicatorWithSignalLine.java  v0.2 19 December 2014 6:14:24 PM
+ * IndicatorWithSignalLine.java  v0.2  19 December 2014 6:14:24 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -16,7 +16,7 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  *
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.2

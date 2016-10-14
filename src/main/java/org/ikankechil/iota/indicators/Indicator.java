@@ -12,8 +12,8 @@ import org.ikankechil.iota.TimeSeries;
 
 /**
  * Adapter design pattern for TA-Lib.
- * <p>
- * <a href="http://ta-lib.org/">http://ta-lib.org/</a>
+ *
+ * <p><a href="http://ta-lib.org/">http://ta-lib.org/</a>
  *
  * @author Daniel Kuan
  * @version 0.3

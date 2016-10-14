@@ -13,8 +13,8 @@ import org.ikankechil.iota.TimeSeries;
 
 /**
  * KDJ indicator
- * <p>
- * http://www.wisestocktrader.com/indicators/320-stochastic-j-kdj
+ *
+ * <p>http://www.wisestocktrader.com/indicators/320-stochastic-j-kdj
  *
  * @author Daniel
  * @version 0.1

@@ -13,12 +13,12 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Percentage Price Oscillator (PPO)
- * <p>
- * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:price_oscillators_ppo
- * <a href="http://www.investopedia.com/terms/p/ppo.asp">http://www.investopedia.com/terms/p/ppo.asp</a>
+ *
+ * <p>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:price_oscillators_ppo
+ * <a href="http://www.investopedia.com/terms/p/ppo.asp">http://www.investopedia.com/terms/p/ppo.asp</a><br>
  *
  * @author Daniel Kuan
- * @version
+ * @version 0.1
  */
 public class PPO extends IndicatorWithSignalLine {
 

@@ -15,15 +15,15 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Ulcer Index by Peter G. Martin and Byron McCann
- * <p>
- * "Ulcer Index measures the depth and duration of percentage drawdowns in price
+ *
+ * <p>"Ulcer Index measures the depth and duration of percentage drawdowns in price
  * from earlier highs. The greater a drawdown in value, and the longer it takes
  * to recover to earlier highs, the higher the UI. Technically, it is the square
  * root of the mean of the squared percentage drawdowns in value. The squaring
  * effect penalizes large drawdowns proportionately more than small drawdowns."
  * - Peter G. Martin
- * <p>
- * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:ulcer_index
+ *
+ * <p>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:ulcer_index<br>
  *
  * @author Daniel Kuan
  * @version 0.2

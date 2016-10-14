@@ -10,9 +10,9 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Asymmetrical Relative Strength Index (ARSI) by Sylvain Vervoort
- * <p>
- * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V26/C10/181VERV.pdf
- * http://traders.com/Documentation/FEEDbk_docs/2008/10/TradersTips/TradersTips.html
+ *
+ * <p>ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V26/C10/181VERV.pdf<br>
+ * http://traders.com/Documentation/FEEDbk_docs/2008/10/TradersTips/TradersTips.html<br>
  *
  * @author Daniel Kuan
  * @version 0.1
@@ -96,8 +96,8 @@ class AsymmetricalRSI extends RSI {
       }
 
       final int losses = period - gains;
-      averageGain = (averageGain * (gains * TWO - ONE) + currentGain) / gains;
-      averageLoss = (averageLoss * (losses * TWO - ONE) + currentLoss) / losses;
+      averageGain = (averageGain * (gains << ONE - ONE) + currentGain) / gains;
+      averageLoss = (averageLoss * (losses << ONE - ONE) + currentLoss) / losses;
 
       previous = current;
 

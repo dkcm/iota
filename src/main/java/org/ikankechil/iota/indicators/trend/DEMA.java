@@ -12,8 +12,8 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Double Exponential Moving Average (DEMA)
- * <p>
- * www.investopedia.com/articles/trading/10/double-exponential-moving-average.asp
+ *
+ * <p>www.investopedia.com/articles/trading/10/double-exponential-moving-average.asp<br>
  *
  * @author Daniel Kuan
  * @version 0.2

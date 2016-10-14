@@ -9,10 +9,10 @@ import org.ikankechil.iota.indicators.Indicator;
 
 /**
  * Signals when an indicator crosses over / under zero.
- * <p>
- * Buys when indicator crosses over zero<br>
+ *
+ * <p>Buys when indicator crosses over zero<br>
  * Sells when indicator crosses under zero<br>
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.1

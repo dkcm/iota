@@ -12,11 +12,11 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * T3
- * <p>
- * Volume factor = 0 -> EMA, 1 -> DEMA, 0.7 -> T3
- * <p>
- * http://www.fmlabs.com/reference/default.htm?url=T3.htm
- * http://www.forexfactory.com/attachment.php?attachmentid=709307&d=1306688278
+ *
+ * <p>Volume factor = 0 -> EMA, 1 -> DEMA, 0.7 -> T3<br>
+ *
+ * <p>http://www.fmlabs.com/reference/default.htm?url=T3.htm<br>
+ * http://www.forexfactory.com/attachment.php?attachmentid=709307&d=1306688278<br>
  *
  * @author Daniel Kuan
  * @version 0.1

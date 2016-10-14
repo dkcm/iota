@@ -20,8 +20,8 @@ import org.slf4j.LoggerFactory;
 
 /**
  *
- * <p>
- * Buy on positive trough divergence<br>
+ *
+ * <p>Buy on positive trough divergence<br>
  * Sell on positive peak divergence<br>
  *
  * @author Daniel Kuan

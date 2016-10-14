@@ -14,9 +14,9 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Volatility Ratio by Jack Schwager.
- * <p>
- * http://user42.tuxfamily.org/chart/manual/Volatility-Ratio.html
- * http://www.investopedia.com/ask/answers/031115/what-volatility-ratio-formula-and-how-it-calculated.asp
+ *
+ * <p>http://user42.tuxfamily.org/chart/manual/Volatility-Ratio.html<br>
+ * http://www.investopedia.com/ask/answers/031115/what-volatility-ratio-formula-and-how-it-calculated.asp<br>
  *
  * @author Daniel Kuan
  * @version 0.1

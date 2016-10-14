@@ -1,5 +1,5 @@
 /**
- * RWI.java  v0.1 8 January 2015 7:51:26 PM
+ * RWI.java  v0.1  8 January 2015 7:51:26 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -19,13 +19,13 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Random Walk Index (RWI) by Michael Poulos
- * <p>
- * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V09/C02/OFTREND.PDF
- * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V10/C09/ARETHER.PDF
- * http://edmond.mires.co/GES816/36-The%20Random%20Walk%20Revealed.pdf
- * http://user42.tuxfamily.org/chart/manual/Random-Walk-Index.html#Random-Walk-Index
- * http://www.metastock.com/customer/resources/formulas/formula.aspx?Id=48
- * http://fxcodebase.com/code/viewtopic.php?f=17&t=1166
+ *
+ * <p>ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V09/C02/OFTREND.PDF<br>
+ * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V10/C09/ARETHER.PDF<br>
+ * http://edmond.mires.co/GES816/36-The%20Random%20Walk%20Revealed.pdf<br>
+ * http://user42.tuxfamily.org/chart/manual/Random-Walk-Index.html#Random-Walk-Index<br>
+ * http://www.metastock.com/customer/resources/formulas/formula.aspx?Id=48<br>
+ * http://fxcodebase.com/code/viewtopic.php?f=17&t=1166<br>
  *
  * @author Daniel Kuan
  * @version 0.1

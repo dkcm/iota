@@ -1,5 +1,5 @@
 /**
- * IndicatorReader.java	v0.1	7 December 2014 11:59:45 am
+ * IndicatorReader.java  v0.1  7 December 2014 11:59:45 am
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */

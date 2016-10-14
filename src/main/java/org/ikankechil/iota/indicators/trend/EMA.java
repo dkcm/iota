@@ -1,5 +1,5 @@
 /**
- * EMA.java  v0.2 8 December 2014 7:06:59 PM
+ * EMA.java  v0.2  8 December 2014 7:06:59 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -12,7 +12,7 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Exponential Moving Average (EMA)
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.2

@@ -1,5 +1,5 @@
 /**
- * ROC.java  v0.2 10 December 2014 9:17:51 AM
+ * ROC.java  v0.2  10 December 2014 9:17:51 AM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -12,8 +12,8 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Rate of change (ROC)
- * <p>
- * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:rate_of_change_roc_and_momentum
+ *
+ * <p>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:rate_of_change_roc_and_momentum<br>
  *
  * @author Daniel Kuan
  * @version 0.2

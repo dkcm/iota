@@ -12,9 +12,9 @@ import org.ikankechil.iota.indicators.Indicator;
 
 /**
  * Divergence Index by Matt Storz
- * <p>
- * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V14/C01/QUANTIF.pdf
- * http://www.multicharts.com/support/base/?action=article&id=1758
+ *
+ * <p>ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V14/C01/QUANTIF.pdf<br>
+ * http://www.multicharts.com/support/base/?action=article&id=1758<br>
  *
  * @author Daniel Kuan
  * @version 0.2

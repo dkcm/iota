@@ -13,17 +13,17 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Chaikin Oscillator by Marc Chaikin
- * <p>
- * "It is designed to measure the momentum behind buying and selling pressure
+ *
+ * <p>"It is designed to measure the momentum behind buying and selling pressure
  * (Accumulation Distribution Line). A move into positive territory indicates
  * that the Accumulation Distribution Line is rising and buying pressure
  * prevails. A move into negative territory indicates that the Accumulation
  * Distribution Line is falling and selling pressure prevails. Chartists can
  * anticipate crosses into positive or negative territory by looking for bullish
  * or bearish divergences, respectively."
- * <p>
- * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:chaikin_oscillator
- * https://www.tradingview.com/stock-charts-support/index.php/Chaikin_Oscillator
+ *
+ * <p>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:chaikin_oscillator<br>
+ * https://www.tradingview.com/stock-charts-support/index.php/Chaikin_Oscillator<br>
  *
  * @author Daniel Kuan
  * @version 0.2

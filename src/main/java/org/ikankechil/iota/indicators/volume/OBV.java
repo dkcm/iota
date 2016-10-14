@@ -13,8 +13,8 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * On Balance Volume (OBV) by Joe Granville
- * <p>
- * http://stockcharts.com/school/doku.php?st=obv&id=chart_school:technical_indicators:on_balance_volume_obv
+ *
+ * <p>http://stockcharts.com/school/doku.php?st=obv&id=chart_school:technical_indicators:on_balance_volume_obv<br>
  *
  * @author Daniel Kuan
  * @version 0.2

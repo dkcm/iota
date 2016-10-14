@@ -14,9 +14,9 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Normalized Volatility Indicator by Rajesh Kayakkal
- * <p>
- * http://edmond.mires.co/GES816/21-Normalized%20Volatility%20Indicator.pdf
- * http://traders.com/Documentation/FEEDbk_docs/2010/08/TradersTips.html
+ *
+ * <p>http://edmond.mires.co/GES816/21-Normalized%20Volatility%20Indicator.pdf<br>
+ * http://traders.com/Documentation/FEEDbk_docs/2010/08/TradersTips.html<br>
  *
  * @author Daniel Kuan
  * @version 0.2

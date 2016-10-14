@@ -1,5 +1,5 @@
 /**
- * MoneyFlowVolume.java  v0.2 7 December 2015 5:19:51 PM
+ * MoneyFlowVolume.java  v0.2  7 December 2015 5:19:51 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -13,8 +13,8 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Money Flow Volume
- * <p>
- * https://www.tradingview.com/stock-charts-support/index.php/Money_Flow_Volume
+ *
+ * <p>https://www.tradingview.com/stock-charts-support/index.php/Money_Flow_Volume<br>
  *
  * @author Daniel Kuan
  * @version 0.2

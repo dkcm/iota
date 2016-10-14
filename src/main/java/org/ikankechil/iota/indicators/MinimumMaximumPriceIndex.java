@@ -16,7 +16,7 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Minimum and Maximum Price Index
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.1

@@ -14,8 +14,8 @@ import org.ikankechil.iota.indicators.AbstractIndicator;
 
 /**
  * Trend Detection Index (TDI) by M. H. Pee
- * <p>
- * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V19/C10/112TREN.pdf
+ *
+ * <p>ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V19/C10/112TREN.pdf<br>
  *
  * @author Daniel Kuan
  * @version 0.1

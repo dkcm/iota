@@ -17,10 +17,10 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Self-Adjusting RSI by David Sepiashvili
- * <p>
- * {@link ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V24/C02/023SEPI.pdf}
- * {@link ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V24/C02/037TIPS.pdf}
- * {@link http://www.traders.com/documentation/feedbk_docs/2006/02/TradersTips/TradersTips.html}
+ *
+ * <p>{@link ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V24/C02/023SEPI.pdf}<br>
+ * {@link ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V24/C02/037TIPS.pdf}<br>
+ * {@link http://www.traders.com/documentation/feedbk_docs/2006/02/TradersTips/TradersTips.html}<br>
  *
  * @author Daniel Kuan
  * @version 0.3

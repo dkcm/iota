@@ -1,5 +1,5 @@
 /**
- * FisherTransform.java v0.1  16 January 2015 10:14:56 PM
+ * FisherTransform.java  v0.1  16 January 2015 10:14:56 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -13,10 +13,10 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Fisher Transform by John Ehlers
- * <p>
- * http://user42.tuxfamily.org/chart/manual/Fisher-Transform.html
- * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V20/C11/130fish.pdf
- * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V20/C11/142tips.pdf
+ *
+ * <p>http://user42.tuxfamily.org/chart/manual/Fisher-Transform.html<br>
+ * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V20/C11/130fish.pdf<br>
+ * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V20/C11/142tips.pdf<br>
  *
  * @author Daniel Kuan
  * @version 0.1

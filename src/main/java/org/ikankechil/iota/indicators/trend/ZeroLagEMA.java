@@ -12,7 +12,7 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Zero-Lag Exponential Moving Average (EMA) by Peter Martin
- * <p>
+ *
  *
  *
  * @author Daniel Kuan

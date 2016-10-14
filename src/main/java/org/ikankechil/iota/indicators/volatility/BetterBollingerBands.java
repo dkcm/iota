@@ -14,8 +14,9 @@ import org.ikankechil.iota.indicators.AbstractIndicator;
 
 /**
  * Better Bollinger Bands by Dennis McNicholl
- * <p>
- * http://www.futuresmag.com/2010/04/30/fixing-bollinger-bands
+ *
+ * <p>http://www.futuresmag.com/2010/04/30/fixing-bollinger-bands<br>
+ * http://www.vantharp.com/Tharps-Thoughts/634_June_19_2013.html<br>
  *
  * @author Daniel Kuan
  * @version 0.2
@@ -52,6 +53,17 @@ public class BetterBollingerBands extends AbstractIndicator {
 
   @Override
   public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
+    // Formula:
+    // alpha = 2/(period + 1);
+    // mt = alpha*close + (1 - alpha)*m1;
+    // ut = alpha*m1 + (1 - alpha)*ut;
+    // dt = ((2 - alpha)*m1 - ut)/(1 - alpha);
+    // mt2 = alpha*absvalue(close - dt) + (1 - alpha)*m2;
+    // ut2 = alpha*m2 + (1 - alpha)*ut2;
+    // dt2 = ((2 - alpha)*m2 - ut2)/(1 - alpha);
+    // but = dt + factor*dt2;
+    // blt = dt - factor*dt2;
+
     throwExceptionIfShort(ohlcv);
     final int size = ohlcv.size();
 

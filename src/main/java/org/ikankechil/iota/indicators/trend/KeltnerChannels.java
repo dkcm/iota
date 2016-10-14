@@ -16,11 +16,11 @@ import org.ikankechil.iota.indicators.volatility.ATR;
 
 /**
  * Keltner Channels by Chester Keltner and Linda Bradford Raschke
- * <p>
- * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:keltner_channels
- * http://www.futurepathtrading.com/pdf/TechnicaltradingManual-1.pdf
- * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V17/C12/095KELT.pdf
- * http://edmond.mires.co/GES816/39-Trade%20Breakouts%20And%20Retracements%20With%20TMV.pdf
+ *
+ * <p>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:keltner_channels<br>
+ * http://www.futurepathtrading.com/pdf/TechnicaltradingManual-1.pdf<br>
+ * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V17/C12/095KELT.pdf<br>
+ * http://edmond.mires.co/GES816/39-Trade%20Breakouts%20And%20Retracements%20With%20TMV.pdf<br>
  *
  * @author Daniel Kuan
  * @version 0.2

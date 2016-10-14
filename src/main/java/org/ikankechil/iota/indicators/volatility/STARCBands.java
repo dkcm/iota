@@ -17,9 +17,9 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Stoller Average Range Channels (STARC) by Manning Stoller
- * <p>
- * http://www.investopedia.com/terms/s/starc.asp
- * http://fxtrade.oanda.com/learn/forex-indicators/starc-bands
+ *
+ * <p>http://www.investopedia.com/terms/s/starc.asp<br>
+ * http://fxtrade.oanda.com/learn/forex-indicators/starc-bands<br>
  *
  * @author Daniel Kuan
  * @version 0.1

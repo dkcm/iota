@@ -1,5 +1,5 @@
 /**
- * AccelerationBands.java  v0.1 14 January 2015 9:46:27 AM
+ * AccelerationBands.java  v0.1  14 January 2015 9:46:27 AM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -16,11 +16,11 @@ import com.tictactec.ta.lib.MInteger;
 import com.tictactec.ta.lib.RetCode;
 
 /**
- * Price Headley's Acceleration Bands
- * <p>
- * http://www.bigtrends.com/accelerationbands.pdf
- * http://www2.wealth-lab.com/WL5Wiki/AccelerationBands.ashx
- * https://www.tradingtechnologies.com/help/x-study/technical-indicator-definitions/acceleration-bands-abands/
+ * Acceleration Bands by Price Headley
+ *
+ * <p>http://www.bigtrends.com/accelerationbands.pdf<br>
+ * http://www2.wealth-lab.com/WL5Wiki/AccelerationBands.ashx<br>
+ * https://www.tradingtechnologies.com/help/x-study/technical-indicator-definitions/acceleration-bands-abands/<br>
  *
  * @author Daniel Kuan
  * @version 0.1

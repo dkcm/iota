@@ -1,5 +1,5 @@
 /**
- * SlowRSI.java  v0.1 3 August 2015 1:42:31 PM
+ * SlowRSI.java  v0.1  3 August 2015 1:42:31 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -12,8 +12,8 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Slow Relative Strength Index (SRSI) by Vitali Apirine
- * <p>
- * http://traders.com/Documentation/FEEDbk_docs/2015/07/TradersTips.html
+ *
+ * <p>http://traders.com/Documentation/FEEDbk_docs/2015/07/TradersTips.html<br>
  *
  * @author Daniel Kuan
  * @version 0.1

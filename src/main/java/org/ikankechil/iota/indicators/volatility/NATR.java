@@ -14,9 +14,9 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Normalised Average True Range (NATR) by John Forman
- * <p>
- * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V24/C05/094FOR.pdf
- * http://traders.com/Documentation/FEEDbk_docs/2006/05/TradersTips/TradersTips.html
+ *
+ * <p>ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V24/C05/094FOR.pdf<br>
+ * http://traders.com/Documentation/FEEDbk_docs/2006/05/TradersTips/TradersTips.html<br>
  *
  * @author Daniel Kuan
  * @version 0.2

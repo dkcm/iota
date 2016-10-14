@@ -13,10 +13,10 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Volume Zone Oscillator (VZO) by Walid Khalil and David Steckler
- * <p>
- * http://www.informedtrades.com/attachments/2505d1280781350-volume-analysis-volumezoneoscillator-pdf
- * http://www.traderslog.com/defining-the-trend
- * http://www.highgrowthstock.com/wpstorage/pdf/blog-hgsi-davesteckler-vzo-pzo.pdf
+ *
+ * <p>http://www.informedtrades.com/attachments/2505d1280781350-volume-analysis-volumezoneoscillator-pdf<br>
+ * http://www.traderslog.com/defining-the-trend<br>
+ * http://www.highgrowthstock.com/wpstorage/pdf/blog-hgsi-davesteckler-vzo-pzo.pdf<br>
  *
  * @author Daniel Kuan
  * @version 0.1

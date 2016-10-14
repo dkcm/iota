@@ -10,7 +10,7 @@ import org.ikankechil.iota.strategies.ThresholdCrossover;
 
 /**
  *
- * <p>
+ *
  *
  *
  * @author Daniel Kuan

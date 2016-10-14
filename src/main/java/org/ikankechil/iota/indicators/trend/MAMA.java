@@ -19,8 +19,8 @@ import com.tictactec.ta.lib.RetCode;
  * MESA Adaptive Moving Average (MAMA), an adaptive EMA that varies the EMA
  * alpha to the phase rate of change.  Also includes as its signal line a
  * Following Adaptive Moving Average (FAMA) whose alpha is half that of MAMA's.
- * <p>
- * http://www.mesasoftware.com/papers/MAMA.pdf
+ *
+ * <p>http://www.mesasoftware.com/papers/MAMA.pdf<br>
  *
  * @author Daniel Kuan
  * @version 0.1

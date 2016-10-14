@@ -20,8 +20,8 @@ import org.slf4j.LoggerFactory;
 
 /**
  * CCI Correction by Donald Lambert
- * <p>
- * http://stockcharts.com/school/doku.php?id=chart_school:trading_strategies:cci_correction
+ *
+ * <p>http://stockcharts.com/school/doku.php?id=chart_school:trading_strategies:cci_correction<br>
  *
  * @author Daniel Kuan
  * @version 0.1

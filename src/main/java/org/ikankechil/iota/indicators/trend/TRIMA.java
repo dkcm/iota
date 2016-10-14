@@ -1,5 +1,5 @@
 /**
- * TRIMA.java  v0.1 5 January 2015 7:06:34 PM
+ * TRIMA.java  v0.1  5 January 2015 7:06:34 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -12,7 +12,7 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Triangular Moving Average (TRIMA)
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.1

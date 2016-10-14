@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
 /**
  * Moving Momentum
  * <p>
- * http://stockcharts.com/school/doku.php?id=chart_school:trading_strategies:moving_momentum
+ * http://stockcharts.com/school/doku.php?id=chart_school:trading_strategies:moving_momentum<br>
  *
  * @author Daniel Kuan
  * @version 0.1

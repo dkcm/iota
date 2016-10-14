@@ -13,9 +13,9 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * True Range (TR)
- * <p>
- * http://user42.tuxfamily.org/chart/manual/True-Range.html
- * http://www.macroption.com/true-range/
+ *
+ * <p>http://user42.tuxfamily.org/chart/manual/True-Range.html<br>
+ * http://www.macroption.com/true-range/<br>
  *
  * @author Daniel Kuan
  * @version 0.2

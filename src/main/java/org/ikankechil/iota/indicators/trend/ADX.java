@@ -13,12 +13,12 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Average Directional Movement Index (ADX) by George Lane
- * <p>
- * "The ADX identifies whether the stock or commodity is trending. However, it
+ *
+ * <p>"The ADX identifies whether the stock or commodity is trending. However, it
  * does not reveal the direction the stock is trending, only that it is
  * trending: The stronger the trend, the higher the ADX value."
  *
- * http://www.investopedia.com/articles/trading/07/adx-trend-indicator.asp
+ * <p>http://www.investopedia.com/articles/trading/07/adx-trend-indicator.asp
  * http://www.futuresmag.com/2014/09/30/measuring-trend-strength-and-sensitivity
  *
  * @author Daniel Kuan

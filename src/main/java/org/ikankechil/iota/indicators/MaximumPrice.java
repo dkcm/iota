@@ -10,7 +10,7 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Maximum Price
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.1

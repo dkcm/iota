@@ -10,7 +10,7 @@ import org.ikankechil.iota.SignalTimeSeries;
 
 /**
  * Interface for for all trading strategies.
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.3

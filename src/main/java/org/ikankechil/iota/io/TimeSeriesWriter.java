@@ -1,5 +1,5 @@
 /**
- * TimeSeriesWriter.java v0.2 12 January 2015 4:06:52 PM
+ * TimeSeriesWriter.java  v0.2  12 January 2015 4:06:52 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -12,7 +12,7 @@ import org.ikankechil.iota.TimeSeries;
 
 /**
  *
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.2

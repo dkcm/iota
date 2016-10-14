@@ -13,11 +13,11 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Commodity Channel Index (CCI) by Donald Lambert
- * <p>
- * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:commodity_channel_index_cci
+ *
+ * <p>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:commodity_channel_index_cci
  *
  * @author Daniel Kuan
- * @version
+ * @version 0.1
  */
 public class CCI extends AbstractIndicator {
 

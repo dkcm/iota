@@ -12,9 +12,9 @@ import org.ikankechil.iota.TimeSeries;
 import org.ikankechil.iota.indicators.volatility.BollingerBands;
 
 /**
- * Bollinger %b
- * <p>
- * http://www.bollingerbands.com/services/bb/
+ * Bollinger %b by John Bollinger
+ *
+ * <p>http://www.bollingerbands.com/services/bb/<br>
  *
  * @author Daniel Kuan
  * @version 0.1

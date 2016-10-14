@@ -12,8 +12,8 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Centre of Gravity Oscillator (CGOscillator) by John Ehlers
- * <p>
- * http://www.mesasoftware.com/papers/TheCGOscillator.pdf<br>
+ *
+ * <p>http://www.mesasoftware.com/papers/TheCGOscillator.pdf<br>
  * http://xa.yimg.com/kq/groups/17324418/1380195797/name/cybernetic+analysis+for+stocks+and+futures+cutting-edge+dsp+technology+to+improve+your+trading+(0471463078).pdf<br>
  * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V20/C05/088CENT.pdf<br>
  *

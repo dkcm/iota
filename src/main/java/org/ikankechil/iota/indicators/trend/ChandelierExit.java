@@ -17,8 +17,8 @@ import org.ikankechil.iota.indicators.volatility.ATR;
 
 /**
  * Chandelier Exit by Charles LeBeau
- * <p>
- * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:chandelier_exit<br>
+ *
+ * <p>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:chandelier_exit<br>
  * https://www.incrediblecharts.com/indicators/chandelier_exits.php<br>
  *
  * @author Daniel Kuan

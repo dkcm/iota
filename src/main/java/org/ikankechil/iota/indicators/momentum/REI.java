@@ -1,5 +1,5 @@
 /**
- * REI.java  v0.1 19 January 2015 7:03:45 PM
+ * REI.java  v0.1  19 January 2015 7:03:45 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -13,9 +13,9 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Range Expansion Index (REI) by Thomas DeMark
- * <p>
- * http://en.wikipedia.org/wiki/Range_expansion_index
- * http://user42.tuxfamily.org/chart/manual/TD-Range-Expansion-Index.html#TD-Range-Expansion-Index
+ *
+ * <p>http://en.wikipedia.org/wiki/Range_expansion_index<br>
+ * http://user42.tuxfamily.org/chart/manual/TD-Range-Expansion-Index.html#TD-Range-Expansion-Index<br>
  *
  * @author Daniel Kuan
  * @version 0.1

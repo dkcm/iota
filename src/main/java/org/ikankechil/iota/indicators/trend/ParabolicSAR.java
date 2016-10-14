@@ -13,11 +13,11 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Parabolic SAR by Welles Wilder
- * <p>
- * http://stockcharts.com/school/doku.php?st=sar&id=chart_school:technical_indicators:parabolic_sar
+ *
+ * <p>http://stockcharts.com/school/doku.php?st=sar&id=chart_school:technical_indicators:parabolic_sar<br>
  *
  * @author Daniel Kuan
- * @version
+ * @version 0.1
  */
 public class ParabolicSAR extends AbstractIndicator {
 

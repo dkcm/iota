@@ -1,5 +1,5 @@
 /**
- * StochasticRSI.java  v0.1 9 December 2014 12:25:28 PM
+ * StochasticRSI.java  v0.1  9 December 2014 12:25:28 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -17,10 +17,11 @@ import com.tictactec.ta.lib.MInteger;
 import com.tictactec.ta.lib.RetCode;
 
 /**
- * Stochastic RSI
- * <p>
- * http://www.fmlabs.com/reference/default.htm?url=StochRSI.htm
- * http://www.sierrachart.com/Download.php?Folder=SupportBoard&download=1446
+ * Stochastic RSI by Tushar Chande and Stanley Kroll
+ *
+ * <p>http://www.fmlabs.com/reference/default.htm?url=StochRSI.htm<br>
+ * http://www.sierrachart.com/Download.php?Folder=SupportBoard&download=1446<br>
+ * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:stochrsi<br>
  *
  * @author Daniel Kuan
  * @version 0.1
@@ -44,6 +45,8 @@ public class StochasticRSI extends AbstractIndicator {
 
   @Override
   public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
+    // Formula:
+    // StochRSI = (RSI - Lowest Low RSI) / (Highest High RSI - Lowest Low RSI)
     throwExceptionIfShort(ohlcv);
     final int size = ohlcv.size();
 

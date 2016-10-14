@@ -15,8 +15,8 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Vertical Horizontal Filter (VHF) by Adam White
- * <p>
- * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V18/C07/063VERT.pdf<br>
+ *
+ * <p>ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V18/C07/063VERT.pdf<br>
  * http://www.incrediblecharts.com/indicators/vertical_horizontal_filter.php<br>
  * http://www.ta-guru.com/Book/TechnicalAnalysis/TechnicalIndicators/VerticalHorizontalFilter.php5<br>
  * http://etfhq.com/blog/2011/02/09/vertical-horizontal-filter/<br>

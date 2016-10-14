@@ -13,9 +13,9 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Ultimate Oscillator by Larry Williams
- * <p>
- * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:ultimate_oscillator
- * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V03/C04/ULTI.pdf
+ *
+ * <p>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:ultimate_oscillator<br>
+ * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V03/C04/ULTI.pdf<br>
  *
  * @author Daniel Kuan
  * @version 0.2

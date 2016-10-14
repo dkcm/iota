@@ -7,7 +7,7 @@ package org.ikankechil.iota.indicators.trend;
 
 /**
  *
- * <p>
+ *
  *
  *
  * @author Daniel Kuan

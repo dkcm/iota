@@ -13,9 +13,9 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Relative Volatility Index (RVI) by Donald Dorsey
- * <p>
- * http://user42.tuxfamily.org/chart/manual/Relative-Volatility-Index.html
- * http://etfhq.com/blog/2011/02/16/relative-volatility-index/
+ *
+ * <p>http://user42.tuxfamily.org/chart/manual/Relative-Volatility-Index.html<br>
+ * http://etfhq.com/blog/2011/02/16/relative-volatility-index/<br>
  *
  * @author Daniel Kuan
  * @version 0.1

@@ -12,8 +12,8 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Weighted Moving Average (WMA)
- * <p>
- * http://www.investopedia.com/articles/technical/060401.asp<br>
+ *
+ * <p>http://www.investopedia.com/articles/technical/060401.asp<br>
  * http://www.investopedia.com/ask/answers/071414/whats-difference-between-moving-average-and-weighted-moving-average.asp<br>
  * https://www.tradestation.com/education/labs/analysis-concepts/a-comparative-study-of-moving-averages<br>
  *

@@ -13,12 +13,12 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Pretty Good Oscillator (PGO) by Mark Johnson
- * <p>
- * http://user42.tuxfamily.org/chart/manual/Pretty-Good-Oscillator.html
- * http://exceltechnical.web.fc2.com/pgo.html
  *
- * <p>
- * Strategy:
+ * <p>http://user42.tuxfamily.org/chart/manual/Pretty-Good-Oscillator.html<br>
+ * http://exceltechnical.web.fc2.com/pgo.html<br>
+ *
+ *
+ * <p>Strategy:
  * Mark Johnson's approach was to use it as a break-out system for longer term
  * trades. If the PGO rises above 3.0 then go long, or below -3.0 then go short,
  * and in both cases exit on returning to zero (which is a close back at the

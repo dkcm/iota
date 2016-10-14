@@ -12,8 +12,8 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Price Zone Oscillator (PZO) by Walid Khalil and David Steckler
- * <p>
- * http://www.highgrowthstock.com/wpstorage/pdf/blog-hgsi-davesteckler-vzo-pzo.pdf
+ *
+ * <p>http://www.highgrowthstock.com/wpstorage/pdf/blog-hgsi-davesteckler-vzo-pzo.pdf<br>
  *
  * @author Daniel Kuan
  * @version 0.1

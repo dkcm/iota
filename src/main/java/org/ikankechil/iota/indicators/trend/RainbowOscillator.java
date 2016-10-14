@@ -16,8 +16,8 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Rainbow Oscillator
- * <p>
- * http://www.amibroker.com/library/detail.php?id=101
+ *
+ * <p>http://www.amibroker.com/library/detail.php?id=101<br>
  *
  * @author Daniel Kuan
  * @version 0.1

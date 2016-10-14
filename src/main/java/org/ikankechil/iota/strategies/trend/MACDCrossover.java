@@ -10,10 +10,10 @@ import org.ikankechil.iota.strategies.CrossoverWithThreshold;
 
 /**
  * MACD Crossover strategy.
- * <p>
- * Buy when MACD crosses over MACD signal line while under a threshold<br>
+ *
+ * <p>Buy when MACD crosses over MACD signal line while under a threshold<br>
  * Sell when MACD crosses MACD signal line while above a threshold<br>
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.1

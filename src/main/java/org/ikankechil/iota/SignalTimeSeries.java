@@ -1,5 +1,5 @@
 /**
- * SignalTimeSeries.java v0.2 6 January 2015 7:46:29 PM
+ * SignalTimeSeries.java	v0.2  6 January 2015 7:46:29 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -7,7 +7,6 @@ package org.ikankechil.iota;
 
 /**
  * A time-series of trading signals.
- * <p>
  *
  * @author Daniel Kuan
  * @version 0.2

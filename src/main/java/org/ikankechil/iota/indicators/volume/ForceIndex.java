@@ -14,8 +14,8 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Force Index by Alexander Elder
- * <p>
- * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:force_index
+ *
+ * <p>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:force_index<br>
  *
  * @author Daniel Kuan
  * @version 0.2

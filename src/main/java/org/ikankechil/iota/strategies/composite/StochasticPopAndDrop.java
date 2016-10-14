@@ -20,8 +20,8 @@ import org.slf4j.LoggerFactory;
 /**
  * Stochastic Pop and Drop by Jake Bernstein and David Steckler
  * <p>
- * http://stockcharts.com/school/doku.php?id=chart_school:trading_strategies:stochastic_pop_drop
- * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V18/C08/071POP.pdf
+ * http://stockcharts.com/school/doku.php?id=chart_school:trading_strategies:stochastic_pop_drop<br>
+ * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V18/C08/071POP.pdf<br>
  *
  * @author Daniel Kuan
  * @version 0.1

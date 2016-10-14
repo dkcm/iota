@@ -1,5 +1,5 @@
 /**
- * TimeSeries.java v0.2  26 November 2014 2:50:28 PM
+ * TimeSeries.java	v0.2  26 November 2014 2:50:28 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */

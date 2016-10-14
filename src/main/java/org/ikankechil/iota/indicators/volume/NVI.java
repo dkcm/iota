@@ -13,8 +13,8 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Negative Volume Index (NVI) by Paul Dysart and Norman Fosback
- * <p>
- * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:negative_volume_inde
+ *
+ * <p>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:negative_volume_inde<br>
  *
  * @author Daniel Kuan
  * @version 0.1

@@ -11,8 +11,8 @@ import com.tictactec.ta.lib.MInteger;
 import com.tictactec.ta.lib.RetCode;
 
 /**
- * Type description goes here.
- * <p>
+ *
+ *
  *
  * @author Daniel Kuan
  * @version 0.1

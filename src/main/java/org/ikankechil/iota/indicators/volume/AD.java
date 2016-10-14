@@ -13,8 +13,8 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Accumulation Distribution (AD)
- * <p>
- * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:accumulation_distribution_line
+ *
+ * <p>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:accumulation_distribution_line<br>
  *
  * @author Daniel Kuan
  * @version 0.2

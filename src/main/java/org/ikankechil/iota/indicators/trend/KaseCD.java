@@ -14,9 +14,9 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * KaseCD by Cynthia Kase
- * <p>
- * http://www.kaseco.com/support/articles/The_Two_Faces_of_Momentum.pdf
- * http://www.kasestatware.com/about/kasecd.htm
+ *
+ * <p>http://www.kaseco.com/support/articles/The_Two_Faces_of_Momentum.pdf<br>
+ * http://www.kasestatware.com/about/kasecd.htm<br>
  *
  * @author Daniel Kuan
  * @version 0.1

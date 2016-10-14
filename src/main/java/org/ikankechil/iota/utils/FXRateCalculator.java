@@ -33,7 +33,7 @@ import org.slf4j.LoggerFactory;
 /**
  * A simple foreign exchange rate calculator that can compute currency cross
  * rates.
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.4

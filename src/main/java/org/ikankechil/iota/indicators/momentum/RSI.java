@@ -12,8 +12,8 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Relative Strength Index (RSI) by J. Welles Wilder
- * <p>
- * http://stockcharts.com/school/doku.php?st=rsi+indicator&id=chart_school:technical_indicators:relative_strength_index_rsi
+ *
+ * <p>http://stockcharts.com/school/doku.php?st=rsi+indicator&id=chart_school:technical_indicators:relative_strength_index_rsi<br>
  *
  * @author Daniel Kuan
  * @version 0.3

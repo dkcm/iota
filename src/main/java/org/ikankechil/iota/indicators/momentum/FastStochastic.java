@@ -18,11 +18,11 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Fast Stochastic Oscillator
- * <p>
- * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:stochastic_oscillator_fast_slow_and_full
+ *
+ * <p>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:stochastic_oscillator_fast_slow_and_full
  *
  * @author Daniel Kuan
- * @version
+ * @version 0.1
  */
 public class FastStochastic extends AbstractIndicator {
 

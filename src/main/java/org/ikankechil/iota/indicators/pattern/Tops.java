@@ -11,7 +11,6 @@ import org.ikankechil.iota.indicators.Indicator;
 
 /**
  *
- * <p>
  *
  *
  * @author Daniel Kuan

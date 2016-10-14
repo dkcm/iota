@@ -1,5 +1,5 @@
 /**
- * ChaikinVolatility.java  v0.2 7 January 2015 7:17:18 PM
+ * ChaikinVolatility.java  v0.2  7 January 2015 7:17:18 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -14,9 +14,9 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Chaikin's Volatility
- * <p>
- * http://www.fmlabs.com/reference/default.htm?url=ChaikinVolatility.htm
- * http://www.metastock.com/Customer/Resources/TAAZ/Default.aspx?p=120
+ *
+ * <p>http://www.fmlabs.com/reference/default.htm?url=ChaikinVolatility.htm<br>
+ * http://www.metastock.com/Customer/Resources/TAAZ/Default.aspx?p=120<br>
  *
  * @author Daniel Kuan
  * @version 0.2

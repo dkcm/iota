@@ -1,5 +1,5 @@
 /**
- * AwesomeOscillator.java  v0.2 9 December 2014 1:14:06 PM
+ * AwesomeOscillator.java  v0.2  9 December 2014 1:14:06 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -15,10 +15,10 @@ import com.tictactec.ta.lib.MInteger;
 import com.tictactec.ta.lib.RetCode;
 
 /**
- * Awesome Oscillator (AO)
- * <p>
- * http://www.forexgurus.co.uk/indicators/awesome-oscillator
- * http://www.forexfactory.com/attachment.php?attachmentid=1029464&d=1346336346
+ * Awesome Oscillator (AO) by Bill Williams
+ *
+ * <p>http://www.forexfactory.com/attachment.php?attachmentid=1029464&d=1346336346<br>
+ * http://www.forexfactory.com/attachment.php?attachmentid=1928837&d=1463398508<br>
  *
  * @author Daniel Kuan
  * @version 0.2

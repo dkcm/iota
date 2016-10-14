@@ -17,10 +17,10 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Kase Peak Oscillator by Cynthia Kase
- * <p>
- * http://www.kaseco.com/support/articles/The_Two_Faces_of_Momentum.pdf
- * http://beathespread.com/file/download/15086
- * https://github.com/mtompkins/openAlgo/blob/master/MultiCharts/Indicators/Kase%20Peak%20Oscillator/
+ *
+ * <p>http://www.kaseco.com/support/articles/The_Two_Faces_of_Momentum.pdf<br>
+ * http://beathespread.com/file/download/15086<br>
+ * https://github.com/mtompkins/openAlgo/blob/master/MultiCharts/Indicators/Kase%20Peak%20Oscillator/<br>
  *
  * @author Daniel Kuan
  * @version 0.1

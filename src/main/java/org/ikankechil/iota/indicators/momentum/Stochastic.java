@@ -14,8 +14,8 @@ import org.ikankechil.iota.indicators.AbstractIndicator;
 
 /**
  * Stochastic Oscillator by George C. Lane
- * <p>
- * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:stochastic_oscillator_fast_slow_and_full
+ *
+ * <p>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:stochastic_oscillator_fast_slow_and_full<br>
  *
  * @author Daniel Kuan
  * @version 0.2

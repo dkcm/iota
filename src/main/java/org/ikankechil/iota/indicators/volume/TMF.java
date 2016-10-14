@@ -13,9 +13,9 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Twiggs Money Flow (TMF) by Colin Twiggs
- * <p>
- * http://www.incrediblecharts.com/indicators/twiggs_money_flow.php
- * http://user42.tuxfamily.org/chart/manual/Twiggs-Money-Flow.html
+ *
+ * <p>http://www.incrediblecharts.com/indicators/twiggs_money_flow.php<br>
+ * http://user42.tuxfamily.org/chart/manual/Twiggs-Money-Flow.html<br>
  *
  * @author Daniel Kuan
  * @version 0.2

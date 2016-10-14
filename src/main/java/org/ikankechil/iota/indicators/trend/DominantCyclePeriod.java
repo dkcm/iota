@@ -1,5 +1,5 @@
 /**
- * DominantCyclePeriod.java  v0.1 10 March 2015 4:41:02 PM
+ * DominantCyclePeriod.java  v0.1  10 March 2015 4:41:02 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -12,8 +12,8 @@ import com.tictactec.ta.lib.RetCode;
 
 /**
  * Dominant Cycle Period by John Ehlers
- * <p>
- * http://xa.yimg.com/kq/groups/17324418/1380195797/name/cybernetic+analysis+for+stocks+and+futures+cutting-edge+dsp+technology+to+improve+your+trading+(0471463078).pdf
+ *
+ * <p>http://xa.yimg.com/kq/groups/17324418/1380195797/name/cybernetic+analysis+for+stocks+and+futures+cutting-edge+dsp+technology+to+improve+your+trading+(0471463078).pdf<br>
  *
  * @author Daniel Kuan
  * @version 0.1
