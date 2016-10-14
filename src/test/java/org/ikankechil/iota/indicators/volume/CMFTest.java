@@ -12,7 +12,7 @@ import org.junit.BeforeClass;
 
 /**
  * JUnit test for <code>CMF</code>.
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.2

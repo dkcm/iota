@@ -11,7 +11,7 @@ import org.junit.Test;
 
 /**
  * JUnit test for <code>Signal</code>.
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.1

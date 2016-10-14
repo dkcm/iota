@@ -12,13 +12,12 @@ import org.ikankechil.iota.indicators.Indicator;
 import org.junit.BeforeClass;
 
 /**
-* JUnit test for <code>KST</code>.
-* <p>
-*
-*
-* @author Daniel Kuan
-* @version 0.2
-*/
+ * JUnit test for <code>KST</code>.
+ *
+ *
+ * @author Daniel Kuan
+ * @version 0.2
+ */
 public class KSTTest extends AbstractIndicatorTest {
 
   public KSTTest() {

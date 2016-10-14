@@ -14,7 +14,7 @@ import org.junit.Test;
 
 /**
  * JUnit test for <code>ParabolicSAR</code>.
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.2

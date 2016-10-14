@@ -13,7 +13,7 @@ import org.junit.BeforeClass;
 
 /**
  * JUnit test for <code>UltimateOscillator</code>.
- * <p>
+ *
  *
  *
  * @author Daniel Kuan

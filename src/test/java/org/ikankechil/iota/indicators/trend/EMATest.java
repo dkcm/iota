@@ -17,7 +17,7 @@ import org.junit.BeforeClass;
 
 /**
  * JUnit test for <code>EMA</code>.
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.2

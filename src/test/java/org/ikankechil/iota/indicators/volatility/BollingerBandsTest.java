@@ -13,7 +13,7 @@ import org.junit.BeforeClass;
 
 /**
  * JUnit test for <code>BollingerBands</code>.
- * <p>
+ *
  *
  *
  * @author Daniel Kuan

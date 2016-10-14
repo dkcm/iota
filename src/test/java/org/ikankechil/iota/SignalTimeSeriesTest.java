@@ -13,7 +13,7 @@ import org.junit.Test;
 
 /**
  * JUnit test for <code>SignalTimeSeries</code>.
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.2

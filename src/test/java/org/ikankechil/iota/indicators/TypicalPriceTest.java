@@ -16,7 +16,7 @@ import org.junit.Ignore;
 
 /**
  * JUnit test for <code>TypicalPrice</code>.
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.2

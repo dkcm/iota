@@ -12,7 +12,7 @@ import org.junit.BeforeClass;
 
 /**
  * JUnit test for <code>ChaikinVolatility</code>.
- * <p>
+ *
  *
  *
  * @author Daniel Kuan

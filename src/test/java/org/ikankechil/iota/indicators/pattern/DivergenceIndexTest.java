@@ -14,7 +14,7 @@ import org.junit.BeforeClass;
 
 /**
  * JUnit test for <code>DivergenceIndex</code>.
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.1

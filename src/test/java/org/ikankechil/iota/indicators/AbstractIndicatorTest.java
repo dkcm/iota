@@ -33,7 +33,7 @@ import com.tictactec.ta.lib.Core;
 
 /**
  * Abstract superclass for all <code>Indicator</code> JUnit tests.
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.4

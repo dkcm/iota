@@ -15,7 +15,7 @@ import org.junit.Ignore;
 
 /**
  * JUnit test for <code>AveragePrice</code>.
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.2

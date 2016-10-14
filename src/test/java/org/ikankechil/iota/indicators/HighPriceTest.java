@@ -11,7 +11,7 @@ import org.junit.BeforeClass;
 
 /**
  * JUnit test for <code>HighPrice</code>.
- * <p>
+ *
  *
  *
  * @author Daniel Kuan

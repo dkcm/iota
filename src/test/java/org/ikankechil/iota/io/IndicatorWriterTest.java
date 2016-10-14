@@ -23,7 +23,7 @@ import org.junit.Test;
 
 /**
  * JUnit test for <code>IndicatorWriter</code>.
- * <p>
+ *
  *
  *
  * @author Daniel Kuan

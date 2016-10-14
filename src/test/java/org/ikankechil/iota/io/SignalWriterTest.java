@@ -24,7 +24,7 @@ import org.junit.Test;
 
 /**
  * JUnit test for <code>SignalWriter</code>.
- * <p>
+ *
  *
  *
  * @author Daniel Kuan

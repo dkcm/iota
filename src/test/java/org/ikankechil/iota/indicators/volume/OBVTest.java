@@ -13,7 +13,7 @@ import org.junit.Ignore;
 
 /**
  * JUnit test for <code>OBV</code>.
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.2

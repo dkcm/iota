@@ -21,7 +21,7 @@ import org.junit.Test;
 
 /**
  * JUnit test for <code>GMMA</code>.
- * <p>
+ *
  *
  *
  * @author Daniel Kuan

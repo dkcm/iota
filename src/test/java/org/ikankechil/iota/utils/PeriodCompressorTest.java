@@ -20,7 +20,7 @@ import org.junit.rules.ExpectedException;
 
 /**
  * JUnit test for <code>PeriodCompressor</code>.
- * <p>
+ *
  *
  *
  * @author Daniel Kuan

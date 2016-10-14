@@ -22,7 +22,7 @@ import org.junit.Test;
 
 /**
  * JUnit test for <code>OHLCVWriter</code>.
- * <p>
+ *
  *
  *
  * @author Daniel Kuan

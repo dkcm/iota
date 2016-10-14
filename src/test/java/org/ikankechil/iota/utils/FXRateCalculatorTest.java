@@ -30,7 +30,7 @@ import org.junit.rules.ExpectedException;
 
 /**
  * JUnit test for <code>FXRateCalculator</code>.
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.3

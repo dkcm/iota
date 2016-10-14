@@ -14,7 +14,7 @@ import org.junit.Test;
 
 /**
  * JUnit test for <code>KVO</code>.
- * <p>
+ *
  *
  *
  * @author Daniel Kuan

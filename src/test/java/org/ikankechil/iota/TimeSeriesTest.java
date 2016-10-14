@@ -13,7 +13,7 @@ import org.junit.rules.ExpectedException;
 
 /**
  * A JUnit test for <code>TimeSeries</code>.
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.1

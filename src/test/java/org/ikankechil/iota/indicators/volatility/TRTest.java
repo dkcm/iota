@@ -17,7 +17,7 @@ import org.junit.Ignore;
 
 /**
  * JUnit test for <code>TR</code>.
- * <p>
+ *
  *
  * @author Daniel Kuan
  * @version 0.2
