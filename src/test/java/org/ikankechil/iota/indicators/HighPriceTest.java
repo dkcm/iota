@@ -1,5 +1,5 @@
 /**
- * HighPriceTest.java	v0.1	11 September 2016 12:09:52 am
+ * HighPriceTest.java  v0.1  11 September 2016 12:09:52 am
  *
  * Copyright © 2016 Daniel Kuan.  All rights reserved.
  */

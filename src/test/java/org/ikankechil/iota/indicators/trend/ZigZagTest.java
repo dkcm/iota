@@ -11,7 +11,7 @@ import org.ikankechil.iota.indicators.AbstractIndicatorTest;
 import org.junit.BeforeClass;
 
 /**
- *
+ * JUnit test for <code>ZigZag</code>.
  *
  *
  *

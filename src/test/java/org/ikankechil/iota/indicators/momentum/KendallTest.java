@@ -1,5 +1,5 @@
 /**
- * KendallTest.java  v0.2 25 November 2015 3:04:23 PM
+ * KendallTest.java  v0.2  25 November 2015 3:04:23 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

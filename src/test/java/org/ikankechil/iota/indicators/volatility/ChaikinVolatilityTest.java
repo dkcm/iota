@@ -1,5 +1,5 @@
 /**
- * ChaikinVolatilityTest.java v0.1	10 September 2016 11:20:28 pm
+ * ChaikinVolatilityTest.java  v0.1  10 September 2016 11:20:28 pm
  *
  * Copyright © 2016 Daniel Kuan.  All rights reserved.
  */

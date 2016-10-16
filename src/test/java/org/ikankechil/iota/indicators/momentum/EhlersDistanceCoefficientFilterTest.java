@@ -1,5 +1,5 @@
 /**
- * EhlersDistanceCoefficientFilterTest.java  v0.2 9 July 2015 12:55:11 PM
+ * EhlersDistanceCoefficientFilterTest.java  v0.2  9 July 2015 12:55:11 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

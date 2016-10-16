@@ -1,5 +1,5 @@
 /**
- * OHLCVWriterTest.java v0.1  20 June 2015 12:08:16 am
+ * OHLCVWriterTest.java  v0.1  20 June 2015 12:08:16 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

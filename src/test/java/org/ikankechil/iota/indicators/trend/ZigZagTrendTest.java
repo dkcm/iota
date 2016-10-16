@@ -1,5 +1,5 @@
 /**
- * ZigZagTrendTest.java  v0.2 16 December 2015 9:31:57 AM
+ * ZigZagTrendTest.java  v0.2  16 December 2015 9:31:57 AM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */

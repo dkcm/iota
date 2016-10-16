@@ -1,5 +1,5 @@
 /**
- * AroonOscillatorTest.java v0.1	7 September 2016 12:22:01 am
+ * AroonOscillatorTest.java  v0.1  7 September 2016 12:22:01 am
  *
  * Copyright © 2016 Daniel Kuan.  All rights reserved.
  */

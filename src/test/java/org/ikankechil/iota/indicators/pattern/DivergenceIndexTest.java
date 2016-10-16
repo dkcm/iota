@@ -1,5 +1,5 @@
 /**
- * DivergenceIndexTest.java  v0.1 21 April 2016 10:37:36 pm
+ * DivergenceIndexTest.java  v0.1  21 April 2016 10:37:36 pm
  *
  * Copyright © 2016 Daniel Kuan.  All rights reserved.
  */

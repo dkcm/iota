@@ -1,5 +1,5 @@
 /**
- * LowPriceTest.java	v0.1	11 September 2016 12:10:19 am
+ * LowPriceTest.java  v0.1  11 September 2016 12:10:19 am
  *
  * Copyright © 2016 Daniel Kuan.  All rights reserved.
  */
@@ -28,6 +28,5 @@ public class LowPriceTest extends AbstractIndicatorTest {
     TEST_CLASS = LowPriceTest.class;
     AbstractIndicatorTest.setUpBeforeClass();
   }
-
 
 }

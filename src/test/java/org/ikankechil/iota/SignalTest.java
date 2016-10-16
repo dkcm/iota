@@ -1,5 +1,5 @@
 /**
- * SignalTest.java v0.1 21 July 2016 6:46:31 pm
+ * SignalTest.java  v0.1  21 July 2016 6:46:31 pm
  *
  * Copyright © 2016 Daniel Kuan.  All rights reserved.
  */

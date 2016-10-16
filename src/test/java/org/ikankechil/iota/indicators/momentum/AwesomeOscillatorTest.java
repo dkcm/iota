@@ -20,7 +20,6 @@ import org.junit.BeforeClass;
  */
 public class AwesomeOscillatorTest extends AbstractIndicatorTest {
 
-//  private static final int FAST = 5;
   private static final int SLOW = 34;
 
   public AwesomeOscillatorTest() {
