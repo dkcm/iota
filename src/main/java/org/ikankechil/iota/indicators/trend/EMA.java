@@ -44,14 +44,14 @@ public class EMA extends AbstractIndicator {
     // first value is SMA
     int v = ZERO;
     double previous = values[v];
-    for (; ++v < period; ) {
+    while (++v < period) {
       previous += values[v];
     }
-
-    // subsequent values are EMA
     int i = ZERO;
     output[i] = previous /= period;
-    for (; ++i < output.length; ) {
+
+    // subsequent values are EMA
+    while (++i < output.length) {
       output[i] = previous += alpha * (values[v++] - previous);
     }
 
