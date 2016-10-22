@@ -1,5 +1,5 @@
 /**
- * DCCI.java  v0.1  25 November 2015 12:12:13 PM
+ * DCCI.java  v0.2  25 November 2015 12:12:13 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -18,7 +18,7 @@ import com.tictactec.ta.lib.RetCode;
  * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V13/C12/THECOMM.pdf<br>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class DCCI extends IndicatorWithSignalLine {
 
@@ -33,7 +33,7 @@ public class DCCI extends IndicatorWithSignalLine {
   }
 
   public DCCI(final int period, final int signal) {
-    super(signal, TA_LIB.cciLookback(period) + TA_LIB.emaLookback(signal));
+    super(signal, (period + signal - TWO));
 
     cci = new CCI(period);
 

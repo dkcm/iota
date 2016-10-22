@@ -1,5 +1,5 @@
 /**
- * PGO.java  v0.1  16 January 2015 11:21:44 PM
+ * PGO.java  v0.2  16 January 2015 11:21:44 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -7,6 +7,7 @@ package org.ikankechil.iota.indicators.momentum;
 
 import org.ikankechil.iota.OHLCVTimeSeries;
 import org.ikankechil.iota.indicators.AbstractIndicator;
+import org.ikankechil.iota.indicators.volatility.ATR;
 
 import com.tictactec.ta.lib.MInteger;
 import com.tictactec.ta.lib.RetCode;
@@ -25,20 +26,20 @@ import com.tictactec.ta.lib.RetCode;
  * SMA).
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class PGO extends AbstractIndicator {
 
-  private final int smaLookback;
+  private final ATR atr;
 
   public PGO() {
     this(TWENTY_FIVE);
   }
 
   public PGO(final int period) {
-    super(period, TA_LIB.atrLookback(period));
+    super(period, period);
 
-    smaLookback = TA_LIB.smaLookback(period);
+    atr = new ATR(period);
   }
 
   @Override
@@ -51,36 +52,14 @@ public class PGO extends AbstractIndicator {
     // Formula:
     // PGO = (Close - SMA(n)) / ATR(n)
 
-    final int size = ohlcv.size();
     final double[] closes = ohlcv.closes();
 
-    // compute SMA
-    final double[] sma = new double[size - smaLookback];
-    RetCode outcome = TA_LIB.sma(start,
-                                 end,
-                                 closes,
-                                 period,
-                                 outBegIdx,
-                                 outNBElement,
-                                 sma);
-    throwExceptionIfBad(outcome, ohlcv);
-
-    // compute ATR TODO confirm SMA, and not EMA, of true range
-    final double[] atr = new double[size - lookback];
-    outcome = TA_LIB.atr(start,
-                         end,
-                         ohlcv.highs(),
-                         ohlcv.lows(),
-                         closes,
-                         period,
-                         outBegIdx,
-                         outNBElement,
-                         atr);
-    throwExceptionIfBad(outcome, ohlcv);
+    final double[] sma = sma(closes, period);
+    final double[] atrs = atr.generate(ohlcv).get(ZERO).values();
 
     // compute indicator
     for (int i = ZERO, c = i + lookback, s = i + ONE; i < output.length; ++i, ++c, ++s) {
-      output[i] = (closes[c] - sma[s]) / atr[i];
+      output[i] = (closes[c] - sma[s]) / atrs[i];
     }
 
     outBegIdx.value = lookback;

@@ -27,7 +27,7 @@ public class DeMarker extends AbstractIndicator {
   }
 
   public DeMarker(final int period) {
-    super(period, TA_LIB.smaLookback(period) + ONE);
+    super(period, period);
   }
 
   @Override
@@ -52,34 +52,9 @@ public class DeMarker extends AbstractIndicator {
     final double[] lows = ohlcv.lows();
 
     // compute DeMax(i) and DeMin(i)
-    final int size = (end - start);
-    final double[] deMax = new double[size];
-    final double[] deMin = new double[size];
-
-    int j = ZERO;
-    double previousHigh = highs[j];
-    double previousLow = lows[j];
-    for (int i = ZERO; i < end; ++i) {
-      final double currentHigh = highs[++j];
-      final double currentLow = lows[j];
-      final double deltaHigh = currentHigh - previousHigh;
-      if (deltaHigh > ZERO) {
-        deMax[i] = deltaHigh;
-      }
-      final double deltaLow = currentLow - previousLow;
-      if (deltaLow < ZERO) {
-        deMin[i] = -deltaLow;
-      }
-//      // alternate
-//      if (currentHigh > previousHigh) {
-//        deMax[i] = currentHigh - previousHigh;
-//      }
-//      if (currentLow < previousLow) {
-//        deMin[i] = previousLow - currentLow;
-//      }
-      previousHigh = currentHigh;
-      previousLow = currentLow;
-    }
+    final double[] deMax = new double[highs.length - ONE];
+    final double[] deMin = new double[deMax.length];
+    computeDeMaxDeMin(deMax, deMin, highs, lows);
 
     // compute SMA DeMax
     final double[] smaDeMax = sma(deMax, period);
@@ -95,6 +70,29 @@ public class DeMarker extends AbstractIndicator {
     outBegIdx.value = lookback;
     outNBElement.value = output.length;
     return RetCode.Success;
+  }
+
+  private static final void computeDeMaxDeMin(final double[] deMax,
+                                              final double[] deMin,
+                                              final double[] highs,
+                                              final double[] lows) {
+    int j = ZERO;
+    double previousHigh = highs[j];
+    double previousLow = lows[j];
+    for (int i = ZERO; ++j < highs.length; ++i) {
+      final double currentHigh = highs[j];
+      final double currentLow = lows[j];
+      if (currentHigh > previousHigh) {
+        deMax[i] = currentHigh - previousHigh;
+      }
+      if (currentLow < previousLow) {
+        deMin[i] = previousLow - currentLow;
+      }
+
+      // shift forward in time
+      previousHigh = currentHigh;
+      previousLow = currentLow;
+    }
   }
 
 }

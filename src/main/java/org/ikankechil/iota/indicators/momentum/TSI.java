@@ -28,7 +28,7 @@ public class TSI extends AbstractIndicator {
   }
 
   public TSI(final int period, final int smoothPeriod) {
-    super(period, ONE + TA_LIB.emaLookback(period) + TA_LIB.emaLookback(smoothPeriod));
+    super(period, (period + smoothPeriod - ONE));
     throwExceptionIfNegative(smoothPeriod);
 
     this.smoothPeriod = smoothPeriod;

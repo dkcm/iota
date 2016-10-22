@@ -1,5 +1,5 @@
 /**
- * STARCBands.java  v0.1  8 January 2015 6:06:28 PM
+ * STARCBands.java  v0.2  8 January 2015 6:06:28 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -12,9 +12,6 @@ import org.ikankechil.iota.OHLCVTimeSeries;
 import org.ikankechil.iota.TimeSeries;
 import org.ikankechil.iota.indicators.AbstractIndicator;
 
-import com.tictactec.ta.lib.MInteger;
-import com.tictactec.ta.lib.RetCode;
-
 /**
  * Stoller Average Range Channels (STARC) by Manning Stoller
  *
@@ -22,14 +19,13 @@ import com.tictactec.ta.lib.RetCode;
  * http://fxtrade.oanda.com/learn/forex-indicators/starc-bands<br>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class STARCBands extends AbstractIndicator {
 
-  private final int           atr;
+  private final ATR           atr;
   private final double        multiplier;
-  private final int           smaLookback;
-  private final int           atrLookback;
+  private final int           smaOffset;
 
   private static final String UPPER_BAND  = "Upper STARC Band";
   private static final String MIDDLE_BAND = "Middle STARC Band";
@@ -44,14 +40,12 @@ public class STARCBands extends AbstractIndicator {
   }
 
   public STARCBands(final int period, final int atr, final double multiplier) {
-    super(period, Math.max(TA_LIB.smaLookback(period), TA_LIB.atrLookback(atr)));
+    super(period, Math.max(period - ONE, atr));
     throwExceptionIfNegative(atr, multiplier);
 
-    this.atr = atr;
+    this.atr = new ATR(atr);
     this.multiplier = multiplier;
-
-    smaLookback = TA_LIB.smaLookback(period);
-    atrLookback = TA_LIB.atrLookback(atr);
+    smaOffset = lookback - (period - ONE);
   }
 
   @Override
@@ -64,38 +58,15 @@ public class STARCBands extends AbstractIndicator {
     final int size = ohlcv.size();
     final double[] closes = ohlcv.closes();
 
-    final MInteger outBegIdx = new MInteger();
-    final MInteger outNBElement = new MInteger();
-
-    // compute SMA
-    final double[] smas = new double[size - smaLookback];
-    RetCode outcome = TA_LIB.sma(ZERO,
-                                 size - ONE,
-                                 closes,
-                                 period,
-                                 outBegIdx,
-                                 outNBElement,
-                                 smas);
-    throwExceptionIfBad(outcome, ohlcv);
-
-    // compute ATR
-    final double[] atrs = new double[size - atrLookback];
-    outcome = TA_LIB.atr(ZERO,
-                         size - ONE,
-                         ohlcv.highs(),
-                         ohlcv.lows(),
-                         closes,
-                         atr,
-                         outBegIdx,
-                         outNBElement,
-                         atrs);
-    throwExceptionIfBad(outcome, ohlcv);
+    // compute SMA and ATR
+    final double[] smas = sma(closes, period);
+    final double[] atrs = atr.generate(ohlcv).get(ZERO).values();
 
     // compute indicator
     final double[] upperSTARCBand = new double[size - lookback];
     final double[] lowerSTARCBand = new double[upperSTARCBand.length];
 
-    for (int i = ZERO, s = lookback - smaLookback, a = lookback - atrLookback;
+    for (int i = ZERO, s = smaOffset, a = lookback - atr.lookback();
          i < upperSTARCBand.length;
          ++i, ++s, ++a) {
       final double sma = smas[s];
@@ -113,7 +84,7 @@ public class STARCBands extends AbstractIndicator {
                          new TimeSeries(MIDDLE_BAND,
                                         dates,
                                         Arrays.copyOfRange(smas,
-                                                           lookback - smaLookback,
+                                                           smaOffset,
                                                            smas.length)),
                          new TimeSeries(LOWER_BAND,
                                         dates,
