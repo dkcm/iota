@@ -27,7 +27,7 @@ public class SlowRSI extends AbstractIndicator {
   }
 
   public SlowRSI(final int period, final int ema) {
-    super(period, TA_LIB.emaLookback(period) + TA_LIB.emaLookback(ema));
+    super(period, (period + ema - TWO));
     throwExceptionIfNegative(ema);
 
     this.ema = ema;

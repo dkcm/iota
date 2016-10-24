@@ -27,7 +27,7 @@ public class RainbowCharts extends AbstractIndicator {
   }
 
   public RainbowCharts(final int period) {
-    super(period, TA_LIB.smaLookback(period) * NINE);
+    super(period, (period - ONE) * NINE);
   }
 
   @Override

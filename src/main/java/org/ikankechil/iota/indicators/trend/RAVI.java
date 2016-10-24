@@ -28,7 +28,7 @@ public class RAVI extends AbstractIndicator {
   }
 
   public RAVI(final int fast, final int slow) {
-    super(TA_LIB.smaLookback(slow));
+    super(slow - ONE);
     throwExceptionIfNegative(fast, slow);
     if (fast > slow) {
       throw new IllegalArgumentException(String.format("fast > slow: %d > %d",

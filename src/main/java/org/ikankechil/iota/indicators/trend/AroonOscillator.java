@@ -1,11 +1,14 @@
 /**
- * AroonOscillator.java  v0.2  9 December 2014 12:04:45 PM
+ * AroonOscillator.java  v0.3  9 December 2014 12:04:45 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.trend;
 
+import java.util.List;
+
 import org.ikankechil.iota.OHLCVTimeSeries;
+import org.ikankechil.iota.TimeSeries;
 import org.ikankechil.iota.indicators.AbstractIndicator;
 
 import com.tictactec.ta.lib.MInteger;
@@ -18,9 +21,11 @@ import com.tictactec.ta.lib.RetCode;
  * https://www.incrediblecharts.com/indicators/aroon_oscillator.php<br>
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class AroonOscillator extends AbstractIndicator {
+
+  private final Aroon aroon;
 
   public AroonOscillator() {
     this(TWENTY_FIVE);
@@ -28,6 +33,8 @@ public class AroonOscillator extends AbstractIndicator {
 
   public AroonOscillator(final int period) {
     super(period, period);
+
+    aroon = new Aroon(period);
   }
 
   @Override
@@ -41,35 +48,18 @@ public class AroonOscillator extends AbstractIndicator {
     // Aroon Oscillator = Aroon-Up - Aroon-Down
 
     // compute Aroons
-    final double[] aroonUp = new double[ohlcv.size() - lookback];
-    final double[] aroonDown = new double[aroonUp.length];
-
-    final RetCode outcome = TA_LIB.aroon(start,
-                                         end,
-                                         ohlcv.highs(),
-                                         ohlcv.lows(),
-                                         period,
-                                         outBegIdx,
-                                         outNBElement,
-                                         aroonDown,
-                                         aroonUp);
-    throwExceptionIfBad(outcome, ohlcv);
+    final List<TimeSeries> aroons = aroon.generate(ohlcv);
+    final TimeSeries aroonUp = aroons.get(ZERO);
+    final TimeSeries aroonDown = aroons.get(ONE);
 
     // compute indicator
     for (int i = ZERO; i < output.length; ++i) {
-      output[i] = aroonUp[i] - aroonDown[i];
+      output[i] = aroonUp.value(i) - aroonDown.value(i);
     }
 
-    return outcome;
-
-//    return TA_LIB.aroonOsc(start,
-//                           end,
-//                           ohlcv.highs(),
-//                           ohlcv.lows(),
-//                           period,
-//                           outBegIdx,
-//                           outNBElement,
-//                           output);
+    outBegIdx.value = lookback;
+    outNBElement.value = output.length;
+    return RetCode.Success;
   }
 
 }

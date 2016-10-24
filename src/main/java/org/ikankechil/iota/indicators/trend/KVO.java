@@ -27,7 +27,7 @@ public class KVO extends IndicatorWithSignalLine {
   private static final int         EMA34    = 34;
   private static final int         EMA55    = 55;
 
-  private static final int         LOOKBACK = TA_LIB.emaLookback(EMA55) + VF.lookback() + TA_LIB.emaLookback(THIRTEEN);
+  private static final int         LOOKBACK = (EMA55 - ONE) + VF.lookback() + (THIRTEEN - ONE);
 
   public KVO() {
     super(THIRTEEN, LOOKBACK);

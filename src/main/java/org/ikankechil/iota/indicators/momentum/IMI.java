@@ -58,33 +58,26 @@ public class IMI extends AbstractIndicator {
       }
     }
 
-    final double[] sumGains = sum(period, gains);
-    final double[] sumLosses = sum(period, losses);
-
-    for (int i = ZERO; i < output.length; ++i) {
-      output[i] = imi(sumGains[i], sumLosses[i]);
-    }
-
     int v = ZERO;
-    double gain = gains[v];
-    double loss = losses[v];
-    for (; ++v < period; ) {
-      gain += gains[v];
-      loss += losses[v];
+    double sumGain = gains[v];
+    double sumLoss = losses[v];
+    while (++v < period) {
+      sumGain += gains[v];
+      sumLoss += losses[v];
     }
 
     // compute indicator (first value)
     int i = ZERO;
-    double imi = imi(gain, loss);
+    double imi = imi(sumGain, sumLoss);
     output[i] = imi;
 
     // compute gains and losses (subsequent value)
     for (; v < size; ++v) {
-      gain += gains[v] - gains[i];
-      loss += losses[v] - losses[i];
+      sumGain += gains[v] - gains[i];
+      sumLoss += losses[v] - losses[i];
 
       // compute indicator (subsequent values)
-      output[++i] = imi = imi(gain, loss);
+      output[++i] = imi = imi(sumGain, sumLoss);
     }
 
     outBegIdx.value = lookback;

@@ -32,7 +32,7 @@ class TMF extends AbstractIndicator {
   public TMF(final int period) {
     super(period, period);
 
-    trueRangeLookback = TA_LIB.trueRangeLookback();
+    trueRangeLookback = ONE;
     multiplier = (period - ONE) / period;
   }
 

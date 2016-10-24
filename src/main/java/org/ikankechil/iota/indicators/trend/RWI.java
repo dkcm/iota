@@ -1,5 +1,5 @@
 /**
- * RWI.java  v0.1  8 January 2015 7:51:26 PM
+ * RWI.java  v0.2  8 January 2015 7:51:26 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -13,9 +13,7 @@ import java.util.List;
 import org.ikankechil.iota.OHLCVTimeSeries;
 import org.ikankechil.iota.TimeSeries;
 import org.ikankechil.iota.indicators.AbstractIndicator;
-
-import com.tictactec.ta.lib.MInteger;
-import com.tictactec.ta.lib.RetCode;
+import org.ikankechil.iota.indicators.volatility.TR;
 
 /**
  * Random Walk Index (RWI) by Michael Poulos
@@ -28,9 +26,11 @@ import com.tictactec.ta.lib.RetCode;
  * http://fxcodebase.com/code/viewtopic.php?f=17&t=1166<br>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class RWI extends AbstractIndicator {
+
+  private static final TR     TR                   = new TR();
 
   private static final int    MIN_LOOKBACK         = TWO;
   private static final int    DEFAULT_MAX_LOOKBACK = 64;
@@ -38,8 +38,8 @@ public class RWI extends AbstractIndicator {
   private static final String RWI_HIGH             = "RWI High";
   private static final String RWI_LOW              = "RWI Low";
 
-  private static final String TRUE_RANGE_GENERATED = "True range generated for: {} on {}";
-  private static final String RWI_GENERATED        = "RWIs generated: index = {} (date = {}, high = {}, low = {})";
+//  private static final String TRUE_RANGE_GENERATED = "True range generated for: {} on {}";
+//  private static final String RWI_GENERATED        = "RWIs generated: index = {} (date = {}, high = {}, low = {})";
 
   /**
    * Short-term RWI: 2- to 7-day
@@ -48,7 +48,7 @@ public class RWI extends AbstractIndicator {
    * @param maxLookback
    */
   public RWI(final int maxLookback) {
-    super(maxLookback, maxLookback + TA_LIB.trueRangeLookback());
+    super(maxLookback, maxLookback + TR.lookback());
 
     sqrt(maxLookback);  // initialise, if required when maxLookback > DEFAULT_MAX_LOOKBACK
   }
@@ -89,27 +89,9 @@ public class RWI extends AbstractIndicator {
     // RWI Low = MAX((High(n) - Low) / (ATR(n) * SQRT(n)))
 
     throwExceptionIfShort(ohlcv);
-    final int size = ohlcv.size();
-
-    final double[] highs = ohlcv.highs();
-    final double[] lows = ohlcv.lows();
-    final double[] closes = ohlcv.closes();
-
-    final MInteger outBegIdx = new MInteger();
-    final MInteger outNBElement = new MInteger();
 
     // compute True Range
-    final double[] trueRange = new double[size - TA_LIB.trueRangeLookback()];
-    final RetCode outcome = TA_LIB.trueRange(ZERO,
-                                             size - ONE,
-                                             highs,
-                                             lows,
-                                             closes,
-                                             outBegIdx,
-                                             outNBElement,
-                                             trueRange);
-    throwExceptionIfBad(outcome, ohlcv);
-    logger.debug(TRUE_RANGE_GENERATED, name, ohlcv);
+    final double[] trueRange = TR.generate(ohlcv).get(ZERO).values();
 
     return rwi(ohlcv, trueRange);
   }
@@ -139,11 +121,11 @@ public class RWI extends AbstractIndicator {
       rwiHighs[i] = max(rwiHighsToday);
       rwiLows[i] = max(rwiLowsToday);
 
-      logger.trace(RWI_GENERATED,
-                   today,
-                   ohlcv.date(today),
-                   rwiHighs[i],
-                   rwiLows[i]);
+//      logger.trace(RWI_GENERATED,
+//                   today,
+//                   ohlcv.date(today),
+//                   rwiHighs[i],
+//                   rwiLows[i]);
     }
 
     final String[] dates = Arrays.copyOfRange(ohlcv.dates(), lookback, size);
