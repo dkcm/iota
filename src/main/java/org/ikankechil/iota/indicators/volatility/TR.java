@@ -1,5 +1,5 @@
 /**
- * TR.java  v0.2  15 December 2014 2:21:16 PM
+ * TR.java  v0.3  15 December 2014 2:21:16 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -18,7 +18,7 @@ import com.tictactec.ta.lib.RetCode;
  * http://www.macroption.com/true-range/<br>
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class TR extends AbstractIndicator {
 
@@ -46,7 +46,7 @@ public class TR extends AbstractIndicator {
     int i = ZERO;
     double close = ohlcv.close(i);
     while (i < output.length) {
-      output[i++] = max(ohlcv.high(i), close) - min(ohlcv.low(i), close);
+      output[i++] = trueRange(ohlcv.high(i), ohlcv.low(i), close);
       close = ohlcv.close(i);
     }
 
@@ -55,12 +55,18 @@ public class TR extends AbstractIndicator {
     return RetCode.Success;
   }
 
-  private static final double max(final double a, final double b) {
-    return (a >= b) ? a : b;
-  }
-
-  private static double min(final double a, final double b) {
-    return (a <= b) ? a : b;
+  public static final double trueRange(final double highToday, final double lowToday, final double closeYesterday) {
+    final double trueRange;
+    if (closeYesterday >= highToday) {
+      trueRange = closeYesterday - lowToday;
+    }
+    else if (closeYesterday <= lowToday) {
+      trueRange = highToday - closeYesterday;
+    }
+    else {
+      trueRange = highToday - lowToday;
+    }
+    return trueRange;
   }
 
 }

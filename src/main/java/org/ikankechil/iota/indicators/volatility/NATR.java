@@ -1,16 +1,9 @@
 /**
- * NATR.java  v0.2  15 December 2014 11:57:02 AM
+ * NATR.java  v0.3  15 December 2014 11:57:02 AM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.volatility;
-
-import org.ikankechil.iota.OHLCVTimeSeries;
-import org.ikankechil.iota.TimeSeries;
-import org.ikankechil.iota.indicators.AbstractIndicator;
-
-import com.tictactec.ta.lib.MInteger;
-import com.tictactec.ta.lib.RetCode;
 
 /**
  * Normalised Average True Range (NATR) by John Forman
@@ -19,42 +12,24 @@ import com.tictactec.ta.lib.RetCode;
  * http://traders.com/Documentation/FEEDbk_docs/2006/05/TradersTips/TradersTips.html<br>
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
-public class NATR extends AbstractIndicator {
-
-  private final ATR atr;
+public class NATR extends ATR {
 
   public NATR() {
     this(FOURTEEN);
   }
 
   public NATR(final int period) {
-    super(period, period);
-
-    atr = new ATR(period);
+    super(period);
+    
+    // Formula:
+    // NATR = atr / Close * 100
   }
 
   @Override
-  protected RetCode compute(final int start,
-                            final int end,
-                            final OHLCVTimeSeries ohlcv,
-                            final MInteger outBegIdx,
-                            final MInteger outNBElement,
-                            final double[] output) {
-    // Formula:
-    // NATR = atr / Close * 100
-
-    final TimeSeries atrs = atr.generate(ohlcv).get(ZERO);
-
-    // compute indicator
-    for (int i = ZERO, j = lookback; i < output.length; ++i, ++j) {
-      output[i] = atrs.value(i) / ohlcv.close(j) * HUNDRED_PERCENT;
-    }
-
-    outBegIdx.value = lookback;
-    outNBElement.value = output.length;
-    return RetCode.Success;
+  double normalise(final double atr, final double close) {
+    return atr / close * HUNDRED_PERCENT;
   }
 
 }

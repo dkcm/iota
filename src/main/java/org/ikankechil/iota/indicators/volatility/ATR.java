@@ -1,12 +1,13 @@
 /**
- * ATR.java  v0.2  4 December 2014 12:46:50 PM
+ * ATR.java  v0.3  4 December 2014 12:46:50 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.volatility;
 
+import static org.ikankechil.iota.indicators.volatility.TR.*;
+
 import org.ikankechil.iota.OHLCVTimeSeries;
-import org.ikankechil.iota.TimeSeries;
 import org.ikankechil.iota.indicators.AbstractIndicator;
 
 import com.tictactec.ta.lib.MInteger;
@@ -21,14 +22,12 @@ import com.tictactec.ta.lib.RetCode;
  * https://www.fidelity.com/bin-public/060_www_fidelity_com/documents/AverageTrueRange.pdf<br>
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class ATR extends AbstractIndicator {
 
-  private final int       period_1;
-  private final double    inversePeriod;
-
-  private static final TR TR = new TR();
+  private final int    period_1;
+  private final double inversePeriod;
 
   public ATR() {
     this(FOURTEEN);
@@ -51,25 +50,36 @@ public class ATR extends AbstractIndicator {
     // Formula:
     // ATR = ((13 x ATRp) + TR) / 14
 
-    final TimeSeries tr = TR.generate(ohlcv).get(ZERO);
-
     // compute initial ATR
     double atr = ZERO;
-    for (int j = ZERO; j < period; ++j) {
-      atr += tr.value(j);
+    int j = ZERO;
+    double close = ohlcv.close(j);
+    while (j < period) {
+      atr += trueRange(ohlcv.high(++j), ohlcv.low(j), close);
+      close = ohlcv.close(j);
     }
     atr *= inversePeriod;
 
     // compute indicator
     int i = ZERO;
-    output[i] = atr;
-    for (int j = period; ++i < output.length; ++j) {
-      atr = output[i] = ((period_1 * atr) + tr.value(j)) * inversePeriod;
+    output[i] = normalise(atr, close);
+    while (++i < output.length) {
+      final double tr = trueRange(ohlcv.high(++j), ohlcv.low(j), close);
+      atr = ((period_1 * atr) + tr) * inversePeriod;
+      close = ohlcv.close(j);
+      output[i] = normalise(atr, close);
     }
 
     outBegIdx.value = lookback;
     outNBElement.value = output.length;
     return RetCode.Success;
+  }
+
+  /**
+   * @param close
+   */
+  double normalise(final double atr, final double close) {
+    return atr;
   }
 
 }
