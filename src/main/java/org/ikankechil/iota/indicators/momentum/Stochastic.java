@@ -1,9 +1,11 @@
 /**
- * Stochastic.java  v0.2  4 December 2014 2:05:03 PM
+ * Stochastic.java  v0.3  4 December 2014 2:05:03 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.momentum;
+
+import static org.ikankechil.iota.indicators.momentum.FastStochastic.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,7 +20,7 @@ import org.ikankechil.iota.indicators.AbstractIndicator;
  * <p>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:stochastic_oscillator_fast_slow_and_full<br>
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class Stochastic extends AbstractIndicator {
 
@@ -52,32 +54,19 @@ public class Stochastic extends AbstractIndicator {
   @Override
   public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
     // Formula:
-    // Fast Stochastic
-    // %K = (Current Close - Lowest Low)/(Highest High - Lowest Low) * 100
-    // %D = n-day SMA of %K
-    //
-    // Lowest Low = lowest low for the lookback period
-    // Highest High = highest high for the lookback period
-    // %K is multiplied by 100 to move the decimal point two places
+    // Full %K = Fast %K smoothed with X-period SMA
+    // Full %D = X-period SMA of Full %K
 
     throwExceptionIfShort(ohlcv);
-    final int size = ohlcv.size();
 
     // compute fast %K
-    int c = fastK - ONE;
-    final double[] fastKs = new double[size - c];
-    for (int i = ZERO, j = c + ONE; i < fastKs.length; ++i, ++j, ++c) {
-      final double max = max(ohlcv.highs(), i, j);
-      final double min = min(ohlcv.lows(), i, j);
-      fastKs[i] = (ohlcv.close(c) - min) / (max - min) * HUNDRED_PERCENT;
-    }
-
+    final double[] fastKs = fastStochasticK(fastK, ohlcv);
     // smooth fast %K = fast %D = slow %K
     final double[] slowKs = sma(fastKs, slowK);
     // smooth slow %K = slow %D
     final double[] slowDs = sma(slowKs, slowD);
 
-    final String[] dates = Arrays.copyOfRange(ohlcv.dates(), lookback, size);
+    final String[] dates = Arrays.copyOfRange(ohlcv.dates(), lookback, ohlcv.size());
 
     logger.info(GENERATED_FOR, name, ohlcv);
     return Arrays.asList(new TimeSeries(K,

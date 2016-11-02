@@ -16,7 +16,10 @@ import org.ikankechil.iota.TimeSeries;
  *
  * <p>http://www.wisestocktrader.com/indicators/320-stochastic-j-kdj
  *
- * @author Daniel
+ * <p>Buy: when %J < 0, with %K and %D at the bottom range<br>
+ * Sell: when %J > 100, with %K and %D at the top range
+ *
+ * @author Daniel Kuan
  * @version 0.1
  */
 public class KDJ extends Stochastic {
