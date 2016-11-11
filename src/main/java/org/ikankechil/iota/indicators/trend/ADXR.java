@@ -1,5 +1,5 @@
 /**
- * ADXR.java  v0.1  10 December 2014 2:04:09 am
+ * ADXR.java  v0.2  10 December 2014 2:04:09 am
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -15,18 +15,25 @@ import com.tictactec.ta.lib.RetCode;
  * Average Directional Movement Rating (ADXR)
  *
  * <p>Quantifies momentum change in the ADX.
+ * 
+ * <p>https://www.linnsoft.com/techind/adxr-avg-directional-movement-rating<br>
+ * https://www.scottrade.com/knowledge-center/investment-education/research-analysis/technical-analysis/the-indicators/average-directional-movement-index-rating-adxr.html<br>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class ADXR extends AbstractIndicator {
+
+  private final ADX adx;
 
   public ADXR() {
     this(FOURTEEN);
   }
 
   public ADXR(final int period) {
-    super(TA_LIB.adxrLookback(period));
+    super(period, (period * THREE) - TWO);
+
+    adx = new ADX(period);
   }
 
   @Override
@@ -39,32 +46,17 @@ public class ADXR extends AbstractIndicator {
     // Formula:
     // The ADXR is equal to the current ADX plus the ADX from n bars ago divided by 2
 
-    // TODO v0.2 implement DIY version
-//    final double[] adx = new double[ohlcv.size() - TA_LIB.adxLookback(period)];
-//    final RetCode outcome = TA_LIB.adx(start,
-//                                       end,
-//                                       ohlcv.highs(),
-//                                       ohlcv.lows(),
-//                                       ohlcv.closes(),
-//                                       period,
-//                                       outBegIdx,
-//                                       outNBElement,
-//                                       adx);
-//    throwExceptionIfBad(outcome, ohlcv);
-//
-//    for (int i = ZERO, j = period - ONE; i < output.length; ++i) {
-//      output[i] = (adx[i] + adx[j]) * HALF;
-//    }
+    // compute ADX
+    final double[] adxs = adx.generate(ohlcv).get(ZERO).values();
 
-    return TA_LIB.adxr(start,
-                       end,
-                       ohlcv.highs(),
-                       ohlcv.lows(),
-                       ohlcv.closes(),
-                       period,
-                       outBegIdx,
-                       outNBElement,
-                       output);
+    // compute indicator
+    for (int i = ZERO, j = period - ONE; i < output.length; ++i, ++j) {
+      output[i] = (adxs[i] + adxs[j]) * HALF;
+    }
+
+    outBegIdx.value = lookback;
+    outNBElement.value = output.length;
+    return RetCode.Success;
   }
 
 }

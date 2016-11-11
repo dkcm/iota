@@ -1,5 +1,5 @@
 /**
- * DX.java  v0.1  15 December 2014 3:14:55 PM
+ * DX.java  v0.2  15 December 2014 3:14:55 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -16,16 +16,22 @@ import com.tictactec.ta.lib.RetCode;
  *
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class DX extends AbstractIndicator {
+
+  private final PlusDI  plusDI;
+  private final MinusDI minusDI;
 
   public DX() {
     this(FOURTEEN);
   }
 
   public DX(final int period) {
-    super(period, TA_LIB.dxLookback(period));
+    super(period, period);
+
+    plusDI = new PlusDI(period);
+    minusDI = new MinusDI(period);
   }
 
   @Override
@@ -35,15 +41,20 @@ public class DX extends AbstractIndicator {
                             final MInteger outBegIdx,
                             final MInteger outNBElement,
                             final double[] output) {
-    return TA_LIB.dx(start,
-                     end,
-                     ohlcv.highs(),
-                     ohlcv.lows(),
-                     ohlcv.closes(),
-                     period,
-                     outBegIdx,
-                     outNBElement,
-                     output);
+    // compute DIs
+    final double[] plusDIs = plusDI.generate(ohlcv).get(ZERO).values();
+    final double[] minusDIs = minusDI.generate(ohlcv).get(ZERO).values();
+
+    // compute indicator
+    for (int i = ZERO; i < output.length; ++i) {
+      final double pdi = plusDIs[i];
+      final double mdi = minusDIs[i];
+      output[i] = HUNDRED_PERCENT * Math.abs(pdi - mdi) / (pdi + mdi);
+    }
+
+    outBegIdx.value = lookback;
+    outNBElement.value = output.length;
+    return RetCode.Success;
   }
 
 }
