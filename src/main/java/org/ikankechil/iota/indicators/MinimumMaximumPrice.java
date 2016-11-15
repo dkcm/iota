@@ -1,5 +1,5 @@
 /**
- * MinimumMaximumPrice.java  v0.1  27 January 2015 12:56:59 PM
+ * MinimumMaximumPrice.java  v0.2  27 January 2015 12:56:59 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -11,51 +11,40 @@ import java.util.List;
 import org.ikankechil.iota.OHLCVTimeSeries;
 import org.ikankechil.iota.TimeSeries;
 
-import com.tictactec.ta.lib.MInteger;
-import com.tictactec.ta.lib.RetCode;
-
 /**
  * Minimum and Maximum Price
  *
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class MinimumMaximumPrice extends AbstractIndicator {
+
+  private final MinimumPrice  min;
+  private final MaximumPrice  max;
 
   private static final String MININUM_PRICE = "Minimum Price";
   private static final String MAXIMUM_PRICE = "Maximum Price";
 
   public MinimumMaximumPrice(final int period) {
-    super(period, TA_LIB.minMaxLookback(period));
+    super(period, (period - ONE));
+
+    min = new MinimumPrice(period);
+    max = new MaximumPrice(period);
   }
 
   @Override
   public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
     throwExceptionIfShort(ohlcv);
-    final int size = ohlcv.size();
 
-    final MInteger outBegIdx = new MInteger();
-    final MInteger outNBElement = new MInteger();
+    final double[] minPrices = min.generate(ohlcv).get(ZERO).values();
+    final double[] maxPrices = max.generate(ohlcv).get(ZERO).values();
 
-    final double[] outMin = new double[size - lookback];
-    final double[] outMax = new double[outMin.length];
-
-    final RetCode outcome = TA_LIB.minMax(ZERO,
-                                          size - ONE,
-                                          ohlcv.closes(),
-                                          period,
-                                          outBegIdx,
-                                          outNBElement,
-                                          outMin,
-                                          outMax);
-    throwExceptionIfBad(outcome, ohlcv);
-
-    final String[] dates = Arrays.copyOfRange(ohlcv.dates(), lookback, size);
+    final String[] dates = Arrays.copyOfRange(ohlcv.dates(), lookback, ohlcv.size());
 
     logger.info(GENERATED_FOR, name, ohlcv);
-    return Arrays.asList(new TimeSeries(MININUM_PRICE, dates, outMin),
-                         new TimeSeries(MAXIMUM_PRICE, dates, outMax));
+    return Arrays.asList(new TimeSeries(MININUM_PRICE, dates, minPrices),
+                         new TimeSeries(MAXIMUM_PRICE, dates, maxPrices));
   }
 
 }
