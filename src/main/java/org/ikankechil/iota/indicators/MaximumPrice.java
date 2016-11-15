@@ -1,9 +1,11 @@
 /**
- * MaximumPrice.java  v0.2  27 January 2015 12:52:10 PM
+ * MaximumPrice.java  v0.3  27 January 2015 12:52:10 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators;
+
+import static org.ikankechil.iota.indicators.MaximumPriceIndex.*;
 
 import com.tictactec.ta.lib.MInteger;
 import com.tictactec.ta.lib.RetCode;
@@ -13,7 +15,7 @@ import com.tictactec.ta.lib.RetCode;
  *
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class MaximumPrice extends AbstractIndicator {
 
@@ -53,19 +55,6 @@ public class MaximumPrice extends AbstractIndicator {
     outBegIdx.value = lookback;
     outNBElement.value = output.length;
     return RetCode.Success;
-  }
-
-  private static final int maxIndex(final int from, final int to, final double... values) {
-    int maxIndex = from;
-    double max = values[maxIndex];
-    for (int i = maxIndex + ONE; i < to; ++i) {
-      final double value = values[i];
-      if (value > max) {
-        max = value;
-        maxIndex = i;
-      }
-    }
-    return maxIndex;
   }
 
 }
