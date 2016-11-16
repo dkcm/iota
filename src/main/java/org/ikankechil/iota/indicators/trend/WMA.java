@@ -62,14 +62,6 @@ public class WMA extends AbstractIndicator {
     outBegIdx.value = lookback;
     outNBElement.value = output.length;
     return RetCode.Success;
-
-//    return TA_LIB.wma(start,
-//                      end,
-//                      values,
-//                      period,
-//                      outBegIdx,
-//                      outNBElement,
-//                      output);
   }
 
   private final double wma(final double[] values, final int start) {

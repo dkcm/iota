@@ -5,8 +5,6 @@
  */
 package org.ikankechil.iota.indicators.volume;
 
-import com.tictactec.ta.lib.MAType;
-
 /**
  * Maddox Momentum by Darryl W. Maddox
  *
@@ -23,7 +21,7 @@ public class MaddoxMomentum extends ForceIndex {
   }
 
   public MaddoxMomentum(final int period) {
-    super(period, MAType.Sma);
+    super(period, true);
 
     // Formula:
     // Maddox Momentum =

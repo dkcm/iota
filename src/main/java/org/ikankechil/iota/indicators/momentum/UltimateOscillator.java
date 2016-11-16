@@ -34,9 +34,6 @@ public class UltimateOscillator extends AbstractIndicator {
 
   public UltimateOscillator(final int shortPeriod, final int mediumPeriod, final int longPeriod) {
     super(longPeriod);
-//    super(TA_LIB.ultOscLookback(shortPeriod,
-//                                mediumPeriod,
-//                                longPeriod));
     throwExceptionIfNegative(shortPeriod,
                              mediumPeriod,
                              longPeriod);
@@ -101,18 +98,6 @@ public class UltimateOscillator extends AbstractIndicator {
     outBegIdx.value = lookback;
     outNBElement.value = output.length;
     return RetCode.Success;
-
-//    return TA_LIB.ultOsc(start,
-//                         end,
-//                         ohlcv.highs(),
-//                         ohlcv.lows(),
-//                         ohlcv.closes(),
-//                         shortPeriod,
-//                         mediumPeriod,
-//                         longPeriod,
-//                         outBegIdx,
-//                         outNBElement,
-//                         output);
   }
 
   private static final double[] ave(final int p, final double[] bp, final double[] tr) {

@@ -79,17 +79,6 @@ public class MFI extends AbstractIndicator {
     outBegIdx.value = lookback;
     outNBElement.value = output.length;
     return RetCode.Success;
-
-//    return TA_LIB.mfi(start,
-//                      end,
-//                      ohlcv.highs(),
-//                      ohlcv.lows(),
-//                      ohlcv.closes(),
-//                      toDoubles(ohlcv.volumes()), // copy volumes
-//                      period,
-//                      outBegIdx,
-//                      outNBElement,
-//                      output);
   }
 
 }

@@ -53,14 +53,6 @@ public class TRIMA extends AbstractIndicator {
     outBegIdx.value = lookback;
     outNBElement.value = output.length;
     return RetCode.Success;
-
-//    return TA_LIB.trima(start,
-//                        end,
-//                        values,
-//                        period,
-//                        outBegIdx,
-//                        outNBElement,
-//                        output);
   }
 
 }

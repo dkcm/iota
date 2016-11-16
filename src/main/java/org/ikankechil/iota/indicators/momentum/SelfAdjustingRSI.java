@@ -1,5 +1,5 @@
 /**
- * SelfAdjustingRSI.java  v0.3  14 January 2015 2:05:43 PM
+ * SelfAdjustingRSI.java  v0.4  14 January 2015 2:05:43 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -11,9 +11,8 @@ import java.util.List;
 import org.ikankechil.iota.OHLCVTimeSeries;
 import org.ikankechil.iota.TimeSeries;
 import org.ikankechil.iota.indicators.AbstractIndicator;
-
-import com.tictactec.ta.lib.MInteger;
-import com.tictactec.ta.lib.RetCode;
+import org.ikankechil.iota.indicators.Indicator;
+import org.ikankechil.iota.indicators.volatility.StandardDeviation;
 
 /**
  * Self-Adjusting RSI by David Sepiashvili
@@ -23,17 +22,15 @@ import com.tictactec.ta.lib.RetCode;
  * {@link http://www.traders.com/documentation/feedbk_docs/2006/02/TradersTips/TradersTips.html}<br>
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class SelfAdjustingRSI extends AbstractIndicator {
 
-  private final double        k;
-  private final int           stdDevLookback;
-  private final int           rsiLookback;
-  private final RSI           rsiIndicator;
+  private final Indicator     rsi;
+  private final Indicator     stdDev;
 
   private static final double K           = 1.8;
-  private static final int    CENTRE_LINE = 50;
+  private static final int    CENTRE_LINE = FIFTY;
 
   private static final String MIDDLE_BAND = "Self-Adjusting RSI";
   private static final String UPPER_BAND  = MIDDLE_BAND + " Overbought";
@@ -48,14 +45,11 @@ public class SelfAdjustingRSI extends AbstractIndicator {
   }
 
   public SelfAdjustingRSI(final int period, final double k) {
-    super(period, TA_LIB.stdDevLookback(period, k) + TA_LIB.rsiLookback(period));
+    super(period, (period << ONE) - ONE);
     throwExceptionIfNegative(k);
 
-    this.k = k;
-    rsiLookback = TA_LIB.rsiLookback(period);
-    stdDevLookback = lookback - rsiLookback;
-
-    rsiIndicator = new RSI(period);
+    rsi = new RSI(period);
+    stdDev = new StandardDeviation(period, k);
   }
 
   @Override
@@ -70,32 +64,10 @@ public class SelfAdjustingRSI extends AbstractIndicator {
     // Lower = 50 – c * SMAn(|RSIn – SMAn(RSIn)|)
 
     throwExceptionIfShort(ohlcv);
-    final int size = ohlcv.size();
 
-    final MInteger outBegIdx = new MInteger();
-    final MInteger outNBElement = new MInteger();
-
-    // compute RSI
-    final double[] rsi = new double[size - rsiLookback];
-    RetCode outcome = rsiIndicator.compute(ZERO,
-                                           size - ONE,
-                                           ohlcv.closes(),
-                                           outBegIdx,
-                                           outNBElement,
-                                           rsi);
-    throwExceptionIfBad(outcome, ohlcv);
-
-    // compute standard deviation of RSI
-    final double[] stdDevRsi = new double[size - lookback];
-    outcome = TA_LIB.stdDev(ZERO,
-                            rsi.length - ONE,
-                            rsi,
-                            period,
-                            k,
-                            outBegIdx,
-                            outNBElement,
-                            stdDevRsi);
-    throwExceptionIfBad(outcome, ohlcv);
+    // compute RSI and standard deviation of RSI
+    final TimeSeries rsis = rsi.generate(ohlcv).get(ZERO);
+    final double[] stdDevRsi = stdDev.generate(rsis).get(ZERO).values();
 
     // compute indicator
     final double[] overbought = new double[stdDevRsi.length];
@@ -108,7 +80,7 @@ public class SelfAdjustingRSI extends AbstractIndicator {
       oversold[i]   = CENTRE_LINE - kStdDevRsi;
     }
 
-    final String[] dates = Arrays.copyOfRange(ohlcv.dates(), lookback, size);
+    final String[] dates = Arrays.copyOfRange(ohlcv.dates(), lookback, ohlcv.size());
 
     logger.info(GENERATED_FOR, name, ohlcv);
     return Arrays.asList(new TimeSeries(UPPER_BAND,
@@ -116,9 +88,9 @@ public class SelfAdjustingRSI extends AbstractIndicator {
                                         overbought),
                          new TimeSeries(MIDDLE_BAND,
                                         dates,
-                                        Arrays.copyOfRange(rsi,
-                                                           stdDevLookback,
-                                                           rsi.length)),
+                                        Arrays.copyOfRange(rsis.values(),
+                                                           stdDev.lookback(),
+                                                           rsis.size())),
                          new TimeSeries(LOWER_BAND,
                                         dates,
                                         oversold));

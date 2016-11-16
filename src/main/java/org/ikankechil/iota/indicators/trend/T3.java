@@ -26,7 +26,6 @@ import com.tictactec.ta.lib.RetCode;
 public class T3 extends AbstractIndicator {
 
   private final GeneralisedDEMA gd;
-//  private final double        volumeFactor;
 
   private static final double   T3_VF = 0.7;
 
@@ -42,7 +41,6 @@ public class T3 extends AbstractIndicator {
     super(period, SIX * (period - ONE));
     throwExceptionIfNegative(volumeFactor);
 
-//    this.volumeFactor = volumeFactor;
     gd = new GeneralisedDEMA(period, volumeFactor);
   }
 
@@ -66,15 +64,6 @@ public class T3 extends AbstractIndicator {
     outBegIdx.value = lookback;
     outNBElement.value = output.length;
     return RetCode.Success;
-
-//    return TA_LIB.t3(start,
-//                     end,
-//                     values,
-//                     period,
-//                     volumeFactor,
-//                     outBegIdx,
-//                     outNBElement,
-//                     output);
   }
 
 }
