@@ -1,5 +1,5 @@
 /**
- * FastStochastic.java  v0.3  8 December 2014 8:49:06 PM
+ * FastStochastic.java  v0.4  8 December 2014 8:49:06 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -22,7 +22,7 @@ import org.ikankechil.iota.indicators.MinimumPrice;
  * <p>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:stochastic_oscillator_fast_slow_and_full
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class FastStochastic extends AbstractIndicator {
 
@@ -79,12 +79,19 @@ public class FastStochastic extends AbstractIndicator {
   }
 
   public static final double[] fastStochasticK(final int fastK, final OHLCVTimeSeries ohlcv) {
+    return fastStochasticK(fastK, ohlcv.highs(), ohlcv.lows(), ohlcv.closes());
+  }
+
+  public static final double[] fastStochasticK(final int fastK,
+                                               final double[] highs,
+                                               final double[] lows,
+                                               final double[] closes) {
     // copy highs and lows
-    final int size = ohlcv.size();
-    final TimeSeries lows = new TimeSeries(EMPTY, size);
-    final TimeSeries highs = new TimeSeries(EMPTY, size);
-    System.arraycopy(ohlcv.lows(), ZERO, lows.values(), ZERO, size);
-    System.arraycopy(ohlcv.highs(), ZERO, highs.values(), ZERO, size);
+    final int size = closes.length;
+    final TimeSeries lowsTS = new TimeSeries(EMPTY, size);
+    final TimeSeries highsTS = new TimeSeries(EMPTY, size);
+    System.arraycopy(lows, ZERO, lowsTS.values(), ZERO, size);
+    System.arraycopy(highs, ZERO, highsTS.values(), ZERO, size);
 
     // retrieve
     final MinimumPrice minPrice;
@@ -99,8 +106,8 @@ public class FastStochastic extends AbstractIndicator {
     }
 
     // generate min and max
-    final double[] mins = minPrice.generate(lows).get(ZERO).values();
-    final double[] maxs = maxPrice.generate(highs).get(ZERO).values();
+    final double[] mins = minPrice.generate(lowsTS).get(ZERO).values();
+    final double[] maxs = maxPrice.generate(highsTS).get(ZERO).values();
 
     // compute fast K
     int c = fastK - ONE;
@@ -108,7 +115,7 @@ public class FastStochastic extends AbstractIndicator {
     for (int i = ZERO; i < fastKs.length; ++i, ++c) {
       final double max = maxs[i];
       final double min = mins[i];
-      fastKs[i] = (ohlcv.close(c) - min) / (max - min) * HUNDRED_PERCENT;
+      fastKs[i] = (closes[c] - min) / (max - min) * HUNDRED_PERCENT;
     }
     return fastKs;
   }

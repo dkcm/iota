@@ -1,5 +1,5 @@
 /**
- * StochasticRSI.java  v0.1  9 December 2014 12:25:28 PM
+ * StochasticRSI.java  v0.2  9 December 2014 12:25:28 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -12,10 +12,6 @@ import org.ikankechil.iota.OHLCVTimeSeries;
 import org.ikankechil.iota.TimeSeries;
 import org.ikankechil.iota.indicators.AbstractIndicator;
 
-import com.tictactec.ta.lib.MAType;
-import com.tictactec.ta.lib.MInteger;
-import com.tictactec.ta.lib.RetCode;
-
 /**
  * Stochastic RSI by Tushar Chande and Stanley Kroll
  *
@@ -24,10 +20,11 @@ import com.tictactec.ta.lib.RetCode;
  * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:stochrsi<br>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class StochasticRSI extends AbstractIndicator {
 
+  private final RSI rsi;
   private final int fastK;
   private final int fastD;
 
@@ -36,9 +33,10 @@ public class StochasticRSI extends AbstractIndicator {
   }
 
   public StochasticRSI(final int period, final int fastK, final int fastD) {
-    super(period, TA_LIB.stochRsiLookback(period, fastK, fastD, MAType.Sma));
+    super(period, (period + fastK + fastD - TWO));
     throwExceptionIfNegative(fastK, fastD);
 
+    rsi = new RSI(period);
     this.fastK = fastK;
     this.fastD = fastD;
   }
@@ -46,34 +44,28 @@ public class StochasticRSI extends AbstractIndicator {
   @Override
   public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
     // Formula:
-    // StochRSI = (RSI - Lowest Low RSI) / (Highest High RSI - Lowest Low RSI)
+    // StochRSI = (RSI - Lowest RSI) / (Highest RSI - Lowest RSI)
+
     throwExceptionIfShort(ohlcv);
-    final int size = ohlcv.size();
 
-    final MInteger outBegIdx = new MInteger();
-    final MInteger outNBElement = new MInteger();
+    // compute RSI
+    final double[] rsis = rsi.generate(ohlcv).get(ZERO).values();
 
-    final double[] outFastK = new double[size - lookback];
-    final double[] outFastD = new double[outFastK.length];
+    // compute indicator
+    final double[] fastKs = FastStochastic.fastStochasticK(fastK, rsis, rsis, rsis);
+    final double[] fastDs = sma(fastKs, fastD);
 
-    final RetCode outcome = TA_LIB.stochRsi(ZERO,
-                                            size - ONE,
-                                            ohlcv.closes(),
-                                            period,
-                                            fastK,
-                                            fastD,
-                                            MAType.Sma,
-                                            outBegIdx,
-                                            outNBElement,
-                                            outFastK,
-                                            outFastD);
-    throwExceptionIfBad(outcome, ohlcv);
-
-    final String[] dates = Arrays.copyOfRange(ohlcv.dates(), lookback, size);
+    final String[] dates = Arrays.copyOfRange(ohlcv.dates(), lookback, ohlcv.size());
 
     logger.info(GENERATED_FOR, name, ohlcv);
-    return Arrays.asList(new TimeSeries(name, dates, outFastK),
-                         new TimeSeries(name, dates, outFastD));
+    return Arrays.asList(new TimeSeries(name,
+                                        dates,
+                                        Arrays.copyOfRange(fastKs,
+                                                           fastD - ONE,
+                                                           fastKs.length)),
+                         new TimeSeries(name,
+                                        dates,
+                                        fastDs));
   }
 
 }

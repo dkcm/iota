@@ -1,5 +1,5 @@
 /**
- * StochasticRSITest.java  v0.2  26 November 2015 2:26:11 PM
+ * StochasticRSITest.java  v0.3  26 November 2015 2:26:11 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -16,12 +16,16 @@ import org.junit.BeforeClass;
  *
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class StochasticRSITest extends AbstractIndicatorTest {
 
+  private static final int DEFAULT_PERIOD = 14;
+  private static final int DEFAULT_K      = 5;
+  private static final int DEFAULT_D      = 3;
+
   public StochasticRSITest() {
-    super(0);
+    super(DEFAULT_PERIOD + DEFAULT_K + DEFAULT_D - 2);
   }
 
   @BeforeClass
@@ -32,7 +36,7 @@ public class StochasticRSITest extends AbstractIndicatorTest {
 
   @Override
   public Indicator newInstance(final int period) {
-    return new StochasticRSI(period, period, period);
+    return new StochasticRSI(period, DEFAULT_K, DEFAULT_D);
   }
 
 }
