@@ -1,5 +1,5 @@
 /**
- * AccelerationBands.java  v0.1  14 January 2015 9:46:27 AM
+ * AccelerationBands.java  v0.2  14 January 2015 9:46:27 AM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -12,18 +12,16 @@ import org.ikankechil.iota.OHLCVTimeSeries;
 import org.ikankechil.iota.TimeSeries;
 import org.ikankechil.iota.indicators.AbstractIndicator;
 
-import com.tictactec.ta.lib.MInteger;
-import com.tictactec.ta.lib.RetCode;
-
 /**
  * Acceleration Bands by Price Headley
  *
- * <p>http://www.bigtrends.com/accelerationbands.pdf<br>
+ * <p>http://www.bigtrends.com/education/inside-bigtrends-acceleration-bands-indicator/<br>
  * http://www2.wealth-lab.com/WL5Wiki/AccelerationBands.ashx<br>
  * https://www.tradingtechnologies.com/help/x-study/technical-indicator-definitions/acceleration-bands-abands/<br>
+ * http://members.bigtrends.com/wp-content/uploads/2014/05/Acceleration-Bands-Rules.pdf<br>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class AccelerationBands extends AbstractIndicator {
 
@@ -41,7 +39,7 @@ public class AccelerationBands extends AbstractIndicator {
   }
 
   public AccelerationBands(final int period, final double factor) {
-    super(period, TA_LIB.smaLookback(period));
+    super(period, (period - ONE));
     throwExceptionIfNegative(factor);
 
     this.factor = MULTIPLIER * factor;
@@ -50,42 +48,35 @@ public class AccelerationBands extends AbstractIndicator {
   @Override
   public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
     // Formula:
-    // Upperband = ( High * ( 1 + 2 * (((( High - Low )/(( High + Low ) / 2 )) * 1000 ) * Factor )))
-    // Lowerband = ( Low  * ( 1 - 2 * (((( High - Low )/(( High + Low ) / 2 )) * 1000 ) * Factor )))
+    // Upper band = SMA( High * ( 1 + 2 * (((( High - Low )/(( High + Low ) / 2 )) * 1000 ) * Factor )))
+    // Lower band = SMA( Low  * ( 1 - 2 * (((( High - Low )/(( High + Low ) / 2 )) * 1000 ) * Factor )))
     // Factor = 0.001
 
     // Optimised version:
-    // Upperband = (High * (1 + (High - Low)/(High + Low) * 4000 * Factor))
-    // Lowerband = (Low  * (1 - (High - Low)/(High + Low) * 4000 * Factor))
+    // Upper band = SMA(High * (1 + (High - Low)/(High + Low) * 4000 * Factor))
+    // Lower band = SMA(Low  * (1 - (High - Low)/(High + Low) * 4000 * Factor))
 
     throwExceptionIfShort(ohlcv);
     final int size = ohlcv.size();
 
-    final MInteger outBegIdx = new MInteger();
-    final MInteger outNBElement = new MInteger();
-
-    final double[] upperBand = new double[size - lookback];
-    final double[] middleBand = new double[upperBand.length];
-    final double[] lowerBand = new double[upperBand.length];
-
-    // compute SMA
-    final RetCode outcome = TA_LIB.sma(ZERO,
-                                       size - ONE,
-                                       ohlcv.closes(),
-                                       period,
-                                       outBegIdx,
-                                       outNBElement,
-                                       middleBand);
-    throwExceptionIfBad(outcome, ohlcv);
-
-    // compute indicator
-    for (int i = ZERO, j = lookback; i < upperBand.length; ++i, ++j) {
-      final double high = ohlcv.high(j);
-      final double low = ohlcv.low(j);
+    // compute upper and lower bands
+    final double[] upper = new double[size];
+    final double[] lower = new double[upper.length];
+    for (int i = ZERO; i < size; ++i) {
+      final double high = ohlcv.high(i);
+      final double low = ohlcv.low(i);
       final double ratio = ((high - low) / (high + low)) * factor;
 
-      upperBand[i] = high * (ONE + ratio); // TODO SMA required here?
-      lowerBand[i] = low  * (ONE - ratio);
+      upper[i] = high * (ONE + ratio);
+      lower[i] = low  * (ONE - ratio);
+    }
+
+    // compute indicator
+    final double[] upperBand = sma(upper, period);
+    final double[] lowerBand = sma(lower, period);
+    final double[] middleBand = new double[size - lookback];
+    for (int i = ZERO; i < middleBand.length; ++i) {
+      middleBand[i] = (upperBand[i] + lowerBand[i]) * HALF;
     }
 
     final String[] dates = Arrays.copyOfRange(ohlcv.dates(), lookback, size);
