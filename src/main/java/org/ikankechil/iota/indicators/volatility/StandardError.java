@@ -1,7 +1,7 @@
 /**
- * StandardDeviation.java  v0.2  15 December 2014 12:06:24 PM
+ * StandardError.java  v0.1  18 November 2016 5:23:52 pm
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2016 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.volatility;
 
@@ -11,30 +11,32 @@ import com.tictactec.ta.lib.MInteger;
 import com.tictactec.ta.lib.RetCode;
 
 /**
- * Standard Deviation, square root of variance
+ * Standard Error, standard deviation divided by square root of sample size
  *
- * <p>http://mathworld.wolfram.com/StandardDeviation.html<br>
- * https://en.wikipedia.org/wiki/Standard_deviation<br>
- * http://www.lboro.ac.uk/media/wwwlboroacuk/content/mlsc/downloads/var_stand_deviat_ungroup.pdf<br>
+ * <p>http://mathworld.wolfram.com/StandardError.html<br>
+ * http://web.eecs.umich.edu/~fessler/papers/files/tr/stderr.pdf<br>
+ *
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.1
  */
-public class StandardDeviation extends AbstractIndicator {
+public class StandardError extends AbstractIndicator {
 
-  private final double   stdDev;
+  private final double   stdErr;
   private final Variance variance;
+  private final double   inversePeriod;
 
-  public StandardDeviation(final int period) {
+  public StandardError(final int period) {
     this(period, ONE);
   }
 
-  public StandardDeviation(final int period, final double stdDev) {
+  public StandardError(final int period, final double stdErr) {
     super(period, (period - ONE));
-    throwExceptionIfNegative(stdDev);
+    throwExceptionIfNegative(stdErr);
 
-    this.stdDev = stdDev;
+    this.stdErr = stdErr;
     variance = new Variance(period);
+    inversePeriod = ONE / (double) period;
   }
 
   @Override
@@ -47,13 +49,14 @@ public class StandardDeviation extends AbstractIndicator {
     // Formula:
     // Variance, sigma^2 = (sum(x^2) / n) - mean(x)^2
     // Standard Deviation, sigma = sqrt(Variance)
+    // Standard Error = Standard Deviation / sqrt(n) = sqrt(Variance / n)
 
     // compute variance
     variance.compute(start, end, values, outBegIdx, outNBElement, output);
 
     // compute indicator
     for (int i = ZERO; i < output.length; ++i) {
-      output[i] = Math.sqrt(output[i]) * stdDev;
+      output[i] = Math.sqrt(output[i] * inversePeriod) * stdErr;
     }
 
     outBegIdx.value = lookback;
