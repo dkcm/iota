@@ -1,5 +1,5 @@
 /**
- * Trendlines.java  v0.2  19 January 2016 4:00:07 PM
+ * Trendlines.java  v0.3  19 January 2016 4:00:07 PM
  *
  * Copyright © 2016 Daniel Kuan.  All rights reserved.
  */
@@ -11,7 +11,6 @@ import static org.ikankechil.util.NumberUtility.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.EnumMap;
 import java.util.List;
 import java.util.Map;
@@ -26,7 +25,7 @@ import org.ikankechil.iota.indicators.Indicator;
  *
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class Trendlines extends AbstractIndicator {
 
@@ -62,7 +61,7 @@ public class Trendlines extends AbstractIndicator {
     topsAndBottoms = new TopsAndBottoms(awayPoints, null, false);
 
     trends = new EnumMap<>(Trends.class);
-    for (final Trends trend : Trends.values()) {
+    for (final Trends trend : values()) {
       trends.put(trend, new ArrayList<>());
     }
   }
@@ -335,11 +334,11 @@ public class Trendlines extends AbstractIndicator {
   }
 
   public List<Trendline> upTrendlines() {
-    return Collections.unmodifiableList(trends.get(UP));
+    return new ArrayList<>(trends.get(UP));
   }
 
   public List<Trendline> downTrendlines() {
-    return Collections.unmodifiableList(trends.get(DOWN));
+    return new ArrayList<>(trends.get(DOWN));
   }
 
 }

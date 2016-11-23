@@ -33,6 +33,8 @@ public class TrendlineTest {
   private static final double DELTA = 1e-12;
   private static final double BASE  = 100.0;
 
+  public TrendlineTest() { /* do nothing */ }
+
   @Before
   public void setUp() throws Exception {
     x1 = (int) random();
