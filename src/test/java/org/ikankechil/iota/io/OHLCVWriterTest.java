@@ -1,5 +1,5 @@
 /**
- * OHLCVWriterTest.java  v0.1  20 June 2015 12:08:16 am
+ * OHLCVWriterTest.java  v0.2  20 June 2015 12:08:16 am
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -26,7 +26,7 @@ import org.junit.Test;
  *
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class OHLCVWriterTest extends TimeSeriesWriterTest {
 
@@ -34,6 +34,7 @@ public class OHLCVWriterTest extends TimeSeriesWriterTest {
   private final File                   destination     = new File(INPUT_DIRECTORY, getClass().getSimpleName() + CSV);
 
   private static final String          SYMBOL          = "A";
+  private static final char            FREQUENCY       = 'd';
   private static final int             LINES           = 5;
   private static final OHLCVTimeSeries OHLCV           = new OHLCVTimeSeries(SYMBOL, LINES);
   private static final List<String>    EXPECTEDS       = new ArrayList<>(OHLCV.size());
@@ -47,6 +48,8 @@ public class OHLCVWriterTest extends TimeSeriesWriterTest {
   private static final File            INPUT_DIRECTORY = new File(".//./src/test/resources/" + OHLCVWriterTest.class.getSimpleName());
   private static final File            READ_ONLY       = new File(INPUT_DIRECTORY, "Read-only.csv");
 
+  private static final String          LINE_           = "Line: ";
+
   @BeforeClass
   public static void setUpBeforeClass() {
     if (READ_ONLY.canWrite()) {
@@ -54,6 +57,12 @@ public class OHLCVWriterTest extends TimeSeriesWriterTest {
     }
 
     // prepare expected lines
+    assertTrue(prepare(OHLCV, EXPECTEDS, false));
+  }
+
+  private static final boolean prepare(final OHLCVTimeSeries ohlcv,
+                                       final List<String> expectedResults,
+                                       final boolean dropVolume) {
     final StringBuilder line = new StringBuilder();
     int date = START_DATE;
     double open = OPEN;
@@ -61,20 +70,27 @@ public class OHLCVWriterTest extends TimeSeriesWriterTest {
     double low = LOW;
     double close = CLOSE;
     long volume = VOLUME;
-    for (int i = 0; i < LINES; ++i) {
+
+    for (int i = 0; i < ohlcv.size(); ++i) {
       line.append(SYMBOL).append(COMMA)
           .append(++date).append(COMMA)
           .append(++open).append(COMMA)
           .append(++high).append(COMMA)
           .append(++low).append(COMMA)
-          .append(++close).append(COMMA)
-          .append(++volume);
-      EXPECTEDS.add(line.toString());
+          .append(++close);
+      if (dropVolume) {
+        ++volume;
+      }
+      else {
+        line.append(COMMA).append(++volume);
+      }
+      expectedResults.add(line.toString());
       line.setLength(0);
 
-      OHLCV.set(String.valueOf(date), open, high, low, close, volume, i);
+      ohlcv.set(String.valueOf(date), open, high, low, close, volume, i);
     }
-    Collections.reverse(EXPECTEDS);
+    Collections.reverse(expectedResults);
+    return true;
   }
 
   @AfterClass
@@ -87,12 +103,44 @@ public class OHLCVWriterTest extends TimeSeriesWriterTest {
     writer.write(OHLCV, destination);
 
     final List<String> actuals = Files.readAllLines(destination.toPath(), StandardCharsets.UTF_8);
+    compare(EXPECTEDS, actuals);
+  }
 
-    // compare
-    for (int i = 0; i < EXPECTEDS.size(); ++i) {
-      assertEquals("Line: " + i, EXPECTEDS.get(i), actuals.get(i));
+  @Test
+  public void dropFrequencyFromSymbolName() throws IOException {
+    final OHLCVTimeSeries symbolWithFrequency = new OHLCVTimeSeries(SYMBOL + UNDERSCORE + FREQUENCY, 1);
+    final List<String> expecteds = new ArrayList<>(symbolWithFrequency.size());
+    assertTrue(prepare(symbolWithFrequency,
+                       expecteds,
+                       false));
+
+    writer.write(symbolWithFrequency, destination);
+
+    final List<String> actuals = Files.readAllLines(destination.toPath(), StandardCharsets.UTF_8);
+    compare(expecteds, actuals);
+  }
+
+  @Test
+  public void dropVolume() throws IOException {
+    final boolean keepVolume = false;
+    final OHLCVWriter dropVolume = new OHLCVWriter(keepVolume);
+    final OHLCVTimeSeries ohlcv = new OHLCVTimeSeries(SYMBOL, 1);
+    final List<String> expecteds = new ArrayList<>(ohlcv.size());
+    assertTrue(prepare(ohlcv,
+                       expecteds,
+                       !keepVolume));
+
+    dropVolume.write(ohlcv, destination);
+
+    final List<String> actuals = Files.readAllLines(destination.toPath(), StandardCharsets.UTF_8);
+    compare(expecteds, actuals);
+  }
+
+  private static final void compare(final List<String> expecteds, final List<String> actuals) {
+    for (int i = 0; i < expecteds.size(); ++i) {
+      assertEquals(LINE_ + i, expecteds.get(i), actuals.get(i));
     }
-    assertEquals(EXPECTEDS.size(), actuals.size());
+    assertEquals(expecteds.size(), actuals.size());
   }
 
   @Override

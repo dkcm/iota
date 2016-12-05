@@ -1,5 +1,5 @@
 /**
- * OHLCVReaderTest.java  v0.1  5 August 2016 5:04:02 pm
+ * OHLCVReaderTest.java  v0.2  5 August 2016 5:04:02 pm
  *
  * Copyright © 2016 Daniel Kuan.  All rights reserved.
  */
@@ -26,7 +26,7 @@ import org.junit.Test;
  *
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class OHLCVReaderTest {
 
@@ -55,13 +55,35 @@ public class OHLCVReaderTest {
       final String[] values = lines.get(i).split(COMMA);
       int v = 0;  // skip symbol name
       EXPECTEDS.set(values[++v],
-                    Double.valueOf(values[++v]),
-                    Double.valueOf(values[++v]),
-                    Double.valueOf(values[++v]),
-                    Double.valueOf(values[++v]),
-                    (values.length >= INCLUDES_VOLUME) ? Long.valueOf(values[++v]) : 0,
+                    parseDouble(values[++v]),
+                    parseDouble(values[++v]),
+                    parseDouble(values[++v]),
+                    parseDouble(values[++v]),
+                    (values.length >= INCLUDES_VOLUME) ? parseLong(values[++v]) : 0,
                     i);
     }
+  }
+
+  private static final double parseDouble(final String string) {
+    double d;
+    try {
+      d = Double.parseDouble(string);
+    }
+    catch (final NumberFormatException nfE) {
+      d = Double.NaN;
+    }
+    return d;
+  }
+
+  private static final long parseLong(final String string) {
+    long l;
+    try {
+      l = Long.parseLong(string);
+    }
+    catch (final NumberFormatException nfE) {
+      l = 0;
+    }
+    return l;
   }
 
   @AfterClass

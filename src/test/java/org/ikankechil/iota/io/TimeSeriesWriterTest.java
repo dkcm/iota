@@ -25,8 +25,9 @@ public abstract class TimeSeriesWriterTest {
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
-  static final char        COMMA  = ',';
-  static final String      CSV    = ".csv";
+  static final char        COMMA      = ',';
+  static final char        UNDERSCORE = '_';
+  static final String      CSV        = ".csv";
 
   @Test(expected=NullPointerException.class)
   public abstract void cannotWriteNullPayload() throws IOException;

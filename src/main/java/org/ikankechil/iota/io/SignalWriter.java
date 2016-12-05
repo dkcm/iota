@@ -1,5 +1,5 @@
 /**
- * SignalWriter.java  v0.2  12 January 2015 10:03:55 AM
+ * SignalWriter.java  v0.3  12 January 2015 10:03:55 AM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -8,6 +8,7 @@ package org.ikankechil.iota.io;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -24,7 +25,7 @@ import org.slf4j.LoggerFactory;
  *
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class SignalWriter extends TimeSeriesWriter {
 
@@ -48,16 +49,7 @@ public class SignalWriter extends TimeSeriesWriter {
       }
       else {
         // write in reverse chronological order
-        final StringBuilder line = new StringBuilder();
-        final SignalTimeSeries signals = signalSeries.get(ZERO);
-        final String[] dates = signals.dates();
-        for (int d = dates.length - 1; d >= ZERO; --d) {
-          line.append(dates[d])
-              .append(COMMA)
-              .append(signals.signal(d));
-          lines.add(line.toString());
-          line.setLength(ZERO);
-        }
+        add(signalSeries.get(ZERO), lines);
         logger.debug("Single strategy");
       }
 
@@ -88,7 +80,17 @@ public class SignalWriter extends TimeSeriesWriter {
     // 20050502,BUY ,    ,BUY
 
     // tabulate signals in reverse chronological order
-    final Map<String, Signal[]> table = new TreeMap<>(StringUtility.REVERSE_ORDER);
+    final Map<String, Signal[]> table = tabulate(signalSeries, StringUtility.REVERSE_ORDER);
+
+    // convert table to lines
+    return convert(table);
+  }
+
+  private static final Map<String, Signal[]> tabulate(final List<? extends SignalTimeSeries> signalSeries,
+                                                      final Comparator<String> order) {
+    // tabulate signals in reverse chronological order
+    final Map<String, Signal[]> table = new TreeMap<>(order);
+
     int index = ZERO;
     final int size = signalSeries.size();
     for (final SignalTimeSeries signals : signalSeries) {
@@ -107,8 +109,13 @@ public class SignalWriter extends TimeSeriesWriter {
       ++index;
     }
 
+    return table;
+  }
+
+  private static final List<String> convert(final Map<String, Signal[]> table) {
     // convert table to lines
     final List<String> lines = new ArrayList<>();
+
     final StringBuilder line = new StringBuilder();
     for (final Entry<String, Signal[]> entry : table.entrySet()) {
       line.append(entry.getKey());  // date
@@ -121,6 +128,20 @@ public class SignalWriter extends TimeSeriesWriter {
     }
 
     return lines;
+  }
+
+  private static final void add(final SignalTimeSeries signals, final List<String> lines) {
+    // write in reverse chronological order
+    final String[] dates = signals.dates();
+    final StringBuilder line = new StringBuilder();
+    for (int d = dates.length - 1; d >= ZERO; --d) {
+      final Signal signal = signals.signal(d);
+      line.append(dates[d])
+          .append(COMMA)
+          .append((signal == null) ? EMPTY : signal);
+      lines.add(line.toString());
+      line.setLength(ZERO);
+    }
   }
 
 }

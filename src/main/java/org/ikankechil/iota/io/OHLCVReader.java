@@ -1,5 +1,5 @@
 /**
- * OHLCVReader.java  v0.3  16 June 2014 7:06:15 PM
+ * OHLCVReader.java  v0.4  16 June 2014 7:06:15 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -24,20 +24,22 @@ import org.slf4j.LoggerFactory;
  *
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class OHLCVReader {
 
   private final TextReader    reader;
 
   // Numeric constants
-  private static final int    ZERO   = 0;
+  private static final int    ZERO       = 0;
 
-  private static final String EMPTY  = "";
-  private static final char   DOT    = '.';
-  private static final char   SLASH  = '/';
+  private static final String EMPTY      = "";
+  private static final char   DOT        = '.';
+  private static final char   SLASH      = '/';
 
-  private static final Logger logger = LoggerFactory.getLogger(OHLCVReader.class);
+  private static final String BAD_NUMBER = "Bad number: {}";
+
+  private static final Logger logger     = LoggerFactory.getLogger(OHLCVReader.class);
 
   public OHLCVReader() {
     reader = new TextReader();
@@ -127,7 +129,7 @@ public class OHLCVReader {
     }
     catch (final NumberFormatException nfE) {
       d = Double.NaN;
-      logger.warn("Bad number: {}", s, nfE);
+      logger.warn(BAD_NUMBER, s, nfE);
     }
     return d;
   }
@@ -138,8 +140,8 @@ public class OHLCVReader {
       l = Long.parseLong(s);
     }
     catch (final NumberFormatException nfE) { // TODO parseDouble just in case?
-      l = (long) Double.NaN;
-      logger.warn("Bad number: {}", s, nfE);
+      l = ZERO;
+      logger.warn(BAD_NUMBER, s, nfE);
     }
     return l;
   }

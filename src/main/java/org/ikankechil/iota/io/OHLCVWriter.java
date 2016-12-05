@@ -1,5 +1,5 @@
 /**
- * OHLCVWriter.java  v0.3  11 March 2015 4:49:46 PM
+ * OHLCVWriter.java  v0.4  11 March 2015 4:49:46 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -19,14 +19,21 @@ import org.slf4j.LoggerFactory;
  *
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class OHLCVWriter extends TimeSeriesWriter {
-  // TODO
-  // 2. configure number of significant figures to be written
-  // 3. allow volume to be dropped
+
+  private final boolean       keepVolume;
 
   private static final Logger logger = LoggerFactory.getLogger(OHLCVWriter.class);
+
+  public OHLCVWriter() {
+    this(true);
+  }
+
+  public OHLCVWriter(final boolean keepVolume) {
+    this.keepVolume = keepVolume;
+  }
 
   public void write(final OHLCVTimeSeries prices, final File destination)
       throws IOException {
@@ -42,8 +49,10 @@ public class OHLCVWriter extends TimeSeriesWriter {
           .append(COMMA).append(prices.open(d))
           .append(COMMA).append(prices.high(d))
           .append(COMMA).append(prices.low(d))
-          .append(COMMA).append(prices.close(d))
-          .append(COMMA).append(prices.volume(d));
+          .append(COMMA).append(prices.close(d));
+      if (keepVolume) {
+        line.append(COMMA).append(prices.volume(d));
+      }
       lines.add(line.toString());
       line.setLength(symbol.length());  // clear date and OHLCV
     }
