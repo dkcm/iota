@@ -47,9 +47,9 @@ public class DX extends AbstractIndicator {
 
     // compute indicator
     for (int i = ZERO; i < output.length; ++i) {
-      final double pdi = plusDIs[i];
-      final double mdi = minusDIs[i];
-      output[i] = HUNDRED_PERCENT * Math.abs(pdi - mdi) / (pdi + mdi);
+      final double pDI = plusDIs[i];
+      final double mDI = minusDIs[i];
+      output[i] = HUNDRED_PERCENT * Math.abs(pDI - mDI) / (pDI + mDI);
     }
 
     outBegIdx.value = lookback;

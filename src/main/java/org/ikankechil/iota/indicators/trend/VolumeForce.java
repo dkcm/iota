@@ -66,7 +66,7 @@ public class VolumeForce extends AbstractIndicator {
     for (int i = ZERO; ++t < volumes.length; ++i) {
       // compute trend
       final double chlc = (highs[t] + lows[t] + closes[t]);
-      ct = (chlc > phlc) ? 100 : -100;
+      ct = (chlc > phlc) ? HUNDRED : -HUNDRED;
 
       // compute daily measurement (range) and cumulative measurement
       cdm = highs[t] - lows[t];

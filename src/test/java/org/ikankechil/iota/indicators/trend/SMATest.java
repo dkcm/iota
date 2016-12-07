@@ -1,5 +1,5 @@
 /**
- * SMATest.java  v0.2  10 January 2015 1:51:14 PM
+ * SMATest.java  v0.3  10 January 2015 1:51:14 PM
  *
  * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
  */
@@ -20,7 +20,7 @@ import org.junit.BeforeClass;
  *
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class SMATest extends AbstractIndicatorTest {
 
@@ -49,15 +49,15 @@ public class SMATest extends AbstractIndicatorTest {
                                         sma(DEFAULT_PERIOD, series.closes())));
   }
 
-  private final double[] sma(final int period, final double... values) {
-    final double[] sma = new double[values.length - lookback];
+  public static final double[] sma(final int period, final double... values) {
+    final double[] sma = new double[values.length - (period - 1)];
     for (int i = 0; i < period; ++i) {
       sma[0] += values[i];
     }
     sma[0] /= period;
     for (int today = 1, yesterday = today - 1; today < sma.length; ++today) {
       // drop earliest entry
-      sma[today] = sma[yesterday] + ((values[today + lookback] - values[yesterday]) / period);
+      sma[today] = sma[yesterday] + ((values[today + (period - 1)] - values[yesterday]) / period);
       yesterday = today;
     }
     return sma;

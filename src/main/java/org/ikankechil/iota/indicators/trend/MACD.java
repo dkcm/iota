@@ -1,5 +1,5 @@
 /**
- * MACD.java  v0.1  27 November 2014 1:06:03 am
+ * MACD.java  v0.2  27 November 2014 1:06:03 am
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -12,20 +12,14 @@ import org.ikankechil.iota.OHLCVTimeSeries;
 import org.ikankechil.iota.TimeSeries;
 import org.ikankechil.iota.indicators.AbstractIndicator;
 
-import com.tictactec.ta.lib.MInteger;
-import com.tictactec.ta.lib.RetCode;
-
 /**
  * Moving Average Convergence/Divergence (MACD) by Gerald Appel
  *
- * <p><a href=
- * "http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:moving_average_convergence_divergence_macd"
- * >http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:
- * moving_average_convergence_divergence_macd</a><br>
- * <a href="http://www.investopedia.com/terms/m/macd.asp">http://www.investopedia.com/terms/m/macd.asp</a>
+ * <p>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:moving_average_convergence_divergence_macd
+ * http://www.investopedia.com/terms/m/macd.asp
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class MACD extends AbstractIndicator {
 
@@ -41,7 +35,7 @@ public class MACD extends AbstractIndicator {
   }
 
   public MACD(final int fast, final int slow, final int signal) {
-    super(TA_LIB.macdLookback(fast, slow, signal));
+    super(Math.max(fast, slow) + signal - TWO);
     throwExceptionIfNegative(fast, slow, signal);
 
     this.fast = fast;
@@ -50,7 +44,7 @@ public class MACD extends AbstractIndicator {
   }
 
   @Override
-  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
+  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv, final int start) {
     // Formula:
     // MACD Line: (12-day EMA - 26-day EMA)
     // Signal Line: 9-day EMA of MACD Line
@@ -58,33 +52,43 @@ public class MACD extends AbstractIndicator {
 
     throwExceptionIfShort(ohlcv);
     final int size = ohlcv.size();
+    final double[] closes = ohlcv.closes();
 
-    final MInteger outBegIdx = new MInteger();
-    final MInteger outNBElement = new MInteger();
+    // compute fast and slow EMAs
+    final double[] fastEMAs = ema(closes, fast);
+    final double[] slowEMAs = ema(closes, slow);
 
-    final double[] outMACD = new double[size - lookback];
-    final double[] outMACDSignal = new double[outMACD.length];
-    final double[] outMACDHist = new double[outMACD.length];
+    // compute MACD
+    final double[] macd = difference(fastEMAs, slowEMAs);
 
-    final RetCode outcome = TA_LIB.macd(ZERO, // TODO change this to support updates
-                                        size - ONE,
-                                        ohlcv.closes(),
-                                        fast,
-                                        slow,
-                                        signal,
-                                        outBegIdx,
-                                        outNBElement,
-                                        outMACD,
-                                        outMACDSignal,
-                                        outMACDHist);
-    throwExceptionIfBad(outcome, ohlcv);
+    // compute MACD signal
+    final double[] macdSignal = ema(macd, signal);
+
+    // compute MACD histogram
+    final double[] macdHistogram = difference(macd, macdSignal);
 
     final String[] dates = Arrays.copyOfRange(ohlcv.dates(), lookback, size);
 
     logger.info(GENERATED_FOR, name, ohlcv);
-    return Arrays.asList(new TimeSeries(name, dates, outMACD),
-                         new TimeSeries(MACD_SIGNAL, dates, outMACDSignal),
-                         new TimeSeries(MACD_HISTOGRAM, dates, outMACDHist));
+    return Arrays.asList(new TimeSeries(name,
+                                        dates,
+                                        Arrays.copyOfRange(macd,
+                                                           signal - ONE, // signal lookback
+                                                           macd.length)),
+                         new TimeSeries(MACD_SIGNAL,
+                                        dates,
+                                        macdSignal),
+                         new TimeSeries(MACD_HISTOGRAM,
+                                        dates,
+                                        macdHistogram));
+  }
+
+  private static final double[] difference(final double[] finals, final double[] initials) {
+    final double[] differences = new double[initials.length];
+    for (int i = ZERO, j = finals.length - initials.length; i < differences.length; ++i, ++j) {
+      differences[i] = finals[j] - initials[i];
+    }
+    return differences;
   }
 
 }

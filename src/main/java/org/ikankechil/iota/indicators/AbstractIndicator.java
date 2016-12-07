@@ -76,6 +76,7 @@ public abstract class AbstractIndicator implements Indicator {
   protected static final int    SIXTY           = 60;
   protected static final int    SIXTY_FOUR      = 64;
   protected static final int    SIXTY_FIVE      = 65;
+  protected static final int    HUNDRED         = 100;
 
   protected static final double HALF            = 0.5;
   protected static final double THIRD           = ONE / (double) THREE;
