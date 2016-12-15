@@ -1,5 +1,5 @@
 /**
- * IndicatorWithSignalLine.java  v0.2  19 December 2014 6:14:24 PM
+ * IndicatorWithSignalLine.java  v0.3  19 December 2014 6:14:24 PM
  *
  * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
  */
@@ -15,11 +15,12 @@ import com.tictactec.ta.lib.MInteger;
 import com.tictactec.ta.lib.RetCode;
 
 /**
+ * Abstract superclass for <code>Indicator</code>s that have an EMA signal line.
  *
- *
+ * <p>http://www.investopedia.com/terms/s/signal_line.asp<br>
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public abstract class IndicatorWithSignalLine extends AbstractIndicator {
 
@@ -30,11 +31,24 @@ public abstract class IndicatorWithSignalLine extends AbstractIndicator {
   private static final String SIGNAL = " Signal";
 
   /**
+   *
+   *
    * @param signal signal line period
    * @param lookback sum of indicator and signal line lookbacks
    */
   public IndicatorWithSignalLine(final int signal, final int lookback) {
-    super(lookback);
+    this(ZERO, signal, lookback);
+  }
+
+  /**
+   *
+   *
+   * @param period indicator period
+   * @param signal signal line period
+   * @param lookback sum of indicator and signal line lookbacks
+   */
+  public IndicatorWithSignalLine(final int period, final int signal, final int lookback) {
+    super(period, lookback);
     throwExceptionIfNegative(signal);
 
     this.signal = signal;
@@ -43,7 +57,7 @@ public abstract class IndicatorWithSignalLine extends AbstractIndicator {
   }
 
   @Override
-  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
+  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv, final int start) {
     throwExceptionIfShort(ohlcv);
     final int size = ohlcv.size();
 
@@ -51,9 +65,9 @@ public abstract class IndicatorWithSignalLine extends AbstractIndicator {
     final MInteger outBegIdx = new MInteger();
     final MInteger outNBElement = new MInteger();
 
-    final double[] indicator = new double[(size - lookback) + signalLookback];
+    final double[] indicator = new double[(size - lookback) + signalLookback - start];
 
-    final RetCode outcome = compute(ZERO,
+    final RetCode outcome = compute(start,
                                     size - ONE,
                                     ohlcv,
                                     outBegIdx,
