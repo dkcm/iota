@@ -1,5 +1,5 @@
 /**
- * Trendlines.java  v0.3  19 January 2016 4:00:07 PM
+ * Trendlines.java  v0.4  19 January 2016 4:00:07 PM
  *
  * Copyright © 2016 Daniel Kuan.  All rights reserved.
  */
@@ -25,13 +25,13 @@ import org.ikankechil.iota.indicators.Indicator;
  *
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class Trendlines extends AbstractIndicator {
 
   private final Indicator                    topsAndBottoms;
   private final double                       threshold;
-  private final Map<Trends, List<Trendline>> trends;
+  private final Map<Trends, List<Trendline>> trends; // TODO possibly causing thread contention
 
   private static final int                   GAP            = TWO;
 
@@ -98,6 +98,7 @@ public class Trendlines extends AbstractIndicator {
     private double  c;  // y-intercept
 
     private boolean trendConfirmed;
+    private boolean trendBroken;
 
     public Trendline(final int x1, final double y1, final int x2, final double y2) {
       this.x1 = x1;
@@ -109,6 +110,7 @@ public class Trendlines extends AbstractIndicator {
       c = intercept(x1, y1, m);
 
       trendConfirmed = false;
+      trendBroken = false;
     }
 
     public int x1() {
@@ -163,6 +165,14 @@ public class Trendlines extends AbstractIndicator {
 
     public boolean isConfirmed() {
       return trendConfirmed;
+    }
+
+    public void broken(final boolean broken) {
+      trendBroken = broken;
+    }
+
+    public boolean isBroken() {
+      return trendBroken;
     }
 
     @Override
@@ -249,7 +259,8 @@ public class Trendlines extends AbstractIndicator {
     Arrays.fill(trendlines, Double.NaN);
 
     Trendline line = null;
-    trends.get(trend).clear();
+    final List<Trendline> lines = trends.get(trend);
+    lines.clear();
     for (int x1 = nextExtremum(extrema, NOT_FOUND), x2 = NOT_FOUND;
          (x2 = nextExtremum(extrema, x1)) > NOT_FOUND;
          x1 = x2) {
@@ -259,7 +270,7 @@ public class Trendlines extends AbstractIndicator {
         // trendline in general right direction => start of trend
         if (trend.isRightDirection(gradient(x1, y1, x2, y2))) {
           line = new Trendline(x1, y1, x2, y2);
-          trends.get(trend).add(line);
+          lines.add(line);
           logger.debug("New {} trend", trend);
         }
       }
@@ -269,6 +280,7 @@ public class Trendlines extends AbstractIndicator {
 
         // trendline decisively broken => end of trend
         if (trend.isDecisivelyBroken(y2, fx2, threshold)) {
+          line.broken(true);
           draw(line, trendlines, x2 - GAP); // extend trendline less gap
           line = null;
           logger.debug("End of {} trend", trend);
