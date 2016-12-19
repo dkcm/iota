@@ -1,16 +1,15 @@
 /**
- * MACD.java  v0.2  27 November 2014 1:06:03 am
+ * MACD.java  v0.3  27 November 2014 1:06:03 am
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.trend;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.ikankechil.iota.OHLCVTimeSeries;
-import org.ikankechil.iota.TimeSeries;
-import org.ikankechil.iota.indicators.AbstractIndicator;
+import org.ikankechil.iota.indicators.IndicatorWithSignalLineAndHistogram;
+
+import com.tictactec.ta.lib.MInteger;
+import com.tictactec.ta.lib.RetCode;
 
 /**
  * Moving Average Convergence/Divergence (MACD) by Gerald Appel
@@ -19,76 +18,52 @@ import org.ikankechil.iota.indicators.AbstractIndicator;
  * http://www.investopedia.com/terms/m/macd.asp
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
-public class MACD extends AbstractIndicator {
+public class MACD extends IndicatorWithSignalLineAndHistogram {
 
-  private final int           fast;
-  private final int           slow;
-  private final int           signal;
-
-  private static final String MACD_SIGNAL    = "MACD Signal";
-  private static final String MACD_HISTOGRAM = "MACD Histogram";
+  private final int fast;
+  private final int slow;
 
   public MACD() {
     this(TWELVE, TWENTY_SIX, NINE);
   }
 
   public MACD(final int fast, final int slow, final int signal) {
-    super(Math.max(fast, slow) + signal - TWO);
+    super(signal, Math.max(fast, slow) + signal - TWO);
     throwExceptionIfNegative(fast, slow, signal);
 
     this.fast = fast;
     this.slow = slow;
-    this.signal = signal;
   }
 
   @Override
-  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv, final int start) {
+  protected RetCode compute(final int start,
+                            final int end,
+                            final OHLCVTimeSeries ohlcv,
+                            final MInteger outBegIdx,
+                            final MInteger outNBElement,
+                            final double[] output) {
     // Formula:
     // MACD Line: (12-day EMA - 26-day EMA)
     // Signal Line: 9-day EMA of MACD Line
     // MACD Histogram: MACD Line - Signal Line
 
-    throwExceptionIfShort(ohlcv);
-    final int size = ohlcv.size();
-    final double[] closes = ohlcv.closes();
-
     // compute fast and slow EMAs
-    final double[] fastEMAs = ema(closes, fast);
-    final double[] slowEMAs = ema(closes, slow);
+    final double[] fastEMAs = smoothenPrices(fast, ohlcv);
+    final double[] slowEMAs = smoothenPrices(slow, ohlcv);
 
     // compute MACD
     final double[] macd = difference(fastEMAs, slowEMAs);
+    System.arraycopy(macd, ZERO, output, ZERO, output.length);
 
-    // compute MACD signal
-    final double[] macdSignal = ema(macd, signal);
-
-    // compute MACD histogram
-    final double[] macdHistogram = difference(macd, macdSignal);
-
-    final String[] dates = Arrays.copyOfRange(ohlcv.dates(), lookback, size);
-
-    logger.info(GENERATED_FOR, name, ohlcv);
-    return Arrays.asList(new TimeSeries(name,
-                                        dates,
-                                        Arrays.copyOfRange(macd,
-                                                           signal - ONE, // signal lookback
-                                                           macd.length)),
-                         new TimeSeries(MACD_SIGNAL,
-                                        dates,
-                                        macdSignal),
-                         new TimeSeries(MACD_HISTOGRAM,
-                                        dates,
-                                        macdHistogram));
+    outBegIdx.value = lookback;
+    outNBElement.value = output.length;
+    return RetCode.Success;
   }
 
-  private static final double[] difference(final double[] finals, final double[] initials) {
-    final double[] differences = new double[initials.length];
-    for (int i = ZERO, j = finals.length - initials.length; i < differences.length; ++i, ++j) {
-      differences[i] = finals[j] - initials[i];
-    }
-    return differences;
+  double[] smoothenPrices(final int smoothingPeriod, final OHLCVTimeSeries ohlcv) {
+    return ema(ohlcv.closes(), smoothingPeriod);
   }
 
 }

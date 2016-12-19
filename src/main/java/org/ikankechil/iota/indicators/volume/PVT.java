@@ -1,7 +1,7 @@
 /**
- * OBV.java  v0.2  4 December 2014 1:17:27 PM
+ * PVT.java  0.1  19 December 2016 1:20:52 PM
  *
- * Copyright © 2014-2017 Daniel Kuan.  All rights reserved.
+ * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.volume;
 
@@ -12,16 +12,18 @@ import com.tictactec.ta.lib.MInteger;
 import com.tictactec.ta.lib.RetCode;
 
 /**
- * On Balance Volume (OBV) by Joe Granville
+ * Price and Volume Trend (PVT)
  *
- * <p>http://stockcharts.com/school/doku.php?st=obv&id=chart_school:technical_indicators:on_balance_volume_obv<br>
+ * <p>https://www.tradingview.com/wiki/Price_Volume_Trend_(PVT)#DEFINITION<br>
+ * https://www.incrediblecharts.com/indicators/price_and_volume_trend.php<br>
+ *
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.1
  */
-public class OBV extends AbstractIndicator {
+public class PVT extends AbstractIndicator {
 
-  public OBV() {
+  public PVT() {
     super(ZERO);
   }
 
@@ -33,30 +35,16 @@ public class OBV extends AbstractIndicator {
                             final MInteger outNBElement,
                             final double[] output) {
     // Formula:
-    // If the closing price is above the prior close price then:
-    // Current OBV = Previous OBV + Current Volume
-    //
-    // If the closing price is below the prior close price then:
-    // Current OBV = Previous OBV - Current Volume
-    //
-    // If the closing prices equals the prior close price then:
-    // Current OBV = Previous OBV (no change)
+    // PVT = [((CurrentClose - PreviousClose) / PreviousClose) x Volume] + PreviousPVT
 
     // compute indicator
     int i = ZERO;
     double pc = ohlcv.close(i);
-    double obv = output[i] = ohlcv.volume(i);
+    double pvt = output[i] = ohlcv.volume(i);
 
     while (++i < output.length) {
       final double close = ohlcv.close(i);
-
-      if (close > pc) {
-        obv += ohlcv.volume(i);
-      }
-      else if (close < pc) {
-        obv -= ohlcv.volume(i);
-      }
-      output[i] = obv;
+      output[i] = pvt += (close / pc - ONE) * ohlcv.volume(i);
 
       // shift forward in time
       pc = close;

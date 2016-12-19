@@ -1,7 +1,7 @@
 /**
- * PPOTest.java  v0.2  11 December 2015 3:53:47 pm
+ * PPOTest.java  v0.3  11 December 2015 3:53:47 pm
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.trend;
 
@@ -17,12 +17,15 @@ import org.junit.BeforeClass;
  *
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class PPOTest extends AbstractIndicatorTest {
 
+  private static final int DEFAULT_SLOW   = 26;
+  private static final int DEFAULT_SIGNAL = 9;
+
   public PPOTest() {
-    super(33);
+    super((DEFAULT_SLOW - 1) + (DEFAULT_SIGNAL - 1));
   }
 
   @BeforeClass
@@ -33,7 +36,7 @@ public class PPOTest extends AbstractIndicatorTest {
 
   @Override
   public Indicator newInstance(final int period) {
-    return new PPO(period, 26, 9);
+    return new PPO(period, DEFAULT_SLOW, DEFAULT_SIGNAL);
   }
 
 }

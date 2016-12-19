@@ -1,7 +1,7 @@
 /**
  * AbstractIndicator.java  v0.7  27 November 2014 1:04:00 am
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators;
 
@@ -421,6 +421,14 @@ public abstract class AbstractIndicator implements Indicator {
       doublesSquared[i] *= doubles[i];
     }
     return doublesSquared;
+  }
+
+  protected static final double[] difference(final double[] finals, final double[] initials) {
+    final double[] differences = new double[initials.length];
+    for (int i = ZERO, j = finals.length - initials.length; i < differences.length; ++i, ++j) {
+      differences[i] = finals[j] - initials[i];
+    }
+    return differences;
   }
 
   @Override

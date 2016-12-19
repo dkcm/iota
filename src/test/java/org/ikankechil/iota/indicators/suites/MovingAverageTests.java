@@ -1,7 +1,7 @@
 /**
  * MovingAverageTests.java  v0.1  22 November 2016 12:25:27 am
  *
- * Copyright © 2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.suites;
 
@@ -17,6 +17,7 @@ import org.ikankechil.iota.indicators.trend.T3Test;
 import org.ikankechil.iota.indicators.trend.TEMATest;
 import org.ikankechil.iota.indicators.trend.VOMATest;
 import org.ikankechil.iota.indicators.trend.VOMOMATest;
+import org.ikankechil.iota.indicators.trend.VWEMATest;
 import org.ikankechil.iota.indicators.trend.WMATest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -40,6 +41,7 @@ import org.junit.runners.Suite.SuiteClasses;
 //  TRIMATest.class,
   VOMATest.class,
   VOMOMATest.class,
+  VWEMATest.class,
 //  WEVOMOTest.class,
   WMATest.class,
 //  WSMATest.class,
