@@ -11,6 +11,8 @@ import org.ikankechil.iota.indicators.MinimumMaximumPriceIndexTest;
 import org.ikankechil.iota.indicators.MinimumMaximumPriceTest;
 import org.ikankechil.iota.indicators.MinimumPriceIndexTest;
 import org.ikankechil.iota.indicators.MinimumPriceTest;
+import org.ikankechil.iota.indicators.trend.VHFTest;
+import org.ikankechil.iota.indicators.volatility.DonchianChannelsTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -22,7 +24,9 @@ import org.junit.runners.Suite.SuiteClasses;
   MaximumPriceTest.class,
   MaximumPriceIndexTest.class,
   MinimumMaximumPriceTest.class,
-  MinimumMaximumPriceIndexTest.class
+  MinimumMaximumPriceIndexTest.class,
+  DonchianChannelsTest.class,
+  VHFTest.class,
 })
 
 /**

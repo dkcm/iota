@@ -1,9 +1,11 @@
 /**
  * GeneralisedDEMATest.java  v0.1  17 October 2016 9:53:58 pm
  *
- * Copyright © 2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.trend;
+
+import static org.ikankechil.iota.indicators.trend.EMATest.*;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -55,8 +57,8 @@ public class GeneralisedDEMATest extends AbstractIndicatorTest {
     // GD(n,v) = EMA(n)*(1+v) - EMA(EMA(n))*v
 
     final int lookback = period - 1;
-    final double[] ema = EMATest.ema(period, lookback, values);
-    final double[] ema2 = EMATest.ema(period, lookback, ema);
+    final double[] ema = ema(period, lookback, values);
+    final double[] ema2 = ema(period, lookback, ema);
 
     final double[] gdema = new double[values.length - lookback * 2];
     for (int i = 0, j = ema.length - ema2.length; i < gdema.length; ++i, ++j) {

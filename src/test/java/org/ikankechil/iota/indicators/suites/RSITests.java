@@ -8,6 +8,7 @@ package org.ikankechil.iota.indicators.suites;
 import org.ikankechil.iota.indicators.momentum.DMITest;
 import org.ikankechil.iota.indicators.momentum.LaguerreRSITest;
 import org.ikankechil.iota.indicators.momentum.MFITest;
+import org.ikankechil.iota.indicators.momentum.RMITest;
 import org.ikankechil.iota.indicators.momentum.RSITest;
 import org.ikankechil.iota.indicators.momentum.SelfAdjustingRSITest;
 import org.ikankechil.iota.indicators.momentum.StochasticRSITest;
@@ -24,7 +25,8 @@ import org.junit.runners.Suite.SuiteClasses;
 //  SlowRSITest.class,
   StochasticRSITest.class,
   DMITest.class,
-  MFITest.class
+  MFITest.class,
+  RMITest.class,
 })
 
 /**

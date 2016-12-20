@@ -12,6 +12,7 @@ import org.ikankechil.iota.indicators.trend.GMMATest;
 import org.ikankechil.iota.indicators.trend.GeneralisedDEMATest;
 import org.ikankechil.iota.indicators.trend.HMATest;
 import org.ikankechil.iota.indicators.trend.MOMATest;
+import org.ikankechil.iota.indicators.trend.MovingAverageEnvelopesTest;
 import org.ikankechil.iota.indicators.trend.SMATest;
 import org.ikankechil.iota.indicators.trend.T3Test;
 import org.ikankechil.iota.indicators.trend.TEMATest;
@@ -45,7 +46,8 @@ import org.junit.runners.Suite.SuiteClasses;
 //  WEVOMOTest.class,
   WMATest.class,
 //  WSMATest.class,
-//  ZeroLagEMATest.class
+//  ZeroLagEMATest.class,
+  MovingAverageEnvelopesTest.class,
 })
 
 /**

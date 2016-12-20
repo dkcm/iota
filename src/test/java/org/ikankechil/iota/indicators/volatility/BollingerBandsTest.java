@@ -1,7 +1,7 @@
 /**
  * BollingerBandsTest.java  v0.2  28 November 2015 9:33:18 pm
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.volatility;
 
@@ -21,8 +21,10 @@ import org.junit.BeforeClass;
  */
 public class BollingerBandsTest extends AbstractIndicatorTest {
 
+  private static final int DEFAULT_PERIOD = 20;
+
   public BollingerBandsTest() {
-    super(19);
+    super(DEFAULT_PERIOD - 1);
   }
 
   @BeforeClass

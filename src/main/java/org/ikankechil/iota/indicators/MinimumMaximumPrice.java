@@ -1,7 +1,7 @@
 /**
- * MinimumMaximumPrice.java  v0.2  27 January 2015 12:56:59 PM
+ * MinimumMaximumPrice.java  v0.3  27 January 2015 12:56:59 PM
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators;
 
@@ -16,7 +16,7 @@ import org.ikankechil.iota.TimeSeries;
  *
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class MinimumMaximumPrice extends AbstractIndicator {
 
@@ -34,15 +34,20 @@ public class MinimumMaximumPrice extends AbstractIndicator {
   }
 
   @Override
-  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
-    throwExceptionIfShort(ohlcv);
+  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv, final int start) {
+    return generate((TimeSeries) ohlcv, start);
+  }
 
-    final double[] minPrices = min.generate(ohlcv).get(ZERO).values();
-    final double[] maxPrices = max.generate(ohlcv).get(ZERO).values();
+  @Override
+  public List<TimeSeries> generate(final TimeSeries series, final int start) {
+    throwExceptionIfShort(series);
 
-    final String[] dates = Arrays.copyOfRange(ohlcv.dates(), lookback, ohlcv.size());
+    final double[] minPrices = min.generate(series).get(ZERO).values();
+    final double[] maxPrices = max.generate(series).get(ZERO).values();
 
-    logger.info(GENERATED_FOR, name, ohlcv);
+    final String[] dates = Arrays.copyOfRange(series.dates(), lookback, series.size());
+
+    logger.info(GENERATED_FOR, name, series);
     return Arrays.asList(new TimeSeries(MININUM_PRICE, dates, minPrices),
                          new TimeSeries(MAXIMUM_PRICE, dates, maxPrices));
   }
