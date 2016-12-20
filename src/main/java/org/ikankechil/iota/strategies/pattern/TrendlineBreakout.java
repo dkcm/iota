@@ -1,5 +1,5 @@
 /**
- * TrendlineBreakout.java  v0.5  22 September 2016 9:33:52 am
+ * TrendlineBreakout.java  v0.6  22 September 2016 9:33:52 am
  *
  * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
  */
@@ -14,6 +14,7 @@ import org.ikankechil.iota.OHLCVTimeSeries;
 import org.ikankechil.iota.Signal;
 import org.ikankechil.iota.SignalTimeSeries;
 import org.ikankechil.iota.TimeSeries;
+import org.ikankechil.iota.TrendlineTimeSeries;
 import org.ikankechil.iota.indicators.pattern.Trendlines;
 import org.ikankechil.iota.indicators.pattern.Trendlines.Trendline;
 import org.ikankechil.iota.strategies.AbstractStrategy;
@@ -27,13 +28,11 @@ import org.slf4j.LoggerFactory;
  * Sells when lows break down from up trendlines (from above)<br>
  *
  * @author Daniel Kuan
- * @version 0.5
+ * @version 0.6
  */
 public class TrendlineBreakout extends AbstractStrategy {
 
-  private final Trendlines      trendlines;
-
-  private final SignalGenerator buyer  = new SignalGenerator(BUY) {
+  private final SignalGenerator buyer  = new SignalGenerator(BUY, ZERO) {
 
     @Override
     boolean execute(final double fastYesterday,
@@ -49,18 +48,8 @@ public class TrendlineBreakout extends AbstractStrategy {
       return ohlcv.highs();
     }
 
-    @Override
-    TimeSeries getSlowTrends(final List<TimeSeries> trends) {
-      return trends.get(ZERO);
-    }
-
-    @Override
-    List<Trendline> getSlowTrendlines() {
-      return trendlines.downTrendlines();
-    }
-
   };
-  private final SignalGenerator seller = new SignalGenerator(SELL) {
+  private final SignalGenerator seller = new SignalGenerator(SELL, ONE) {
 
     @Override
     boolean execute(final double fastYesterday,
@@ -76,16 +65,6 @@ public class TrendlineBreakout extends AbstractStrategy {
       return ohlcv.lows();
     }
 
-    @Override
-    TimeSeries getSlowTrends(final List<TimeSeries> trends) {
-      return trends.get(ONE);
-    }
-
-    @Override
-    List<Trendline> getSlowTrendlines() {
-      return trendlines.upTrendlines();
-    }
-
   };
 
   private static final Logger   logger = LoggerFactory.getLogger(TrendlineBreakout.class);
@@ -96,8 +75,6 @@ public class TrendlineBreakout extends AbstractStrategy {
 
   public TrendlineBreakout(final Trendlines trendlines) {
     super(trendlines);
-
-    this.trendlines = trendlines;
   }
 
   @Override
@@ -146,9 +123,11 @@ public class TrendlineBreakout extends AbstractStrategy {
   private abstract static class SignalGenerator {
 
     private final Signal signal;
+    private final int    timeSeriesIndex;
 
-    SignalGenerator(final Signal signal) {
+    SignalGenerator(final Signal signal, final int timeSeriesIndex) {
       this.signal = signal;
+      this.timeSeriesIndex = timeSeriesIndex;
     }
 
     public void generateSignals(final SignalTimeSeries signals,
@@ -156,8 +135,8 @@ public class TrendlineBreakout extends AbstractStrategy {
                                 final List<TimeSeries> trends) {
       final String ohlcvName = ohlcv.toString();
       final double[] fasts = getFasts(ohlcv);
-      final TimeSeries slowTrends = getSlowTrends(trends);
-      final List<Trendline> slowTrendlines = getSlowTrendlines();
+      final TrendlineTimeSeries slowTrends = getSlowTrends(trends);
+      final List<Trendline> slowTrendlines = slowTrends.trendlines();
 
       for (final Trendline trendline : slowTrendlines) {
         // locate breakout / breakdown only if trendline is broken
@@ -210,9 +189,9 @@ public class TrendlineBreakout extends AbstractStrategy {
 
     abstract double[] getFasts(final OHLCVTimeSeries ohlcv);
 
-    abstract TimeSeries getSlowTrends(final List<TimeSeries> trends);
-
-    abstract List<Trendline> getSlowTrendlines();
+    TrendlineTimeSeries getSlowTrends(final List<? extends TimeSeries> trends) {
+      return (TrendlineTimeSeries) trends.get(timeSeriesIndex);
+    }
 
   }
 

@@ -1,5 +1,5 @@
 /**
- * TrendlinesTest.java  v0.2  27 January 2016 12:10:35 PM
+ * TrendlinesTest.java  v0.3  27 January 2016 12:10:35 PM
  *
  * Copyright © 2016 Daniel Kuan.  All rights reserved.
  */
@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import org.ikankechil.iota.TrendlineTimeSeries;
 import org.ikankechil.iota.indicators.AbstractIndicatorTest;
 import org.ikankechil.iota.indicators.Indicator;
 import org.ikankechil.iota.indicators.pattern.Trendlines.Trendline;
@@ -22,7 +23,7 @@ import org.junit.Test;
  *
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class TrendlinesTest extends AbstractIndicatorTest {
 
@@ -77,22 +78,25 @@ public class TrendlinesTest extends AbstractIndicatorTest {
   @Test
   public void indicatorValues() {
     super.indicatorValues();
+    assertEquals(2, actuals.size());
     downTrendlines();
     upTrendlines();
   }
 
   private void downTrendlines() {
-    final List<Trendline> downTrendlines = trendlines.downTrendlines();
+    final List<Trendline> downTrendlines = ((TrendlineTimeSeries) actuals.get(0)).trendlines();
     for (int i = 0; i < DOWN_TRENDLINES.size(); ++i) {
       assertEquals(DOWN_TRENDLINES.get(i).toString(), downTrendlines.get(i).toString());
     }
+    assertEquals(DOWN_TRENDLINES.size(), downTrendlines.size());
   }
 
   private void upTrendlines() {
-    final List<Trendline> upTrendlines = trendlines.upTrendlines();
+    final List<Trendline> upTrendlines = ((TrendlineTimeSeries) actuals.get(1)).trendlines();
     for (int i = 0; i < UP_TRENDLINES.size(); ++i) {
       assertEquals(UP_TRENDLINES.get(i).toString(), upTrendlines.get(i).toString());
     }
+    assertEquals(UP_TRENDLINES.size(), upTrendlines.size());
   }
 
 }

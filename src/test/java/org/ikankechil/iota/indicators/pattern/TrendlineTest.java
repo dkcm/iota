@@ -126,10 +126,10 @@ public class TrendlineTest {
   @Test
   public void trendBreak() {
     assertFalse(trendline.isBroken());
-    trendline.broken(false);
-    assertFalse(trendline.isBroken());
     trendline.broken(true);
     assertTrue(trendline.isBroken());
+    trendline.broken(false);
+    assertFalse(trendline.isBroken());
   }
 
   @Test

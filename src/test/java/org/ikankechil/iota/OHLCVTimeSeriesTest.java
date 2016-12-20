@@ -1,7 +1,7 @@
 /**
- * OHLCVTimeSeriesTest.java v0.1 6 January 2015 7:04:39 PM
+ * OHLCVTimeSeriesTest.java  v0.1  6 January 2015 7:04:39 PM
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota;
 
@@ -12,7 +12,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 /**
- * A JUnit test for <code>OHLCVTimeSeries</code>.
+ * JUnit test for <code>OHLCVTimeSeries</code>.
  *
  *
  * @author Daniel Kuan

@@ -1,7 +1,7 @@
 /**
  * TimeSeriesTest.java  v0.1  18 December 2014 12:13:50 am
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota;
 
@@ -12,7 +12,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 /**
- * A JUnit test for <code>TimeSeries</code>.
+ * JUnit test for <code>TimeSeries</code>.
  *
  *
  * @author Daniel Kuan

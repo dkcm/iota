@@ -1,7 +1,7 @@
 /**
- * Trendlines.java  v0.4  19 January 2016 4:00:07 PM
+ * Trendlines.java  v0.5  19 January 2016 4:00:07 PM
  *
- * Copyright © 2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.pattern;
 
@@ -11,12 +11,11 @@ import static org.ikankechil.util.NumberUtility.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.EnumMap;
 import java.util.List;
-import java.util.Map;
 
 import org.ikankechil.iota.OHLCVTimeSeries;
 import org.ikankechil.iota.TimeSeries;
+import org.ikankechil.iota.TrendlineTimeSeries;
 import org.ikankechil.iota.indicators.AbstractIndicator;
 import org.ikankechil.iota.indicators.Indicator;
 
@@ -25,18 +24,17 @@ import org.ikankechil.iota.indicators.Indicator;
  *
  *
  * @author Daniel Kuan
- * @version 0.4
+ * @version 0.5
  */
 public class Trendlines extends AbstractIndicator {
 
-  private final Indicator                    topsAndBottoms;
-  private final double                       threshold;
-  private final Map<Trends, List<Trendline>> trends; // TODO possibly causing thread contention
+  private final Indicator     topsAndBottoms;
+  private final double        threshold;
 
-  private static final int                   GAP            = TWO;
+  private static final int    GAP            = TWO;
 
-  private static final String                DOWN_TRENDLINE = "Down Trendline";
-  private static final String                UP_TRENDLINE   = "Up Trendline";
+  private static final String DOWN_TRENDLINE = "Down Trendline";
+  private static final String UP_TRENDLINE   = "Up Trendline";
 
   /**
    *
@@ -59,15 +57,10 @@ public class Trendlines extends AbstractIndicator {
 
     threshold = thresholdPercentage / HUNDRED_PERCENT;
     topsAndBottoms = new TopsAndBottoms(awayPoints, null, false);
-
-    trends = new EnumMap<>(Trends.class);
-    for (final Trends trend : values()) {
-      trends.put(trend, new ArrayList<>());
-    }
   }
 
   @Override
-  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
+  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv, final int start) {
     throwExceptionIfShort(ohlcv);
 
     // generate tops and bottoms
@@ -76,14 +69,16 @@ public class Trendlines extends AbstractIndicator {
     final double[] bottoms = tab.get(ONE).values();
 
     // draw up and down trendlines
-    final double[] downTrendlines = drawTrendlines(DOWN, tops);
-    final double[] upTrendlines = drawTrendlines(UP, bottoms);
+    final List<Trendline> downTrends = new ArrayList<>();
+    final List<Trendline> upTrends = new ArrayList<>();
+    final double[] downTrendlines = drawTrendlines(DOWN, tops, downTrends);
+    final double[] upTrendlines = drawTrendlines(UP, bottoms, upTrends);
 
     final String[] dates = ohlcv.dates();
 
     logger.info(GENERATED_FOR, name, ohlcv);
-    return Arrays.asList(new TimeSeries(DOWN_TRENDLINE, dates, downTrendlines),
-                         new TimeSeries(UP_TRENDLINE, dates, upTrendlines));
+    return Arrays.asList(new TrendlineTimeSeries(DOWN_TRENDLINE, dates, downTrendlines, downTrends),
+                         new TrendlineTimeSeries(UP_TRENDLINE, dates, upTrendlines, upTrends));
   }
 
   public static class Trendline {
@@ -254,13 +249,11 @@ public class Trendlines extends AbstractIndicator {
 
   }
 
-  private final double[] drawTrendlines(final Trends trend, final double[] extrema) {
+  private final double[] drawTrendlines(final Trends trend, final double[] extrema, final List<Trendline> lines) {
     final double[] trendlines = new double[extrema.length];
     Arrays.fill(trendlines, Double.NaN);
 
     Trendline line = null;
-    final List<Trendline> lines = trends.get(trend);
-    lines.clear();
     for (int x1 = nextExtremum(extrema, NOT_FOUND), x2 = NOT_FOUND;
          (x2 = nextExtremum(extrema, x1)) > NOT_FOUND;
          x1 = x2) {
@@ -343,14 +336,6 @@ public class Trendlines extends AbstractIndicator {
                 x2,
                 trendlines[x2] = line.y2(),
                 trendlines);
-  }
-
-  public List<Trendline> upTrendlines() {
-    return new ArrayList<>(trends.get(UP));
-  }
-
-  public List<Trendline> downTrendlines() {
-    return new ArrayList<>(trends.get(DOWN));
   }
 
 }
