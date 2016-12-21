@@ -1,7 +1,7 @@
 /**
  * TopsTest.java  v0.1  8 January 2016 12:09:20 am
  *
- * Copyright © 2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.pattern;
 
@@ -20,8 +20,10 @@ import org.junit.BeforeClass;
  */
 public class TopsTest extends AbstractIndicatorTest {
 
+  private static final int DEFAULT_LOOKBACK = 0;
+
   public TopsTest() {
-    super(0);
+    super(DEFAULT_LOOKBACK);
   }
 
   @BeforeClass

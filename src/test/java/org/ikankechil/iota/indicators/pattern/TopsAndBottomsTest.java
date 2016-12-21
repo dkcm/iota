@@ -1,7 +1,7 @@
 /**
  * TopsAndBottomsTest.java  v0.3  31 December 2015 7:58:28 pm
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.pattern;
 
@@ -22,9 +22,10 @@ import org.junit.BeforeClass;
 public class TopsAndBottomsTest extends AbstractIndicatorTest {
 
   private static final int DEFAULT_AWAY_POINTS = 5;
+  private static final int DEFAULT_LOOKBACK    = 0;
 
   public TopsAndBottomsTest() {
-    super(0);
+    super(DEFAULT_LOOKBACK);
   }
 
   @BeforeClass
@@ -35,7 +36,10 @@ public class TopsAndBottomsTest extends AbstractIndicatorTest {
 
   @Override
   public Indicator newInstance() {
-    return new TopsAndBottoms(DEFAULT_AWAY_POINTS, null, true);
+    final boolean isInterpolate = true; // test interpolation here
+    return new TopsAndBottoms(DEFAULT_AWAY_POINTS, null, isInterpolate);
   }
+
+  // TODO test extrema
 
 }

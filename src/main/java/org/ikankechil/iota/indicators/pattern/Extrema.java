@@ -1,7 +1,7 @@
 /**
- * Extrema.java  v0.2  7 January 2016 9:53:20 pm
+ * Extrema.java  v0.3  7 January 2016 9:53:20 pm
  *
- * Copyright © 2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.pattern;
 
@@ -10,6 +10,7 @@ import static org.ikankechil.util.NumberUtility.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.ikankechil.iota.ExtremumTimeSeries;
 import org.ikankechil.iota.OHLCVTimeSeries;
 import org.ikankechil.iota.TimeSeries;
 import org.ikankechil.iota.indicators.AbstractIndicator;
@@ -20,7 +21,7 @@ import org.ikankechil.iota.indicators.Indicator;
  *
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class Extrema extends AbstractIndicator {
 
@@ -30,7 +31,7 @@ public class Extrema extends AbstractIndicator {
   private final Comparators[] comparators;
 
   public static final int     NOT_FOUND    = -ONE;
-  private static final double NOT_EXTREMUM = ZERO; // TODO change to Double.NaN?
+  private static final double NOT_EXTREMUM = ZERO;
 
   public Extrema(final int awayPoints, final boolean interpolate, final Comparators... comparators) {
     this(awayPoints, null, interpolate, comparators);
@@ -47,7 +48,7 @@ public class Extrema extends AbstractIndicator {
   }
 
   @Override
-  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
+  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv, final int start) {
     throwExceptionIfShort(ohlcv);
 
     final List<TimeSeries> topsAndBottoms = new ArrayList<>();
@@ -87,7 +88,7 @@ public class Extrema extends AbstractIndicator {
   }
 
   @Override
-  public List<TimeSeries> generate(final TimeSeries series) {
+  public List<TimeSeries> generate(final TimeSeries series, final int start) {
     throwExceptionIfShort(series);
 
     final double[] values = series.values();
@@ -104,6 +105,8 @@ public class Extrema extends AbstractIndicator {
   public enum Comparators {
     TOPS("Tops") {
       /**
+       *
+       *
        * @param before a value before <code>now</code>
        * @param now the current value
        * @param after a value after <code>now</code>
@@ -116,6 +119,8 @@ public class Extrema extends AbstractIndicator {
       }
 
       /**
+       *
+       *
        * @param before
        * @param after
        * @return true if <code>before</code> is more than <code>after</code>
@@ -127,6 +132,8 @@ public class Extrema extends AbstractIndicator {
     },
     BOTTOMS("Bottoms") {
       /**
+       *
+       *
        * @param before a value before <code>now</code>
        * @param now the current value
        * @param after a value after <code>now</code>
@@ -139,6 +146,8 @@ public class Extrema extends AbstractIndicator {
       }
 
       /**
+       *
+       *
        * @param before
        * @param after
        * @return true if <code>before</code> is less than <code>after</code>
@@ -176,17 +185,19 @@ public class Extrema extends AbstractIndicator {
 
   }
 
-  private final TimeSeries findExtremes(final double[] values,
-                                        final String[] dates,
-                                        final Comparators comparator) {
+  private final ExtremumTimeSeries findExtremes(final double[] values,
+                                                final String[] dates,
+                                                final Comparators comparator) {
     final int size = values.length;
     final double[] extremes = new double[size];
 //    Arrays.fill(extremes, NOT_EXTREMUM);
+    final List<Extremum> extrema = new ArrayList<>();
 
     // anchor first leg on first value if interpolation required
     int previousExtreme = ZERO;
     if (isInterpolate) {
       extremes[previousExtreme] = values[previousExtreme];
+      extrema.add(new Extremum(previousExtreme, extremes[previousExtreme]));
     }
 
     // locate local extrema
@@ -198,7 +209,11 @@ public class Extrema extends AbstractIndicator {
       for (int offset = ONE; offset <= awayPoints; ++offset) {
         final int before = today - offset;
         final int after = today + offset;
-        if (before < ZERO) {
+
+        if (before < ZERO && after >= size) {
+          break;               // fail fast if index out-of-bounds
+        }
+        else if (before < ZERO) {
           isExtreme &= comparator.isExtremum(value, values[after]);
         }
         else if (after >= size) {
@@ -214,8 +229,9 @@ public class Extrema extends AbstractIndicator {
         }
       }
 
-      if (isExtreme) {
+      if (isExtreme) {         // local extremum located
         extremes[today] = value;
+        extrema.add(new Extremum(today, value));
         if (isInterpolate) {
           interpolate(previousExtreme,
                       extremes[previousExtreme],
@@ -224,6 +240,7 @@ public class Extrema extends AbstractIndicator {
                       extremes);
           previousExtreme = today;
         }
+        logger.debug("New {} at ({}, {})", comparator, today, value);
         today += awayPoints;   // skip past immediate vicinity
       }
     }
@@ -238,9 +255,45 @@ public class Extrema extends AbstractIndicator {
                   extremes);
     }
 
-    return new TimeSeries(comparator.seriesName, dates, extremes);
+    return new ExtremumTimeSeries(comparator.seriesName, dates, extremes, extrema);
   }
 
+  public static class Extremum {
+
+    // Cartesian co-ordinates
+    private final int    x;
+    private final double y;
+
+    public Extremum(final int x, final double y) {
+      this.x = x;
+      this.y = y;
+    }
+
+    public int x() {
+      return x;
+    }
+
+    public double y() {
+      return y;
+    }
+
+    @Override
+    public String toString() {
+      return String.format("%s (%d, %f)",
+                           this.getClass().getSimpleName(),
+                           x,
+                           y);
+    }
+
+  }
+
+  /**
+   * Locate next extremum.
+   *
+   * @param values
+   * @param current start search at next index
+   * @return index of next extremum
+   */
   public static final int nextExtremum(final double[] values, final int current) {
     int location = NOT_FOUND;
     for (int i = current + ONE; i < values.length; ++i) {
@@ -252,6 +305,13 @@ public class Extrema extends AbstractIndicator {
     return location;
   }
 
+  /**
+   * Locate previous extremum.
+   *
+   * @param values
+   * @param current start search at previous index
+   * @return index of previous extremum
+   */
   public static final int previousExtremum(final double[] values, final int current) {
     int location = NOT_FOUND;
     for (int i = current - ONE; i >= ZERO; --i) {

@@ -1,30 +1,32 @@
 /**
- * Trendlines.java  v0.5  19 January 2016 4:00:07 PM
+ * Trendlines.java  v0.6  19 January 2016 4:00:07 PM
  *
  * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.pattern;
 
-import static org.ikankechil.iota.indicators.pattern.Extrema.*;
 import static org.ikankechil.iota.indicators.pattern.Trendlines.Trends.*;
 import static org.ikankechil.util.NumberUtility.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
+import org.ikankechil.iota.ExtremumTimeSeries;
 import org.ikankechil.iota.OHLCVTimeSeries;
 import org.ikankechil.iota.TimeSeries;
 import org.ikankechil.iota.TrendlineTimeSeries;
 import org.ikankechil.iota.indicators.AbstractIndicator;
 import org.ikankechil.iota.indicators.Indicator;
+import org.ikankechil.iota.indicators.pattern.Extrema.Extremum;
 
 /**
  * Up and Down Trendlines
  *
  *
  * @author Daniel Kuan
- * @version 0.5
+ * @version 0.6
  */
 public class Trendlines extends AbstractIndicator {
 
@@ -63,16 +65,27 @@ public class Trendlines extends AbstractIndicator {
   public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv, final int start) {
     throwExceptionIfShort(ohlcv);
 
+//    // generate tops and bottoms
+//    final List<TimeSeries> tab = topsAndBottoms.generate(ohlcv, start);
+//    final double[] tops = tab.get(ZERO).values();
+//    final double[] bottoms = tab.get(ONE).values();
+//
+//    // draw up and down trendlines
+//    final List<Trendline> downTrends = new ArrayList<>();
+//    final List<Trendline> upTrends = new ArrayList<>();
+//    final double[] downTrendlines = drawTrendlines(DOWN, tops, downTrends);
+//    final double[] upTrendlines = drawTrendlines(UP, bottoms, upTrends);
+
     // generate tops and bottoms
-    final List<TimeSeries> tab = topsAndBottoms.generate(ohlcv);
-    final double[] tops = tab.get(ZERO).values();
-    final double[] bottoms = tab.get(ONE).values();
+    final List<TimeSeries> tab = topsAndBottoms.generate(ohlcv, start);
+    final List<Extremum> tops = ((ExtremumTimeSeries) tab.get(ZERO)).extrema();
+    final List<Extremum> bottoms = ((ExtremumTimeSeries) tab.get(ONE)).extrema();
 
     // draw up and down trendlines
-    final List<Trendline> downTrends = new ArrayList<>();
-    final List<Trendline> upTrends = new ArrayList<>();
-    final double[] downTrendlines = drawTrendlines(DOWN, tops, downTrends);
-    final double[] upTrendlines = drawTrendlines(UP, bottoms, upTrends);
+    final double[] downTrendlines = new double[ohlcv.size() - topsAndBottoms.lookback()];
+    final double[] upTrendlines = new double[downTrendlines.length];
+    final List<Trendline> downTrends = drawTrendlines(DOWN, tops, downTrendlines);
+    final List<Trendline> upTrends = drawTrendlines(UP, bottoms, upTrendlines);
 
     final String[] dates = ohlcv.dates();
 
@@ -249,26 +262,30 @@ public class Trendlines extends AbstractIndicator {
 
   }
 
-  private final double[] drawTrendlines(final Trends trend, final double[] extrema, final List<Trendline> lines) {
-    final double[] trendlines = new double[extrema.length];
+  private final List<Trendline> drawTrendlines(final Trends trend, final List<Extremum> extrema, final double[] trendlines) {
+    final List<Trendline> lines = new ArrayList<>();
     Arrays.fill(trendlines, Double.NaN);
 
     Trendline line = null;
-    for (int x1 = nextExtremum(extrema, NOT_FOUND), x2 = NOT_FOUND;
-         (x2 = nextExtremum(extrema, x1)) > NOT_FOUND;
-         x1 = x2) {
+    final Iterator<Extremum> eit = extrema.iterator();
+    Extremum extremum1 = eit.next();
+    while (eit.hasNext()) {
+      final Extremum extremum2 = eit.next();
+      final int x1 = extremum1.x();
+      final int x2 = extremum2.x();
+
       if (line == null) {
-        final double y1 = extrema[x1];
-        final double y2 = extrema[x2];
+        final double y1 = extremum1.y();
+        final double y2 = extremum2.y();
         // trendline in general right direction => start of trend
         if (trend.isRightDirection(gradient(x1, y1, x2, y2))) {
           line = new Trendline(x1, y1, x2, y2);
           lines.add(line);
-          logger.debug("New {} trend", trend);
+          logger.debug("New {} trend at ({}, {})", trend, x1, y1);
         }
       }
       else {
-        final double y2 = extrema[x2];
+        final double y2 = extremum2.y();
         final double fx2 = line.f(x2);
 
         // trendline decisively broken => end of trend
@@ -276,7 +293,7 @@ public class Trendlines extends AbstractIndicator {
           line.broken(true);
           draw(line, trendlines, x2 - GAP); // extend trendline less gap
           line = null;
-          logger.debug("End of {} trend", trend);
+          logger.debug("End of {} trend at / before ({}, {})", trend, x2, y2);
         }
         // trendline indecisively penetrated, still unconfirmed and in the right
         // direction => amend trendline
@@ -284,18 +301,23 @@ public class Trendlines extends AbstractIndicator {
                  !line.isConfirmed() &&
                  trend.isRightDirection(gradient(line.x1(), line.y1(), x2, y2))) {
           line.x2y2(x2, y2);
-          logger.debug("Amending {} trend", trend);
+          logger.debug("Amending {} trend at ({}, {})", trend, x2, y2);
         }
         else {
-          logger.debug("{} trend holds", trend);
+          logger.debug("{} trend holds at ({}, {})", trend, x2, y2);
         }
       }
-    }
-    if (line != null) {
-      draw(line, trendlines, trendlines.length - ONE); // extend trendline to the end
+
+      // shift forward in time
+      extremum1 = extremum2;
     }
 
-    return trendlines;
+    if (line != null) {
+      draw(line, trendlines, trendlines.length - ONE); // extend trendline to the end
+      logger.debug("On-going unbroken {} trend at ({}, {})", trend, line.x2(), line.y2());
+    }
+
+    return lines;
 
     // Possibilities:
     // 1. decisively broken -> draw
@@ -322,6 +344,81 @@ public class Trendlines extends AbstractIndicator {
     // it -- then the subsequent indecisive penetration may be disregarded and
     // the original line considered to be still in effect.
   }
+
+//  private final double[] drawTrendlines(final Trends trend, final double[] extrema, final List<Trendline> lines) {
+//    final double[] trendlines = new double[extrema.length];
+//    Arrays.fill(trendlines, Double.NaN);
+//
+//    Trendline line = null;
+//    for (int x1 = nextExtremum(extrema, NOT_FOUND), x2 = NOT_FOUND;
+//         (x2 = nextExtremum(extrema, x1)) > NOT_FOUND;
+//         x1 = x2) {
+//      if (line == null) {
+//        final double y1 = extrema[x1];
+//        final double y2 = extrema[x2];
+//        // trendline in general right direction => start of trend
+//        if (trend.isRightDirection(gradient(x1, y1, x2, y2))) {
+//          line = new Trendline(x1, y1, x2, y2);
+//          lines.add(line);
+//          logger.debug("New {} trend at ({}, {})", trend, x1, y1);
+//        }
+//      }
+//      else {
+//        final double y2 = extrema[x2];
+//        final double fx2 = line.f(x2);
+//
+//        // trendline decisively broken => end of trend
+//        if (trend.isDecisivelyBroken(y2, fx2, threshold)) {
+//          line.broken(true);
+//          draw(line, trendlines, x2 - GAP); // extend trendline less gap
+//          line = null;
+//          logger.debug("End of {} trend at / before ({}, {})", trend, x2, y2);
+//        }
+//        // trendline indecisively penetrated, still unconfirmed and in the right
+//        // direction => amend trendline
+//        else if (!trend.isUnbroken(y2, fx2) &&
+//                 !line.isConfirmed() &&
+//                 trend.isRightDirection(gradient(line.x1(), line.y1(), x2, y2))) {
+//          line.x2y2(x2, y2);
+//          logger.debug("Amending {} trend at ({}, {})", trend, x2, y2);
+//        }
+//        else {
+//          logger.debug("{} trend holds at ({}, {})", trend, x2, y2);
+//        }
+//      }
+//    }
+//    if (line != null) {
+//      draw(line, trendlines, trendlines.length - ONE); // extend trendline to the end
+//      logger.debug("On-going unbroken {} trend at ({}, {})", trend, line.x2(), line.y2());
+//    }
+//
+//    return trendlines;
+//
+//    // Possibilities:
+//    // 1. decisively broken -> draw
+//    // 2. indecisively penetrated
+//    //    a) unconfirmed -> amend
+//    //    b) confirmed -> do nothing
+//    // 3. unbroken -> do nothing
+//
+//    // Amendment of Trendlines (from Edwards and Magee)
+//    //
+//    // If the original trendlines depended on only two points, i.e., on the
+//    // first two Bottoms across which it was projected, and the indecisive
+//    // penetration occurred when prices returned to it for the third time, the
+//    // line had better be redrawn across the original first and the new third
+//    // Bottoms. Or, you may find in such cases that a new line drawn across the
+//    // second and third Bottoms works better; if the first Bottom was a Reversal
+//    // Day with its closing level well above the low of its range, you may find
+//    // that this new line, when extended back, strikes just about at that
+//    // closing level.
+//    //
+//    // If, on the other hand, the original trendline has been "tested" one or
+//    // more times after it was drawn -- if, that is, a third and perhaps a fourth
+//    // Bottom have formed on it without penetrating it and have thus "confirmed"
+//    // it -- then the subsequent indecisive penetration may be disregarded and
+//    // the original line considered to be still in effect.
+//  }
 
   private static final void draw(final Trendline line, final double[] trendlines, final int x2) {
     line.x2y2(x2, line.f(x2)); // extend trendline to x2
