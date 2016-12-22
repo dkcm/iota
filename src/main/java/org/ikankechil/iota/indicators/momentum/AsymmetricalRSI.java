@@ -1,7 +1,7 @@
 /**
  * AsymmetricalRSI.java  v0.1  23 July 2015 12:29:45 am
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.momentum;
 
@@ -13,6 +13,7 @@ import com.tictactec.ta.lib.RetCode;
  *
  * <p>ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V26/C10/181VERV.pdf<br>
  * http://traders.com/Documentation/FEEDbk_docs/2008/10/TradersTips/TradersTips.html<br>
+ * http://exceltechnical.web.fc2.com/p-asymrsi.html<br>
  *
  * @author Daniel Kuan
  * @version 0.1

@@ -1,7 +1,7 @@
 /**
- * WMA.java  v0.2  8 December 2014 8:37:37 PM
+ * WMA.java  v0.3  8 December 2014 8:37:37 PM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.trend;
 
@@ -18,7 +18,7 @@ import com.tictactec.ta.lib.RetCode;
  * https://www.tradestation.com/education/labs/analysis-concepts/a-comparative-study-of-moving-averages<br>
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class WMA extends AbstractIndicator {
 
@@ -50,13 +50,20 @@ public class WMA extends AbstractIndicator {
     int i = ZERO;
     double wma = output[i] = wma(values, i);
 
-    // compute offsets before weighting
-    final double[] offsets = sum(period, values); // TODO distribute offset computation
+    // compute offset = moving sum of values
+    int v = ZERO;
+    double offset = values[v];
+    while (++v < period) {
+      offset += values[v];
+    }
 
     // compute indicator
-    for (int v = period; v < values.length; ++v) {
-      final double sum = offsets[i] * baseWeight;
+    for (double first = values[i]; v < values.length; ++v) {
+      final double sum = offset * baseWeight;
       output[++i] = wma += (values[v] * maxWeight) - sum;
+
+      offset += (values[v] - first); // distribute offset computation
+      first = values[i];
     }
 
     outBegIdx.value = lookback;

@@ -1,7 +1,7 @@
 /**
- * TRIMA.java  v0.2  5 January 2015 7:06:34 PM
+ * TRIMA.java  v0.3  5 January 2015 7:06:34 PM
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.trend;
 
@@ -17,7 +17,7 @@ import com.tictactec.ta.lib.RetCode;
  * https://www.thebalance.com/triangular-moving-average-tma-description-and-uses-1031203<br>
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class TRIMA extends AbstractIndicator {
 
@@ -28,7 +28,10 @@ public class TRIMA extends AbstractIndicator {
   }
 
   public TRIMA(final int period) {
-    super(period, period - ONE);
+    super(period, (period % TWO == ZERO) ? period : period - ONE);
+    // lookback dependent on period
+    // even: period
+    // odd: period - 1
 
     sma = (period >> ONE) + ONE;
   }

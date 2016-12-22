@@ -1,7 +1,7 @@
 /**
  * LaguerreRSI.java  v0.2  2 March 2015 1:12:51 PM
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.momentum;
 
@@ -15,6 +15,7 @@ import com.tictactec.ta.lib.RetCode;
  *
  * <p>http://xa.yimg.com/kq/groups/17324418/1380195797/name/cybernetic+analysis+for+stocks+and+futures+cutting-edge+dsp+technology+to+improve+your+trading+(0471463078).pdf<br>
  * https://forex-strategies-revealed.com/files/user/TimeWarp.doc<br>
+ * http://www.jamesgoulding.com/Research_II/Ehlers/Ehlers%20(Time%20Warp).doc<br>
  *
  * @author Daniel Kuan
  * @version 0.2
@@ -23,10 +24,17 @@ public class LaguerreRSI extends AbstractIndicator {
 
   private final double gamma; // damping factor
 
+  /**
+   * Default damping factor = 0.5
+   */
   public LaguerreRSI() {
     this(HALF);
   }
 
+  /**
+   *
+   * @param gamma damping factor
+   */
   public LaguerreRSI(final double gamma) {
     super(FOUR);
     throwExceptionIfNegative(gamma);

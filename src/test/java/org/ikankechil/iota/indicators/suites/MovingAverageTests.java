@@ -16,10 +16,12 @@ import org.ikankechil.iota.indicators.trend.MovingAverageEnvelopesTest;
 import org.ikankechil.iota.indicators.trend.SMATest;
 import org.ikankechil.iota.indicators.trend.T3Test;
 import org.ikankechil.iota.indicators.trend.TEMATest;
+import org.ikankechil.iota.indicators.trend.TRIMATest;
 import org.ikankechil.iota.indicators.trend.VOMATest;
 import org.ikankechil.iota.indicators.trend.VOMOMATest;
 import org.ikankechil.iota.indicators.trend.VWEMATest;
 import org.ikankechil.iota.indicators.trend.WMATest;
+import org.ikankechil.iota.indicators.trend.WSMATest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -39,13 +41,13 @@ import org.junit.runners.Suite.SuiteClasses;
   SMATest.class,
   T3Test.class,
   TEMATest.class,
-//  TRIMATest.class,
+  TRIMATest.class,
   VOMATest.class,
   VOMOMATest.class,
   VWEMATest.class,
 //  WEVOMOTest.class,
   WMATest.class,
-//  WSMATest.class,
+  WSMATest.class,
 //  ZeroLagEMATest.class,
   MovingAverageEnvelopesTest.class,
 })

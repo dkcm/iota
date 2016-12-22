@@ -1,7 +1,7 @@
 /**
  * SlowRSI.java  v0.1  3 August 2015 1:42:31 PM
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.momentum;
 
@@ -42,6 +42,7 @@ public class SlowRSI extends AbstractIndicator {
                             final double[] output) {
     final double[] emas = ema(values, ema);
 
+    // compute gains and losses
     final double[] gains = new double[emas.length];
     final double[] losses = new double[gains.length];
     for (int e = ZERO, v = ema - ONE; e < emas.length; ++e, ++v) {
@@ -54,6 +55,7 @@ public class SlowRSI extends AbstractIndicator {
       }
     }
 
+    // compute average gains and losses
     final double[] averageGains = ema(gains, period);
     final double[] averageLosses = ema(losses, period);
 

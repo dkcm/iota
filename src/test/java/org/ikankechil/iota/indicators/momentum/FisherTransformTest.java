@@ -1,7 +1,7 @@
 /**
- * FisherTransformTest.java  v0.2  25 November 2015 4:25:07 PM
+ * FisherTransformTest.java  v0.3  25 November 2015 4:25:07 PM
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.momentum;
 
@@ -15,12 +15,14 @@ import org.junit.BeforeClass;
  *
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class FisherTransformTest extends AbstractIndicatorTest {
 
+  private static final int DEFAULT_PERIOD = 10;
+
   public FisherTransformTest() {
-    super(15);
+    super(DEFAULT_PERIOD - 1);
   }
 
   @BeforeClass

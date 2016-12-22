@@ -78,10 +78,13 @@ public abstract class AbstractIndicator implements Indicator {
   protected static final int    SIXTY_FIVE      = 65;
   protected static final int    HUNDRED         = 100;
 
-  protected static final double HALF            = 0.5;
-  protected static final double THIRD           = ONE / (double) THREE;
-  protected static final double QUARTER         = 0.25;
   protected static final double SIXTH           = ONE / (double) SIX;
+  protected static final double FIFTH           = ONE / (double) FIVE;
+  protected static final double QUARTER         = 0.25;
+  protected static final double THIRD           = ONE / (double) THREE;
+  protected static final double HALF            = 0.5;
+  protected static final double TWO_THIRDS      = THIRD * TWO;
+  protected static final double THREE_QUARTERS  = QUARTER * THREE;
   protected static final double FIFTY_PERCENT   = 50.0;
   protected static final double HUNDRED_PERCENT = 100.0;
 
