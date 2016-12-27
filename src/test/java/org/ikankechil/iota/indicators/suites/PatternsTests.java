@@ -1,11 +1,13 @@
 /**
  * PatternsTests.java  v0.1  22 November 2016 9:49:14 pm
  *
- * Copyright © 2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.suites;
 
+import org.ikankechil.iota.indicators.pattern.AscendingTriangleTest;
 import org.ikankechil.iota.indicators.pattern.BottomsTest;
+import org.ikankechil.iota.indicators.pattern.DescendingTriangleTest;
 import org.ikankechil.iota.indicators.pattern.DivergenceIndexTest;
 import org.ikankechil.iota.indicators.pattern.DivergenceTest;
 import org.ikankechil.iota.indicators.pattern.TopsAndBottomsTest;
@@ -24,7 +26,9 @@ import org.junit.runners.Suite.SuiteClasses;
   DivergenceTest.class,
   DivergenceIndexTest.class,
   TrendlineTest.class,
-  TrendlinesTest.class
+  TrendlinesTest.class,
+  AscendingTriangleTest.class,
+  DescendingTriangleTest.class,
 })
 
 /**

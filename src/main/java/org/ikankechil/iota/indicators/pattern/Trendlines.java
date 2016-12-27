@@ -84,16 +84,18 @@ public class Trendlines extends AbstractIndicator {
   public static class Trendline {
 
     // Cartesian co-ordinates
-    private int     x1;
-    private double  y1;
-    private int     x2;
-    private double  y2;
+    private int                 x1;
+    private double              y1;
+    private int                 x2;
+    private double              y2;
 
-    private double  m;  // gradient
-    private double  c;  // y-intercept
+    private double              m;  // gradient
+    private double              c;  // y-intercept
 
-    private boolean trendConfirmed;
-    private boolean trendBroken;
+    private boolean             trendConfirmed;
+    private boolean             trendBroken;
+
+    private static final double PRACTICALLY_HORIZONTAL = 0.01; // TODO make this configurable
 
     public Trendline(final int x1, final double y1, final int x2, final double y2) {
       this.x1 = x1;
@@ -168,6 +170,11 @@ public class Trendlines extends AbstractIndicator {
 
     public boolean isBroken() {
       return trendBroken;
+    }
+
+    public boolean isPracticallyHorizontal() {
+      return (m == ZERO) ||
+             (Math.abs(y2 - y1) <= PRACTICALLY_HORIZONTAL * y1); // y2 within e% of y1
     }
 
     @Override
@@ -264,7 +271,7 @@ public class Trendlines extends AbstractIndicator {
         if (trend.isRightDirection(gradient(x1, y1, x2, y2))) {
           line = new Trendline(x1, y1, x2, y2);
           lines.add(line);
-          logger.debug("New {} trend", trend);
+          logger.debug("New {} trend at ({}, {})", trend, x1, y1);
         }
       }
       else {
@@ -276,7 +283,7 @@ public class Trendlines extends AbstractIndicator {
           line.broken(true);
           draw(line, trendlines, x2 - GAP); // extend trendline less gap
           line = null;
-          logger.debug("End of {} trend", trend);
+          logger.debug("End of {} trend at / before ({}, {})", trend, x2, y2);
         }
         // trendline indecisively penetrated, still unconfirmed and in the right
         // direction => amend trendline
@@ -284,15 +291,16 @@ public class Trendlines extends AbstractIndicator {
                  !line.isConfirmed() &&
                  trend.isRightDirection(gradient(line.x1(), line.y1(), x2, y2))) {
           line.x2y2(x2, y2);
-          logger.debug("Amending {} trend", trend);
+          logger.debug("Amending {} trend at ({}, {})", trend, x2, y2);
         }
         else {
-          logger.debug("{} trend holds", trend);
+          logger.debug("{} trend holds at ({}, {})", trend, x2, y2);
         }
       }
     }
     if (line != null) {
       draw(line, trendlines, trendlines.length - ONE); // extend trendline to the end
+      logger.debug("On-going unbroken {} trend at ({}, {})", trend, line.x2(), line.y2());
     }
 
     return trendlines;

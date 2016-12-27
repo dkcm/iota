@@ -1,7 +1,7 @@
 /**
  * OHLCVChartVisualiser.java  v0.2  27 December 2014 3:14:46 PM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.ui;
 
@@ -365,7 +365,7 @@ public class OHLCVChartVisualiser {
     panel.setVerticalAxisTrace(true);
 
     // application frame
-    final ApplicationFrame frame = new ApplicationFrame("OHLCV and Indicators");
+    final ApplicationFrame frame = new ApplicationFrame("OHLCV and Indicators: " + chart.getTitle().getText());
     frame.setContentPane(panel);
     frame.pack();
     RefineryUtilities.centerFrameOnScreen(frame);
