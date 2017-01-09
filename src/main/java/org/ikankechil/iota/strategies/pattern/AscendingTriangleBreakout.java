@@ -11,7 +11,7 @@ import java.util.List;
 import org.ikankechil.iota.OHLCVTimeSeries;
 import org.ikankechil.iota.TimeSeries;
 import org.ikankechil.iota.indicators.Indicator;
-import org.ikankechil.iota.indicators.pattern.AscendingTriangle;
+import org.ikankechil.iota.indicators.pattern.AscendingTriangles;
 import org.ikankechil.iota.indicators.pattern.Trendlines;
 
 /**
@@ -23,17 +23,17 @@ import org.ikankechil.iota.indicators.pattern.Trendlines;
  */
 public class AscendingTriangleBreakout extends TrendlineBreakout {
 
-  private final Indicator ascendingTriangle;
+  private final Indicator ascendingTriangles;
 
   public AscendingTriangleBreakout(final Trendlines trendlines) {
     super(trendlines);
 
-    this.ascendingTriangle = new AscendingTriangle(trendlines);
+    this.ascendingTriangles = new AscendingTriangles(trendlines);
   }
 
   @Override
   protected List<List<TimeSeries>> generateIndicatorValues(final OHLCVTimeSeries ohlcv) {
-    return Arrays.asList(ascendingTriangle.generate(ohlcv));
+    return Arrays.asList(ascendingTriangles.generate(ohlcv));
   }
 
 }

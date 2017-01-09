@@ -5,9 +5,9 @@
  */
 package org.ikankechil.iota.indicators.suites;
 
-import org.ikankechil.iota.indicators.pattern.AscendingTriangleTest;
+import org.ikankechil.iota.indicators.pattern.AscendingTrianglesTest;
 import org.ikankechil.iota.indicators.pattern.BottomsTest;
-import org.ikankechil.iota.indicators.pattern.DescendingTriangleTest;
+import org.ikankechil.iota.indicators.pattern.DescendingTrianglesTest;
 import org.ikankechil.iota.indicators.pattern.DivergenceIndexTest;
 import org.ikankechil.iota.indicators.pattern.DivergenceTest;
 import org.ikankechil.iota.indicators.pattern.TopsAndBottomsTest;
@@ -27,8 +27,8 @@ import org.junit.runners.Suite.SuiteClasses;
   DivergenceIndexTest.class,
   TrendlineTest.class,
   TrendlinesTest.class,
-  AscendingTriangleTest.class,
-  DescendingTriangleTest.class,
+  AscendingTrianglesTest.class,
+  DescendingTrianglesTest.class,
 })
 
 /**

@@ -1,5 +1,5 @@
 /**
- * RightAngledTriangle.java  0.1  23 December 2016 12:49:31 PM
+ * Triangles.java  v0.3  8 January 2016 10:56:34 AM
  *
  * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
  */
@@ -13,18 +13,19 @@ import org.ikankechil.iota.OHLCVTimeSeries;
 import org.ikankechil.iota.TimeSeries;
 import org.ikankechil.iota.TrendlineTimeSeries;
 import org.ikankechil.iota.indicators.AbstractIndicator;
+import org.ikankechil.iota.indicators.Indicator;
 import org.ikankechil.iota.indicators.pattern.Trendlines.Trendline;
 
 /**
- * Abstract class representing ascending and descending triangles.
+ * Triangles pattern recognition algorithm.  Covers triangles and wedges.
  *
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.3
  */
-public abstract class RightAngledTriangle extends AbstractIndicator {
+public abstract class Triangles extends AbstractIndicator {
 
-  private final Trendlines    trendlines;
+  private final Indicator     trendlines;
   private final int           ohlcvBarsErrorMargin;
 
   private static final int    BARS_ERROR_MARGIN = TWENTY;
@@ -37,7 +38,7 @@ public abstract class RightAngledTriangle extends AbstractIndicator {
    *
    * @param trendlines
    */
-  public RightAngledTriangle(final Trendlines trendlines) {
+  public Triangles(final Trendlines trendlines) {
     this(trendlines, BARS_ERROR_MARGIN);
   }
 
@@ -45,11 +46,10 @@ public abstract class RightAngledTriangle extends AbstractIndicator {
    *
    *
    * @param trendlines
-   * @param ohlcvBarsErrorMargin
-   *          number of OHLCV bars the heads and tails of the trendlines forming
-   *          the triangle must be in the vicinity of
+   * @param ohlcvBarsErrorMargin number of OHLCV bars the heads and tails of the
+   *          trendlines forming the triangle must be in the vicinity of
    */
-  public RightAngledTriangle(final Trendlines trendlines, final int ohlcvBarsErrorMargin) {
+  public Triangles(final Trendlines trendlines, final int ohlcvBarsErrorMargin) {
     super(ZERO);
     throwExceptionIfNegative(ohlcvBarsErrorMargin);
     if (trendlines == null) {
@@ -94,12 +94,22 @@ public abstract class RightAngledTriangle extends AbstractIndicator {
                                                  triangleBottomTrendlines));
   }
 
-  void drawTriangles(final TrendlineTimeSeries downTrendlineTimeSeries,
-                     final TrendlineTimeSeries upTrendlineTimeSeries,
-                     final double[] triangleTops,
-                     final double[] triangleBottoms,
-                     final List<Trendline> triangleTopTrendlines,
-                     final List<Trendline> triangleBottomTrendlines) {
+  /**
+   * Locate and draw triangles.
+   *
+   * @param downTrendlineTimeSeries
+   * @param upTrendlineTimeSeries
+   * @param triangleTops
+   * @param triangleBottoms
+   * @param triangleTopTrendlines
+   * @param triangleBottomTrendlines
+   */
+  protected void drawTriangles(final TrendlineTimeSeries downTrendlineTimeSeries,
+                               final TrendlineTimeSeries upTrendlineTimeSeries,
+                               final double[] triangleTops,
+                               final double[] triangleBottoms,
+                               final List<Trendline> triangleTopTrendlines,
+                               final List<Trendline> triangleBottomTrendlines) {
     Arrays.fill(triangleTops, Double.NaN);
     Arrays.fill(triangleBottoms, Double.NaN);
 
@@ -109,19 +119,20 @@ public abstract class RightAngledTriangle extends AbstractIndicator {
     final double[] upTrends = upTrendlineTimeSeries.values();
 
     // locate and draw triangles
+    final List<Trendline> candidates = selectCandidates(downTrendlines, upTrendlines);
     final List<Trendline> counterparts = selectCounterparts(downTrendlines, upTrendlines);
-    for (final Trendline trendline : selectPotentiallyFlatTrendlines(downTrendlines, upTrendlines)) {
-      if (trendline.isPracticallyHorizontal()) {
-        // search for complementary counterpart only when trendline is flat
+
+    for (final Trendline candidate : candidates) {
+      if (hasPotential(candidate)) {
+        // search for complementary counterpart only when candidate trendline has potential
         for (final Trendline counterpart : counterparts) {
-          if (isComplementary(trendline, counterpart) &&
-              !counterpart.isPracticallyHorizontal()) {
+          if (isComplementary(candidate, counterpart)) {
             // draw triangle tops
-            final Trendline top = selectTop(trendline, counterpart);
+            final Trendline top = selectTop(candidate, counterpart);
             draw(triangleTops, triangleTopTrendlines, downTrends, top);
 
             // draw triangle bottoms
-            final Trendline bottom = selectBottom(trendline, counterpart);
+            final Trendline bottom = selectBottom(candidate, counterpart);
             draw(triangleBottoms, triangleBottomTrendlines, upTrends, bottom);
 
             logger.info("New {} formed by top ({}) and bottom ({})", name, top, bottom);
@@ -131,18 +142,62 @@ public abstract class RightAngledTriangle extends AbstractIndicator {
     }
   }
 
-  abstract List<Trendline> selectPotentiallyFlatTrendlines(final List<Trendline> downTrendlines, final List<Trendline> upTrendlines);
+  /**
+   *
+   *
+   * @param downTrendlines
+   * @param upTrendlines
+   * @return
+   */
+  protected abstract List<Trendline> selectCandidates(final List<Trendline> downTrendlines, final List<Trendline> upTrendlines);
 
-  abstract List<Trendline> selectCounterparts(final List<Trendline> downTrendlines, final List<Trendline> upTrendlines);
+  /**
+   *
+   *
+   * @param downTrendlines
+   * @param upTrendlines
+   * @return
+   */
+  protected abstract List<Trendline> selectCounterparts(final List<Trendline> downTrendlines, final List<Trendline> upTrendlines);
 
-  abstract Trendline selectTop(final Trendline trendline, final Trendline counterpart);
+  /**
+   *
+   *
+   * @param candidate
+   * @param counterpart
+   * @return
+   */
+  protected abstract Trendline selectTop(final Trendline candidate, final Trendline counterpart);
 
-  abstract Trendline selectBottom(final Trendline trendline, final Trendline counterpart);
+  /**
+   *
+   *
+   * @param candidate
+   * @param counterpart
+   * @return
+   */
+  protected abstract Trendline selectBottom(final Trendline candidate, final Trendline counterpart);
 
-  private final boolean isComplementary(final Trendline trendline1,
-                                        final Trendline trendline2) {
-    return (Math.abs(trendline1.x1() - trendline2.x1()) <= ohlcvBarsErrorMargin) &&
-           (Math.abs(trendline1.x2() - trendline2.x2()) <= ohlcvBarsErrorMargin);
+  /**
+   *
+   *
+   * @param trendline candidate
+   * @return true when candidate <code>trendline</code> exhibits
+   *         <code>Triangles</code> subclass characteristics
+   */
+  protected abstract boolean hasPotential(final Trendline trendline);
+
+  /**
+   *
+   *
+   * @param candidate
+   * @param counterpart
+   * @return
+   */
+  protected boolean isComplementary(final Trendline candidate, final Trendline counterpart) {
+    // trendline heads / tails are in the vicinity
+    return (Math.abs(candidate.x1() - counterpart.x1()) <= ohlcvBarsErrorMargin) &&
+           (Math.abs(candidate.x2() - counterpart.x2()) <= ohlcvBarsErrorMargin);
   }
 
   private static final void draw(final double[] triangles,
