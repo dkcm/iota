@@ -1,7 +1,7 @@
 /**
- * MOMATest.java  v0.2  9 October 2016 12:06:23 am
+ * MAMATest.java  v0.1  10 January 2017 9:30:27 pm
  *
- * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
+ * Copyright © 2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.trend;
 
@@ -11,24 +11,22 @@ import org.ikankechil.iota.indicators.AbstractIndicatorTest;
 import org.junit.BeforeClass;
 
 /**
- * JUnit test for <code>MOMA</code>.
+ * JUnit test for <code>MAMA</code>.
  *
  *
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.1
  */
-public class MOMATest extends AbstractIndicatorTest {
+public class MAMATest extends AbstractIndicatorTest {
 
-  private static final int DEFAULT_PERIOD = 4;
-
-  public MOMATest() {
-    super(DEFAULT_PERIOD);
+  public MAMATest() {
+    super(32);
   }
 
   @BeforeClass
   public static void setUpBeforeClass() throws IOException {
-    TEST_CLASS = MOMATest.class;
+    TEST_CLASS = MAMATest.class;
     AbstractIndicatorTest.setUpBeforeClass();
   }
 

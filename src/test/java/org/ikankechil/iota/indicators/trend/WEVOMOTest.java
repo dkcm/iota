@@ -1,7 +1,7 @@
 /**
- * WEVOMOTest.java  v0.1  9 October 2016 11:17:20 pm
+ * WEVOMOTest.java  v0.2  9 October 2016 11:17:20 pm
  *
- * Copyright © 2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.trend;
 
@@ -16,12 +16,14 @@ import org.junit.BeforeClass;
  *
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class WEVOMOTest extends AbstractIndicatorTest {
 
+  private static final int DEFAULT_PERIOD = 4;
+
   public WEVOMOTest() {
-    super(4);
+    super(DEFAULT_PERIOD);
   }
 
   @BeforeClass

@@ -1,7 +1,7 @@
 /**
- * TypicalPrice.java  v0.2  12 January 2015 11:15:41 PM
+ * TypicalPrice.java  v0.3  12 January 2015 11:15:41 PM
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators;
 
@@ -15,7 +15,7 @@ import com.tictactec.ta.lib.RetCode;
  *
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class TypicalPrice extends AbstractIndicator {
 
@@ -35,12 +35,16 @@ public class TypicalPrice extends AbstractIndicator {
     final double[] closes = ohlcv.closes();
 
     for (int i = ZERO; i < output.length; ++i) {
-      output[i] = (highs[i] + lows[i] + closes[i]) * THIRD;
+      output[i] = typicalPrice(highs[i], lows[i], closes[i]);
     }
 
     outBegIdx.value = lookback;
     outNBElement.value = output.length;
     return RetCode.Success;
+  }
+
+  public static final double typicalPrice(final double high, final double low, final double close) {
+    return (high + low + close) * THIRD;
   }
 
 }

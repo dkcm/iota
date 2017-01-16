@@ -1,7 +1,7 @@
 /**
- * VIDYATest.java  v0.2  11 July 2015 10:47:37 pm
+ * VIDYATest.java  v0.3  11 July 2015 10:47:37 pm
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.trend;
 
@@ -17,12 +17,14 @@ import org.junit.BeforeClass;
  *
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class VIDYATest extends AbstractIndicatorTest {
 
+  private static final int DEFAULT_CMO = 9;
+
   public VIDYATest() {
-    super(7);
+    super(DEFAULT_CMO - 1);
   }
 
   @BeforeClass
@@ -33,7 +35,7 @@ public class VIDYATest extends AbstractIndicatorTest {
 
   @Override
   public Indicator newInstance(final int period) {
-    return new VIDYA(period, 9);
+    return new VIDYA(period, DEFAULT_CMO);
   }
 
 }

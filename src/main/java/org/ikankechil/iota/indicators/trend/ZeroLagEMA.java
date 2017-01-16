@@ -1,7 +1,7 @@
 /**
  * ZeroLagEMA.java  v0.1  20 July 2015 11:18:26 pm
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.trend;
 
@@ -25,7 +25,7 @@ public class ZeroLagEMA extends AbstractIndicator {
   }
 
   public ZeroLagEMA(final int period) {
-    super(period, (period - ONE) << ONE ); // lookback = (period - 1) * 2
+    super(period, (period - ONE) << ONE); // lookback = (period - 1) * 2
   }
 
   @Override

@@ -17,6 +17,7 @@ import com.tictactec.ta.lib.RetCode;
  * <p>http://www.informedtrades.com/attachments/2505d1280781350-volume-analysis-volumezoneoscillator-pdf<br>
  * http://www.traderslog.com/defining-the-trend<br>
  * http://www.highgrowthstock.com/wpstorage/pdf/blog-hgsi-davesteckler-vzo-pzo.pdf<br>
+ * http://edmond.mires.co/GES816/14-In%20The%20Volume%20Zone.pdf<br>
  *
  * @author Daniel Kuan
  * @version 0.1

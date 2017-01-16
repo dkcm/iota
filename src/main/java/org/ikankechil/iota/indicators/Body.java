@@ -37,5 +37,4 @@ public class Body extends AbstractIndicator {
     return RetCode.Success;
   }
 
-
 }

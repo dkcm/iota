@@ -20,6 +20,10 @@ import com.tictactec.ta.lib.RetCode;
  */
 public class KAMA extends AbstractIndicator {
 
+  public KAMA() {
+    this(THIRTY);
+  }
+
   public KAMA(final int period) {
     super(period, TA_LIB.kamaLookback(period));
   }
