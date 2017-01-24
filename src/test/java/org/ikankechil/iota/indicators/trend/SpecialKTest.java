@@ -1,5 +1,5 @@
 /**
- * KAMATest.java  v0.1  10 January 2017 9:45:01 pm
+ * SpecialKTest.java  v0.1  17 January 2017 11:41:15 pm
  *
  * Copyright © 2017 Daniel Kuan.  All rights reserved.
  */
@@ -11,23 +11,23 @@ import org.ikankechil.iota.indicators.AbstractIndicatorTest;
 import org.junit.BeforeClass;
 
 /**
- * JUnit test for <code>KAMA</code>.
+ * JUnit test for <code>SpecialK</code>.
  *
  *
  * @author Daniel Kuan
  * @version 0.1
  */
-public class KAMATest extends AbstractIndicatorTest {
+public class SpecialKTest extends AbstractIndicatorTest {
 
-  private static final int DEFAULT_PERIOD = 10;
+  private static final int DEFAULT_LOOKBACK = 725;
 
-  public KAMATest() {
-    super(DEFAULT_PERIOD);
+  public SpecialKTest() {
+    super(DEFAULT_LOOKBACK);
   }
 
   @BeforeClass
   public static void setUpBeforeClass() throws IOException {
-    TEST_CLASS = KAMATest.class;
+    TEST_CLASS = SpecialKTest.class;
     AbstractIndicatorTest.setUpBeforeClass();
   }
 

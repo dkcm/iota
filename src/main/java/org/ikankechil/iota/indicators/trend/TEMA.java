@@ -1,7 +1,7 @@
 /**
  * TEMA.java  v0.2  7 January 2015 10:41:58 pm
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.trend;
 
@@ -27,9 +27,7 @@ public class TEMA extends AbstractIndicator {
   private final EMA ema;
 
   public TEMA(final int period) {
-    super(period, (period - ONE) * THREE);
-
-    ema = new EMA(period);
+    this(new EMA(period));
   }
 
   public TEMA(final EMA ema) {

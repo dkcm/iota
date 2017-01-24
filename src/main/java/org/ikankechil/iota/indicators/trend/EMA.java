@@ -1,7 +1,7 @@
 /**
- * EMA.java  v0.2  8 December 2014 7:06:59 PM
+ * EMA.java  v0.3  8 December 2014 7:06:59 PM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.trend;
 
@@ -13,9 +13,10 @@ import com.tictactec.ta.lib.RetCode;
 /**
  * Exponential Moving Average (EMA)
  *
+ * <p>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:moving_averages<br>
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class EMA extends AbstractIndicator {
 
@@ -52,12 +53,25 @@ public class EMA extends AbstractIndicator {
 
     // subsequent values are EMA
     while (++i < output.length) {
-      output[i] = previous += alpha * (values[v++] - previous);
+//      output[i] = previous += alpha * (values[v++] - previous);
+      output[i] = previous = ema(alpha, values[v++], previous);
     }
 
     outBegIdx.value = lookback;
     outNBElement.value = output.length;
     return RetCode.Success;
+  }
+
+  /**
+   * Computes the current EMA value.
+   *
+   * @param alpha smoothing factor
+   * @param price current price
+   * @param previousEMA previous EMA value
+   * @return current EMA value
+   */
+  public static final double ema(final double alpha, final double price, final double previousEMA) {
+    return previousEMA + alpha * (price - previousEMA);
   }
 
 }

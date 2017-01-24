@@ -1,12 +1,16 @@
 /**
- * SpecialK.java  v0.1  22 December 2014 12:16:15 pm
+ * SpecialK.java  v0.2  22 December 2014 12:16:15 pm
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.trend;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.ikankechil.iota.OHLCVTimeSeries;
 import org.ikankechil.iota.indicators.AbstractIndicator;
+import org.ikankechil.iota.indicators.momentum.ROC;
 
 import com.tictactec.ta.lib.MInteger;
 import com.tictactec.ta.lib.RetCode;
@@ -21,11 +25,11 @@ import com.tictactec.ta.lib.RetCode;
  */
 public class SpecialK extends AbstractIndicator {
 
-  private static final int SMA = 195;
-  private static final int ROC = 530;
+  private static final int SMA_MAX = 195;
+  private static final int ROC_MAX = 530;
 
   public SpecialK() {
-    super(SMA + ROC); // = 725
+    super(SMA_MAX + ROC_MAX); // = 725
   }
 
   @Override
@@ -49,18 +53,18 @@ public class SpecialK extends AbstractIndicator {
     //           +130 Period Simple Moving Average of ROC(390)* 3
     //           +195 Period Simple Moving Average of ROC(530)* 4
 
-    final double[] sma10Roc10   = smaRoc(ohlcv,  10,  10);
-    final double[] sma10Roc15   = smaRoc(ohlcv,  10,  15);
-    final double[] sma10Roc20   = smaRoc(ohlcv,  10,  20);
-    final double[] sma15Roc30   = smaRoc(ohlcv,  15,  30);
-    final double[] sma50Roc40   = smaRoc(ohlcv,  50,  40);
-    final double[] sma65Roc65   = smaRoc(ohlcv,  65,  65);
-    final double[] sma75Roc75   = smaRoc(ohlcv,  75,  75);
-    final double[] sma100Roc100 = smaRoc(ohlcv, 100, 100);
-    final double[] sma130Roc195 = smaRoc(ohlcv, 130, 195);
-    final double[] sma130Roc265 = smaRoc(ohlcv, 130, 265);
-    final double[] sma130Roc390 = smaRoc(ohlcv, 130, 390);
-    final double[] sma195Roc530 = smaRoc(ohlcv, SMA, ROC);
+    final double[] sma10Roc10   = smaRoc1(ohlcv,  10,  10);
+    final double[] sma10Roc15   = smaRoc1(ohlcv,  10,  15);
+    final double[] sma10Roc20   = smaRoc1(ohlcv,  10,  20);
+    final double[] sma15Roc30   = smaRoc1(ohlcv,  15,  30);
+    final double[] sma50Roc40   = smaRoc1(ohlcv,  50,  40);
+    final double[] sma65Roc65   = smaRoc1(ohlcv,  65,  65);
+    final double[] sma75Roc75   = smaRoc1(ohlcv,  75,  75);
+    final double[] sma100Roc100 = smaRoc1(ohlcv, 100, 100);
+    final double[] sma130Roc195 = smaRoc1(ohlcv, 130, 195);
+    final double[] sma130Roc265 = smaRoc1(ohlcv, 130, 265);
+    final double[] sma130Roc390 = smaRoc1(ohlcv, 130, 390);
+    final double[] sma195Roc530 = smaRoc1(ohlcv, SMA_MAX, ROC_MAX);
 
     final int length = output.length;
     for (int k = 0, i1 =   sma10Roc10.length - length,  i2 =   sma10Roc15.length - length,  i3 =   sma10Roc20.length - length,  i4 =   sma15Roc30.length - length,
@@ -78,6 +82,25 @@ public class SpecialK extends AbstractIndicator {
     outBegIdx.value = lookback;
     outNBElement.value = output.length;
     return RetCode.Success;
+  }
+
+  private static final Map<Integer, SMA> SMAS = new HashMap<>(EIGHT);
+  private static final Map<Integer, ROC> ROCS = new HashMap<>(EIGHT);
+
+  static {
+    for (final int sma : new int[] { 10, 15, 50, 65, 75, 100, 130, 195 } ) {
+      SMAS.put(sma, new SMA(sma));
+    }
+    for (final int roc : new int[] { 10, 15, 20, 30, 40, 65, 75, 100, 195, 265, 390, 530 } ) {
+      ROCS.put(roc, new ROC(roc));
+    }
+  }
+
+  private static final double[] smaRoc1(final OHLCVTimeSeries ohlcv, final int sma, final int roc) {
+    final ROC roc2 = ROCS.get(roc);
+    final SMA sma2 = SMAS.get(sma);
+    final double[] smaRoc = sma2.generate(roc2.generate(ohlcv).get(ZERO)).get(ZERO).values();
+    return smaRoc;
   }
 
 }

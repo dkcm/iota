@@ -1,7 +1,7 @@
 /**
  * OHLCVChartVisualiser.java  v0.2  27 December 2014 3:14:46 PM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.ui;
 
@@ -66,21 +66,20 @@ public class OHLCVChartVisualiser {
   // 2. [DONE] allow overlays (e.g. Bollinger Bands)
   // 3. transition to JavaFX?
 
-  private final OHLCVReader     ohlcvReader;
+  private final OHLCVReader      ohlcvReader;
 
-  private final DateAxis        timeAxis;
-  private final NumberAxis      ohlcAxis;
-//  private final NumberAxis    vAxis;
+  private final DateAxis         timeAxis;
+  private final NumberAxis       ohlcAxis;
 
-  private final HighLowRenderer ohlcRenderer;
+  private final HighLowRenderer  ohlcRenderer;
 
-//  private static final char     UNDERSCORE  = '_';
+  private static final double    LABEL_ANGLE    = Math.PI / 2;
+  private static final double    LABEL_X        = 0.001;
+  private static final double    LABEL_Y        = 0.999;
 
-  private static final double   LABEL_ANGLE = Math.PI / 2;
-  private static final double   LABEL_X     = 0.001;
-  private static final double   LABEL_Y     = 0.999;
+  private static final Dimension PREFERRED_SIZE = new Dimension(1000, 540);
 
-  private static final Logger   logger      = LoggerFactory.getLogger(OHLCVChartVisualiser.class);
+  private static final Logger    logger         = LoggerFactory.getLogger(OHLCVChartVisualiser.class);
 
   public OHLCVChartVisualiser() {
     ohlcvReader = new OHLCVReader();
@@ -152,8 +151,9 @@ public class OHLCVChartVisualiser {
     }
   }
 
-  public void displayChart(final File source, final List<? extends Indicator> overlays, final List<? extends Indicator> indicators)
+  public JFreeChart displayChart(final File source, final List<? extends Indicator> overlays, final List<? extends Indicator> indicators)
       throws IOException, ParseException {
+    logger.info("Constructing chart...");
     final OHLCVTimeSeries ohlcv = ohlcvReader.read(source);
 
     // OHLC
@@ -177,7 +177,8 @@ public class OHLCVChartVisualiser {
     // chart
     final JFreeChart chart = newChart(ohlcPlot, vPlot, iPlots);
     displayChart(chart);
-    logger.info("Chart constructed and displayed");
+    logger.info("Chart constructed and displayed: {}", ohlcv);
+    return chart;
   }
 
   private static final OHLCDataset newOHLCDataset(final OHLCVTimeSeries ohlcv) throws ParseException {
@@ -192,8 +193,10 @@ public class OHLCVChartVisualiser {
 
   private static final Date[] toDates(final OHLCVTimeSeries ohlcv) throws ParseException {
     final Date[] dates = new Date[ohlcv.size()];
-    for (int i = 0; i < dates.length; ++i) {
-      dates[i] = OHLCV.dateFormat.parse(ohlcv.date(i));
+    synchronized (OHLCV.dateFormat) {
+      for (int i = 0; i < dates.length; ++i) {
+        dates[i] = OHLCV.dateFormat.parse(ohlcv.date(i));
+      }
     }
     return dates;
   }
@@ -318,6 +321,7 @@ public class OHLCVChartVisualiser {
 //      final NumberAxis iAxis = new NumberAxis(indicator.getKey().toString());
 //      iAxis.setLabelAngle(LABEL_ANGLE);
       final NumberAxis iAxis = new NumberAxis();
+      iAxis.setAutoRangeIncludesZero(false);
       final XYPlot iPlot = new XYPlot(indicator.getValue(), timeAxis, iAxis, iRenderer);
       iPlot.addAnnotation(new XYTitleAnnotation(LABEL_X,
                                                 LABEL_Y,
@@ -357,7 +361,7 @@ public class OHLCVChartVisualiser {
     final ChartPanel panel = new ChartPanel(chart);
     panel.setFillZoomRectangle(true);
     panel.setMouseWheelEnabled(true);
-    panel.setPreferredSize(new Dimension(1000, 540));
+    panel.setPreferredSize(PREFERRED_SIZE);
     panel.setDomainZoomable(true);
     panel.setRangeZoomable(true);
 //    panel.setToolTipText(null);
@@ -365,7 +369,7 @@ public class OHLCVChartVisualiser {
     panel.setVerticalAxisTrace(true);
 
     // application frame
-    final ApplicationFrame frame = new ApplicationFrame("OHLCV and Indicators");
+    final ApplicationFrame frame = new ApplicationFrame("OHLCV and Indicators: " + chart.getTitle().getText());
     frame.setContentPane(panel);
     frame.pack();
     RefineryUtilities.centerFrameOnScreen(frame);

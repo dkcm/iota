@@ -1,7 +1,7 @@
 /**
  * MAMA.java  v0.1  5 January 2015 7:12:17 PM
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.trend;
 
@@ -21,16 +21,25 @@ import com.tictactec.ta.lib.RetCode;
  * Following Adaptive Moving Average (FAMA) whose alpha is half that of MAMA's.
  *
  * <p>http://www.mesasoftware.com/papers/MAMA.pdf<br>
+ * http://www2.wealth-lab.com/wl5wiki/MAMA.ashx<br>
  *
  * @author Daniel Kuan
  * @version 0.1
  */
 public class MAMA extends AbstractIndicator {
 
-  private final double        fast;
-  private final double        slow;
+  private final double        fastLimit;
+  private final double        slowLimit;
 
   private static final double SLOW_LIMIT = 0.05;
+
+  private static final WMA    WMA        = new WMA(FOUR);
+
+  // computation constants
+  private static final double _0962      = 0.0962;
+  private static final double _5769      = 0.5769;
+  private static final double _54        = 0.54;
+  private static final double _075       = 0.075;
 
   private static final String FAMA       = "FAMA"; // Following Adaptive Moving Average
 
@@ -38,12 +47,18 @@ public class MAMA extends AbstractIndicator {
     this(HALF, SLOW_LIMIT);
   }
 
-  public MAMA(final double fast, final double slow) {
-    super(TA_LIB.mamaLookback(fast, slow));
-    throwExceptionIfNegative(fast, slow);
+  /**
+   *
+   *
+   * @param fastLimit maximum alpha value
+   * @param slowLimit minimum alpha value
+   */
+  public MAMA(final double fastLimit, final double slowLimit) {
+    super(TA_LIB.mamaLookback(fastLimit, slowLimit));
+    throwExceptionIfNegative(fastLimit, slowLimit);
 
-    this.fast = fast;
-    this.slow = slow;
+    this.fastLimit = fastLimit;
+    this.slowLimit = slowLimit;
   }
 
   @Override
@@ -60,8 +75,8 @@ public class MAMA extends AbstractIndicator {
     final RetCode outcome = TA_LIB.mama(ZERO,
                                         size - ONE,
                                         ohlcv.closes(),
-                                        fast,
-                                        slow,
+                                        fastLimit,
+                                        slowLimit,
                                         outBegIdx,
                                         outNBElement,
                                         outMAMA,
@@ -73,6 +88,34 @@ public class MAMA extends AbstractIndicator {
     logger.info(GENERATED_FOR, name, ohlcv);
     return Arrays.asList(new TimeSeries(name, dates, outMAMA),
                          new TimeSeries(FAMA, dates, outFAMA));
+  }
+
+  @Override
+  public List<TimeSeries> generate(final TimeSeries series, final int start) {
+    throwExceptionIfShort(series);
+    final int size = series.size();
+
+    // compute detrender
+    final TimeSeries smooth = WMA.generate(series).get(ZERO);
+
+
+
+    final double[] mamas = new double[size - lookback];
+    final double[] famas = new double[mamas.length];
+
+    final double deltaPhase = 0;
+    alpha(deltaPhase);
+
+    final String[] dates = Arrays.copyOfRange(series.dates(), lookback, size);
+
+    logger.info(GENERATED_FOR, name, series);
+    return Arrays.asList(new TimeSeries(name, dates, mamas),
+                         new TimeSeries(FAMA, dates, famas));
+  }
+
+  private final double alpha(final double deltaPhase) {
+    final double alpha = fastLimit / deltaPhase;
+    return (alpha < slowLimit) ? slowLimit : alpha;
   }
 
 }
