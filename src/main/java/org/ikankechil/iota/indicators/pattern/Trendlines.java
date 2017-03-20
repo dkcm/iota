@@ -205,7 +205,7 @@ public class Trendlines extends AbstractIndicator {
 
       @Override
       public boolean isRightDirection(final double gradient) {
-        return (gradient > ZERO);
+        return (gradient >= ZERO);
       }
     },
     DOWN {
@@ -221,7 +221,7 @@ public class Trendlines extends AbstractIndicator {
 
       @Override
       public boolean isRightDirection(final double gradient) {
-        return (gradient < ZERO);
+        return (gradient <= ZERO);
       }
     };
 

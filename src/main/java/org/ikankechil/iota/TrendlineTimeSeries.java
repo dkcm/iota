@@ -21,10 +21,6 @@ public class TrendlineTimeSeries extends TimeSeries {
 
   private final List<? extends Trendline> trendlines;
 
-//  public TrendlineTimeSeries(final String name, final int size) {
-//    this(name, new String[size], new double[size], new ArrayList<>(size));
-//  }
-
   public TrendlineTimeSeries(final String name, final String[] dates, final double[] trends, final List<? extends Trendline> trendlines) {
     super(name, dates, trends);
     if (trendlines == null) {

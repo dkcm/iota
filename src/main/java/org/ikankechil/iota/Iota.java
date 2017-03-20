@@ -1,7 +1,7 @@
 /**
- * Iota.java v0.1  21 November 2014 1:49:09 PM
+ * Iota.java  v0.2  21 November 2014 1:49:09 PM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota;
 
@@ -38,7 +38,7 @@ import org.slf4j.LoggerFactory;
  * Indicator and signal generator.
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class Iota {
   // TODO
@@ -115,9 +115,9 @@ public class Iota {
     return indicatorDirectory;
   }
 
-  class GenerateIndicators extends IotaTaskHelper<File> {
+  private class GenerateIndicators extends IotaTaskHelper<File> {
 
-    final Collection<? extends Indicator> indicators;
+    private final Collection<? extends Indicator> indicators;
 
     GenerateIndicators(final Collection<? extends Indicator> indicators) {
       this.indicators = indicators;
@@ -144,8 +144,8 @@ public class Iota {
    * @return
    * @throws IOException
    */
-  List<TimeSeries> generateIndicators(final Path prices,
-                                      final Collection<? extends Indicator> indicators)
+  private final List<TimeSeries> generateIndicators(final Path prices,
+                                                    final Collection<? extends Indicator> indicators)
       throws IOException {
     final List<TimeSeries> indicatorValues = new ArrayList<>(indicators.size() << 1);
     // read prices from file
@@ -172,7 +172,7 @@ public class Iota {
    * @return
    * @throws IOException
    */
-  File writeIndicators(final Path prices, final List<? extends TimeSeries> values)
+  private final File writeIndicators(final Path prices, final List<? extends TimeSeries> values)
       throws IOException {
     // write to file
     final File exchange = new File(indicatorDirectory,
@@ -183,12 +183,27 @@ public class Iota {
     return destination;
   }
 
+  /**
+   * Generates trading signals from <code>prices</code>.
+   *
+   * @param prices a file or directory with OHLCV
+   * @param strategies trading strategies
+   * @throws IOException
+   */
   public void generateSignals(final File prices,
                               final Collection<? extends Strategy> strategies)
       throws IOException {
     generateSignals(prices, strategies, Integer.MAX_VALUE);
   }
 
+  /**
+   * Generates trading signals from <code>prices</code>.
+   *
+   * @param prices a file or directory with OHLCV
+   * @param strategies trading strategies
+   * @param lookback
+   * @throws IOException
+   */
   public void generateSignals(final File prices,
                               final Collection<? extends Strategy> strategies,
                               final int lookback)
@@ -210,10 +225,10 @@ public class Iota {
     logger.info("Generated signals for: {}", prices);
   }
 
-  class GenerateSignals extends IotaTaskHelper<List<SignalTimeSeries>> {
+  private class GenerateSignals extends IotaTaskHelper<List<SignalTimeSeries>> {
 
-    final Collection<? extends Strategy> strategies;
-    final int                            lookback;
+    private final Collection<? extends Strategy> strategies;
+    private final int                            lookback;
 
     public GenerateSignals(final Collection<? extends Strategy> strategies, final int lookback) {
       this.strategies = strategies;
@@ -225,7 +240,9 @@ public class Iota {
       return new Callable<List<SignalTimeSeries>>() {
         @Override
         public List<SignalTimeSeries> call() throws Exception {
+          // generate trading signals as time series, one for each strategy
           final List<SignalTimeSeries> tradingSignals = generateSignals(prices, strategies, lookback);
+          writeSignals(prices, tradingSignals); // write to file
           return tradingSignals;
         }
       };
@@ -233,9 +250,18 @@ public class Iota {
 
   }
 
-  List<SignalTimeSeries> generateSignals(final Path prices,
-                                         final Collection<? extends Strategy> strategies,
-                                         final int lookback)
+  /**
+   * Generates trading signals for each strategy.
+   *
+   * @param prices a file with OHLCV
+   * @param strategies trading strategies
+   * @param lookback
+   * @return trading signals as time series, one for each strategy
+   * @throws IOException
+   */
+  private final List<SignalTimeSeries> generateSignals(final Path prices,
+                                                       final Collection<? extends Strategy> strategies,
+                                                       final int lookback)
       throws IOException {
     final List<SignalTimeSeries> tradingSignals = new ArrayList<>(strategies.size());
     // read prices from file
@@ -244,13 +270,13 @@ public class Iota {
     // execute strategies
     for (final Strategy strategy : strategies) {
       tradingSignals.add(strategy.execute(ohlcv, lookback));
-      logger.info("Strategy {} executed for: {}", strategy, prices);
+      logger.info("Executed strategy {} for: {}", strategy, prices);
     }
 
     return tradingSignals;
   }
 
-  File writeSignals(final Path prices, final List<? extends SignalTimeSeries> tradingSignals)
+  private final File writeSignals(final Path prices, final List<? extends SignalTimeSeries> tradingSignals)
       throws IOException {
     // write all strategies' results to one file
     final File exchange = new File(indicatorDirectory,
@@ -271,7 +297,7 @@ public class Iota {
     return filename.toString();
   }
 
-  class IotaFileVisitor<V> extends CompletionServiceFileVisitor<V> {
+  private class IotaFileVisitor<V> extends CompletionServiceFileVisitor<V> {
 
     public IotaFileVisitor(final String syntaxAndPattern,
                            final TaskHelper<Path, V> taskHelper,
@@ -300,7 +326,7 @@ public class Iota {
 
   }
 
-  abstract class IotaTaskHelper<V> implements TaskHelper<Path, V> {
+  private abstract class IotaTaskHelper<V> implements TaskHelper<Path, V> {
 
     @Override
     public V handleExecutionFailure(final ExecutionException eE, final Path operand) {
@@ -321,8 +347,8 @@ public class Iota {
 
   public void stop() throws InterruptedException {
     threadPool.shutdown();
-    threadPool.awaitTermination(Short.MAX_VALUE, TimeUnit.MILLISECONDS);
     logger.info("Shutdown requested");
+    threadPool.awaitTermination(Short.MAX_VALUE, TimeUnit.MILLISECONDS);
   }
 
 }
