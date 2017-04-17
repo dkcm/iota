@@ -5,6 +5,8 @@
  */
 package org.ikankechil.iota;
 
+import static org.junit.Assert.*;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
@@ -35,7 +37,6 @@ public class IotaTest {
 
   private static final File   DIRECTORY  = new File(".//./src/test/resources/" + IotaTest.class.getSimpleName());
   private static final File   OHLCV_FILE = new File(DIRECTORY, "SPY_20001220-20161206_w.csv");
-  private static final String INDICATORS = "Indicators";
 
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {
@@ -107,6 +108,7 @@ public class IotaTest {
 
   @Ignore@Test
   public void generateSignals() {
+    fail("Not yet implemented");
   }
 
   private static class TestIndicator implements Indicator {

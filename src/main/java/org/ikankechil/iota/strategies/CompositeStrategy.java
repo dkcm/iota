@@ -169,7 +169,11 @@ public class CompositeStrategy implements Strategy {
     final int offset = ohlcv.size() - composite.size();
     if (backwards > NOT_FOUND || current > NOT_FOUND) { // matching signal found
       setSignal(reference, today, composite);
-      logger.info(TRADE_SIGNAL, reference, ohlcv.toString(), composite.date(today), ohlcv.close(today + offset));
+      logger.info(TRADE_SIGNAL,
+                  reference,
+                  ohlcv.toString(),
+                  composite.date(today),
+                  ohlcv.close(today + offset));
     }
     else {
       setSignal(NONE, today, composite);
@@ -185,7 +189,11 @@ public class CompositeStrategy implements Strategy {
         setSignal(NONE, today, composite);
       }
       setSignal(reference, forwards, composite);
-      logger.info(TRADE_SIGNAL, reference, ohlcv.toString(), composite.date(forwards), ohlcv.close(forwards + offset));
+      logger.info(TRADE_SIGNAL,
+                  reference,
+                  ohlcv.toString(),
+                  composite.date(forwards),
+                  ohlcv.close(forwards + offset));
     }
 
     return today;
@@ -220,7 +228,10 @@ public class CompositeStrategy implements Strategy {
     for (int i = start; i < end; ++i) {
       if (reference == signals.signal(i)) {
         matchingSignalIndex = i;
-        logger.debug("Matching {} found at index {} in {}", reference, matchingSignalIndex, signals);
+        logger.debug("Matching {} found at index {} in {}",
+                     reference,
+                     matchingSignalIndex,
+                     signals);
         break;
       }
     }

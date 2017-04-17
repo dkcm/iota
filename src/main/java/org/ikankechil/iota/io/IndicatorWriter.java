@@ -29,7 +29,7 @@ public class IndicatorWriter extends TimeSeriesWriter {
 
   private static final Logger logger             = LoggerFactory.getLogger(IndicatorWriter.class);
 
-  public void write(final List<? extends TimeSeries> indicators, final File destination)
+  public void write(final Collection<? extends TimeSeries> indicators, final File destination)
       throws IOException {
     logger.info(WRITING_INDICATORS, destination);
     final String[] dates = longest(indicators).dates();

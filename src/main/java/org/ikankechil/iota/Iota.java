@@ -14,7 +14,10 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.concurrent.Callable;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
@@ -29,6 +32,7 @@ import org.ikankechil.iota.indicators.Indicator;
 import org.ikankechil.iota.io.IndicatorWriter;
 import org.ikankechil.iota.io.OHLCVReader;
 import org.ikankechil.iota.io.SignalWriter;
+import org.ikankechil.iota.io.SignalsSummaryWriter;
 import org.ikankechil.iota.strategies.Strategy;
 import org.ikankechil.synchronous.TaskHelper;
 import org.slf4j.Logger;
@@ -52,27 +56,28 @@ public class Iota {
   // 6. [In progress] Consolidate indicators into one file to save space from
   //    redundant dates (but how should the reader segregate?)
 
-  private final OHLCVReader     ohlcvReader;
-  private final IndicatorWriter indicatorWriter;
-  private final SignalWriter    signalWriter;
+  private final OHLCVReader          ohlcvReader;
+  private final IndicatorWriter      indicatorWriter;
+  private final SignalWriter         signalWriter;
+  private final SignalsSummaryWriter signalsSummaryWriter;
 
-  final File                    indicatorDirectory;
-  private final ExecutorService threadPool;
+  final File                         indicatorDirectory;
+  private final ExecutorService      threadPool;
 
   // File-related constants
-  private static final char     UNDERSCORE      = '_';
-  private static final String   CSV             = ".csv";
-  private static final String   INDICATORS      = "Indicators";
-  private static final String   SIGNALS         = "Signals";
-  private static final String   OHLCV_REGEX     = "regex:[A-Z0-9]+(_[dwm])?" + CSV;
+  private static final char          UNDERSCORE      = '_';
+  private static final String        CSV             = ".csv";
+  private static final String        INDICATORS      = "Indicators";
+  private static final String        SIGNALS         = "Signals";
+  private static final String        OHLCV_REGEX     = "regex:[A-Z0-9]+(_[dwm])?" + CSV;
 
   // Multi-threading constants
-  private static final int      PROCESSORS      = Runtime.getRuntime().availableProcessors();
-  private static final int      LOAD_MULTIPLIER = 5; // TODO need different load multipliers for apps
+  private static final int           PROCESSORS      = Runtime.getRuntime().availableProcessors();
+  private static final int           LOAD_MULTIPLIER = 5; // TODO need different load multipliers for apps
 
-  private static final int      ZERO            = 0;
+  private static final int           ZERO            = 0;
 
-  static final Logger           logger          = LoggerFactory.getLogger(Iota.class);
+  static final Logger                logger          = LoggerFactory.getLogger(Iota.class);
 
   public Iota(final File indicatorDirectory) {
     if (!indicatorDirectory.isDirectory()) {
@@ -83,6 +88,7 @@ public class Iota {
     ohlcvReader = new OHLCVReader();
     indicatorWriter = new IndicatorWriter();
     signalWriter = new SignalWriter();
+    signalsSummaryWriter = new SignalsSummaryWriter();
 
     threadPool = Executors.newFixedThreadPool(PROCESSORS * LOAD_MULTIPLIER);
   }
@@ -216,36 +222,99 @@ public class Iota {
     }
     logger.info("Generating signals from: {}", prices);
 
-    final IotaFileVisitor<List<SignalTimeSeries>> visitor =
+    final GenerateSignals generateSignalsTaskHelper = new GenerateSignals(strategies, lookback);
+    final IotaFileVisitor<Map<Strategy, SignalTimeSeries>> visitor =
         new IotaFileVisitor<>(OHLCV_REGEX,
-                              new GenerateSignals(strategies, lookback),
+                              generateSignalsTaskHelper,
                               threadPool);
     Files.walkFileTree(prices.toPath(), visitor);
+
+    // compile results by strategy
+//    final Map<Strategy, List<SignalTimeSeries>> results = transform(visitor.results());
+    writeSignalsSummary(generateSignalsTaskHelper.signalsSummaries());
 
     logger.info("Generated signals for: {}", prices);
   }
 
-  private class GenerateSignals extends IotaTaskHelper<List<SignalTimeSeries>> {
+  private final Map<Strategy, File> writeSignalsSummary(final Map<Strategy, List<SignalTimeSeries>> signalsSummaries) {
+    final Map<Strategy, File> files = new LinkedHashMap<>(signalsSummaries.size());
 
-    private final Collection<? extends Strategy> strategies;
-    private final int                            lookback;
+    for (final Entry<Strategy, List<SignalTimeSeries>> signalsSummary : signalsSummaries.entrySet()) {
+      final Strategy strategy = signalsSummary.getKey();
+      final File destination = new File(indicatorDirectory,
+                                        strategy.toString() + UNDERSCORE + SIGNALS + CSV);
+      files.put(strategy, destination);
+
+      try {
+        signalsSummaryWriter.write(signalsSummary.getValue(), destination);
+      }
+      catch (final IOException ioE) {
+        logger.warn("Could not write signals summary: {}", destination, ioE);
+      }
+    }
+
+    return files;
+  }
+
+  private static final <K, V> Map<K, List<V>> transform(final Collection<Map<K, V>> maps) {
+    final Map<K, List<V>> lists = new LinkedHashMap<>();
+    for (final Map<K, V> map : maps) {
+      for (final Entry<K, V> entry : map.entrySet()) {
+        List<V> list = lists.get(entry.getKey());
+        if (list == null) {
+          lists.put(entry.getKey(), list = new ArrayList<>());
+        }
+        list.add(entry.getValue());
+      }
+    }
+    return lists;
+  }
+
+  private class GenerateSignals extends IotaTaskHelper<Map<Strategy, SignalTimeSeries>> {
+
+    private final Collection<? extends Strategy>        strategies;
+    private final int                                   lookback;
+    private final Map<Strategy, List<SignalTimeSeries>> signalsSummaries;
 
     public GenerateSignals(final Collection<? extends Strategy> strategies, final int lookback) {
       this.strategies = strategies;
       this.lookback = lookback;
+
+      signalsSummaries = new LinkedHashMap<>(strategies.size());
+      for (final Strategy strategy : strategies) {
+        signalsSummaries.put(strategy, new ArrayList<>());
+      }
     }
 
     @Override
-    public Callable<List<SignalTimeSeries>> newTask(final Path prices) {
-      return new Callable<List<SignalTimeSeries>>() {
+    public Callable<Map<Strategy, SignalTimeSeries>> newTask(final Path prices) {
+      return new Callable<Map<Strategy, SignalTimeSeries>>() {
         @Override
-        public List<SignalTimeSeries> call() throws Exception {
+        public Map<Strategy, SignalTimeSeries> call() throws Exception {
           // generate trading signals as time series, one for each strategy
-          final List<SignalTimeSeries> tradingSignals = generateSignals(prices, strategies, lookback);
-          writeSignals(prices, tradingSignals); // write to file
+          final Map<Strategy, SignalTimeSeries> tradingSignals = generateSignals(prices, strategies, lookback);
+//          writeSignals(prices, tradingSignals.values()); // write to file
+          storeSignals(prices, tradingSignals);
           return tradingSignals;
         }
       };
+    }
+
+    private final void storeSignals(final Path prices,
+                                    final Map<Strategy, SignalTimeSeries> tradingSignals) {
+      for (final Entry<Strategy, SignalTimeSeries> strategy : tradingSignals.entrySet()) {
+        final int elements = prices.getNameCount();
+        final String fileName = prices.subpath(elements - 2, elements).toString();
+        final SignalTimeSeries condensedSignals =
+            SignalTimeSeries.condenseSignals(strategy.getValue(),
+                                             fileName.substring(ZERO, fileName.lastIndexOf(CSV)));
+        signalsSummaries.get(strategy.getKey())
+                        .add(condensedSignals);
+      }
+    }
+
+    public Map<Strategy, List<SignalTimeSeries>> signalsSummaries() {
+      return Collections.unmodifiableMap(signalsSummaries);
     }
 
   }
@@ -259,24 +328,24 @@ public class Iota {
    * @return trading signals as time series, one for each strategy
    * @throws IOException
    */
-  private final List<SignalTimeSeries> generateSignals(final Path prices,
-                                                       final Collection<? extends Strategy> strategies,
-                                                       final int lookback)
+  private final Map<Strategy, SignalTimeSeries> generateSignals(final Path prices,
+                                                                final Collection<? extends Strategy> strategies,
+                                                                final int lookback)
       throws IOException {
-    final List<SignalTimeSeries> tradingSignals = new ArrayList<>(strategies.size());
+    final Map<Strategy, SignalTimeSeries> tradingSignals = new LinkedHashMap<>(strategies.size());
     // read prices from file
     final OHLCVTimeSeries ohlcv = ohlcvReader.read(prices.toFile());
 
     // execute strategies
     for (final Strategy strategy : strategies) {
-      tradingSignals.add(strategy.execute(ohlcv, lookback));
+      tradingSignals.put(strategy, strategy.execute(ohlcv, lookback));
       logger.info("Executed strategy {} for: {}", strategy, prices);
     }
 
     return tradingSignals;
   }
 
-  private final File writeSignals(final Path prices, final List<? extends SignalTimeSeries> tradingSignals)
+  private final File writeSignals(final Path prices, final Collection<? extends SignalTimeSeries> tradingSignals)
       throws IOException {
     // write all strategies' results to one file
     final File exchange = new File(indicatorDirectory,
