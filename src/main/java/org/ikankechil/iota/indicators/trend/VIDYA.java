@@ -13,12 +13,13 @@ import com.tictactec.ta.lib.MInteger;
 import com.tictactec.ta.lib.RetCode;
 
 /**
- * Variable Index Dynamic Average (VIDYA)
+ * Variable Index Dynamic Average (VIDYA) by Tushar Chande and Stanley Kroll
  *
  * <p>ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V13/C10/SIDEVAR.pdf<br>
  * http://www.straticator.com/vidya-variable-index-dynamic-average/<br>
  * http://www.fmlabs.com/reference/default.htm?url=VIDYA.htm<br>
  * http://www.thewizardtrader.com/Education/TechnicalIndicators/Indicators/VIDYA.aspx<br>
+ * https://user42.tuxfamily.org/chart/manual/Variable-Index-Dynamic-Average.html#Variable-Index-Dynamic-Average<br>
  *
  * @author Daniel Kuan
  * @version 0.2
@@ -56,6 +57,7 @@ public class VIDYA extends AbstractIndicator {
 
     // compute Volatility Index
     final double[] vi = cmo.generate(ohlcv).get(ZERO).values();
+    logger.debug("Volatility Index: {}", vi);
 
     // compute indicator TODO buggy?
     final double[] closes = ohlcv.closes();
@@ -65,7 +67,6 @@ public class VIDYA extends AbstractIndicator {
       output[i] = (scVi * closes[j]) + ((ONE - scVi) * previous);
       previous = output[i];
     }
-    logger.debug("Volatility Index: {}", vi);
 
     outBegIdx.value = lookback;
     outNBElement.value = output.length;

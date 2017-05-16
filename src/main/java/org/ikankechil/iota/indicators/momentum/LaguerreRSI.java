@@ -1,28 +1,24 @@
 /**
- * LaguerreRSI.java  v0.2  2 March 2015 1:12:51 PM
+ * LaguerreRSI.java  v0.3  2 March 2015 1:12:51 PM
  *
  * Copyright © 2015-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.momentum;
 
-import org.ikankechil.iota.indicators.AbstractIndicator;
-
-import com.tictactec.ta.lib.MInteger;
-import com.tictactec.ta.lib.RetCode;
+import org.ikankechil.iota.indicators.LaguerreFilter;
 
 /**
  * Laguerre Relative Strength Index by John Ehlers
  *
  * <p>http://xa.yimg.com/kq/groups/17324418/1380195797/name/cybernetic+analysis+for+stocks+and+futures+cutting-edge+dsp+technology+to+improve+your+trading+(0471463078).pdf<br>
+ * http://www.mesasoftware.com/papers/TimeWarp.pdf<br>
  * https://forex-strategies-revealed.com/files/user/TimeWarp.doc<br>
  * http://www.jamesgoulding.com/Research_II/Ehlers/Ehlers%20(Time%20Warp).doc<br>
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
-public class LaguerreRSI extends AbstractIndicator {
-
-  private final double gamma; // damping factor
+public class LaguerreRSI extends LaguerreFilter {
 
   /**
    * Default damping factor = 0.5
@@ -36,19 +32,15 @@ public class LaguerreRSI extends AbstractIndicator {
    * @param gamma damping factor
    */
   public LaguerreRSI(final double gamma) {
-    super(FOUR);
-    throwExceptionIfNegative(gamma);
-
-    this.gamma = gamma;
+    super(gamma); // damping factor
   }
 
   @Override
-  protected RetCode compute(final int start,
-                            final int end,
-                            final double[] values,
-                            final MInteger outBegIdx,
-                            final MInteger outNBElement,
-                            final double[] output) {
+  protected double filter(final double l0, final double l1, final double l2, final double l3) {
+    return rsi(l0, l1, l2, l3);
+  }
+
+  private static final double rsi(final double l0, final double l1, final double l2, final double l3) {
     // Formula:
     // Option 1
     // l0 = (1 - gamma) * price  + gamma * prevL0;
@@ -75,41 +67,6 @@ public class LaguerreRSI extends AbstractIndicator {
     //
     // If CU + CD <> 0 then LaguerreRSI = CU / (CU + CD);
 
-    double previousL0 = values[ZERO];
-    double previousL1 = values[ONE];
-    double previousL2 = values[TWO];
-    double previousL3 = values[THREE];
-
-    // compute indicator
-    for (int i = ZERO, today = FOUR; i < output.length; ++i, ++today) {
-      // finite impulse response (FIR) filter
-      final double l0 = ((1 - gamma) * values[today]) + (gamma * previousL0);
-      final double l1 = (-gamma * l0) + previousL0    + (gamma * previousL1);
-      final double l2 = (-gamma * l1) + previousL1    + (gamma * previousL2);
-      final double l3 = (-gamma * l2) + previousL2    + (gamma * previousL3);
-//      // alternative
-//      final double v = values[today];
-//      final double l0 = (gamma * (previousL0 - v)) + v;
-//      final double l1 = (gamma * (previousL1 - l0)) + previousL0;
-//      final double l2 = (gamma * (previousL2 - l1)) + previousL1;
-//      final double l3 = (gamma * (previousL3 - l2)) + previousL2;
-
-      // rsi
-      output[i] = rsi(l0, l1, l2, l3);
-
-      // shift forward in time
-      previousL0 = l0;
-      previousL1 = l1;
-      previousL2 = l2;
-      previousL3 = l3;
-    }
-
-    outBegIdx.value = lookback;
-    outNBElement.value = output.length;
-    return RetCode.Success;
-  }
-
-  private static final double rsi(final double l0, final double l1, final double l2, final double l3) {
     double cu = ZERO;
     double cd = ZERO;
     if (l0 >= l1) {

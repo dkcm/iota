@@ -8,6 +8,7 @@ package org.ikankechil.iota.indicators.suites;
 import org.ikankechil.iota.indicators.trend.ALMATest;
 import org.ikankechil.iota.indicators.trend.DEMATest;
 import org.ikankechil.iota.indicators.trend.EMATest;
+import org.ikankechil.iota.indicators.trend.FRAMATest;
 import org.ikankechil.iota.indicators.trend.GMMATest;
 import org.ikankechil.iota.indicators.trend.GeneralisedDEMATest;
 import org.ikankechil.iota.indicators.trend.HMATest;
@@ -16,8 +17,10 @@ import org.ikankechil.iota.indicators.trend.MAMATest;
 import org.ikankechil.iota.indicators.trend.MDTest;
 import org.ikankechil.iota.indicators.trend.MOMATest;
 import org.ikankechil.iota.indicators.trend.MovingAverageEnvelopesTest;
+import org.ikankechil.iota.indicators.trend.REMATest;
 import org.ikankechil.iota.indicators.trend.SMATest;
 import org.ikankechil.iota.indicators.trend.SWMATest;
+import org.ikankechil.iota.indicators.trend.SimpleLaguerreFilterTest;
 import org.ikankechil.iota.indicators.trend.T3Test;
 import org.ikankechil.iota.indicators.trend.TEMATest;
 import org.ikankechil.iota.indicators.trend.TRIMATest;
@@ -37,7 +40,7 @@ import org.junit.runners.Suite.SuiteClasses;
   ALMATest.class,
   DEMATest.class,
   EMATest.class,
-//  FRAMATest.class,
+  FRAMATest.class,
   GeneralisedDEMATest.class,
   GMMATest.class,
   HMATest.class,
@@ -45,6 +48,8 @@ import org.junit.runners.Suite.SuiteClasses;
   MAMATest.class,
   MDTest.class,
   MOMATest.class,
+  REMATest.class,
+  SimpleLaguerreFilterTest.class,
   SMATest.class,
   SWMATest.class,
   T3Test.class,
@@ -63,7 +68,6 @@ import org.junit.runners.Suite.SuiteClasses;
 })
 
 /**
- *
  *
  *
  *

@@ -1,7 +1,7 @@
 /**
- * SMA.java  v0.3  8 December 2014 7:10:55 PM
+ * SMA.java  v0.4  8 December 2014 7:10:55 PM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.trend;
 
@@ -15,7 +15,7 @@ import com.tictactec.ta.lib.RetCode;
  *
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class SMA extends AbstractIndicator {
 
@@ -54,6 +54,15 @@ public class SMA extends AbstractIndicator {
     outBegIdx.value = lookback;
     outNBElement.value = output.length;
     return RetCode.Success;
+  }
+
+  public static final double sma(final double[] values, final int from, final int to) {
+    int v = from;
+    double sum = values[v];
+    while (++v < to) {
+      sum += values[v];
+    }
+    return sum / (to - from);
   }
 
 }
