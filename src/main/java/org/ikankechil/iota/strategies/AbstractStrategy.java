@@ -1,7 +1,7 @@
 /**
  * AbstractStrategy.java  v0.3  10 November 2014 3:51:20 PM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.strategies;
 
@@ -53,16 +53,22 @@ public abstract class AbstractStrategy implements Strategy {
   protected static final int      TWENTY       = 20;
   protected static final int      TWENTY_ONE   = 21;
   protected static final int      TWENTY_TWO   = 22;
+  protected static final int      TWENTY_THREE = 23;
+  protected static final int      TWENTY_FOUR  = 24;
   protected static final int      TWENTY_FIVE  = 25;
   protected static final int      TWENTY_SIX   = 26;
+  protected static final int      TWENTY_SEVEN = 27;
   protected static final int      TWENTY_EIGHT = 28;
+  protected static final int      TWENTY_NINE  = 29;
   protected static final int      THIRTY       = 30;
+  protected static final int      THIRTY_ONE   = 31;
   protected static final int      THIRTY_TWO   = 32;
   protected static final int      THIRTY_THREE = 33;
   protected static final int      THIRTY_FOUR  = 34;
   protected static final int      THIRTY_FIVE  = 35;
   protected static final int      FORTY        = 40;
   protected static final int      FORTY_FIVE   = 45;
+  protected static final int      FORTY_EIGHT  = 48;
   protected static final int      FIFTY        = 50;
   protected static final int      SIXTY        = 60;
   protected static final int      SEVENTY      = 70;
