@@ -8,6 +8,7 @@ package org.ikankechil.iota.io;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +32,7 @@ public class SignalWriter extends TimeSeriesWriter {
 
   private static final Logger logger = LoggerFactory.getLogger(SignalWriter.class);
 
-  public void write(final List<? extends SignalTimeSeries> signalSeries, final File destination)
+  public void write(final Collection<? extends SignalTimeSeries> signalSeries, final File destination)
       throws IOException {
     logger.info("Writing signals to: {}", destination);
 
@@ -49,7 +50,7 @@ public class SignalWriter extends TimeSeriesWriter {
       }
       else {
         // write in reverse chronological order
-        add(signalSeries.get(ZERO), lines);
+        add(signalSeries.iterator().next(), lines);
         logger.debug("Single strategy");
       }
 
@@ -61,7 +62,7 @@ public class SignalWriter extends TimeSeriesWriter {
     }
   }
 
-  private static final boolean hasSignals(final List<? extends SignalTimeSeries> signalSeries) {
+  private static final boolean hasSignals(final Collection<? extends SignalTimeSeries> signalSeries) {
     boolean hasSignals = false;
     for (final SignalTimeSeries signals : signalSeries) {
       hasSignals |= (signals.size() > ZERO);
@@ -69,7 +70,7 @@ public class SignalWriter extends TimeSeriesWriter {
     return hasSignals;
   }
 
-  private static final List<String> tabulate(final List<? extends SignalTimeSeries> signalSeries) {
+  private static final List<String> tabulate(final Collection<? extends SignalTimeSeries> signalSeries) {
     // merge SignalTimeSeries as they may be of different lengths and dates
     // e.g.
     // Date,StrategyA,StrategyB,StrategyC
@@ -86,7 +87,7 @@ public class SignalWriter extends TimeSeriesWriter {
     return convert(table);
   }
 
-  private static final Map<String, Signal[]> tabulate(final List<? extends SignalTimeSeries> signalSeries,
+  private static final Map<String, Signal[]> tabulate(final Collection<? extends SignalTimeSeries> signalSeries,
                                                       final Comparator<String> order) {
     // tabulate signals in reverse chronological order
     final Map<String, Signal[]> table = new TreeMap<>(order);
@@ -130,7 +131,7 @@ public class SignalWriter extends TimeSeriesWriter {
     return lines;
   }
 
-  private static final void add(final SignalTimeSeries signals, final List<String> lines) {
+  private static final void add(final SignalTimeSeries signals, final Collection<String> lines) {
     // write in reverse chronological order
     final String[] dates = signals.dates();
     final StringBuilder line = new StringBuilder();

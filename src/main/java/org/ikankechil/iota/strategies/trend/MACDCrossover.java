@@ -1,7 +1,7 @@
 /**
  * MACDCrossover.java  v0.1  21 September 2016 12:57:11 am
  *
- * Copyright © 2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.strategies.trend;
 
@@ -14,6 +14,7 @@ import org.ikankechil.iota.strategies.CrossoverWithThreshold;
  * <p>Buy when MACD crosses over MACD signal line while under a threshold<br>
  * Sell when MACD crosses MACD signal line while above a threshold<br>
  *
+ * <p>http://etfhq.com/blog/2013/02/26/macd-test-results/
  *
  * @author Daniel Kuan
  * @version 0.1

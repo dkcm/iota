@@ -1,7 +1,7 @@
 /**
- * TopsAndBottomsTest.java  v0.3  31 December 2015 7:58:28 pm
+ * DescendingTrianglesTest.java  0.1  23 December 2016 10:05:34 PM
  *
- * Copyright © 2015-2017 Daniel Kuan.  All rights reserved.
+ * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.pattern;
 
@@ -12,32 +12,30 @@ import org.ikankechil.iota.indicators.Indicator;
 import org.junit.BeforeClass;
 
 /**
- * JUnit test for <code>TopsAndBottoms</code>.
- *
+ * JUnit test for <code>DescendingTriangles</code>.
  *
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.1
  */
-public class TopsAndBottomsTest extends AbstractIndicatorTest {
+public class DescendingTrianglesTest extends AbstractIndicatorTest {
 
   private static final int DEFAULT_AWAY_POINTS = 5;
   private static final int DEFAULT_LOOKBACK    = 0;
 
-  public TopsAndBottomsTest() {
+  public DescendingTrianglesTest() {
     super(DEFAULT_LOOKBACK);
   }
 
   @BeforeClass
   public static void setUpBeforeClass() throws IOException {
-    TEST_CLASS = TopsAndBottomsTest.class;
+    TEST_CLASS = DescendingTrianglesTest.class;
     AbstractIndicatorTest.setUpBeforeClass();
   }
 
   @Override
   public Indicator newInstance() {
-    final boolean isInterpolate = true; // test interpolation here
-    return new TopsAndBottoms(DEFAULT_AWAY_POINTS, null, isInterpolate);
+    return new DescendingTriangles(new Trendlines(DEFAULT_AWAY_POINTS));
   }
 
 }

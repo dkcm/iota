@@ -43,6 +43,7 @@ public abstract class AbstractIndicatorTest {
   private Indicator               indicator;
   protected final int             lookback;
   private Class<Indicator>        classUnderTest;
+  protected List<TimeSeries>      actuals;
 
   @Rule
   public final ExpectedException  thrown          = ExpectedException.none();
@@ -133,6 +134,7 @@ public abstract class AbstractIndicatorTest {
   @After
   public void tearDown() throws Exception {
     indicator = null;
+    actuals = null;
   }
 
   public Indicator newInstance() throws ReflectiveOperationException {
@@ -175,7 +177,7 @@ public abstract class AbstractIndicatorTest {
     final String[] expected = Arrays.copyOfRange(OHLCV.dates(),
                                                  lookback,
                                                  OHLCV.size());
-    final List<TimeSeries> actuals = indicator.generate(OHLCV);
+    actuals = indicator.generate(OHLCV);
 
     for (final TimeSeries actual : actuals) {
       assertArrayEquals(actual.toString(), expected, actual.dates());
@@ -185,7 +187,7 @@ public abstract class AbstractIndicatorTest {
   @Test
   public void indicatorValues() {
     final List<TimeSeries> expecteds = generate(OHLCV);
-    final List<TimeSeries> actuals = indicator.generate(OHLCV);
+    actuals = indicator.generate(OHLCV);
 
     int i = -1;
     for (final TimeSeries expected : expecteds) {

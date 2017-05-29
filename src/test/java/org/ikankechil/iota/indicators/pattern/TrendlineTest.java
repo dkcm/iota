@@ -1,5 +1,5 @@
 /**
- * TrendlineTest.java  v0.1  22 November 2016 10:51:59 am
+ * TrendlineTest.java  v0.2  22 November 2016 10:51:59 am
  *
  * Copyright © 2016 Daniel Kuan.  All rights reserved.
  */
@@ -17,7 +17,7 @@ import org.junit.Test;
  *
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class TrendlineTest {
 
@@ -64,6 +64,7 @@ public class TrendlineTest {
     assertEquals(x1, trendline.x1());
     assertEquals(y1, trendline.y1(), DELTA);
     assertFalse(trendline.isConfirmed());
+    assertFalse(trendline.isBroken());
   }
 
   @Test
@@ -74,6 +75,7 @@ public class TrendlineTest {
     assertEquals(x1, trendline.x1());
     assertEquals(y1, trendline.y1(), DELTA);
     assertFalse(trendline.isConfirmed());
+    assertFalse(trendline.isBroken());
   }
 
   @Test
@@ -84,6 +86,7 @@ public class TrendlineTest {
     assertEquals(x1, trendline.x1());
     assertEquals(y1, trendline.y1(), DELTA);
     assertFalse(trendline.isConfirmed());
+    assertFalse(trendline.isBroken());
   }
 
   @Test
@@ -95,6 +98,7 @@ public class TrendlineTest {
     assertEquals(x1, trendline.x1());
     assertEquals(y1, trendline.y1(), DELTA);
     assertFalse(trendline.isConfirmed());
+    assertFalse(trendline.isBroken());
   }
 
   @Test
@@ -102,6 +106,7 @@ public class TrendlineTest {
     assertEquals(x2, trendline.x2());
     assertEquals(y2, trendline.y2(), DELTA);
     assertFalse(trendline.isConfirmed());
+    assertFalse(trendline.isBroken());
   }
 
   @Test
@@ -115,6 +120,16 @@ public class TrendlineTest {
     assertEquals(x2, trendline.x2());
     assertEquals(y2, trendline.y2(), DELTA);
     assertTrue(trendline.isConfirmed());
+    assertFalse(trendline.isBroken());
+  }
+
+  @Test
+  public void trendBreak() {
+    assertFalse(trendline.isBroken());
+    trendline.broken(true);
+    assertTrue(trendline.isBroken());
+    trendline.broken(false);
+    assertFalse(trendline.isBroken());
   }
 
   @Test
@@ -125,6 +140,7 @@ public class TrendlineTest {
     assertEquals(x2, trendline.x2());
     assertEquals(y2, trendline.y2(), DELTA);
     assertTrue(trendline.isConfirmed());
+    assertFalse(trendline.isBroken());
   }
 
   @Test
@@ -135,6 +151,7 @@ public class TrendlineTest {
     assertEquals(x2, trendline.x2());
     assertEquals(y2, trendline.y2(), DELTA);
     assertTrue(trendline.isConfirmed());
+    assertFalse(trendline.isBroken());
   }
 
   @Test
@@ -144,6 +161,7 @@ public class TrendlineTest {
     assertEquals(x1, trendline.x1());
     assertEquals(y1, trendline.y1(), DELTA);
     assertFalse(trendline.isConfirmed());
+    assertFalse(trendline.isBroken());
     assertEquals(gradient, trendline.m(), DELTA);
     assertEquals(yIntercept, trendline.c(), DELTA);
   }
@@ -155,6 +173,7 @@ public class TrendlineTest {
     assertEquals(x2, trendline.x2());
     assertEquals(y2, trendline.y2(), DELTA);
     assertFalse(trendline.isConfirmed());
+    assertFalse(trendline.isBroken());
     assertEquals(gradient, trendline.m(), DELTA);
     assertEquals(yIntercept, trendline.c(), DELTA);
   }

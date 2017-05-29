@@ -1,7 +1,7 @@
 /**
- * TimeSeriesTest.java  v0.1  18 December 2014 12:13:50 am
+ * TimeSeriesTest.java  v0.2  18 December 2014 12:13:50 am
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota;
 
@@ -12,11 +12,11 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 /**
- * A JUnit test for <code>TimeSeries</code>.
+ * JUnit test for <code>TimeSeries</code>.
  *
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class TimeSeriesTest {
 
@@ -31,6 +31,16 @@ public class TimeSeriesTest {
     timeSeries = new TimeSeries(null, size);
 
     assertEquals(null, timeSeries.toString());
+  }
+
+  @Test(expected=IllegalArgumentException.class)
+  public final void cannotInstantiateWithNegativeSize() {
+    timeSeries = new TimeSeries(null, -1);
+  }
+
+  @Test(expected=IllegalArgumentException.class)
+  public final void cannotInstantiateWithZeroSize() {
+    timeSeries = new TimeSeries(null, 0);
   }
 
   @Test

@@ -1,7 +1,7 @@
 /**
  * BottomsTest.java  v0.1  8 January 2016 12:10:24 am
  *
- * Copyright © 2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.pattern;
 
@@ -20,8 +20,10 @@ import org.junit.BeforeClass;
  */
 public class BottomsTest extends AbstractIndicatorTest {
 
+  private static final int DEFAULT_LOOKBACK = 0;
+
   public BottomsTest() {
-    super(0);
+    super(DEFAULT_LOOKBACK);
   }
 
   @BeforeClass
