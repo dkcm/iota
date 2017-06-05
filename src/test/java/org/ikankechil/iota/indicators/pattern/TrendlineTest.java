@@ -1,7 +1,7 @@
 /**
- * TrendlineTest.java  v0.2  22 November 2016 10:51:59 am
+ * TrendlineTest.java  v0.3  22 November 2016 10:51:59 am
  *
- * Copyright Â© 2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.pattern;
 
@@ -17,7 +17,7 @@ import org.junit.Test;
  *
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class TrendlineTest {
 
@@ -30,8 +30,10 @@ public class TrendlineTest {
   private double              gradient;
   private double              yIntercept;
 
-  private static final double DELTA = 1e-12;
-  private static final double BASE  = 100.0;
+  private static final double PRACTICALLY_HORIZONTAL = 0.01;
+
+  private static final double DELTA                  = 1e-12;
+  private static final double BASE                   = 100.0;
 
   public TrendlineTest() { /* do nothing */ }
 
@@ -206,6 +208,39 @@ public class TrendlineTest {
     final double x = random();
     final double fx = (gradient * x) + yIntercept;
     assertEquals(fx, trendline.f(x), DELTA);
+  }
+
+  @Test
+  public void horizontal() {
+    x2 = x1 + (int) random() + 1;
+    y2 = y1;
+    trendline.x2y2(x2, y2);
+
+    assertEquals(0, trendline.m(), DELTA);
+    assertTrue(trendline.isPracticallyHorizontal());
+  }
+
+  @Test
+  public void practicallyHorizontal() {
+    x2 = x1 + (int) random() + 1;
+
+    // +ve
+    y2 = y1 + PRACTICALLY_HORIZONTAL * (x2 - x1);
+    trendline.x2y2(x2, y2);
+    assertTrue(trendline.toString(), trendline.isPracticallyHorizontal());
+
+    y2 += 1;
+    trendline.x2y2(x2, y2);
+    assertFalse(trendline.toString(), trendline.isPracticallyHorizontal());
+
+    // -ve
+    y2 = y1 - PRACTICALLY_HORIZONTAL * (x2 - x1);
+    trendline.x2y2(x2, y2);
+    assertTrue(trendline.toString(), trendline.isPracticallyHorizontal());
+
+    y2 -= 1;
+    trendline.x2y2(x2, y2);
+    assertFalse(trendline.toString(), trendline.isPracticallyHorizontal());
   }
 
   @Test

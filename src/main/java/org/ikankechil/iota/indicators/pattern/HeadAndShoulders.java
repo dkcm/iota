@@ -1,5 +1,5 @@
 /**
- * HeadAndShoulders.java  v0.1  27 January 2016 2:10:38 PM
+ * HeadAndShoulders.java  v0.2  27 January 2016 2:10:38 PM
  *
  * Copyright © 2015-2017 Daniel Kuan.  All rights reserved.
  */
@@ -8,7 +8,6 @@ package org.ikankechil.iota.indicators.pattern;
 import static org.ikankechil.iota.indicators.pattern.Extrema.*;
 import static org.ikankechil.iota.indicators.pattern.Extrema.Comparators.*;
 import static org.ikankechil.iota.indicators.pattern.Trendlines.Trends.*;
-import static org.ikankechil.util.NumberUtility.*;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,14 +23,17 @@ import org.ikankechil.iota.indicators.pattern.Trendlines.Trends;
 /**
  * Head and Shoulders Tops and Bottoms
  *
- * <p>http://stockcharts.com/school/doku.php?id=chart_school:chart_analysis:chart_patterns:head_and_shoulders_top_reversal<br>
- * http://www.chartpatterns.com/headandshoulders.htm<br>
- * http://www.investopedia.com/university/charts/charts2.asp<br>
- * https://www.incrediblecharts.com/technical/head_and_shoulders.php<br>
- * https://en.wikipedia.org/wiki/Head_and_shoulders_(chart_pattern)<br>
+ * <p>References:
+ * <li>http://stockcharts.com/school/doku.php?id=chart_school:chart_analysis:chart_patterns:head_and_shoulders_top_reversal<br>
+ * <li>http://www.chartpatterns.com/headandshoulders.htm<br>
+ * <li>http://thepatternsite.com/hst.html<br>
+ * <li>http://thepatternsite.com/hsb.html<br>
+ * <li>http://www.investopedia.com/university/charts/charts2.asp<br>
+ * <li>https://www.incrediblecharts.com/technical/head_and_shoulders.php<br>
+ * <li>https://en.wikipedia.org/wiki/Head_and_shoulders_(chart_pattern)<br>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class HeadAndShoulders extends AbstractIndicator {
 
@@ -69,8 +71,8 @@ public class HeadAndShoulders extends AbstractIndicator {
     final double[] bottoms = tab.get(ONE).values();
 
     // draw head and shoulders tops and bottoms (kilroy bottoms)
-    final double[] necklines = drawHeadAndShoulders(TOPS, UP, tops, bottoms, ohlcv.lows());
-    final double[] kilroys = drawHeadAndShoulders(BOTTOMS, DOWN, bottoms, tops, ohlcv.highs());
+    final double[] necklines = drawHeadAndShoulders(TOPS, SUPPORT, tops, bottoms, ohlcv.lows());
+    final double[] kilroys = drawHeadAndShoulders(BOTTOMS, RESISTANCE, bottoms, tops, ohlcv.highs());
 
     final String[] dates = ohlcv.dates();
 
@@ -112,7 +114,7 @@ public class HeadAndShoulders extends AbstractIndicator {
             final int breakout = locateNecklineBreakout(neckline, trend, rightShoulder, prices);
             if (breakout > NOT_FOUND) {
               neckline.x1y1(leftShoulder, neckline.f(leftShoulder));
-              drawNeckline(neckline, necklines);
+              Trendlines.draw(neckline, necklines);
               logger.info("Neckline located: {}", neckline);
             }
           }
@@ -209,17 +211,6 @@ public class HeadAndShoulders extends AbstractIndicator {
       }
     }
     return breakout;
-  }
-
-  private static final void drawNeckline(final Trendline neckline, final double[] necklines) {
-    // TODO re-use Trendlines.draw
-    final int x1 = neckline.x1();
-    final int x2 = neckline.x2();
-    interpolate(x1,
-                necklines[x1] = neckline.y1(),
-                x2,
-                necklines[x2] = neckline.y2(),
-                necklines);
   }
 
 }

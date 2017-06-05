@@ -1,11 +1,12 @@
 /**
- * Trendlines.java  v0.5  19 January 2016 4:00:07 PM
+ * Trendlines.java  v0.6  19 January 2016 4:00:07 PM
  *
  * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.pattern;
 
 import static org.ikankechil.iota.indicators.pattern.Extrema.*;
+import static org.ikankechil.iota.indicators.pattern.Trendlines.TrendSlopes.*;
 import static org.ikankechil.iota.indicators.pattern.Trendlines.Trends.*;
 import static org.ikankechil.util.NumberUtility.*;
 
@@ -22,19 +23,28 @@ import org.ikankechil.iota.indicators.Indicator;
 /**
  * Up and Down Trendlines
  *
+ * <p>References:
+ * <li>http://stockcharts.com/school/doku.php?id=chart_school:chart_analysis:trend_lines<br>
+ * <li>https://stockcharts.com/articles/dancing/2014/11/trendlines.html<br>
+ * <li>http://thepatternsite.com/uptrendlines.html<br>
+ * <li>http://thepatternsite.com/trenddown.html<br>
+ * <li>http://thepatternsite.com/TrendlineMirrors.html<br>
+ *
  *
  * @author Daniel Kuan
- * @version 0.5
+ * @version 0.6
  */
 public class Trendlines extends AbstractIndicator {
 
   private final Indicator     topsAndBottoms;
   private final double        threshold;
+  private final TrendSlopes   upper;
+  private final TrendSlopes   lower;
 
-  private static final int    GAP            = TWO;
+  private static final int    GAP             = TWO;
 
-  private static final String DOWN_TRENDLINE = "Down Trendline";
-  private static final String UP_TRENDLINE   = "Up Trendline";
+  private static final String UPPER_TRENDLINE = "Upper Trendline";
+  private static final String LOWER_TRENDLINE = "Lower Trendline";
 
   /**
    *
@@ -49,14 +59,23 @@ public class Trendlines extends AbstractIndicator {
    *
    *
    * @param awayPoints
-   * @param thresholdPercentage penetration threshold (%)
+   * @param thresholdPercentage trendline breakdown penetration threshold (%)
    */
   public Trendlines(final int awayPoints, final double thresholdPercentage) {
+    this(awayPoints, thresholdPercentage, DOWN, UP);
+  }
+
+  Trendlines(final int awayPoints, final double thresholdPercentage, final TrendSlopes upper, final TrendSlopes lower) {
     super(ZERO);
     throwExceptionIfNegative(thresholdPercentage);
+    if (upper == null || lower == null) {
+      throw new NullPointerException();
+    }
 
     threshold = thresholdPercentage / HUNDRED_PERCENT;
     topsAndBottoms = new TopsAndBottoms(awayPoints, null, false);
+    this.upper = upper;
+    this.lower = lower;
   }
 
   @Override
@@ -68,17 +87,13 @@ public class Trendlines extends AbstractIndicator {
     final double[] tops = tab.get(ZERO).values();
     final double[] bottoms = tab.get(ONE).values();
 
-    // draw up and down trendlines
-    final List<Trendline> downTrends = new ArrayList<>();
-    final List<Trendline> upTrends = new ArrayList<>();
-    final double[] downTrendlines = drawTrendlines(DOWN, tops, downTrends);
-    final double[] upTrendlines = drawTrendlines(UP, bottoms, upTrends);
-
+    // draw support and resistance (lower and upper) trendlines
     final String[] dates = ohlcv.dates();
+    final TimeSeries resistanceTrendlines = drawTrendlines(RESISTANCE, upper, tops, dates);
+    final TimeSeries supportTrendlines = drawTrendlines(SUPPORT, lower, bottoms, dates);
 
     logger.info(GENERATED_FOR, name, ohlcv);
-    return Arrays.asList(new TrendlineTimeSeries(DOWN_TRENDLINE, dates, downTrendlines, downTrends),
-                         new TrendlineTimeSeries(UP_TRENDLINE, dates, upTrendlines, upTrends));
+    return Arrays.asList(resistanceTrendlines, supportTrendlines);
   }
 
   public static class Trendline {
@@ -173,8 +188,7 @@ public class Trendlines extends AbstractIndicator {
     }
 
     public boolean isPracticallyHorizontal() {
-      return (m == ZERO) ||
-             (Math.abs(y2 - y1) <= PRACTICALLY_HORIZONTAL * y1); // y2 within e% of y1
+      return (m >= -PRACTICALLY_HORIZONTAL) && (m <= PRACTICALLY_HORIZONTAL);
     }
 
     @Override
@@ -192,36 +206,36 @@ public class Trendlines extends AbstractIndicator {
   }
 
   enum Trends {
-    UP {
+    RESISTANCE {
       @Override
-      public boolean isUnbroken(final double y, final double f) {
-        return (y >= f);
+      public boolean isUnbroken(final double y, final double fx) {
+        return (y <= fx);
       }
 
       @Override
-      public boolean isDecisivelyBroken(final double y, final double f, final double threshold) {
-        return (y < f * (ONE - threshold));
+      public boolean isDecisivelyBroken(final double y, final double fx, final double threshold) {
+        return (y > fx * (ONE + threshold));
       }
 
       @Override
-      public boolean isRightDirection(final double gradient) {
-        return (gradient >= ZERO);
+      public String toString() {
+        return UPPER_TRENDLINE;
       }
     },
-    DOWN {
+    SUPPORT {
       @Override
-      public boolean isUnbroken(final double y, final double f) {
-        return (y <= f);
+      public boolean isUnbroken(final double y, final double fx) {
+        return (y >= fx);
       }
 
       @Override
-      public boolean isDecisivelyBroken(final double y, final double f, final double threshold) {
-        return (y > f * (ONE + threshold));
+      public boolean isDecisivelyBroken(final double y, final double fx, final double threshold) {
+        return (y < fx * (ONE - threshold));
       }
 
       @Override
-      public boolean isRightDirection(final double gradient) {
-        return (gradient <= ZERO);
+      public String toString() {
+        return LOWER_TRENDLINE;
       }
     };
 
@@ -229,22 +243,38 @@ public class Trendlines extends AbstractIndicator {
      * Checks that actual value has not exceeded expected value.
      *
      * @param y actual value
-     * @param f expected value
+     * @param fx expected value
      * @return <code>true</code> if <code>y</code> has not exceeded
-     *         <code>f</code>
+     *         <code>fx</code>
      */
-    public abstract boolean isUnbroken(final double y, final double f);
+    public abstract boolean isUnbroken(final double y, final double fx);
 
     /**
      * Checks if actual value has exceeded expected value by a threshold.
      *
      * @param y actual value
-     * @param f expected value
+     * @param fx expected value
      * @param threshold
-     * @return <code>true</code> if <code>y</code> has exceeded <code>f</code>
+     * @return <code>true</code> if <code>y</code> has exceeded <code>fx</code>
      *         by <code>threshold</code>
      */
-    public abstract boolean isDecisivelyBroken(final double y, final double f, final double threshold);
+    public abstract boolean isDecisivelyBroken(final double y, final double fx, final double threshold);
+
+  }
+
+  enum TrendSlopes {
+    UP {
+      @Override
+      public boolean isRightDirection(final double gradient) {
+        return (gradient >= ZERO);
+      }
+    },
+    DOWN {
+      @Override
+      public boolean isRightDirection(final double gradient) {
+        return (gradient <= ZERO);
+      }
+    };
 
     /**
      * Checks that the trend is headed in the right direction.
@@ -256,54 +286,55 @@ public class Trendlines extends AbstractIndicator {
 
   }
 
-  private final double[] drawTrendlines(final Trends trend, final double[] extrema, final List<Trendline> lines) {
-    final double[] trendlines = new double[extrema.length];
-    Arrays.fill(trendlines, Double.NaN);
+  private final TimeSeries drawTrendlines(final Trends trend, final TrendSlopes slope, final double[] extrema, final String[] dates) {
+    final double[] lines = new double[extrema.length];
+    Arrays.fill(lines, Double.NaN);
+    final List<Trendline> trendlines = new ArrayList<>();
 
-    Trendline line = null;
+    Trendline trendline = null;
     for (int x1 = nextExtremum(extrema, NOT_FOUND), x2 = NOT_FOUND;
          (x2 = nextExtremum(extrema, x1)) > NOT_FOUND;
          x1 = x2) {
-      if (line == null) {
+      if (trendline == null) {
         final double y1 = extrema[x1];
         final double y2 = extrema[x2];
         // trendline in general right direction => start of trend
-        if (trend.isRightDirection(gradient(x1, y1, x2, y2))) {
-          line = new Trendline(x1, y1, x2, y2);
-          lines.add(line);
-          logger.debug("New {} trend at ({}, {})", trend, x1, y1);
+        if (slope.isRightDirection(gradient(x1, y1, x2, y2))) {
+          trendline = new Trendline(x1, y1, x2, y2);
+          trendlines.add(trendline);
+          logger.debug("New {} trend at ({}, {})", slope, x1, y1);
         }
       }
       else {
         final double y2 = extrema[x2];
-        final double fx2 = line.f(x2);
+        final double fx2 = trendline.f(x2);
 
         // trendline decisively broken => end of trend
         if (trend.isDecisivelyBroken(y2, fx2, threshold)) {
-          line.broken(true);
-          draw(line, trendlines, x2 - GAP); // extend trendline less gap
-          line = null;
-          logger.debug("End of {} trend at / before ({}, {})", trend, x2, y2);
+          trendline.broken(true);
+          draw(trendline, lines, x2 - GAP); // extend trendline less gap
+          trendline = null;
+          logger.debug("End of {} trend at / before ({}, {})", slope, x2, y2);
         }
         // trendline indecisively penetrated, still unconfirmed and in the right
         // direction => amend trendline
         else if (!trend.isUnbroken(y2, fx2) &&
-                 !line.isConfirmed() &&
-                 trend.isRightDirection(gradient(line.x1(), line.y1(), x2, y2))) {
-          line.x2y2(x2, y2);
-          logger.debug("Amending {} trend at ({}, {})", trend, x2, y2);
+                 !trendline.isConfirmed() &&
+                 slope.isRightDirection(gradient(trendline.x1(), trendline.y1(), x2, y2))) {
+          trendline.x2y2(x2, y2);
+          logger.debug("Amending {} trend at ({}, {})", slope, x2, y2);
         }
         else {
-          logger.debug("{} trend holds at ({}, {})", trend, x2, y2);
+          logger.debug("{} trend holds at ({}, {})", slope, x2, y2);
         }
       }
     }
-    if (line != null) {
-      draw(line, trendlines, trendlines.length - ONE); // extend trendline to the end
-      logger.debug("On-going unbroken {} trend at ({}, {})", trend, line.x2(), line.y2());
+    if (trendline != null) {
+      draw(trendline, lines, lines.length - ONE); // extend trendline to the end
+      logger.debug("On-going unbroken {} trend at ({}, {})", slope, trendline.x2(), trendline.y2());
     }
 
-    return trendlines;
+    return new TrendlineTimeSeries(trend.toString(), dates, lines, trendlines);
 
     // Possibilities:
     // 1. decisively broken -> draw
@@ -336,7 +367,7 @@ public class Trendlines extends AbstractIndicator {
     draw(line, trendlines);
   }
 
-  private static final void draw(final Trendline line, final double[] trendlines) {
+  static final void draw(final Trendline line, final double[] trendlines) {
     final int x1 = line.x1();
     final int x2 = line.x2();
     interpolate(x1,
