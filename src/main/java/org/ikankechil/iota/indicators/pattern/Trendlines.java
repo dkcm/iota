@@ -1,5 +1,5 @@
 /**
- * Trendlines.java  v0.6  19 January 2016 4:00:07 PM
+ * Trendlines.java  v0.7  19 January 2016 4:00:07 PM
  *
  * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
  */
@@ -32,7 +32,7 @@ import org.ikankechil.iota.indicators.Indicator;
  *
  *
  * @author Daniel Kuan
- * @version 0.6
+ * @version 0.7
  */
 public class Trendlines extends AbstractIndicator {
 
@@ -99,18 +99,16 @@ public class Trendlines extends AbstractIndicator {
   public static class Trendline {
 
     // Cartesian co-ordinates
-    private int                 x1;
-    private double              y1;
-    private int                 x2;
-    private double              y2;
+    private int     x1;
+    private double  y1;
+    private int     x2;
+    private double  y2;
 
-    private double              m;  // gradient
-    private double              c;  // y-intercept
+    private double  m;  // gradient
+    private double  c;  // y-intercept
 
-    private boolean             trendConfirmed;
-    private boolean             trendBroken;
-
-    private static final double PRACTICALLY_HORIZONTAL = 0.01; // TODO make this configurable
+    private boolean trendConfirmed;
+    private boolean trendBroken;
 
     public Trendline(final int x1, final double y1, final int x2, final double y2) {
       this.x1 = x1;
@@ -188,7 +186,7 @@ public class Trendlines extends AbstractIndicator {
     }
 
     public boolean isPracticallyHorizontal() {
-      return (m >= -PRACTICALLY_HORIZONTAL) && (m <= PRACTICALLY_HORIZONTAL);
+      return FLAT.isRightDirection(m);
     }
 
     @Override
@@ -266,15 +264,23 @@ public class Trendlines extends AbstractIndicator {
     UP {
       @Override
       public boolean isRightDirection(final double gradient) {
-        return (gradient >= ZERO);
+        return (gradient > ZERO) && (gradient < Double.POSITIVE_INFINITY);
       }
     },
     DOWN {
       @Override
       public boolean isRightDirection(final double gradient) {
-        return (gradient <= ZERO);
+        return (gradient < ZERO) && (gradient > Double.NEGATIVE_INFINITY);
+      }
+    },
+    FLAT {
+      @Override
+      public boolean isRightDirection(final double gradient) {
+        return (gradient >= -PRACTICALLY_HORIZONTAL) && (gradient <= PRACTICALLY_HORIZONTAL);
       }
     };
+
+    private static final double PRACTICALLY_HORIZONTAL = 0.01; // TODO make this configurable
 
     /**
      * Checks that the trend is headed in the right direction.

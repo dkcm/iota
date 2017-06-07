@@ -1,38 +1,38 @@
 /**
- * RisingWedges.java  v0.2  30 December 2016 1:58:30 pm
+ * Channels.java  v0.1  6 June 2017 12:17:00 am
  *
- * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
+ * Copyright © 2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.pattern;
-
-import static org.ikankechil.iota.indicators.pattern.Trendlines.TrendSlopes.*;
 
 import java.util.List;
 
 import org.ikankechil.iota.TrendlineTimeSeries;
+import org.ikankechil.iota.indicators.pattern.Trendlines.TrendSlopes;
 import org.ikankechil.iota.indicators.pattern.Trendlines.Trendline;
 
 /**
- * Rising Wedges
+ * Price Channels
  *
  * <p>References:
- * <li>http://stockcharts.com/school/doku.php?id=chart_school:chart_analysis:chart_patterns:rising_wedge_reversal<br>
- * <li>http://thepatternsite.com/risewedge.html<br>
- * <li>https://en.wikipedia.org/wiki/Wedge_pattern<br>
- * <li>http://www.investopedia.com/university/charts/charts7.asp<br>
+ * <li>http://thepatternsite.com/channels.html<br>
  *
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.1
  */
-public class RisingWedges extends Triangles {
+public class Channels extends SimpleBoundedPattern {
 
-  public RisingWedges(final int awayPoints, final double thresholdPercentage) {
-    this(awayPoints, thresholdPercentage, ENDPOINT_VICINITY);
+  private final TrendSlopes slope;
+
+  public Channels(final int awayPoints, final double thresholdPercentage, final TrendSlopes slope) {
+    this(awayPoints, thresholdPercentage, slope, ENDPOINT_VICINITY);
   }
 
-  public RisingWedges(final int awayPoints, final double thresholdPercentage, final int endpointVicinity) {
-    super(awayPoints, thresholdPercentage, UP, UP, endpointVicinity);
+  public Channels(final int awayPoints, final double thresholdPercentage, final TrendSlopes slope, final int endpointVicinity) {
+    super(awayPoints, thresholdPercentage, slope, slope, endpointVicinity);
+
+    this.slope = slope;
   }
 
   @Override
@@ -57,15 +57,13 @@ public class RisingWedges extends Triangles {
 
   @Override
   protected boolean hasPotential(final Trendline trendline) {
-    return UP.isRightDirection(trendline.m()) && // rising wedge
-           !trendline.isPracticallyHorizontal();
+    return slope.isRightDirection(trendline.m());
   }
 
   @Override
   protected boolean isComplementary(final Trendline candidate, final Trendline counterpart) {
-    final double mt = counterpart.m();
-    final double mb = candidate.m();
-    return (mt < mb) && hasPotential(counterpart);
+    return isParallel(candidate, counterpart) &&
+           super.isComplementary(candidate, counterpart);
   }
 
 }

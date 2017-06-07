@@ -1,38 +1,48 @@
 /**
- * AscendingTriangles.java  0.2  22 December 2016 7:07:09 PM
+ * AscendingTriangles.java  0.3  22 December 2016 7:07:09 PM
  *
  * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.pattern;
 
+import static org.ikankechil.iota.indicators.pattern.Trendlines.TrendSlopes.*;
+
 import java.util.List;
 
+import org.ikankechil.iota.TrendlineTimeSeries;
 import org.ikankechil.iota.indicators.pattern.Trendlines.Trendline;
 
 /**
  * Ascending Triangles
  *
- * <p>http://stockcharts.com/school/doku.php?id=chart_school:chart_analysis:chart_patterns:ascending_triangle_continuation<br>
- * http://www.investopedia.com/terms/a/ascendingtriangle.asp<br>
+ * <p>References:
+ * <li>http://stockcharts.com/school/doku.php?id=chart_school:chart_analysis:chart_patterns:ascending_triangle_continuation<br>
+ * <li>http://thepatternsite.com/at.html<br>
+ * <li>http://www.investopedia.com/terms/a/ascendingtriangle.asp<br>
  *
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class AscendingTriangles extends RightAngledTriangles {
 
-  public AscendingTriangles(final Trendlines trendlines) {
-    super(trendlines);
+  public AscendingTriangles(final int awayPoints, final double thresholdPercentage) {
+    this(awayPoints, thresholdPercentage, ENDPOINT_VICINITY);
+  }
+
+  public AscendingTriangles(final int awayPoints, final double thresholdPercentage, final int endpointVicinity) {
+    super(awayPoints, thresholdPercentage, FLAT, UP, endpointVicinity);
   }
 
   @Override
-  protected List<Trendline> selectCandidates(final List<Trendline> downTrendlines, final List<Trendline> upTrendlines) {
-    return downTrendlines;
+  protected List<Trendline> selectCandidates(final TrendlineTimeSeries upperTrendlineTimeSeries, final TrendlineTimeSeries lowerTrendlineTimeSeries) {
+    // select the flat side
+    return upperTrendlineTimeSeries.trendlines();
   }
 
   @Override
-  protected List<Trendline> selectCounterparts(final List<Trendline> downTrendlines, final List<Trendline> upTrendlines) {
-    return upTrendlines;
+  protected List<Trendline> selectCounterparts(final TrendlineTimeSeries upperTrendlineTimeSeries, final TrendlineTimeSeries lowerTrendlineTimeSeries) {
+    return lowerTrendlineTimeSeries.trendlines();
   }
 
   @Override

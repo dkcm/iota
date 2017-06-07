@@ -1,55 +1,48 @@
 /**
- * SymmetricalTriangles.java  v0.1  5 January 2017 10:08:06 pm
+ * SymmetricalTriangles.java  v0.2  5 January 2017 10:08:06 pm
  *
  * Copyright © 2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.pattern;
 
+import static org.ikankechil.iota.indicators.pattern.Trendlines.TrendSlopes.*;
+
 import java.util.List;
 
+import org.ikankechil.iota.TrendlineTimeSeries;
 import org.ikankechil.iota.indicators.pattern.Trendlines.Trendline;
 
 /**
  * Symmetrical Triangles
  *
- * <p>http://stockcharts.com/school/doku.php?id=chart_school:chart_analysis:chart_patterns:symmetrical_triangle_continuation<br>
- * http://www.investopedia.com/university/charts/charts5.asp<br>
- * http://www.investopedia.com/terms/s/symmetricaltriangle.asp<br>
+ * <p>References:
+ * <li>http://stockcharts.com/school/doku.php?id=chart_school:chart_analysis:chart_patterns:symmetrical_triangle_continuation<br>
+ * <li>http://thepatternsite.com/st.html<br>
+ * <li>http://www.investopedia.com/university/charts/charts5.asp<br>
+ * <li>http://www.investopedia.com/terms/s/symmetricaltriangle.asp<br>
  *
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class SymmetricalTriangles extends Triangles {
 
-  /**
-   *
-   *
-   * @param trendlines
-   */
-  public SymmetricalTriangles(final Trendlines trendlines) {
-    super(trendlines);
+  public SymmetricalTriangles(final int awayPoints, final double thresholdPercentage) {
+    this(awayPoints, thresholdPercentage, ENDPOINT_VICINITY);
   }
 
-  /**
-   *
-   *
-   * @param trendlines
-   * @param ohlcvBarsErrorMargin number of OHLCV bars the heads and tails of the
-   *          trendlines forming the triangle must be in the vicinity of
-   */
-  public SymmetricalTriangles(final Trendlines trendlines, final int ohlcvBarsErrorMargin) {
-    super(trendlines, ohlcvBarsErrorMargin);
+  public SymmetricalTriangles(final int awayPoints, final double thresholdPercentage, final int endpointVicinity) {
+    super(awayPoints, thresholdPercentage, DOWN, UP, endpointVicinity);
   }
 
   @Override
-  protected List<Trendline> selectCandidates(final List<Trendline> downTrendlines, final List<Trendline> upTrendlines) {
-    return downTrendlines;
+  protected List<Trendline> selectCandidates(final TrendlineTimeSeries upperTrendlineTimeSeries, final TrendlineTimeSeries lowerTrendlineTimeSeries) {
+    return upperTrendlineTimeSeries.trendlines();
   }
 
   @Override
-  protected List<Trendline> selectCounterparts(final List<Trendline> downTrendlines, final List<Trendline> upTrendlines) {
-    return upTrendlines;
+  protected List<Trendline> selectCounterparts(final TrendlineTimeSeries upperTrendlineTimeSeries, final TrendlineTimeSeries lowerTrendlineTimeSeries) {
+    return lowerTrendlineTimeSeries.trendlines();
   }
 
   @Override
@@ -64,15 +57,13 @@ public class SymmetricalTriangles extends Triangles {
 
   @Override
   protected boolean hasPotential(final Trendline trendline) {
-    final double gradient = trendline.m();
-    return (gradient < ZERO && gradient > Double.NEGATIVE_INFINITY) &&
+    return DOWN.isRightDirection(trendline.m()) &&
            !trendline.isPracticallyHorizontal();
   }
 
   @Override
   protected boolean isComplementary(final Trendline candidate, final Trendline counterpart) {
-    final double gradient = counterpart.m();
-    return (gradient > ZERO && gradient < Double.POSITIVE_INFINITY) &&
+    return UP.isRightDirection(counterpart.m()) &&
            !counterpart.isPracticallyHorizontal() &&
            super.isComplementary(candidate, counterpart);
   }
