@@ -1,5 +1,5 @@
 /**
- * TrendlineTest.java  v0.3  22 November 2016 10:51:59 am
+ * TrendlineTest.java  v0.4  22 November 2016 10:51:59 am
  *
  * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
  */
@@ -17,7 +17,7 @@ import org.junit.Test;
  *
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class TrendlineTest {
 
@@ -30,7 +30,7 @@ public class TrendlineTest {
   private double              gradient;
   private double              yIntercept;
 
-  private static final double PRACTICALLY_HORIZONTAL = 0.01;
+  static final double         PRACTICALLY_HORIZONTAL = 0.01;
 
   private static final double DELTA                  = 1e-12;
   private static final double BASE                   = 100.0;
@@ -222,14 +222,14 @@ public class TrendlineTest {
 
   @Test
   public void practicallyHorizontal() {
-    x2 = x1 + (int) random() + 1;
+    x2 = x1 + 100;
 
     // +ve
     y2 = y1 + PRACTICALLY_HORIZONTAL * (x2 - x1);
     trendline.x2y2(x2, y2);
     assertTrue(trendline.toString(), trendline.isPracticallyHorizontal());
 
-    y2 += 1;
+    y2 += PRACTICALLY_HORIZONTAL;
     trendline.x2y2(x2, y2);
     assertFalse(trendline.toString(), trendline.isPracticallyHorizontal());
 
@@ -238,7 +238,7 @@ public class TrendlineTest {
     trendline.x2y2(x2, y2);
     assertTrue(trendline.toString(), trendline.isPracticallyHorizontal());
 
-    y2 -= 1;
+    y2 -= PRACTICALLY_HORIZONTAL;
     trendline.x2y2(x2, y2);
     assertFalse(trendline.toString(), trendline.isPracticallyHorizontal());
   }

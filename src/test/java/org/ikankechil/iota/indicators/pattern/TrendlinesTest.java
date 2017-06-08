@@ -1,10 +1,11 @@
 /**
- * TrendlinesTest.java  v0.4  27 January 2016 12:10:35 PM
+ * TrendlinesTest.java  v0.5  27 January 2016 12:10:35 PM
  *
  * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.pattern;
 
+import static org.ikankechil.iota.indicators.pattern.Trendlines.TrendSlopes.*;
 import static org.junit.Assert.*;
 
 import java.io.IOException;
@@ -25,7 +26,7 @@ import org.junit.Test;
  *
  *
  * @author Daniel Kuan
- * @version 0.4
+ * @version 0.5
  */
 public class TrendlinesTest extends AbstractIndicatorTest {
 
@@ -36,7 +37,7 @@ public class TrendlinesTest extends AbstractIndicatorTest {
   private static final int             DEFAULT_LOOKBACK    = 0;
 
   private static final String[]        TRENDS              = { "RESISTANCE", "SUPPORT" };
-  private static final String[]        SLOPES              = { "UP", "DOWN" };
+  private static final String[]        SLOPES              = { "UP", "DOWN", "FLAT" };
 
   static {
     UPPER_TRENDLINES = Arrays.asList(new Trendline(82, 173.54, 125, 169.401250),
@@ -122,6 +123,39 @@ public class TrendlinesTest extends AbstractIndicatorTest {
       assertNotNull(TrendSlopes.valueOf(slope));
     }
     assertEquals(SLOPES.length, TrendSlopes.values().length);
+  }
+
+  @Test
+  public void upTrendSlope() throws Exception {
+    assertFalse(UP.isRightDirection(Double.NEGATIVE_INFINITY));
+    assertFalse(UP.isRightDirection(-Double.MAX_VALUE));
+    assertFalse(UP.isRightDirection(0));
+    assertTrue(UP.isRightDirection(Double.MIN_VALUE));
+    assertTrue(UP.isRightDirection(Double.MAX_VALUE));
+    assertFalse(UP.isRightDirection(Double.POSITIVE_INFINITY));
+  }
+
+  @Test
+  public void downTrendSlope() throws Exception {
+    assertFalse(DOWN.isRightDirection(Double.NEGATIVE_INFINITY));
+    assertTrue(DOWN.isRightDirection(-Double.MAX_VALUE));
+    assertTrue(DOWN.isRightDirection(-Double.MIN_VALUE));
+    assertFalse(DOWN.isRightDirection(0));
+    assertFalse(DOWN.isRightDirection(Double.MAX_VALUE));
+    assertFalse(DOWN.isRightDirection(Double.POSITIVE_INFINITY));
+  }
+
+  @Test
+  public void flatTrendSlope() throws Exception {
+    assertFalse(FLAT.isRightDirection(Double.NEGATIVE_INFINITY));
+    assertFalse(FLAT.isRightDirection(-Double.MAX_VALUE));
+    assertFalse(FLAT.isRightDirection(-TrendlineTest.PRACTICALLY_HORIZONTAL * 2));
+    assertTrue(FLAT.isRightDirection(-TrendlineTest.PRACTICALLY_HORIZONTAL));
+    assertTrue(FLAT.isRightDirection(0));
+    assertTrue(FLAT.isRightDirection(TrendlineTest.PRACTICALLY_HORIZONTAL));
+    assertFalse(FLAT.isRightDirection(TrendlineTest.PRACTICALLY_HORIZONTAL * 2));
+    assertFalse(FLAT.isRightDirection(Double.MAX_VALUE));
+    assertFalse(FLAT.isRightDirection(Double.POSITIVE_INFINITY));
   }
 
 }

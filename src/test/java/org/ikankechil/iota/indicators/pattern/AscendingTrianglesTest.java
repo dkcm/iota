@@ -1,5 +1,5 @@
 /**
- * AscendingTrianglesTest.java  0.1  23 December 2016 10:05:22 PM
+ * AscendingTrianglesTest.java  0.2  23 December 2016 10:05:22 PM
  *
  * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
  */
@@ -16,11 +16,12 @@ import org.junit.BeforeClass;
  *
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class AscendingTrianglesTest extends AbstractIndicatorTest {
 
-  private static final int DEFAULT_AWAY_POINTS = 15;
+  private static final int DEFAULT_AWAY_POINTS = 5;
+  private static final int DEFAULT_THRESHOLD   = 3;
   private static final int DEFAULT_LOOKBACK    = 0;
 
   public AscendingTrianglesTest() {
@@ -35,7 +36,7 @@ public class AscendingTrianglesTest extends AbstractIndicatorTest {
 
   @Override
   public Indicator newInstance() {
-    return new AscendingTriangles(new Trendlines(DEFAULT_AWAY_POINTS));
+    return new AscendingTriangles(DEFAULT_AWAY_POINTS, DEFAULT_THRESHOLD);
   }
 
 }

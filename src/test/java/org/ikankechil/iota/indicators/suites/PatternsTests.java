@@ -1,5 +1,5 @@
 /**
- * PatternsTests.java  v0.2  22 November 2016 9:49:14 pm
+ * PatternsTests.java  v0.3  22 November 2016 9:49:14 pm
  *
  * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
  */
@@ -10,7 +10,10 @@ import org.ikankechil.iota.indicators.pattern.BottomsTest;
 import org.ikankechil.iota.indicators.pattern.DescendingTrianglesTest;
 import org.ikankechil.iota.indicators.pattern.DivergenceIndexTest;
 import org.ikankechil.iota.indicators.pattern.DivergenceTest;
+import org.ikankechil.iota.indicators.pattern.FallingWedgesTest;
 import org.ikankechil.iota.indicators.pattern.HeadAndShouldersTest;
+import org.ikankechil.iota.indicators.pattern.RisingWedgesTest;
+import org.ikankechil.iota.indicators.pattern.SymmetricalTrianglesTest;
 import org.ikankechil.iota.indicators.pattern.TopsAndBottomsTest;
 import org.ikankechil.iota.indicators.pattern.TopsTest;
 import org.ikankechil.iota.indicators.pattern.TrendlineTest;
@@ -31,6 +34,9 @@ import org.junit.runners.Suite.SuiteClasses;
   HeadAndShouldersTest.class,
   AscendingTrianglesTest.class,
   DescendingTrianglesTest.class,
+  SymmetricalTrianglesTest.class,
+  FallingWedgesTest.class,
+  RisingWedgesTest.class
 })
 
 /**
@@ -39,7 +45,7 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class PatternsTests {
   // holder for above annotations
