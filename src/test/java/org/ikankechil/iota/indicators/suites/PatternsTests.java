@@ -1,5 +1,5 @@
 /**
- * PatternsTests.java  v0.3  22 November 2016 9:49:14 pm
+ * PatternsTests.java  v0.4  22 November 2016 9:49:14 pm
  *
  * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
  */
@@ -10,14 +10,17 @@ import org.ikankechil.iota.indicators.pattern.BottomsTest;
 import org.ikankechil.iota.indicators.pattern.DescendingTrianglesTest;
 import org.ikankechil.iota.indicators.pattern.DivergenceIndexTest;
 import org.ikankechil.iota.indicators.pattern.DivergenceTest;
+import org.ikankechil.iota.indicators.pattern.DowntrendChannelsTest;
 import org.ikankechil.iota.indicators.pattern.FallingWedgesTest;
 import org.ikankechil.iota.indicators.pattern.HeadAndShouldersTest;
+import org.ikankechil.iota.indicators.pattern.RectanglesTest;
 import org.ikankechil.iota.indicators.pattern.RisingWedgesTest;
 import org.ikankechil.iota.indicators.pattern.SymmetricalTrianglesTest;
 import org.ikankechil.iota.indicators.pattern.TopsAndBottomsTest;
 import org.ikankechil.iota.indicators.pattern.TopsTest;
 import org.ikankechil.iota.indicators.pattern.TrendlineTest;
 import org.ikankechil.iota.indicators.pattern.TrendlinesTest;
+import org.ikankechil.iota.indicators.pattern.UptrendChannelsTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -36,16 +39,18 @@ import org.junit.runners.Suite.SuiteClasses;
   DescendingTrianglesTest.class,
   SymmetricalTrianglesTest.class,
   FallingWedgesTest.class,
-  RisingWedgesTest.class
+  RisingWedgesTest.class,
+  DowntrendChannelsTest.class,
+  UptrendChannelsTest.class,
+  RectanglesTest.class
 })
 
 /**
  *
  *
  *
- *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class PatternsTests {
   // holder for above annotations

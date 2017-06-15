@@ -12,10 +12,12 @@ import org.ikankechil.iota.indicators.pattern.Trendlines.TrendSlopes;
 import org.ikankechil.iota.indicators.pattern.Trendlines.Trendline;
 
 /**
- * Price Channels
+ * Channels
  *
  * <p>References:
  * <li>http://thepatternsite.com/channels.html<br>
+ * <li>http://stockcharts.com/school/doku.php?id=chart_school:chart_analysis:chart_patterns:price_channel_continuation
+ * <li>http://www.investopedia.com/terms/p/price-channel.asp
  *
  *
  * @author Daniel Kuan
