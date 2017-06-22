@@ -1,5 +1,5 @@
 /**
- * FallingWedges.java  v0.2  30 December 2016 1:30:51 pm
+ * FallingWedges.java  v0.3  30 December 2016 1:30:51 pm
  *
  * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
  */
@@ -23,20 +23,21 @@ import org.ikankechil.iota.indicators.pattern.Trendlines.Trendline;
  *
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
-public class FallingWedges extends Triangles {
+public class FallingWedges extends Wedges {
 
   public FallingWedges(final int awayPoints, final double thresholdPercentage) {
     this(awayPoints, thresholdPercentage, ENDPOINT_VICINITY);
   }
 
   public FallingWedges(final int awayPoints, final double thresholdPercentage, final int endpointVicinity) {
-    super(awayPoints, thresholdPercentage, DOWN, DOWN, endpointVicinity);
+    super(awayPoints, thresholdPercentage, DOWN, endpointVicinity);
   }
 
   @Override
   protected List<Trendline> selectCandidates(final TrendlineTimeSeries upperTrendlineTimeSeries, final TrendlineTimeSeries lowerTrendlineTimeSeries) {
+    // select the steeper side
     return upperTrendlineTimeSeries.trendlines();
   }
 
@@ -53,19 +54,6 @@ public class FallingWedges extends Triangles {
   @Override
   protected Trendline selectBottom(final Trendline candidate, final Trendline counterpart) {
     return counterpart;
-  }
-
-  @Override
-  protected boolean hasPotential(final Trendline trendline) {
-    return DOWN.isRightDirection(trendline.m()) && // falling wedge
-           !trendline.isPracticallyHorizontal();
-  }
-
-  @Override
-  protected boolean isComplementary(final Trendline candidate, final Trendline counterpart) {
-    final double mt = candidate.m();
-    final double mb = counterpart.m();
-    return (mt < mb) && hasPotential(counterpart);
   }
 
 }

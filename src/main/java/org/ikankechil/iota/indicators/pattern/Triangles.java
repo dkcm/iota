@@ -35,6 +35,4 @@ public abstract class Triangles extends SimpleBoundedPattern {
     super(awayPoints, thresholdPercentage, upper, lower, endpointVicinity);
   }
 
-  // TODO implement method to return intersection of 2 trendlines
-
 }

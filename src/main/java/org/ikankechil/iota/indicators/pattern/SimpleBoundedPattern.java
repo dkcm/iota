@@ -1,5 +1,5 @@
 /**
- * SimpleBoundedPattern.java  v0.1  7 June 2017 11:03:23 pm
+ * SimpleBoundedPattern.java  v0.2  7 June 2017 11:03:23 pm
  *
  * Copyright © 2017 Daniel Kuan.  All rights reserved.
  */
@@ -27,7 +27,7 @@ import org.ikankechil.iota.indicators.pattern.Trendlines.Trendline;
  *
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public abstract class SimpleBoundedPattern extends AbstractIndicator {
 
@@ -40,6 +40,15 @@ public abstract class SimpleBoundedPattern extends AbstractIndicator {
   private static final String TOPS              = " Tops";
   private static final String BOTTOMS           = " Bottoms";
 
+  /**
+   *
+   *
+   *
+   * @param awayPoints
+   * @param thresholdPercentage
+   * @param upper upper trendline's slope
+   * @param lower lower trendline's slope
+   */
   public SimpleBoundedPattern(final int awayPoints, final double thresholdPercentage, final TrendSlopes upper, final TrendSlopes lower) {
     this(awayPoints, thresholdPercentage, upper, lower, ENDPOINT_VICINITY);
   }
@@ -50,8 +59,8 @@ public abstract class SimpleBoundedPattern extends AbstractIndicator {
    *
    * @param awayPoints
    * @param thresholdPercentage
-   * @param upper
-   * @param lower
+   * @param upper upper trendline's slope
+   * @param lower lower trendline's slope
    * @param endpointVicinity number of OHLCV bars the heads and tails of the
    *          trendlines forming the pattern must be in the vicinity of
    */
@@ -212,12 +221,34 @@ public abstract class SimpleBoundedPattern extends AbstractIndicator {
   /**
    *
    *
-   * @param candidate
-   * @param counterpart
+   * @param upper
+   * @param lower
    * @return
    */
-  protected boolean isParallel(final Trendline candidate, final Trendline counterpart) {
-    return Math.abs(candidate.m() - counterpart.m()) <= PARALLEL;
+  protected boolean isParallel(final Trendline upper, final Trendline lower) {
+    return Math.abs(upper.m() - lower.m()) <= PARALLEL;
+  }
+
+  /**
+   *
+   *
+   * @param upper
+   * @param lower
+   * @return
+   */
+  protected boolean hasIntersectRight(final Trendline upper, final Trendline lower) {
+    return (upper.m() < lower.m());
+  }
+
+  /**
+   *
+   *
+   * @param upper
+   * @param lower
+   * @return
+   */
+  protected boolean hasIntersectLeft(final Trendline upper, final Trendline lower) {
+    return (upper.m() > lower.m());
   }
 
   private static final void draw(final double[] patterns,

@@ -5,6 +5,8 @@
  */
 package org.ikankechil.iota.indicators.pattern;
 
+import static org.ikankechil.iota.indicators.pattern.Trendlines.TrendSlopes.*;
+
 import org.ikankechil.iota.indicators.pattern.Trendlines.TrendSlopes;
 import org.ikankechil.iota.indicators.pattern.Trendlines.Trendline;
 
@@ -26,6 +28,9 @@ abstract class RightAngledTriangles extends Triangles {
 
   public RightAngledTriangles(final int awayPoints, final double thresholdPercentage, final TrendSlopes upper, final TrendSlopes lower, final int endpointVicinity) {
     super(awayPoints, thresholdPercentage, upper, lower, endpointVicinity);
+    if (FLAT != upper && FLAT != lower) {
+      throw new IllegalArgumentException();
+    }
   }
 
   @Override
