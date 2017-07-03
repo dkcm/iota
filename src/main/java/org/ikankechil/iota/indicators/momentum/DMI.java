@@ -1,7 +1,7 @@
 /**
  * DMI.java  v0.1  7 January 2015 11:01:15 pm
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.momentum;
 
@@ -11,26 +11,26 @@ import com.tictactec.ta.lib.MInteger;
 import com.tictactec.ta.lib.RetCode;
 
 /**
- * Dynamic Momentum Index (DMI), a variable term RSI
+ * Dynamic Momentum Index (DMI), a variable-term RSI
  *
- * <p>http://www.fmlabs.com/reference/default.htm?url=DMI.htm<br>
- * http://www.sierrachart.com/Download.php?Folder=SupportBoard&download=1446<br>
- * http://www.tradesignalonline.com/en/lexicon/view.aspx?id=Dynamic+Momentum+Index+%28DYMOI%29<br>
+ * <p>References:
+ * <li>http://www.fmlabs.com/reference/default.htm?url=DMI.htm<br>
+ * <li>http://www.sierrachart.com/Download.php?Folder=SupportBoard&download=1446<br>
+ * <li>http://www.tradesignalonline.com/en/lexicon/view.aspx?id=Dynamic+Momentum+Index+%28DYMOI%29<br>
+ * <li>http://exceltechnical.web.fc2.com/vldmi.html
  *
  * @author Daniel Kuan
  * @version 0.1
  */
-class DMI extends AbstractIndicator {
+public class DMI extends AbstractIndicator {
 
-  private final int        sma;
-  private final int        stdDev;
-  private final int        tdMin;
-  private final int        tdMax;
+  private final int sma;
+  private final int stdDev;
+  private final int tdMin;
+  private final int tdMax;
 
-  private final int        smaLookback;
-  private final int        stdDevLookback;
-
-  private static final int STD_DEVS = ONE;
+  private final int smaLookback;
+  private final int stdDevLookback;
 
   public DMI() {
     this(FOURTEEN, TEN);
@@ -41,7 +41,7 @@ class DMI extends AbstractIndicator {
   }
 
   public DMI(final int rsi, final int sma, final int stdDev, final int tdMin, final int tdMax) {
-    super(rsi, TA_LIB.stdDevLookback(stdDev, STD_DEVS) + TA_LIB.smaLookback(sma));
+    super(rsi, stdDev + sma - TWO);
 
     throwExceptionIfNegative(sma, stdDev, tdMin, tdMax);
     if (tdMin > tdMax) {
@@ -55,8 +55,8 @@ class DMI extends AbstractIndicator {
     this.tdMin = tdMin;
     this.tdMax = tdMax;
 
-    smaLookback = TA_LIB.smaLookback(sma);
-    stdDevLookback = lookback - smaLookback;
+    smaLookback = sma - ONE;
+    stdDevLookback = stdDev - ONE;
   }
 
   @Override
@@ -72,27 +72,46 @@ class DMI extends AbstractIndicator {
     // Td = int(14 / Vi) where 5 <= Td <= 30
     // DMI = RSI(Td)
 
+    // compute volatility index
+    final double[] vi = computeVolatilityIndex(values);
+
+    // compute indicator TODO TO COMPLETE
+    for (int i = ZERO; i < output.length; ++i) {
+      // compute dynamic term
+      final int td = dynamicTerm(vi[ZERO]);
+
+      final double[] rsi = new double[values.length - td];
+      // TODO buggy? use org.ikankechil.iota.indicators.momentum.RSI instead
+//      final RetCode outcome = TA_LIB.rsi(ZERO,
+//                                         i + lookback,
+//                                         values,
+//                                         td,
+//                                         outBegIdx,
+//                                         outNBElement,
+//                                         rsi);
+//      throwExceptionIfBad(outcome, null);
+      output[i] = rsi[ZERO];
+    }
+
+    outBegIdx.value = lookback;
+    outNBElement.value = output.length;
+    return RetCode.Success;
+  }
+
+  private double[] computeVolatilityIndex(final double[] values) {
     // compute standard deviations
     final double[] stdDevs = new double[values.length - stdDevLookback];
-    RetCode outcome = TA_LIB.stdDev(start,
-                                    end,
-                                    values,
-                                    stdDev,
-                                    ONE,
-                                    outBegIdx,
-                                    outNBElement,
-                                    stdDevs);
+    final RetCode outcome = TA_LIB.stdDev(ZERO,
+                                          values.length - ONE,
+                                          values,
+                                          stdDev,
+                                          ONE,
+                                          new MInteger(),
+                                          new MInteger(),
+                                          stdDevs);
     throwExceptionIfBad(outcome, null);
 
-    final double[] smaStds = new double[stdDevs.length - smaLookback];
-    outcome = TA_LIB.sma(ZERO,
-                         stdDevs.length - ONE,
-                         stdDevs,
-                         sma,
-                         outBegIdx,
-                         outNBElement,
-                         smaStds);
-    throwExceptionIfBad(outcome, null);
+    final double[] smaStds = sma(stdDevs, sma);
 
     // compute volatility index
     final double[] vi = new double[smaStds.length];
@@ -100,29 +119,14 @@ class DMI extends AbstractIndicator {
       vi[i] = stdDevs[i + smaLookback] / smaStds[i];
     }
 
-    // compute indicator TODO TO COMPLETE
-    for (int i = ZERO; i < output.length; ++i) {
-      // compute dynamic term
-      int td = (int) (period / vi[ZERO]);
-      td = td < tdMin ? tdMin :
-           td > tdMax ? tdMax : td;
+    return vi;
+  }
 
-      final double[] rsi = new double[values.length - td];
-      // TODO buggy? use org.ikankechil.iota.indicators.momentum.RSI instead
-      TA_LIB.rsi(ZERO,
-                 i + lookback,
-                 values,
-                 td,
-                 outBegIdx,
-                 outNBElement,
-                 rsi);
-      throwExceptionIfBad(outcome, null);
-      output[i] = rsi[ZERO];
-    }
-
-    outBegIdx.value = lookback;
-    outNBElement.value = output.length;
-    return RetCode.Success;
+  private final int dynamicTerm(final double volatilityIndex) {
+    int td = (int) (period / volatilityIndex);
+    td = td < tdMin ? tdMin :
+         td > tdMax ? tdMax : td;
+    return td;
   }
 
 }

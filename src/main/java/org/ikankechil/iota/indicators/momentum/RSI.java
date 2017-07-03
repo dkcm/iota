@@ -1,7 +1,7 @@
 /**
- * RSI.java  v0.3  4 December 2014 12:17:42 PM
+ * RSI.java  v0.4  4 December 2014 12:17:42 PM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.momentum;
 
@@ -13,10 +13,14 @@ import com.tictactec.ta.lib.RetCode;
 /**
  * Relative Strength Index (RSI) by J. Welles Wilder
  *
- * <p>http://stockcharts.com/school/doku.php?st=rsi+indicator&id=chart_school:technical_indicators:relative_strength_index_rsi<br>
+ * <p>References:
+ * <li>http://stockcharts.com/school/doku.php?st=rsi+indicator&id=chart_school:technical_indicators:relative_strength_index_rsi<br>
+ * <li>http://www.investopedia.com/terms/r/rsi.asp<br>
+ * <li>https://en.wikipedia.org/wiki/Relative_strength_index
+ *
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class RSI extends AbstractIndicator {
 
@@ -51,60 +55,65 @@ public class RSI extends AbstractIndicator {
     // Average Gain = [(previous Average Gain) x 13 + current Gain] / 14.
     // Average Loss = [(previous Average Loss) x 13 + current Loss] / 14.
 
-    // compute average gain and loss (first value)
-    double averageGain = ZERO;
-    double averageLoss = ZERO;
+    // compute sum gain and loss (first value)
+    double sumGain = ZERO;
+    double sumLoss = ZERO;
     int v = ZERO;
     double previous = values[v];
     for (; ++v <= period; ) {
       final double current = values[v];
       final double change = current - previous;
       if (change >= ZERO) {
-        averageGain += change;
+        sumGain += change;
       }
       else {
-        averageLoss -= change;
+        sumLoss -= change;
       }
       previous = current;
     }
 
     // compute indicator (first value)
     int i = ZERO;
-    double rsi = rsi(averageGain, averageLoss);
+    double rsi = computeRSI(sumGain, sumLoss);
     output[i] = rsi;
 
-    // compute average gain and loss (subsequent values)
+    // compute sum gain and loss (subsequent values)
     for (; v < values.length; ++v) {
       final double current = values[v];
       final double change = current - previous;
 
       if (change >= ZERO) { // gain
-        averageGain = averageGain * smoothingFactor + change;
-        averageLoss *= smoothingFactor;
+        sumGain = sumGain * smoothingFactor + change;
+        sumLoss *= smoothingFactor;
       }
       else {                // loss
-        averageGain *= smoothingFactor;
-        averageLoss = averageLoss * smoothingFactor - change;
+        sumGain *= smoothingFactor;
+        sumLoss = sumLoss * smoothingFactor - change;
       }
 
-//      averageGain *= smoothingFactor;
-//      averageLoss *= smoothingFactor;
+      // alternative
+//      sumGain *= smoothingFactor;
+//      sumLoss *= smoothingFactor;
 //      if (change >= ZERO) { // gain
-//        averageGain += change;
+//        sumGain += change;
 //      }
 //      else {                // loss
-//        averageLoss -= change;
+//        sumLoss -= change;
 //      }
 
       previous = current;
 
       // compute indicator (subsequent values)
-      output[++i] = rsi = rsi(averageGain, averageLoss);
+      output[++i] = rsi = computeRSI(sumGain, sumLoss);
     }
 
     outBegIdx.value = lookback;
     outNBElement.value = output.length;
     return RetCode.Success;
+  }
+
+  protected double computeRSI(final double sumGain, final double sumLoss) {
+    return rsi(sumGain, sumLoss);
   }
 
   protected static final double rsi(final double averageGain, final double averageLoss) {
