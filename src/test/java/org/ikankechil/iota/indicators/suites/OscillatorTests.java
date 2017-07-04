@@ -8,6 +8,7 @@ package org.ikankechil.iota.indicators.suites;
 import org.ikankechil.iota.indicators.momentum.AcceleratorOscillatorTest;
 import org.ikankechil.iota.indicators.momentum.AwesomeOscillatorTest;
 import org.ikankechil.iota.indicators.momentum.CMOTest;
+import org.ikankechil.iota.indicators.momentum.DerivativeOscillatorTest;
 import org.ikankechil.iota.indicators.momentum.ErgodicCandlestickOscillatorTest;
 import org.ikankechil.iota.indicators.momentum.PGOTest;
 import org.ikankechil.iota.indicators.momentum.PZOTest;
@@ -23,6 +24,7 @@ import org.junit.runners.Suite.SuiteClasses;
   AwesomeOscillatorTest.class,
 //  CGOscillatorTest.class,
   CMOTest.class,
+  DerivativeOscillatorTest.class,
   ErgodicCandlestickOscillatorTest.class,
 //  KasePeakOscillatorTest.class,
   PGOTest.class,

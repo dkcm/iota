@@ -5,6 +5,7 @@
  */
 package org.ikankechil.iota.indicators.suites;
 
+import org.ikankechil.iota.indicators.momentum.DerivativeOscillatorTest;
 import org.ikankechil.iota.indicators.momentum.KRITest;
 import org.ikankechil.iota.indicators.momentum.LaguerreRSITest;
 import org.ikankechil.iota.indicators.momentum.MFITest;
@@ -14,6 +15,7 @@ import org.ikankechil.iota.indicators.momentum.RSITest;
 import org.ikankechil.iota.indicators.momentum.SelfAdjustingRSITest;
 import org.ikankechil.iota.indicators.momentum.SlowRSITest;
 import org.ikankechil.iota.indicators.momentum.StochasticRSITest;
+import org.ikankechil.iota.indicators.momentum.TSITest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -31,6 +33,8 @@ import org.junit.runners.Suite.SuiteClasses;
   MFITest.class,
   NMOTest.class,
   RMITest.class,
+  TSITest.class,
+  DerivativeOscillatorTest.class,
 })
 
 /**
