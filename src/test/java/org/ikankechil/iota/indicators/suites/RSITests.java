@@ -5,6 +5,7 @@
  */
 package org.ikankechil.iota.indicators.suites;
 
+import org.ikankechil.iota.indicators.momentum.DMITest;
 import org.ikankechil.iota.indicators.momentum.DerivativeOscillatorTest;
 import org.ikankechil.iota.indicators.momentum.KRITest;
 import org.ikankechil.iota.indicators.momentum.LaguerreRSITest;
@@ -28,7 +29,7 @@ import org.junit.runners.Suite.SuiteClasses;
   SelfAdjustingRSITest.class,
   SlowRSITest.class,
   StochasticRSITest.class,
-//  DMITest.class,
+  DMITest.class,
   KRITest.class,
   MFITest.class,
   NMOTest.class,

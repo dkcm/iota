@@ -20,8 +20,10 @@ import org.junit.BeforeClass;
  */
 public class DMITest extends AbstractIndicatorTest {
 
+  private static final int DYNAMIC_TERM_MAX = 30;
+
   public DMITest() {
-    super(30);
+    super(DYNAMIC_TERM_MAX);
   }
 
   @BeforeClass
@@ -32,7 +34,7 @@ public class DMITest extends AbstractIndicatorTest {
 
   @Override
   public Indicator newInstance(final int period) {
-    return new DMI(period, period);
+    return new DMI(period, 10, 5, 5, 30);
   }
 
 }

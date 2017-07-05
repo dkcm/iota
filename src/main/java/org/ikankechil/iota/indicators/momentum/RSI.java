@@ -1,5 +1,5 @@
 /**
- * RSI.java  v0.4  4 December 2014 12:17:42 PM
+ * RSI.java  v0.5  4 December 2014 12:17:42 PM
  *
  * Copyright © 2014-2017 Daniel Kuan.  All rights reserved.
  */
@@ -20,7 +20,7 @@ import com.tictactec.ta.lib.RetCode;
  *
  *
  * @author Daniel Kuan
- * @version 0.4
+ * @version 0.5
  */
 public class RSI extends AbstractIndicator {
 
@@ -122,6 +122,27 @@ public class RSI extends AbstractIndicator {
     // where
     // RS = average gain / average loss;
     return HUNDRED_PERCENT * averageGain / (averageGain + averageLoss);
+  }
+
+  protected static final double rsi(final int period, final double[] values, final int from) {
+    double sumGain = ZERO;
+    double sumLoss = ZERO;
+    int v = from;
+    double previous = values[v];
+    final int to = from + period + ONE;
+    for (; ++v < to; ) {
+      final double current = values[v];
+      final double change = current - previous;
+      if (change >= ZERO) {
+        sumGain += change;
+      }
+      else {
+        sumLoss -= change;
+      }
+      previous = current;
+    }
+
+    return rsi(sumGain, sumLoss);
   }
 
 }
