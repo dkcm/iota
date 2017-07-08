@@ -1,7 +1,7 @@
 /**
- * DEMA.java  v0.3  9 December 2014 12:10:01 PM
+ * DEMA.java  v0.4  9 December 2014 12:10:01 PM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.trend;
 
@@ -13,25 +13,24 @@ import com.tictactec.ta.lib.RetCode;
 /**
  * Double Exponential Moving Average (DEMA) by Patrick Mulloy
  *
- * <p>www.investopedia.com/articles/trading/10/double-exponential-moving-average.asp<br>
- * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V12/C01/SMOOTHI.pdf<br>
+ * <p>References:
+ * <li>www.investopedia.com/articles/trading/10/double-exponential-moving-average.asp<br>
+ * <li>ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V12/C01/SMOOTHI.pdf<br>
  *
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class DEMA extends AbstractIndicator {
 
   private final EMA ema;
 
   public DEMA(final int period) {
-    super(period, (period - ONE) << ONE);
-
-    ema = new EMA(period);
+    this(new EMA(period));
   }
 
   public DEMA(final EMA ema) {
-    super(ema.lookback() + ONE, ema.lookback() << ONE);
+    super(ema.lookback() + ONE, ema.lookback() << ONE); // lookback = (period - 1) * 2
 
     this.ema = ema;
   }

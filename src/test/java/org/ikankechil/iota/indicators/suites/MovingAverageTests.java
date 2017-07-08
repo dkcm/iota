@@ -31,6 +31,7 @@ import org.ikankechil.iota.indicators.trend.VWEMATest;
 import org.ikankechil.iota.indicators.trend.WEVOMOTest;
 import org.ikankechil.iota.indicators.trend.WMATest;
 import org.ikankechil.iota.indicators.trend.WSMATest;
+import org.ikankechil.iota.indicators.trend.ZeroLagTEMATest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -64,6 +65,7 @@ import org.junit.runners.Suite.SuiteClasses;
   WMATest.class,
   WSMATest.class,
 //  ZeroLagEMATest.class,
+  ZeroLagTEMATest.class,
   MovingAverageEnvelopesTest.class,
 })
 

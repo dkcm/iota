@@ -58,7 +58,6 @@ public class TEMATest extends AbstractIndicatorTest {
          i < tema.length;
          ++i, ++j, ++k) {
       tema[i] += 3 * (ema1[k] - ema2[j]);
-
     }
     return tema;
   }

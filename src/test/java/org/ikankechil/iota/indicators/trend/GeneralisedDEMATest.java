@@ -1,5 +1,5 @@
 /**
- * GeneralisedDEMATest.java  v0.1  17 October 2016 9:53:58 pm
+ * GeneralisedDEMATest.java  v0.2  17 October 2016 9:53:58 pm
  *
  * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
  */
@@ -14,16 +14,14 @@ import java.util.List;
 import org.ikankechil.iota.OHLCVTimeSeries;
 import org.ikankechil.iota.TimeSeries;
 import org.ikankechil.iota.indicators.AbstractIndicatorTest;
-import org.ikankechil.iota.indicators.Indicator;
 import org.junit.BeforeClass;
 
 /**
  * JUnit test for <code>GeneralisedDEMA</code>.
  *
  *
- *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class GeneralisedDEMATest extends AbstractIndicatorTest {
 
@@ -37,11 +35,6 @@ public class GeneralisedDEMATest extends AbstractIndicatorTest {
   @BeforeClass
   public static void setUpBeforeClass() throws IOException {
     TEST_CLASS = GeneralisedDEMATest.class;
-  }
-
-  @Override
-  public Indicator newInstance() throws ReflectiveOperationException {
-    return newInstance(DEFAULT_PERIOD);
   }
 
   @Override
