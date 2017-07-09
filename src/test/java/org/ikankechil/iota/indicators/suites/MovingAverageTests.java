@@ -1,5 +1,5 @@
 /**
- * MovingAverageTests.java  v0.1  22 November 2016 12:25:27 am
+ * MovingAverageTests.java  v0.2  22 November 2016 12:25:27 am
  *
  * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
  */
@@ -8,7 +8,6 @@ package org.ikankechil.iota.indicators.suites;
 import org.ikankechil.iota.indicators.trend.ALMATest;
 import org.ikankechil.iota.indicators.trend.DEMATest;
 import org.ikankechil.iota.indicators.trend.EMATest;
-import org.ikankechil.iota.indicators.trend.FRAMATest;
 import org.ikankechil.iota.indicators.trend.GMMATest;
 import org.ikankechil.iota.indicators.trend.GeneralisedDEMATest;
 import org.ikankechil.iota.indicators.trend.HMATest;
@@ -20,7 +19,6 @@ import org.ikankechil.iota.indicators.trend.MovingAverageEnvelopesTest;
 import org.ikankechil.iota.indicators.trend.REMATest;
 import org.ikankechil.iota.indicators.trend.SMATest;
 import org.ikankechil.iota.indicators.trend.SWMATest;
-import org.ikankechil.iota.indicators.trend.SimpleLaguerreFilterTest;
 import org.ikankechil.iota.indicators.trend.T3Test;
 import org.ikankechil.iota.indicators.trend.TEMATest;
 import org.ikankechil.iota.indicators.trend.TRIMATest;
@@ -31,6 +29,8 @@ import org.ikankechil.iota.indicators.trend.VWEMATest;
 import org.ikankechil.iota.indicators.trend.WEVOMOTest;
 import org.ikankechil.iota.indicators.trend.WMATest;
 import org.ikankechil.iota.indicators.trend.WSMATest;
+import org.ikankechil.iota.indicators.trend.ZeroLagDEMATest;
+import org.ikankechil.iota.indicators.trend.ZeroLagEMATest;
 import org.ikankechil.iota.indicators.trend.ZeroLagTEMATest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
@@ -41,7 +41,7 @@ import org.junit.runners.Suite.SuiteClasses;
   ALMATest.class,
   DEMATest.class,
   EMATest.class,
-  FRAMATest.class,
+//  FRAMATest.class,
   GeneralisedDEMATest.class,
   GMMATest.class,
   HMATest.class,
@@ -50,7 +50,7 @@ import org.junit.runners.Suite.SuiteClasses;
   MDTest.class,
   MOMATest.class,
   REMATest.class,
-  SimpleLaguerreFilterTest.class,
+//  SimpleLaguerreFilterTest.class,
   SMATest.class,
   SWMATest.class,
   T3Test.class,
@@ -64,7 +64,8 @@ import org.junit.runners.Suite.SuiteClasses;
   WEVOMOTest.class,
   WMATest.class,
   WSMATest.class,
-//  ZeroLagEMATest.class,
+  ZeroLagDEMATest.class,
+  ZeroLagEMATest.class,
   ZeroLagTEMATest.class,
   MovingAverageEnvelopesTest.class,
 })
@@ -74,7 +75,7 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class MovingAverageTests {
   // holder for above annotations

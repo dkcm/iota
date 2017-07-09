@@ -1,58 +1,42 @@
 /**
- * ZeroLagEMA.java  v0.1  20 July 2015 11:18:26 pm
+ * ZeroLagEMA.java  v0.2  20 July 2015 11:18:26 pm
  *
  * Copyright © 2015-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.trend;
 
-import org.ikankechil.iota.indicators.AbstractIndicator;
-
-import com.tictactec.ta.lib.MInteger;
-import com.tictactec.ta.lib.RetCode;
-
 /**
- * Zero-Lag Exponential Moving Average (EMA) by Peter Martin
+ * Zero-Lag Exponential Moving Average (ZLEMA) by Peter Martin
  *
+ * <p>References:
+ * <li>http://traders.com/Documentation/FEEDbk_docs/2008/05/TradersTips/TradersTips.html<br>
+ * <li>https://user42.tuxfamily.org/chart/manual/Zero_002dLag-Exponential-Moving-Average.html<br>
+ * <li>http://www.mesasoftware.com/papers/ZeroLag.pdf<br>
+ * <li>http://traders.com/Documentation/FEEDbk_docs/2010/11/TradersTips.html<br>
  *
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
-public class ZeroLagEMA extends AbstractIndicator {
+public class ZeroLagEMA extends ZeroLagMA {
 
   public ZeroLagEMA() {
     this(TEN);
   }
 
   public ZeroLagEMA(final int period) {
-    super(period, (period - ONE) << ONE); // lookback = (period - 1) * 2
+    this(new EMA(period)); // lookback = (period - 1) * 2
   }
 
-  @Override
-  protected RetCode compute(final int start,
-                            final int end,
-                            final double[] values,
-                            final MInteger outBegIdx,
-                            final MInteger outNBElement,
-                            final double[] output) {
+  public ZeroLagEMA(final EMA ema) {
+    super(ema);
+
     // Formula:
     // Period:= Input("What Period",1,250,10);
     // EMA1:= Mov(CLOSE,Period,E);
     // EMA2:= Mov(EMA1,Period,E);
     // Difference:= EMA1 - EMA2;
     // ZeroLagEMA:= EMA1 + Difference;
-
-    final double[] ema1 = ema(values, period);
-    final double[] ema2 = ema(ema1, period);
-
-    for (int i = ZERO, j = period - ONE; i < output.length; ++i, ++j) {
-      output[i] = (ema1[j] * TWO) - ema2[i];
-    }
-
-    outBegIdx.value = lookback;
-    outNBElement.value = output.length;
-    return RetCode.Success;
   }
 
 }
-
