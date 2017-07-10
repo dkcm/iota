@@ -1,7 +1,7 @@
 /**
- * RainbowCharts.java  v0.2  1 March 2015 5:58:00 pm
+ * RainbowCharts.java  v0.3  1 March 2015 5:58:00 pm
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.trend;
 
@@ -15,10 +15,14 @@ import org.ikankechil.iota.indicators.AbstractIndicator;
 /**
  * Rainbow Charts by Mel Widner
  *
- * <p>ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V15/C07/RAINBOW.pdf<br>
+ * <p>References:
+ * <li>https://www.forex-tsd.com/attachments/elite-section/108853d1286620402-elite-indicators-mel-widner-rainbow-charts.pdf<br>
+ * <li>https://c.mql5.com/forextsd/forum/64/rainbow_oscillator_-_formula.pdf<br>
+ * <li>http://xa.yimg.com/kq/groups/16789226/301268564/name/192verv-1.pdf<br>
+ * <li>ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V15/C07/RAINBOW.pdf<br>
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class RainbowCharts extends AbstractIndicator {
 
@@ -27,14 +31,19 @@ public class RainbowCharts extends AbstractIndicator {
   }
 
   public RainbowCharts(final int period) {
-    super(period, (period - ONE) * NINE);
+    super(period, (period - ONE) * TEN);
   }
 
   @Override
   public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
-    throwExceptionIfShort(ohlcv);
+    return generate((TimeSeries) ohlcv);
+  }
 
-    final double[] ma0 = sma(ohlcv.closes(), period);
+  @Override
+  public List<TimeSeries> generate(final TimeSeries series) {
+    throwExceptionIfShort(series);
+
+    final double[] ma0 = sma(series.values(), period);
     final double[] ma1 = sma(ma0, period);
     final double[] ma2 = sma(ma1, period);
     final double[] ma3 = sma(ma2, period);
@@ -45,10 +54,10 @@ public class RainbowCharts extends AbstractIndicator {
     final double[] ma8 = sma(ma7, period);
     final double[] ma9 = sma(ma8, period);
 
-    final int size = ohlcv.size();
-    final String[] dates = Arrays.copyOfRange(ohlcv.dates(), lookback, size);
+    final int size = series.size();
+    final String[] dates = Arrays.copyOfRange(series.dates(), lookback, size);
 
-    logger.info(GENERATED_FOR, name, ohlcv);
+    logger.info(GENERATED_FOR, name, series);
 
     // MAs have different lengths
     final int length = ma9.length;
