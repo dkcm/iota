@@ -13,6 +13,7 @@ import org.ikankechil.iota.indicators.momentum.MFITest;
 import org.ikankechil.iota.indicators.momentum.NMOTest;
 import org.ikankechil.iota.indicators.momentum.RMITest;
 import org.ikankechil.iota.indicators.momentum.RSITest;
+import org.ikankechil.iota.indicators.momentum.SVEInverseFisherRSITest;
 import org.ikankechil.iota.indicators.momentum.SelfAdjustingRSITest;
 import org.ikankechil.iota.indicators.momentum.SlowRSITest;
 import org.ikankechil.iota.indicators.momentum.StochasticRSITest;
@@ -29,6 +30,7 @@ import org.junit.runners.Suite.SuiteClasses;
   SelfAdjustingRSITest.class,
   SlowRSITest.class,
   StochasticRSITest.class,
+  SVEInverseFisherRSITest.class,
   DMITest.class,
   KRITest.class,
   MFITest.class,
