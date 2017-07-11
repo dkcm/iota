@@ -22,7 +22,7 @@ import com.tictactec.ta.lib.RetCode;
  * @author Daniel Kuan
  * @version 0.2
  */
-public class TEMA extends AbstractIndicator {
+public class TEMA extends AbstractIndicator implements MA {
 
   private final EMA ema;
 

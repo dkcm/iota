@@ -20,7 +20,7 @@ import com.tictactec.ta.lib.RetCode;
  * @author Daniel Kuan
  * @version 0.1
  */
-public class VOMA extends AbstractIndicator {
+public class VOMA extends AbstractIndicator implements MA {
 
   public VOMA() {
     this(FOUR);

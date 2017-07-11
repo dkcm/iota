@@ -36,7 +36,7 @@ import com.tictactec.ta.lib.RetCode;
  * @author Daniel Kuan
  * @version 0.1
  */
-public class FRAMA extends AbstractIndicator {
+public class FRAMA extends AbstractIndicator implements MA {
 
   private final int              halfPeriod;
   private final double           inversePeriod;

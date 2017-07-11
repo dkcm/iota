@@ -21,7 +21,7 @@ import org.ikankechil.iota.indicators.AbstractIndicator;
  * @author Daniel Kuan
  * @version 0.2
  */
-public class GMMA extends AbstractIndicator {
+public class GMMA extends AbstractIndicator implements MA {
 
   // short-term EMAs
   private static final int SHORT1 = THREE;

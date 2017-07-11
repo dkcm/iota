@@ -18,7 +18,7 @@ import com.tictactec.ta.lib.RetCode;
  * @author Daniel Kuan
  * @version 0.3
  */
-public class EMA extends AbstractIndicator {
+public class EMA extends AbstractIndicator implements MA {
 
   private final double alpha;
 

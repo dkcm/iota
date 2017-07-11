@@ -22,7 +22,7 @@ import com.tictactec.ta.lib.RetCode;
  * @author Daniel Kuan
  * @version 0.1
  */
-public class REMA extends AbstractIndicator {
+public class REMA extends AbstractIndicator implements MA {
 
   private final double alpha;
   private final double alpha_;

@@ -21,7 +21,7 @@ import com.tictactec.ta.lib.RetCode;
  * @author Daniel Kuan
  * @version 0.1
  */
-public class WSMA extends AbstractIndicator {
+public class WSMA extends AbstractIndicator implements MA {
 
   private final WMA           wma;
   private final SMA           sma;

@@ -19,7 +19,7 @@ import com.tictactec.ta.lib.RetCode;
  * @author Daniel Kuan
  * @version 0.1
  */
-public class WEVOMO extends AbstractIndicator {
+public class WEVOMO extends AbstractIndicator implements MA {
 
   private final WMA  wma;
   private final VOMA voma;

@@ -20,7 +20,7 @@ import com.tictactec.ta.lib.RetCode;
  * @author Daniel Kuan
  * @version 0.1
  */
-public class VWEMA extends AbstractIndicator {
+public class VWEMA extends AbstractIndicator implements MA {
 
   public VWEMA(final int period) {
     super(period, period - ONE);

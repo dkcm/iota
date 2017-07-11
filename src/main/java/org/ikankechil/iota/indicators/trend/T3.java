@@ -23,7 +23,7 @@ import com.tictactec.ta.lib.RetCode;
  * @author Daniel Kuan
  * @version 0.2
  */
-public class T3 extends AbstractIndicator {
+public class T3 extends AbstractIndicator implements MA {
 
   private final GeneralisedDEMA gd;
 

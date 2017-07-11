@@ -1,5 +1,5 @@
 /**
- * RainbowCharts.java  v0.3  1 March 2015 5:58:00 pm
+ * RainbowCharts.java  v0.4  1 March 2015 5:58:00 pm
  *
  * Copyright © 2015-2017 Daniel Kuan.  All rights reserved.
  */
@@ -11,6 +11,7 @@ import java.util.List;
 import org.ikankechil.iota.OHLCVTimeSeries;
 import org.ikankechil.iota.TimeSeries;
 import org.ikankechil.iota.indicators.AbstractIndicator;
+import org.ikankechil.iota.indicators.Indicator;
 
 /**
  * Rainbow Charts by Mel Widner
@@ -22,16 +23,24 @@ import org.ikankechil.iota.indicators.AbstractIndicator;
  * <li>ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V15/C07/RAINBOW.pdf<br>
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class RainbowCharts extends AbstractIndicator {
+
+  private final Indicator ma;
 
   public RainbowCharts() {
     this(TWO);
   }
 
   public RainbowCharts(final int period) {
-    super(period, (period - ONE) * TEN);
+    this(new SMA(period));
+  }
+
+  public RainbowCharts(final MA ma) {
+    super(ma.lookback() * TEN);
+
+    this.ma = ma;
   }
 
   @Override
@@ -43,16 +52,16 @@ public class RainbowCharts extends AbstractIndicator {
   public List<TimeSeries> generate(final TimeSeries series) {
     throwExceptionIfShort(series);
 
-    final double[] ma0 = sma(series.values(), period);
-    final double[] ma1 = sma(ma0, period);
-    final double[] ma2 = sma(ma1, period);
-    final double[] ma3 = sma(ma2, period);
-    final double[] ma4 = sma(ma3, period);
-    final double[] ma5 = sma(ma4, period);
-    final double[] ma6 = sma(ma5, period);
-    final double[] ma7 = sma(ma6, period);
-    final double[] ma8 = sma(ma7, period);
-    final double[] ma9 = sma(ma8, period);
+    final TimeSeries ma0 = ma.generate(series).get(ZERO);
+    final TimeSeries ma1 = ma.generate(ma0).get(ZERO);
+    final TimeSeries ma2 = ma.generate(ma1).get(ZERO);
+    final TimeSeries ma3 = ma.generate(ma2).get(ZERO);
+    final TimeSeries ma4 = ma.generate(ma3).get(ZERO);
+    final TimeSeries ma5 = ma.generate(ma4).get(ZERO);
+    final TimeSeries ma6 = ma.generate(ma5).get(ZERO);
+    final TimeSeries ma7 = ma.generate(ma6).get(ZERO);
+    final TimeSeries ma8 = ma.generate(ma7).get(ZERO);
+    final TimeSeries ma9 = ma.generate(ma8).get(ZERO);
 
     final int size = series.size();
     final String[] dates = Arrays.copyOfRange(series.dates(), lookback, size);
@@ -60,17 +69,17 @@ public class RainbowCharts extends AbstractIndicator {
     logger.info(GENERATED_FOR, name, series);
 
     // MAs have different lengths
-    final int length = ma9.length;
-    return Arrays.asList(new TimeSeries(name, dates, Arrays.copyOfRange(ma0, ma0.length - length, ma0.length)),
-                         new TimeSeries(name, dates, Arrays.copyOfRange(ma1, ma1.length - length, ma1.length)),
-                         new TimeSeries(name, dates, Arrays.copyOfRange(ma2, ma2.length - length, ma2.length)),
-                         new TimeSeries(name, dates, Arrays.copyOfRange(ma3, ma3.length - length, ma3.length)),
-                         new TimeSeries(name, dates, Arrays.copyOfRange(ma4, ma4.length - length, ma4.length)),
-                         new TimeSeries(name, dates, Arrays.copyOfRange(ma5, ma5.length - length, ma5.length)),
-                         new TimeSeries(name, dates, Arrays.copyOfRange(ma6, ma6.length - length, ma6.length)),
-                         new TimeSeries(name, dates, Arrays.copyOfRange(ma7, ma7.length - length, ma7.length)),
-                         new TimeSeries(name, dates, Arrays.copyOfRange(ma8, ma8.length - length, ma8.length)),
-                         new TimeSeries(name, dates, ma9));
+    final int length = ma9.size();
+    return Arrays.asList(new TimeSeries(name, dates, Arrays.copyOfRange(ma0.values(), ma0.size() - length, ma0.size())),
+                         new TimeSeries(name, dates, Arrays.copyOfRange(ma1.values(), ma1.size() - length, ma1.size())),
+                         new TimeSeries(name, dates, Arrays.copyOfRange(ma2.values(), ma2.size() - length, ma2.size())),
+                         new TimeSeries(name, dates, Arrays.copyOfRange(ma3.values(), ma3.size() - length, ma3.size())),
+                         new TimeSeries(name, dates, Arrays.copyOfRange(ma4.values(), ma4.size() - length, ma4.size())),
+                         new TimeSeries(name, dates, Arrays.copyOfRange(ma5.values(), ma5.size() - length, ma5.size())),
+                         new TimeSeries(name, dates, Arrays.copyOfRange(ma6.values(), ma6.size() - length, ma6.size())),
+                         new TimeSeries(name, dates, Arrays.copyOfRange(ma7.values(), ma7.size() - length, ma7.size())),
+                         new TimeSeries(name, dates, Arrays.copyOfRange(ma8.values(), ma8.size() - length, ma8.size())),
+                         new TimeSeries(name, dates, ma9.values()));
   }
 
 }

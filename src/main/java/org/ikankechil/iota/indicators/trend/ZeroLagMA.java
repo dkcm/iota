@@ -19,7 +19,7 @@ import com.tictactec.ta.lib.RetCode;
  * @author Daniel Kuan
  * @version 0.1
  */
-public abstract class ZeroLagMA extends AbstractIndicator {
+public abstract class ZeroLagMA extends AbstractIndicator implements MA {
 
   private final Indicator ma; // moving average
 

@@ -17,7 +17,7 @@ import com.tictactec.ta.lib.RetCode;
  * @author Daniel Kuan
  * @version 0.4
  */
-public class SMA extends AbstractIndicator {
+public class SMA extends AbstractIndicator implements MA {
 
   private final double inversePeriod;
 

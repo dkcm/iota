@@ -21,7 +21,7 @@ import com.tictactec.ta.lib.RetCode;
  * @author Daniel Kuan
  * @version 0.1
  */
-public class MOMA extends AbstractIndicator {
+public class MOMA extends AbstractIndicator implements MA {
 
   public MOMA() {
     this(FOUR);

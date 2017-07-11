@@ -21,7 +21,7 @@ import com.tictactec.ta.lib.RetCode;
  * @author Daniel Kuan
  * @version 0.1
  */
-public class HMA extends AbstractIndicator {
+public class HMA extends AbstractIndicator implements MA {
 
   private final WMA wmaP;
   private final WMA wmaHalfP;

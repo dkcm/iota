@@ -21,7 +21,7 @@ import com.tictactec.ta.lib.RetCode;
  * @author Daniel Kuan
  * @version 0.4
  */
-public class DEMA extends AbstractIndicator {
+public class DEMA extends AbstractIndicator implements MA {
 
   private final EMA ema;
 

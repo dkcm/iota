@@ -26,7 +26,7 @@ import com.tictactec.ta.lib.RetCode;
  * @author Daniel Kuan
  * @version 0.1
  */
-public class MAMA extends AbstractIndicator {
+public class MAMA extends AbstractIndicator implements MA {
 
   private final double        fastLimit;
   private final double        slowLimit;

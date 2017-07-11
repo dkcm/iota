@@ -19,7 +19,7 @@ import com.tictactec.ta.lib.RetCode;
  * @author Daniel Kuan
  * @version 0.1
  */
-public class GeneralisedDEMA extends AbstractIndicator {
+public class GeneralisedDEMA extends AbstractIndicator implements MA {
 
   private final double        volumeFactor;
 

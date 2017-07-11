@@ -19,7 +19,7 @@ import com.tictactec.ta.lib.RetCode;
  * @author Daniel Kuan
  * @version 0.3
  */
-public class TRIMA extends AbstractIndicator {
+public class TRIMA extends AbstractIndicator implements MA {
 
   private final int sma;
 

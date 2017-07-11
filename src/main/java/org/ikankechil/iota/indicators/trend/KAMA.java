@@ -20,7 +20,7 @@ import com.tictactec.ta.lib.RetCode;
  * @author Daniel Kuan
  * @version 0.3
  */
-public class KAMA extends AbstractIndicator {
+public class KAMA extends AbstractIndicator implements MA {
 
 //  private final double    scDiff;
 //  private final double    slowestSC;

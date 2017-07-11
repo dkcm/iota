@@ -21,7 +21,7 @@ import com.tictactec.ta.lib.RetCode;
  * @author Daniel Kuan
  * @version 0.1
  */
-public class ALMA extends EhlersFilter {
+public class ALMA extends EhlersFilter implements MA {
 
   // cache to reduce coefficient recalculation
   private final double[]      weights;

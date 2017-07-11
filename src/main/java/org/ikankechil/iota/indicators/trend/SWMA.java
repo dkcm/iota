@@ -24,7 +24,7 @@ import com.tictactec.ta.lib.RetCode;
  * @author Daniel Kuan
  * @version 0.1
  */
-public class SWMA extends AbstractIndicator {
+public class SWMA extends AbstractIndicator implements MA {
 
   private static final Map<Integer, double[]> SINE_WEIGHTS = new ConcurrentHashMap<>();
 
