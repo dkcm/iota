@@ -1,5 +1,5 @@
 /**
- * Wedges.java  v0.3  30 December 2016 12:55:18 am
+ * Wedges.java  v0.4  30 December 2016 12:55:18 am
  *
  * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
  */
@@ -22,14 +22,14 @@ import org.ikankechil.iota.indicators.pattern.Trendlines.Trendline;
  * <li>http://www.investopedia.com/university/charts/charts7.asp<br>
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 abstract class Wedges extends Triangles {
 
   private final TrendSlopes slope;
 
-  public Wedges(final int awayPoints, final double thresholdPercentage, final TrendSlopes slope, final int endpointVicinity) {
-    super(awayPoints, thresholdPercentage, slope, slope, endpointVicinity);
+  public Wedges(final int awayPoints, final double breakoutThresholdPercentage, final double runawayThresholdPercentage, final TrendSlopes slope, final int endpointVicinity) {
+    super(awayPoints, breakoutThresholdPercentage, runawayThresholdPercentage, slope, slope, endpointVicinity);
     if (FLAT == slope) {
       throw new IllegalArgumentException();
     }

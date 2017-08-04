@@ -1,5 +1,5 @@
 /**
- * Trendlines.java  v0.7  19 January 2016 4:00:07 PM
+ * Trendlines.java  v0.8  19 January 2016 4:00:07 PM
  *
  * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
  */
@@ -32,19 +32,22 @@ import org.ikankechil.iota.indicators.Indicator;
  *
  *
  * @author Daniel Kuan
- * @version 0.7
+ * @version 0.8
  */
 public class Trendlines extends AbstractIndicator {
 
   private final Indicator     topsAndBottoms;
-  private final double        threshold;
+  private final double        breakoutThreshold;
+  private final double        runawayThreshold;
   private final TrendSlopes   upper;
   private final TrendSlopes   lower;
 
-  private static final int    GAP             = TWO;
+  private static final int    GAP                = TWO;
+  private static final int    BREAKOUT_THRESHOLD = THREE;
+  private static final double RUNAWAY_THRESHOLD  = Double.POSITIVE_INFINITY;
 
-  private static final String UPPER_TRENDLINE = "Upper Trendline";
-  private static final String LOWER_TRENDLINE = "Lower Trendline";
+  private static final String UPPER_TRENDLINE    = "Upper Trendline";
+  private static final String LOWER_TRENDLINE    = "Lower Trendline";
 
   /**
    *
@@ -52,27 +55,39 @@ public class Trendlines extends AbstractIndicator {
    * @param awayPoints
    */
   public Trendlines(final int awayPoints) {
-    this(awayPoints, THREE);
+    this(awayPoints, BREAKOUT_THRESHOLD);
   }
 
   /**
    *
    *
    * @param awayPoints
-   * @param thresholdPercentage trendline breakdown penetration threshold (%)
+   * @param breakoutThresholdPercentage trendline breakout penetration threshold (%)
    */
-  public Trendlines(final int awayPoints, final double thresholdPercentage) {
-    this(awayPoints, thresholdPercentage, DOWN, UP);
+  public Trendlines(final int awayPoints, final double breakoutThresholdPercentage) {
+    this(awayPoints, breakoutThresholdPercentage, RUNAWAY_THRESHOLD);
   }
 
-  Trendlines(final int awayPoints, final double thresholdPercentage, final TrendSlopes upper, final TrendSlopes lower) {
+  /**
+   *
+   *
+   * @param awayPoints
+   * @param breakoutThresholdPercentage trendline breakout penetration threshold (%)
+   * @param runawayThresholdPercentage price run-away threshold (%)
+   */
+  public Trendlines(final int awayPoints, final double breakoutThresholdPercentage, final double runawayThresholdPercentage) {
+    this(awayPoints, breakoutThresholdPercentage, runawayThresholdPercentage, DOWN, UP);
+  }
+
+  Trendlines(final int awayPoints, final double breakoutThresholdPercentage, final double runawayThresholdPercentage, final TrendSlopes upper, final TrendSlopes lower) {
     super(ZERO);
-    throwExceptionIfNegative(thresholdPercentage);
+    throwExceptionIfNegative(breakoutThresholdPercentage, runawayThresholdPercentage);
     if (upper == null || lower == null) {
       throw new NullPointerException();
     }
 
-    threshold = thresholdPercentage / HUNDRED_PERCENT;
+    breakoutThreshold = breakoutThresholdPercentage / HUNDRED_PERCENT;
+    runawayThreshold = runawayThresholdPercentage / HUNDRED_PERCENT;
     topsAndBottoms = new TopsAndBottoms(awayPoints, null, false);
     this.upper = upper;
     this.lower = lower;
@@ -216,6 +231,11 @@ public class Trendlines extends AbstractIndicator {
       }
 
       @Override
+      public boolean isRunaway(final double y, final double fx, final double threshold) {
+        return (y <= fx * (ONE - threshold));
+      }
+
+      @Override
       public String toString() {
         return UPPER_TRENDLINE;
       }
@@ -229,6 +249,11 @@ public class Trendlines extends AbstractIndicator {
       @Override
       public boolean isDecisivelyBroken(final double y, final double fx, final double threshold) {
         return (y < fx * (ONE - threshold));
+      }
+
+      @Override
+      public boolean isRunaway(final double y, final double fx, final double threshold) {
+        return (y >= fx * (ONE + threshold));
       }
 
       @Override
@@ -257,6 +282,16 @@ public class Trendlines extends AbstractIndicator {
      *         by <code>threshold</code>
      */
     public abstract boolean isDecisivelyBroken(final double y, final double fx, final double threshold);
+
+    /**
+     *
+     *
+     * @param y actual value
+     * @param fx expected value
+     * @param threshold
+     * @return
+     */
+    public abstract boolean isRunaway(final double y, final double fx, final double threshold);
 
   }
 
@@ -308,7 +343,7 @@ public class Trendlines extends AbstractIndicator {
         if (slope.isRightDirection(gradient(x1, y1, x2, y2))) {
           trendline = new Trendline(x1, y1, x2, y2);
           trendlines.add(trendline);
-          logger.debug("New {} trend at ({}, {})", slope, x1, y1);
+          logger.debug("New {} trend from ({}, {}) to ({}, {})", slope, x1, y1, x2, y2);
         }
       }
       else {
@@ -316,7 +351,7 @@ public class Trendlines extends AbstractIndicator {
         final double fx2 = trendline.f(x2);
 
         // trendline decisively broken => end of trend
-        if (trend.isDecisivelyBroken(y2, fx2, threshold)) {
+        if (trend.isDecisivelyBroken(y2, fx2, breakoutThreshold)) {
           trendline.broken(true);
           draw(trendline, lines, x2 - GAP); // extend trendline less gap
           trendline = null;
@@ -330,11 +365,19 @@ public class Trendlines extends AbstractIndicator {
           trendline.x2y2(x2, y2);
           logger.debug("Amending {} trend at ({}, {})", slope, x2, y2);
         }
+        // runaway prices => end trend prematurely
+        else if (trend.isRunaway(y2, fx2, runawayThreshold)) {
+          draw(trendline, lines, x2 - GAP); // extend trendline less gap
+          trendline = null;
+          logger.debug("Runaway prices in unbroken {} trend at / before ({}, {})", slope, x2, y2);
+        }
         else {
           logger.debug("{} trend holds at ({}, {})", slope, x2, y2);
         }
       }
     }
+
+    // reached end of chart
     if (trendline != null) {
       draw(trendline, lines, lines.length - ONE); // extend trendline to the end
       logger.debug("On-going unbroken {} trend at ({}, {})", slope, trendline.x2(), trendline.y2());
@@ -347,7 +390,8 @@ public class Trendlines extends AbstractIndicator {
     // 2. indecisively penetrated
     //    a) unconfirmed -> amend
     //    b) confirmed -> do nothing
-    // 3. unbroken -> do nothing
+    // 3. runaway -> draw
+    // 4. unbroken -> do nothing
 
     // Amendment of Trendlines (from Edwards and Magee)
     //

@@ -1,5 +1,5 @@
 /**
- * FallingWedges.java  v0.3  30 December 2016 1:30:51 pm
+ * FallingWedges.java  v0.4  30 December 2016 1:30:51 pm
  *
  * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
  */
@@ -23,16 +23,16 @@ import org.ikankechil.iota.indicators.pattern.Trendlines.Trendline;
  *
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class FallingWedges extends Wedges {
 
-  public FallingWedges(final int awayPoints, final double thresholdPercentage) {
-    this(awayPoints, thresholdPercentage, ENDPOINT_VICINITY);
+  public FallingWedges(final int awayPoints, final double breakoutThresholdPercentage, final double runawayThresholdPercentage) {
+    this(awayPoints, breakoutThresholdPercentage, runawayThresholdPercentage, ENDPOINT_VICINITY);
   }
 
-  public FallingWedges(final int awayPoints, final double thresholdPercentage, final int endpointVicinity) {
-    super(awayPoints, thresholdPercentage, DOWN, endpointVicinity);
+  public FallingWedges(final int awayPoints, final double breakoutThresholdPercentage, final double runawayThresholdPercentage, final int endpointVicinity) {
+    super(awayPoints, breakoutThresholdPercentage, runawayThresholdPercentage, DOWN, endpointVicinity);
   }
 
   @Override

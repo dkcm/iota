@@ -1,5 +1,5 @@
 /**
- * AscendingTriangles.java  0.3  22 December 2016 7:07:09 PM
+ * AscendingTriangles.java  v0.4  22 December 2016 7:07:09 PM
  *
  * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
  */
@@ -22,16 +22,16 @@ import org.ikankechil.iota.indicators.pattern.Trendlines.Trendline;
  *
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class AscendingTriangles extends RightAngledTriangles {
 
-  public AscendingTriangles(final int awayPoints, final double thresholdPercentage) {
-    this(awayPoints, thresholdPercentage, ENDPOINT_VICINITY);
+  public AscendingTriangles(final int awayPoints, final double breakoutThresholdPercentage, final double runawayThresholdPercentage) {
+    this(awayPoints, breakoutThresholdPercentage, runawayThresholdPercentage, ENDPOINT_VICINITY);
   }
 
-  public AscendingTriangles(final int awayPoints, final double thresholdPercentage, final int endpointVicinity) {
-    super(awayPoints, thresholdPercentage, FLAT, UP, endpointVicinity);
+  public AscendingTriangles(final int awayPoints, final double breakoutThresholdPercentage, final double runawayThresholdPercentage, final int endpointVicinity) {
+    super(awayPoints, breakoutThresholdPercentage, runawayThresholdPercentage, FLAT, UP, endpointVicinity);
   }
 
   @Override

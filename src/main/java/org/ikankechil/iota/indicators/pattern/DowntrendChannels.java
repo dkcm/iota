@@ -1,5 +1,5 @@
 /**
- * DowntrendChannels.java  v0.1  15 June 2017 11:29:22 pm
+ * DowntrendChannels.java  v0.2  15 June 2017 11:29:22 pm
  *
  * Copyright © 2017 Daniel Kuan.  All rights reserved.
  */
@@ -17,16 +17,16 @@ import static org.ikankechil.iota.indicators.pattern.Trendlines.TrendSlopes.*;
  *
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class DowntrendChannels extends Channels {
 
-  public DowntrendChannels(final int awayPoints, final double thresholdPercentage) {
-    this(awayPoints, thresholdPercentage, ENDPOINT_VICINITY);
+  public DowntrendChannels(final int awayPoints, final double breakoutThresholdPercentage, final double runawayThresholdPercentage) {
+    this(awayPoints, breakoutThresholdPercentage, runawayThresholdPercentage, ENDPOINT_VICINITY);
   }
 
-  public DowntrendChannels(final int awayPoints, final double thresholdPercentage, final int endpointVicinity) {
-    super(awayPoints, thresholdPercentage, DOWN, endpointVicinity);
+  public DowntrendChannels(final int awayPoints, final double breakoutThresholdPercentage, final double runawayThresholdPercentage, final int endpointVicinity) {
+    super(awayPoints, breakoutThresholdPercentage, runawayThresholdPercentage, DOWN, endpointVicinity);
   }
 
 }

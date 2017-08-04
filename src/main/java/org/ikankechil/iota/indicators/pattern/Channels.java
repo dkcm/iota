@@ -1,5 +1,5 @@
 /**
- * Channels.java  v0.1  6 June 2017 12:17:00 am
+ * Channels.java  v0.2  6 June 2017 12:17:00 am
  *
  * Copyright © 2017 Daniel Kuan.  All rights reserved.
  */
@@ -21,18 +21,18 @@ import org.ikankechil.iota.indicators.pattern.Trendlines.Trendline;
  *
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class Channels extends SimpleBoundedPattern {
 
   private final TrendSlopes slope;
 
-  public Channels(final int awayPoints, final double thresholdPercentage, final TrendSlopes slope) {
-    this(awayPoints, thresholdPercentage, slope, ENDPOINT_VICINITY);
+  public Channels(final int awayPoints, final double breakoutThresholdPercentage, final double runawayThresholdPercentage, final TrendSlopes slope) {
+    this(awayPoints, breakoutThresholdPercentage, runawayThresholdPercentage, slope, ENDPOINT_VICINITY);
   }
 
-  public Channels(final int awayPoints, final double thresholdPercentage, final TrendSlopes slope, final int endpointVicinity) {
-    super(awayPoints, thresholdPercentage, slope, slope, endpointVicinity);
+  public Channels(final int awayPoints, final double breakoutThresholdPercentage, final double runawayThresholdPercentage, final TrendSlopes slope, final int endpointVicinity) {
+    super(awayPoints, breakoutThresholdPercentage, runawayThresholdPercentage, slope, slope, endpointVicinity);
 
     this.slope = slope;
   }

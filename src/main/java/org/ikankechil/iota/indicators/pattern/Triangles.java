@@ -1,5 +1,5 @@
 /**
- * Triangles.java  v0.4  8 January 2016 10:56:34 AM
+ * Triangles.java  v0.5  8 January 2016 10:56:34 AM
  *
  * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
  */
@@ -12,12 +12,12 @@ import org.ikankechil.iota.indicators.pattern.Trendlines.TrendSlopes;
  *
  *
  * @author Daniel Kuan
- * @version 0.4
+ * @version 0.5
  */
 public abstract class Triangles extends SimpleBoundedPattern {
 
-  public Triangles(final int awayPoints, final double thresholdPercentage, final TrendSlopes upper, final TrendSlopes lower) {
-    this(awayPoints, thresholdPercentage, upper, lower, ENDPOINT_VICINITY);
+  public Triangles(final int awayPoints, final double breakoutThresholdPercentage, final double runawayThresholdPercentage, final TrendSlopes upper, final TrendSlopes lower) {
+    this(awayPoints, breakoutThresholdPercentage, runawayThresholdPercentage, upper, lower, ENDPOINT_VICINITY);
   }
 
   /**
@@ -25,14 +25,15 @@ public abstract class Triangles extends SimpleBoundedPattern {
    *
    *
    * @param awayPoints
-   * @param thresholdPercentage
+   * @param breakoutThresholdPercentage
+   * @param runawayThresholdPercentage
    * @param upper
    * @param lower
    * @param endpointVicinity number of OHLCV bars the heads and tails of the
    *          trendlines forming the triangle must be in the vicinity of
    */
-  public Triangles(final int awayPoints, final double thresholdPercentage, final TrendSlopes upper, final TrendSlopes lower, final int endpointVicinity) {
-    super(awayPoints, thresholdPercentage, upper, lower, endpointVicinity);
+  public Triangles(final int awayPoints, final double breakoutThresholdPercentage, final double runawayThresholdPercentage, final TrendSlopes upper, final TrendSlopes lower, final int endpointVicinity) {
+    super(awayPoints, breakoutThresholdPercentage, runawayThresholdPercentage, upper, lower, endpointVicinity);
   }
 
 }

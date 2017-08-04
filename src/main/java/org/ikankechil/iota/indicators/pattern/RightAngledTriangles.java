@@ -1,5 +1,5 @@
 /**
- * RightAngledTriangles.java  0.3  23 December 2016 12:49:31 PM
+ * RightAngledTriangles.java  v0.4  23 December 2016 12:49:31 PM
  *
  * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
  */
@@ -22,12 +22,12 @@ import org.ikankechil.iota.indicators.pattern.Trendlines.Trendline;
  * <li>http://thepatternsite.com/dt.html<br>
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 abstract class RightAngledTriangles extends Triangles {
 
-  public RightAngledTriangles(final int awayPoints, final double thresholdPercentage, final TrendSlopes upper, final TrendSlopes lower, final int endpointVicinity) {
-    super(awayPoints, thresholdPercentage, upper, lower, endpointVicinity);
+  public RightAngledTriangles(final int awayPoints, final double breakoutThresholdPercentage, final double runawayThresholdPercentage, final TrendSlopes upper, final TrendSlopes lower, final int endpointVicinity) {
+    super(awayPoints, breakoutThresholdPercentage, runawayThresholdPercentage, upper, lower, endpointVicinity);
     if (FLAT != upper && FLAT != lower) {
       throw new IllegalArgumentException();
     }

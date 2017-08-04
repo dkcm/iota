@@ -1,5 +1,5 @@
 /**
- * SymmetricalTriangles.java  v0.2  5 January 2017 10:08:06 pm
+ * SymmetricalTriangles.java  v0.3  5 January 2017 10:08:06 pm
  *
  * Copyright © 2017 Daniel Kuan.  All rights reserved.
  */
@@ -23,16 +23,16 @@ import org.ikankechil.iota.indicators.pattern.Trendlines.Trendline;
  *
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class SymmetricalTriangles extends Triangles {
 
-  public SymmetricalTriangles(final int awayPoints, final double thresholdPercentage) {
-    this(awayPoints, thresholdPercentage, ENDPOINT_VICINITY);
+  public SymmetricalTriangles(final int awayPoints, final double breakoutThresholdPercentage, final double runawayThresholdPercentage) {
+    this(awayPoints, breakoutThresholdPercentage, runawayThresholdPercentage, ENDPOINT_VICINITY);
   }
 
-  public SymmetricalTriangles(final int awayPoints, final double thresholdPercentage, final int endpointVicinity) {
-    super(awayPoints, thresholdPercentage, DOWN, UP, endpointVicinity);
+  public SymmetricalTriangles(final int awayPoints, final double breakoutThresholdPercentage, final double runawayThresholdPercentage, final int endpointVicinity) {
+    super(awayPoints, breakoutThresholdPercentage, runawayThresholdPercentage, DOWN, UP, endpointVicinity);
   }
 
   @Override

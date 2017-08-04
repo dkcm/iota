@@ -36,7 +36,7 @@ public class DowntrendChannelsTest extends AbstractIndicatorTest {
 
   @Override
   public Indicator newInstance() {
-    return new DowntrendChannels(DEFAULT_AWAY_POINTS, DEFAULT_THRESHOLD);
+    return new DowntrendChannels(DEFAULT_AWAY_POINTS, DEFAULT_THRESHOLD, Double.POSITIVE_INFINITY);
   }
 
 }

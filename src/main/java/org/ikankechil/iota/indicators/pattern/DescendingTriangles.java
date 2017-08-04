@@ -1,5 +1,5 @@
 /**
- * DescendingTriangles.java  0.3  23 December 2016 2:58:28 PM
+ * DescendingTriangles.java  v0.4  23 December 2016 2:58:28 PM
  *
  * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
  */
@@ -22,16 +22,16 @@ import org.ikankechil.iota.indicators.pattern.Trendlines.Trendline;
  *
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class DescendingTriangles extends RightAngledTriangles {
 
-  public DescendingTriangles(final int awayPoints, final double thresholdPercentage) {
-    this(awayPoints, thresholdPercentage, ENDPOINT_VICINITY);
+  public DescendingTriangles(final int awayPoints, final double breakoutThresholdPercentage, final double runawayThresholdPercentage) {
+    this(awayPoints, breakoutThresholdPercentage, runawayThresholdPercentage, ENDPOINT_VICINITY);
   }
 
-  public DescendingTriangles(final int awayPoints, final double thresholdPercentage, final int endpointVicinity) {
-    super(awayPoints, thresholdPercentage, DOWN, FLAT, endpointVicinity);
+  public DescendingTriangles(final int awayPoints, final double breakoutThresholdPercentage, final double runawayThresholdPercentage, final int endpointVicinity) {
+    super(awayPoints, breakoutThresholdPercentage, runawayThresholdPercentage, DOWN, FLAT, endpointVicinity);
   }
 
   @Override

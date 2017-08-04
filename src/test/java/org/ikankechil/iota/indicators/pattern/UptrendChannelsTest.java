@@ -36,7 +36,7 @@ public class UptrendChannelsTest extends AbstractIndicatorTest {
 
   @Override
   public Indicator newInstance() {
-    return new UptrendChannels(DEFAULT_AWAY_POINTS, DEFAULT_THRESHOLD);
+    return new UptrendChannels(DEFAULT_AWAY_POINTS, DEFAULT_THRESHOLD, Double.POSITIVE_INFINITY);
   }
 
 }

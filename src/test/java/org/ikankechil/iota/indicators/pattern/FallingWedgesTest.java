@@ -36,7 +36,7 @@ public class FallingWedgesTest extends AbstractIndicatorTest {
 
   @Override
   public Indicator newInstance() {
-    return new FallingWedges(DEFAULT_AWAY_POINTS, DEFAULT_THRESHOLD);
+    return new FallingWedges(DEFAULT_AWAY_POINTS, DEFAULT_THRESHOLD, Double.POSITIVE_INFINITY);
   }
 
 }

@@ -1,5 +1,5 @@
 /**
- * SimpleBoundedPattern.java  v0.2  7 June 2017 11:03:23 pm
+ * SimpleBoundedPattern.java  v0.3  7 June 2017 11:03:23 pm
  *
  * Copyright © 2017 Daniel Kuan.  All rights reserved.
  */
@@ -27,7 +27,7 @@ import org.ikankechil.iota.indicators.pattern.Trendlines.Trendline;
  *
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public abstract class SimpleBoundedPattern extends AbstractIndicator {
 
@@ -45,12 +45,13 @@ public abstract class SimpleBoundedPattern extends AbstractIndicator {
    *
    *
    * @param awayPoints
-   * @param thresholdPercentage
+   * @param breakoutThresholdPercentage
+   * @param runawayThresholdPercentage
    * @param upper upper trendline's slope
    * @param lower lower trendline's slope
    */
-  public SimpleBoundedPattern(final int awayPoints, final double thresholdPercentage, final TrendSlopes upper, final TrendSlopes lower) {
-    this(awayPoints, thresholdPercentage, upper, lower, ENDPOINT_VICINITY);
+  public SimpleBoundedPattern(final int awayPoints, final double breakoutThresholdPercentage, final double runawayThresholdPercentage, final TrendSlopes upper, final TrendSlopes lower) {
+    this(awayPoints, breakoutThresholdPercentage, runawayThresholdPercentage, upper, lower, ENDPOINT_VICINITY);
   }
 
   /**
@@ -58,15 +59,17 @@ public abstract class SimpleBoundedPattern extends AbstractIndicator {
    *
    *
    * @param awayPoints
-   * @param thresholdPercentage
+   * @param breakoutThresholdPercentage
+   * @param runawayThresholdPercentage
    * @param upper upper trendline's slope
    * @param lower lower trendline's slope
    * @param endpointVicinity number of OHLCV bars the heads and tails of the
    *          trendlines forming the pattern must be in the vicinity of
    */
-  public SimpleBoundedPattern(final int awayPoints, final double thresholdPercentage, final TrendSlopes upper, final TrendSlopes lower, final int endpointVicinity) {
+  public SimpleBoundedPattern(final int awayPoints, final double breakoutThresholdPercentage, final double runawayThresholdPercentage, final TrendSlopes upper, final TrendSlopes lower, final int endpointVicinity) {
     this(new Trendlines(awayPoints,
-                        thresholdPercentage,
+                        breakoutThresholdPercentage,
+                        runawayThresholdPercentage,
                         upper,
                         lower),
          endpointVicinity);

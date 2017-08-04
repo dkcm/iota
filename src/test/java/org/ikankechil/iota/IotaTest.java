@@ -15,6 +15,7 @@ import java.util.List;
 
 import org.ikankechil.iota.indicators.Indicator;
 import org.ikankechil.iota.strategies.Strategy;
+import org.ikankechil.iota.strategies.pattern.TrendlineBreakout;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -37,6 +38,24 @@ public class IotaTest {
 
   private static final File   DIRECTORY  = new File(".//./src/test/resources/" + IotaTest.class.getSimpleName());
   private static final File   OHLCV_FILE = new File(DIRECTORY, "SPY_20001220-20161206_w.csv");
+
+  private static final String INDICATORS = "Indicators";
+
+  public static void main(final String... arguments) throws IOException, InterruptedException {
+    final File indicatorDirectory = new File(INDICATORS);
+    if (!indicatorDirectory.exists()) {
+      indicatorDirectory.mkdir();
+    }
+    final Iota iota = new Iota(indicatorDirectory);
+    iota.generateSignals(new File("../EOD3/Morningstar/"),
+                         Arrays.asList(new TrendlineBreakout(5, 3))
+//                         Arrays.asList(new TrendMomentumVolumeCrossover(),
+//                                       new PPOCrossover(10),
+//                                       new LaguerreRSICrossover(),
+//                                       new ChaikinOscillatorZeroLineCrossover())
+                         );
+    iota.stop();
+  }
 
   @BeforeClass
   public static void setUpBeforeClass() throws Exception {

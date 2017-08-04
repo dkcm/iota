@@ -36,7 +36,7 @@ public class AscendingTrianglesTest extends AbstractIndicatorTest {
 
   @Override
   public Indicator newInstance() {
-    return new AscendingTriangles(DEFAULT_AWAY_POINTS, DEFAULT_THRESHOLD);
+    return new AscendingTriangles(DEFAULT_AWAY_POINTS, DEFAULT_THRESHOLD, Double.POSITIVE_INFINITY);
   }
 
 }

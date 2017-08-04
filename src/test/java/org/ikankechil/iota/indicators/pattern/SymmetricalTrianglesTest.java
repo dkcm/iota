@@ -36,7 +36,7 @@ public class SymmetricalTrianglesTest extends AbstractIndicatorTest {
 
   @Override
   public Indicator newInstance() {
-    return new SymmetricalTriangles(DEFAULT_AWAY_POINTS, DEFAULT_THRESHOLD);
+    return new SymmetricalTriangles(DEFAULT_AWAY_POINTS, DEFAULT_THRESHOLD, Double.POSITIVE_INFINITY);
   }
 
 }

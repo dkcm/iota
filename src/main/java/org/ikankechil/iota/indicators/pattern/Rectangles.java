@@ -1,5 +1,5 @@
 /**
- * Rectangles.java  v0.1  15 June 2017 10:06:49 pm
+ * Rectangles.java  v0.2  15 June 2017 10:06:49 pm
  *
  * Copyright © 2017 Daniel Kuan.  All rights reserved.
  */
@@ -19,16 +19,16 @@ import static org.ikankechil.iota.indicators.pattern.Trendlines.TrendSlopes.*;
  *
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class Rectangles extends Channels {
 
-  public Rectangles(final int awayPoints, final double thresholdPercentage) {
-    this(awayPoints, thresholdPercentage, ENDPOINT_VICINITY);
+  public Rectangles(final int awayPoints, final double breakoutThresholdPercentage, final double runawayThresholdPercentage) {
+    this(awayPoints, breakoutThresholdPercentage, runawayThresholdPercentage, ENDPOINT_VICINITY);
   }
 
-  public Rectangles(final int awayPoints, final double thresholdPercentage, final int endpointVicinity) {
-    super(awayPoints, thresholdPercentage, FLAT, endpointVicinity);
+  public Rectangles(final int awayPoints, final double breakoutThresholdPercentage, final double runawayThresholdPercentage, final int endpointVicinity) {
+    super(awayPoints, breakoutThresholdPercentage, runawayThresholdPercentage, FLAT, endpointVicinity);
   }
 
 }

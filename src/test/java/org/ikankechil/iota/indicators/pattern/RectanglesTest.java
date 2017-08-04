@@ -36,7 +36,7 @@ public class RectanglesTest extends AbstractIndicatorTest {
 
   @Override
   public Indicator newInstance() {
-    return new Rectangles(DEFAULT_AWAY_POINTS, DEFAULT_THRESHOLD);
+    return new Rectangles(DEFAULT_AWAY_POINTS, DEFAULT_THRESHOLD, Double.POSITIVE_INFINITY);
   }
 
 }

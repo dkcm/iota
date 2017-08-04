@@ -85,8 +85,8 @@ public abstract class AbstractIndicator implements Indicator {
   protected static final double QUARTER         = 0.25;
   protected static final double THIRD           = ONE / (double) THREE;
   protected static final double HALF            = 0.5;
-  protected static final double TWO_THIRDS      = THIRD * TWO;
-  protected static final double THREE_QUARTERS  = QUARTER * THREE;
+  protected static final double TWO_THIRDS      = TWO * THIRD;
+  protected static final double THREE_QUARTERS  = THREE * QUARTER;
   protected static final double FIFTY_PERCENT   = 50.0;
   protected static final double HUNDRED_PERCENT = 100.0;
 
