@@ -1,5 +1,5 @@
 /**
- * TrendlineBreakout.java  v0.6  22 September 2016 9:33:52 am
+ * TrendlineBreakout.java  v0.7  22 September 2016 9:33:52 am
  *
  * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
  */
@@ -15,6 +15,7 @@ import org.ikankechil.iota.Signal;
 import org.ikankechil.iota.SignalTimeSeries;
 import org.ikankechil.iota.TimeSeries;
 import org.ikankechil.iota.TrendlineTimeSeries;
+import org.ikankechil.iota.indicators.pattern.SimpleBoundedPattern;
 import org.ikankechil.iota.indicators.pattern.Trendlines;
 import org.ikankechil.iota.indicators.pattern.Trendlines.Trendline;
 import org.ikankechil.iota.strategies.AbstractStrategy;
@@ -28,53 +29,49 @@ import org.slf4j.LoggerFactory;
  * Sells when lows break down from up trendlines (from above)<br>
  *
  * @author Daniel Kuan
- * @version 0.6
+ * @version 0.7
  */
 public class TrendlineBreakout extends AbstractStrategy {
 
-  private final SignalGenerator buyer  = new SignalGenerator(BUY, ZERO) {
+  private static final Logger logger = LoggerFactory.getLogger(TrendlineBreakout.class);
 
-    @Override
-    boolean execute(final double fastYesterday,
-                    final double slowYesterday,
-                    final double fastToday,
-                    final double slowToday) {
-      // highs crosses over down trendlines from below
-      return buy(fastYesterday, slowYesterday, fastToday, slowToday);
-    }
-
-    @Override
-    double[] getFasts(final OHLCVTimeSeries ohlcv) {
-      return ohlcv.highs();
-    }
-
-  };
-  private final SignalGenerator seller = new SignalGenerator(SELL, ONE) {
-
-    @Override
-    boolean execute(final double fastYesterday,
-                    final double slowYesterday,
-                    final double fastToday,
-                    final double slowToday) {
-      // lows crosses under up trendlines from above
-      return sell(fastYesterday, slowYesterday, fastToday, slowToday);
-    }
-
-    @Override
-    double[] getFasts(final OHLCVTimeSeries ohlcv) {
-      return ohlcv.lows();
-    }
-
-  };
-
-  private static final Logger   logger = LoggerFactory.getLogger(TrendlineBreakout.class);
-
-  public TrendlineBreakout(final int awayPoints, final double thresholdPercentage) {
-    this(new Trendlines(awayPoints, thresholdPercentage));
+  /**
+   *
+   *
+   * @param awayPoints
+   * @param breakoutThresholdPercentage
+   */
+  public TrendlineBreakout(final int awayPoints, final double breakoutThresholdPercentage) {
+    this(new Trendlines(awayPoints, breakoutThresholdPercentage));
   }
 
+  /**
+   *
+   *
+   * @param awayPoints
+   * @param breakoutThresholdPercentage
+   * @param runawayThresholdPercentage
+   */
+  public TrendlineBreakout(final int awayPoints, final double breakoutThresholdPercentage, final double runawayThresholdPercentage) {
+    this(new Trendlines(awayPoints, breakoutThresholdPercentage, runawayThresholdPercentage));
+  }
+
+  /**
+   *
+   *
+   * @param trendlines
+   */
   public TrendlineBreakout(final Trendlines trendlines) {
     super(trendlines);
+  }
+
+  /**
+   *
+   *
+   * @param pattern
+   */
+  public TrendlineBreakout(final SimpleBoundedPattern pattern) {
+    super(pattern);
   }
 
   @Override
@@ -106,34 +103,70 @@ public class TrendlineBreakout extends AbstractStrategy {
                                      final OHLCVTimeSeries ohlcv,
                                      final List<List<TimeSeries>> indicatorValues) {
     final List<TimeSeries> trends = indicatorValues.get(ZERO);
-    buyer.generateSignals(signals, ohlcv, trends);
-    seller.generateSignals(signals, ohlcv, trends);
+    SignalGenerators.BUYER.generateSignals(signals, ohlcv, trends);
+    SignalGenerators.SELLER.generateSignals(signals, ohlcv, trends);
   }
 
   @Override
   protected boolean buy(final double... doubles) {
-    return crossover(doubles[ZERO], doubles[ONE], doubles[TWO], doubles[THREE]);
+    return false;
   }
 
   @Override
   protected boolean sell(final double... doubles) {
-    return crossunder(doubles[ZERO], doubles[ONE], doubles[TWO], doubles[THREE]);
+    return false;
   }
 
-  private abstract static class SignalGenerator {
+  private enum SignalGenerators {
+    BUYER(BUY, ZERO) {
+
+      @Override
+      boolean execute(final double fastYesterday,
+                      final double slowYesterday,
+                      final double fastToday,
+                      final double slowToday) {
+        // highs crosses over down trendlines from below
+        return crossover(fastYesterday, slowYesterday, fastToday, slowToday);
+      }
+
+      @Override
+      double[] getFasts(final OHLCVTimeSeries ohlcv) {
+        return ohlcv.highs();
+      }
+
+    },
+    SELLER(SELL, ONE) {
+
+      @Override
+      boolean execute(final double fastYesterday,
+                      final double slowYesterday,
+                      final double fastToday,
+                      final double slowToday) {
+        // lows crosses under up trendlines from above
+        return crossunder(fastYesterday, slowYesterday, fastToday, slowToday);
+      }
+
+      @Override
+      double[] getFasts(final OHLCVTimeSeries ohlcv) {
+        return ohlcv.lows();
+      }
+
+    };
 
     private final Signal signal;
-    private final int    timeSeriesIndex;
+    private final int    slowTrendsTimeSeriesIndex;
 
-    SignalGenerator(final Signal signal, final int timeSeriesIndex) {
+    SignalGenerators(final Signal signal, final int slowTrendsTimeSeriesIndex) {
       this.signal = signal;
-      this.timeSeriesIndex = timeSeriesIndex;
+      this.slowTrendsTimeSeriesIndex = slowTrendsTimeSeriesIndex;
     }
 
     public void generateSignals(final SignalTimeSeries signals,
                                 final OHLCVTimeSeries ohlcv,
                                 final List<TimeSeries> trends) {
       final String ohlcvName = ohlcv.toString();
+
+      // prices move faster than their trendlines
       final double[] fasts = getFasts(ohlcv);
       final TrendlineTimeSeries slowTrends = getSlowTrends(trends);
       final List<Trendline> slowTrendlines = slowTrends.trendlines();
@@ -190,7 +223,7 @@ public class TrendlineBreakout extends AbstractStrategy {
     abstract double[] getFasts(final OHLCVTimeSeries ohlcv);
 
     TrendlineTimeSeries getSlowTrends(final List<? extends TimeSeries> trends) {
-      return (TrendlineTimeSeries) trends.get(timeSeriesIndex);
+      return (TrendlineTimeSeries) trends.get(slowTrendsTimeSeriesIndex);
     }
 
   }
