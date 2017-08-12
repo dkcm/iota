@@ -1,7 +1,7 @@
 /**
- * LaguerreRSITest.java  v0.1  18 September 2016 11:49:06 pm
+ * LaguerreRSITest.java  v0.2  18 September 2016 11:49:06 pm
  *
- * Copyright © 2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.momentum;
 
@@ -16,12 +16,14 @@ import org.junit.BeforeClass;
  *
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class LaguerreRSITest extends AbstractIndicatorTest {
 
+  private static final int DEFAULT_LOOKBACK = 4;
+
   public LaguerreRSITest() {
-    super(4);
+    super(DEFAULT_LOOKBACK);
   }
 
   @BeforeClass

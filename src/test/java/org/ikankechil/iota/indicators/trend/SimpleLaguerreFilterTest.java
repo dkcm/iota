@@ -1,5 +1,5 @@
 /**
- * SimpleLaguerreFilterTest.java  v0.1  13 May 2017 11:16:45 pm
+ * SimpleLaguerreFilterTest.java  v0.2  13 May 2017 11:16:45 pm
  *
  * Copyright © 2017 Daniel Kuan.  All rights reserved.
  */
@@ -11,17 +11,19 @@ import org.ikankechil.iota.indicators.AbstractIndicatorTest;
 import org.junit.BeforeClass;
 
 /**
- *
+ * JUnit test for <code>SimpleLaguerreFilter</code>.
  *
  *
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class SimpleLaguerreFilterTest extends AbstractIndicatorTest {
 
+  private static final int DEFAULT_LOOKBACK = 4;
+
   public SimpleLaguerreFilterTest() {
-    super(4);
+    super(DEFAULT_LOOKBACK);
   }
 
   @BeforeClass
