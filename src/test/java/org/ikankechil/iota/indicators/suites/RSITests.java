@@ -5,6 +5,7 @@
  */
 package org.ikankechil.iota.indicators.suites;
 
+import org.ikankechil.iota.indicators.momentum.AsymmetricalRSITest;
 import org.ikankechil.iota.indicators.momentum.DMITest;
 import org.ikankechil.iota.indicators.momentum.DerivativeOscillatorTest;
 import org.ikankechil.iota.indicators.momentum.KRITest;
@@ -25,7 +26,7 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({
   RSITest.class,
-//  AsymmetricalRSITest.class,
+  AsymmetricalRSITest.class,
   LaguerreRSITest.class,
   SelfAdjustingRSITest.class,
   SlowRSITest.class,
