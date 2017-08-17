@@ -420,6 +420,15 @@ public abstract class AbstractIndicator implements Indicator {
     return sums;
   }
 
+  protected static final double sum(final double[] doubles, final int from, final int to) {
+    int i = from;
+    double sum = doubles[i];
+    while (++i < to) {
+      sum += doubles[i];
+    }
+    return sum;
+  }
+
   protected static final double[] square(final double... doubles) {
     final double[] doublesSquared = Arrays.copyOf(doubles, doubles.length);
     for (int i = ZERO; i < doublesSquared.length; ++i) {
