@@ -1,7 +1,7 @@
 /**
- * Strategy.java  v0.3  7 November 2014 7:03:57 PM
+ * Strategy.java  v0.4  7 November 2014 7:03:57 PM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.strategies;
 
@@ -13,9 +13,9 @@ import org.ikankechil.iota.SignalTimeSeries;
  *
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
-public interface Strategy {
+public interface Strategy extends Comparable<Strategy> {
 
   public static final int    MAX_LOOKBACK = Integer.MAX_VALUE;
 

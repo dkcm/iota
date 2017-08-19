@@ -258,4 +258,9 @@ public class CompositeStrategy implements Strategy {
     }
   }
 
+  @Override
+  public int compareTo(final Strategy o) {
+    return name.compareTo(o.toString());
+  }
+
 }

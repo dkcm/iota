@@ -1,5 +1,5 @@
 /**
- * AbstractStrategy.java  v0.3  10 November 2014 3:51:20 PM
+ * AbstractStrategy.java  v0.4  10 November 2014 3:51:20 PM
  *
  * Copyright © 2014-2017 Daniel Kuan.  All rights reserved.
  */
@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
  * Abstract superclass for all trading strategies.
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public abstract class AbstractStrategy implements Strategy {
 
@@ -219,5 +219,20 @@ public abstract class AbstractStrategy implements Strategy {
     return (fastYesterday > slowYesterday) && (fastToday < slowToday);
   }
   // TODO support 2-value lookback when determining buy / sell signal?
+
+  protected static final void throwExceptionIfNegative(final Number... parameters) {
+    for (int i = ZERO; i < parameters.length; ++i) {
+      if (parameters[i].doubleValue() < 0d) {
+        throw new IllegalArgumentException(String.format("Negative parameter: index = %d, value = %d",
+                                                         i,
+                                                         parameters[i]));
+      }
+    }
+  }
+
+  @Override
+  public int compareTo(final Strategy o) {
+    return name.compareTo(o.toString());
+  }
 
 }

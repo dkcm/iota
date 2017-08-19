@@ -1,7 +1,7 @@
 /**
- * BollingerBands.java  v0.2  4 December 2014 12:26:06 PM
+ * BollingerBands.java  v0.3  4 December 2014 12:26:06 PM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.volatility;
 
@@ -16,16 +16,15 @@ import org.ikankechil.iota.indicators.Indicator;
 /**
  * Bollinger Bands by John Bollinger
  *
- * <p><a href="http://www.bollingerbands.com/services/bb/">Bollinger Bands Tutorial</a><br>
- * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:bollinger_bands<br>
+ * <p>References:
+ * <li><a href="http://www.bollingerbands.com/services/bb/">Bollinger Bands Tutorial</a><br>
+ * <li>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:bollinger_bands<br>
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class BollingerBands extends AbstractIndicator {
 
-//  private final double        stdDevUpper;
-//  private final double        stdDevLower;
   private final Indicator     stdDevUpper;
   private final Indicator     stdDevLower;
 
@@ -59,8 +58,6 @@ public class BollingerBands extends AbstractIndicator {
     throwExceptionIfNegative(stdDevUpper, stdDevLower);
 
     // standard deviation multipliers for the upper and lower bands
-//    this.stdDevUpper = stdDevUpper;
-//    this.stdDevLower = stdDevLower;
     this.stdDevUpper = new StandardDeviation(period, stdDevUpper);
     this.stdDevLower = (stdDevUpper == stdDevLower) ?
                        this.stdDevUpper :
@@ -88,7 +85,7 @@ public class BollingerBands extends AbstractIndicator {
 
     for (int i = ZERO; i < middleBand.length; ++i) {
       final double middle = middleBand[i];
-      upperBand[i] = middle + upperBand[i];
+      upperBand[i] += middle;
       lowerBand[i] = middle - lowerBand[i];
     }
 
@@ -99,39 +96,5 @@ public class BollingerBands extends AbstractIndicator {
                          new TimeSeries(MIDDLE_BAND, dates, middleBand),
                          new TimeSeries(LOWER_BAND, dates, lowerBand));
   }
-
-//  @Override
-//  public List<TimeSeries> generate(final TimeSeries series) {
-//    throwExceptionIfShort(series);
-//    final int size = series.size();
-//
-//    final MInteger outBegIdx = new MInteger();
-//    final MInteger outNBElement = new MInteger();
-//
-//    final double[] outRealUpperBand = new double[size - lookback];
-//    final double[] outRealMiddleBand = new double[outRealUpperBand.length];
-//    final double[] outRealLowerBand = new double[outRealUpperBand.length];
-//
-//    final RetCode outcome = TA_LIB.bbands(ZERO,
-//                                          size - ONE,
-//                                          series.values(),
-//                                          period,
-//                                          stdDevUpper,
-//                                          stdDevLower,
-//                                          MAType.Sma,
-//                                          outBegIdx,
-//                                          outNBElement,
-//                                          outRealUpperBand,
-//                                          outRealMiddleBand,
-//                                          outRealLowerBand);
-//    throwExceptionIfBad(outcome, series);
-//
-//    final String[] dates = Arrays.copyOfRange(series.dates(), lookback, size);
-//
-//    logger.info(GENERATED_FOR, name, series);
-//    return Arrays.asList(new TimeSeries(UPPER_BAND, dates, outRealUpperBand),
-//                         new TimeSeries(MIDDLE_BAND, dates, outRealMiddleBand),
-//                         new TimeSeries(LOWER_BAND, dates, outRealLowerBand));
-//  }
 
 }

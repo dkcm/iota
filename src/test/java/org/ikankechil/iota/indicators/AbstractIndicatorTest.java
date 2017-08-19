@@ -102,7 +102,7 @@ public abstract class AbstractIndicatorTest {
   public AbstractIndicatorTest(final int lookback) {
     this.lookback = lookback;
     try {
-      classUnderTest = (Class<Indicator>) Class.forName(TEST_CLASS.getName().replace(TEST, EMPTY));
+      classUnderTest = (Class<Indicator>) Class.forName(this.getClass().getName().replace(TEST, EMPTY));
     }
     catch (final ClassNotFoundException cnfE) {
       fail("Class under test not found: " + classUnderTest);

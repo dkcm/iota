@@ -1,7 +1,7 @@
 /**
- * Crossover.java  v0.4  24 November 2014 11:11:43 pm
+ * Crossover.java  v0.5  24 November 2014 11:11:43 pm
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.strategies;
 
@@ -27,12 +27,14 @@ import org.slf4j.LoggerFactory;
  *
  *
  * @author Daniel Kuan
- * @version 0.4
+ * @version 0.5
  */
 public class Crossover extends AbstractStrategy {
 
-  private final int           fastIndex;
-  private final int           slowIndex;
+  private final int           fastBuyIndex;
+  private final int           slowBuyIndex;
+  private final int           fastSellIndex;
+  private final int           slowSellIndex;
 
   private static final Logger logger = LoggerFactory.getLogger(Crossover.class);
 
@@ -41,13 +43,20 @@ public class Crossover extends AbstractStrategy {
   }
 
   public Crossover(final Indicator indicator, final int fastIndex, final int slowIndex) {
+    this(indicator, fastIndex, slowIndex, fastIndex, slowIndex);
+  }
+
+  public Crossover(final Indicator indicator, final int fastBuyIndex, final int slowBuyIndex, final int fastSellIndex, final int slowSellIndex) {
     super(indicator);
-    if (fastIndex < ZERO || slowIndex < ZERO || fastIndex == slowIndex) {
+    throwExceptionIfNegative(fastBuyIndex, slowBuyIndex, fastSellIndex, slowSellIndex);
+    if (fastBuyIndex == slowBuyIndex || fastSellIndex == slowSellIndex) {
       throw new IllegalArgumentException();
     }
 
-    this.fastIndex = fastIndex;
-    this.slowIndex = slowIndex;
+    this.fastBuyIndex = fastBuyIndex;
+    this.slowBuyIndex = slowBuyIndex;
+    this.fastSellIndex = fastSellIndex;
+    this.slowSellIndex = slowSellIndex;
   }
 
   public Crossover(final Indicator fast, final Indicator slow) {
@@ -55,10 +64,17 @@ public class Crossover extends AbstractStrategy {
   }
 
   public Crossover(final Indicator fast, final Indicator slow, final int fastIndex, final int slowIndex) {
-    super(fast, slow);
+    this(fast, slow, fastIndex, slowIndex, fastIndex, slowIndex);
+  }
 
-    this.fastIndex = fastIndex;
-    this.slowIndex = slowIndex;
+  public Crossover(final Indicator fast, final Indicator slow, final int fastBuyIndex, final int slowBuyIndex, final int fastSellIndex, final int slowSellIndex) {
+    super(fast, slow);
+    throwExceptionIfNegative(fastBuyIndex, slowBuyIndex, fastSellIndex, slowSellIndex);
+
+    this.fastBuyIndex = fastBuyIndex;
+    this.slowBuyIndex = slowBuyIndex;
+    this.fastSellIndex = fastSellIndex;
+    this.slowSellIndex = slowSellIndex;
   }
 
   @Override
@@ -68,19 +84,25 @@ public class Crossover extends AbstractStrategy {
     final String ohlcvName = ohlcv.toString();
 
     // indicator fast and slow components
-    final TimeSeries fast;
-    final TimeSeries slow;
+    final TimeSeries fastBuy;
+    final TimeSeries slowBuy;
+    final TimeSeries fastSell;
+    final TimeSeries slowSell;
     if (indicators.size() > ONE) {
-      fast = indicatorValues.get(ZERO).get(fastIndex);
-      slow = indicatorValues.get(ONE).get(slowIndex);
+      final List<TimeSeries> fasts = indicatorValues.get(ZERO);
+      fastBuy = fasts.get(fastBuyIndex);
+      fastSell = fasts.get(fastSellIndex);
+      final List<TimeSeries> slows = indicatorValues.get(ONE);
+      slowBuy = slows.get(slowBuyIndex);
+      slowSell = slows.get(slowSellIndex);
     }
     else {
       final List<TimeSeries> indicatorComponents = indicatorValues.get(ZERO);
-      fast = indicatorComponents.get(fastIndex);
-      slow = indicatorComponents.get(slowIndex);
+      fastBuy = fastSell = indicatorComponents.get(fastBuyIndex);
+      slowBuy = slowSell = indicatorComponents.get(slowBuyIndex);
     }
 
-    final int size = fast.size();
+    final int size = fastBuy.size();
 
     // initialise
     int today;
@@ -95,27 +117,31 @@ public class Crossover extends AbstractStrategy {
       signals = new SignalTimeSeries(toString(), lookback);
       logger.debug("Lookback ({}) < indicator size ({})", lookback, size);
     }
-    double fastYesterday = fast.value(today);
-    double slowYesterday = slow.value(today);
+    double fastBuyYesterday = fastBuy.value(today);
+    double slowBuyYesterday = slowBuy.value(today);
+    double fastSellYesterday = fastSell.value(today);
+    double slowSellYesterday = slowSell.value(today);
 
     // generate signals
     for (int s = ZERO, c = (today + ONE + ohlcv.size() - size);
          ++today < size;
          ++s, ++c) {
-      final double fastToday = fast.value(today);
-      final double slowToday = slow.value(today);
+      final double fastBuyToday = fastBuy.value(today);
+      final double slowBuyToday = slowBuy.value(today);
+      final double fastSellToday = fastSell.value(today);
+      final double slowSellToday = slowSell.value(today);
 
-      final String date = fast.date(today);
+      final String date = fastBuy.date(today);
       final double close = ohlcv.close(c);
 
       final Signal signal;
       // fast indicator crosses over the slow indicator from below
-      if (buy(fastYesterday, slowYesterday, fastToday, slowToday)) {
+      if (buy(fastBuyYesterday, slowBuyYesterday, fastBuyToday, slowBuyToday)) {
         signal = BUY;
         logger.info(TRADE_SIGNAL, signal, ohlcvName, date, close);
       }
       // fast indicator crosses under the slow indicator from above
-      else if (sell(fastYesterday, slowYesterday, fastToday, slowToday)) {
+      else if (sell(fastSellYesterday, slowSellYesterday, fastSellToday, slowSellToday)) {
         signal = SELL;
         logger.info(TRADE_SIGNAL, signal, ohlcvName, date, close);
       }
@@ -126,8 +152,10 @@ public class Crossover extends AbstractStrategy {
       signals.set(date, signal, s);
 
       // shift forward
-      fastYesterday = fastToday;
-      slowYesterday = slowToday;
+      fastBuyYesterday = fastBuyToday;
+      slowBuyYesterday = slowBuyToday;
+      fastSellYesterday = fastSellToday;
+      slowSellYesterday = slowSellToday;
     }
 
     return signals;
@@ -147,7 +175,7 @@ public class Crossover extends AbstractStrategy {
   public String toString() {
     String strategyName;
     if (indicators.size() > ONE) {
-      strategyName = indicators.get(fastIndex) + " x " + indicators.get(slowIndex) + SPACE;
+      strategyName = indicators.get(ZERO) + " x " + indicators.get(ONE) + SPACE;
     }
     else {
       strategyName = indicators.get(ZERO) + SPACE;

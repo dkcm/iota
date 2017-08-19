@@ -426,6 +426,11 @@ public class CompositeStrategyTest {
 
     abstract void populateSignals(final SignalTimeSeries signals);
 
+    @Override
+    public int compareTo(final Strategy o) {
+      return ZERO;
+    }
+
   }
 
 }
