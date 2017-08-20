@@ -1,5 +1,5 @@
 /**
- * LinearRegression.java  v0.2  10 December 2014 10:24:29 AM
+ * LinearRegression.java  v0.3  10 December 2014 10:24:29 AM
  *
  * Copyright © 2014-2017 Daniel Kuan.  All rights reserved.
  */
@@ -18,7 +18,7 @@ import com.tictactec.ta.lib.RetCode;
  * <li>https://www.incrediblecharts.com/indicators/linear_regression_indicator.php<br>
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class LinearRegression extends AbstractIndicator {
 
@@ -65,15 +65,34 @@ public class LinearRegression extends AbstractIndicator {
       sumY += (values[i + lookback] - first);
       first = values[i];
 
-      final double m = (period * sumXY - sumX * sumY) * inverseDivisor;
-      final double c = (sumY - m * sumX) * inversePeriod;
-
-      output[i] = m * lookback + c;
+      output[i] = linearRegression(sumX, sumY, sumXY, inverseDivisor);
     }
 
     outBegIdx.value = lookback;
     outNBElement.value = output.length;
     return RetCode.Success;
+  }
+
+  protected double linearRegression(final double sumX,
+                                    final double sumY,
+                                    final double sumXY,
+                                    final double inverseDivisor) {
+    final double m = slope(sumX, sumY, sumXY, inverseDivisor);
+    final double c = intercept(sumX, sumY, m);
+    return m * lookback + c;
+  }
+
+  protected double slope(final double sumX,
+                         final double sumY,
+                         final double sumXY,
+                         final double inverseDivisor) {
+    return (period * sumXY - sumX * sumY) * inverseDivisor;
+  }
+
+  protected double intercept(final double sumX,
+                             final double sumY,
+                             final double m) {
+    return (sumY - m * sumX) * inversePeriod;
   }
 
 }

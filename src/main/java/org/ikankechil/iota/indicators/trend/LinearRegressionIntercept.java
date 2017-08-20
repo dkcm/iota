@@ -1,46 +1,37 @@
 /**
- * LinearRegressionIntercept.java  v0.1  5 January 2015 9:58:35 AM
+ * LinearRegressionIntercept.java  v0.2  5 January 2015 9:58:35 AM
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.trend;
 
-import org.ikankechil.iota.indicators.AbstractIndicator;
-
-import com.tictactec.ta.lib.MInteger;
-import com.tictactec.ta.lib.RetCode;
-
 /**
+ * Linear Regression Intercept
  *
  *
+ * <p>References:
+ * <li>https://www.incrediblecharts.com/indicators/linear_regression_indicator.php<br>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.7
  */
-public class LinearRegressionIntercept extends AbstractIndicator {
+public class LinearRegressionIntercept extends LinearRegression {
 
   public LinearRegressionIntercept() {
     this(FOURTEEN);
   }
 
   public LinearRegressionIntercept(final int period) {
-    super(period, TA_LIB.linearRegInterceptLookback(period));
+    super(period);
   }
 
   @Override
-  protected RetCode compute(final int start,
-                            final int end,
-                            final double[] values,
-                            final MInteger outBegIdx,
-                            final MInteger outNBElement,
-                            final double[] output) {
-    return TA_LIB.linearRegIntercept(start,
-                                     end,
-                                     values,
-                                     period,
-                                     outBegIdx,
-                                     outNBElement,
-                                     output);
+  protected double linearRegression(final double sumX,
+                                    final double sumY,
+                                    final double sumXY,
+                                    final double inverseDivisor) {
+    final double m = slope(sumX, sumY, sumXY, inverseDivisor);
+    return intercept(sumX, sumY, m);
   }
 
 }

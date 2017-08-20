@@ -1,46 +1,36 @@
 /**
- * LinearRegressionSlope.java  v0.1  20 December 2014 12:14:53 am
+ * LinearRegressionSlope.java  v0.2  20 December 2014 12:14:53 am
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.trend;
 
-import org.ikankechil.iota.indicators.AbstractIndicator;
-
-import com.tictactec.ta.lib.MInteger;
-import com.tictactec.ta.lib.RetCode;
-
 /**
+ * Linear Regression Slope
  *
  *
+ * <p>References:
+ * <li>https://www.incrediblecharts.com/indicators/linear_regression_indicator.php<br>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
-public class LinearRegressionSlope extends AbstractIndicator {
+public class LinearRegressionSlope extends LinearRegression {
 
   public LinearRegressionSlope() {
     this(FOURTEEN);
   }
 
   public LinearRegressionSlope(final int period) {
-    super(period, TA_LIB.linearRegSlopeLookback(period));
+    super(period);
   }
 
   @Override
-  protected RetCode compute(final int start,
-                            final int end,
-                            final double[] values,
-                            final MInteger outBegIdx,
-                            final MInteger outNBElement,
-                            final double[] output) {
-    return TA_LIB.linearRegSlope(start,
-                                 end,
-                                 values,
-                                 period,
-                                 outBegIdx,
-                                 outNBElement,
-                                 output);
+  protected double linearRegression(final double sumX,
+                                    final double sumY,
+                                    final double sumXY,
+                                    final double inverseDivisor) {
+    return slope(sumX, sumY, sumXY, inverseDivisor);
   }
 
 }
