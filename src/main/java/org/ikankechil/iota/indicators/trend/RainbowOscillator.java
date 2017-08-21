@@ -1,7 +1,7 @@
 /**
- * RainbowOscillator.java  v0.1  1 March 2015 5:57:35 pm
+ * RainbowOscillator.java  v0.2  1 March 2015 5:57:35 pm
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.trend;
 
@@ -10,27 +10,26 @@ import java.util.List;
 
 import org.ikankechil.iota.OHLCVTimeSeries;
 import org.ikankechil.iota.TimeSeries;
-
-import com.tictactec.ta.lib.MInteger;
-import com.tictactec.ta.lib.RetCode;
+import org.ikankechil.iota.indicators.MinimumMaximumPrice;
 
 /**
- * Rainbow Oscillator
+ * Rainbow Oscillator by Mel Widner
  *
- * <p>http://www.amibroker.com/library/detail.php?id=101<br>
+ * <p>References:
+ * <li>https://c.mql5.com/forextsd/forum/77/mel_widner_-_rainbow_charts.pdf<br>
+ * <li>https://c.forex-tsd.com/forum/64/rainbow_oscillator_-_formula.pdf<br>
+ * <li>https://c.mql5.com/forextsd/forum/64/rainbow_oscillator_-_formula.pdf<br>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
-class RainbowOscillator extends RainbowCharts {
+public class RainbowOscillator extends RainbowCharts {
 
-  private final int           minMaxLookback;
+  private final MinimumMaximumPrice minMax;
 
-  private static final int    MIN_MAX_PERIOD = TEN;
-
-  private static final String UPPER_BAND     = "Rainbow Upper Band";
-  private static final String MIDDLE_BAND    = "Rainbow Oscillator";
-  private static final String LOWER_BAND     = "Rainbow Lower Band";
+  private static final String       UPPER_BAND  = "Upper Rainbow Band";
+  private static final String       MIDDLE_BAND = "Rainbow Oscillator";
+  private static final String       LOWER_BAND  = "Lower Rainbow Band";
 
   public RainbowOscillator() {
     this(TWO);
@@ -39,48 +38,61 @@ class RainbowOscillator extends RainbowCharts {
   public RainbowOscillator(final int period) {
     super(period);
 
-    minMaxLookback = TA_LIB.minMaxLookback(MIN_MAX_PERIOD);
+    minMax = new MinimumMaximumPrice(lookback + ONE);
   }
 
   @Override
   public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
-    final List<TimeSeries> rainbow = super.generate(ohlcv);
+    // Formula:
+    // RANGEA = MAX(AVE1, AVE2, ..., AVE10) - MIN(AVE1, AVE2, ..., AVE10)
+    // RANGEC = MAX (CJ) - MIN (CJ)
+    // Rainbow bandwidth, RB = 100 * RANGEA / RANGEC
+    //
+    // AVEA = AVERAGE(AVE1, AVE2, ..., AVE10)
+    // Rainbow oscillator, RO = 100 * (C - AVEA) / RANGEC
+    //
+    // URB = RB
+    // LRB = -RB
 
     final int size = ohlcv.size();
     final double[] closes = ohlcv.closes();
 
-    // compute llv and hhv
-    final double[] llv = new double[size - minMaxLookback];
-    final double[] hhv = new double[llv.length];
-
-    final MInteger outBegIdx = new MInteger();
-    final MInteger outNBElement = new MInteger();
-
-    final RetCode outcome = TA_LIB.minMax(ZERO,
-                                          size - ONE,
-                                          closes,
-                                          MIN_MAX_PERIOD,
-                                          outBegIdx,
-                                          outNBElement,
-                                          llv,
-                                          hhv);
-    throwExceptionIfBad(outcome, ohlcv);
-
-    // compute indicator
-    final double[] indicator = new double[rainbow.get(ZERO).size()];
+    final double[] indicator = new double[size - lookback];
     final double[] upperBand = new double[indicator.length];
     final double[] lowerBand = new double[upperBand.length];
 
-    for (int i = ZERO, c = ZERO; i < indicator.length; ++i, ++c) {
-      final double max = ZERO; // TODO incomplete
-      final double min = ZERO;
-      final double range = HUNDRED_PERCENT / (hhv[c] - llv[c]);
+    final List<TimeSeries> cMinMaxs = minMax.generate(ohlcv);
+    final TimeSeries cMins = cMinMaxs.get(ZERO);
+    final TimeSeries cMaxs = cMinMaxs.get(ONE);
 
-      upperBand[i] = (max - min) * range;
-      lowerBand[i] = -upperBand[i];
+    final List<TimeSeries> rainbows = super.generate(ohlcv);
+    for (int i = ZERO, c = i + lookback; i < indicator.length; ++i, ++c) {
+      // compute rainbow max, min and average
+      double rMax = Double.NEGATIVE_INFINITY;
+      double rMin = Double.POSITIVE_INFINITY;
+      double rAverage = ZERO;
+      for (final TimeSeries rainbow : rainbows) {
+        final double value = rainbow.value(i);
+        if (value > rMax) {
+          rMax = value;
+        }
+        if (value < rMin) {
+          rMin = value;
+        }
+        rAverage += value;
+      }
+      rAverage /= rainbows.size();
 
-      final double ave = ZERO / TEN;
-      indicator[i] = (closes[c] - ave) * range;
+      // compute close range
+      final double cRange = cMaxs.value(i) - cMins.value(i);
+
+      // compute rainbow bandwidth and oscillator
+      final double rb = HUNDRED * (rMax - rMin) / cRange;
+      final double ro = HUNDRED * (closes[c] - rAverage) / cRange;
+
+      indicator[i] = ro;
+      upperBand[i] = rb;
+      lowerBand[i] = -rb;
     }
 
     final String[] dates = Arrays.copyOfRange(ohlcv.dates(), lookback, size);

@@ -18,7 +18,7 @@ import org.ikankechil.iota.indicators.Indicator;
  *
  * <p>References:
  * <li>https://www.forex-tsd.com/attachments/elite-section/108853d1286620402-elite-indicators-mel-widner-rainbow-charts.pdf<br>
- * <li>https://c.mql5.com/forextsd/forum/64/rainbow_oscillator_-_formula.pdf<br>
+ * <li>https://c.mql5.com/forextsd/forum/77/mel_widner_-_rainbow_charts.pdf<br>
  * <li>http://xa.yimg.com/kq/groups/16789226/301268564/name/192verv-1.pdf<br>
  * <li>ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V15/C07/RAINBOW.pdf<br>
  *
