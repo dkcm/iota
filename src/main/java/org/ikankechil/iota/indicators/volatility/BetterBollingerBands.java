@@ -1,7 +1,7 @@
 /**
- * BetterBollingerBands.java  v0.2  19 July 2015 12:45:34 am
+ * BetterBollingerBands.java  v0.3  19 July 2015 12:45:34 am
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2017 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.volatility;
 
@@ -15,11 +15,13 @@ import org.ikankechil.iota.indicators.AbstractIndicator;
 /**
  * Better Bollinger Bands by Dennis McNicholl
  *
- * <p>http://www.futuresmag.com/2010/04/30/fixing-bollinger-bands<br>
- * http://www.vantharp.com/Tharps-Thoughts/634_June_19_2013.html<br>
+ * <p>References:
+ * <li>http://www.vantharp.com/Tharps-Thoughts/634_June_19_2013.html<br>
+ * <li>https://www.tradingview.com/script/dK1uhbN8-DEnvelope-Better-Bollinger-Bands/<br>
+ * <li>https://www.mql5.com/en/forum/173534<br>
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class BetterBollingerBands extends AbstractIndicator {
 
@@ -80,18 +82,19 @@ public class BetterBollingerBands extends AbstractIndicator {
     for (int b = ZERO; b < upperBand.length; ++b, ++i) {
       final double close = ohlcv.close(i);
 
-      final double mt = (alpha * close) + (one_alpha * pmt);
-      final double ut = (alpha * mt) + (one_alpha * put);
-      final double centre = ((two_alpha * mt) - ut) * inverseOne_alpha;
+      final double mt = allocate(close, pmt);
+      final double ut = allocate(mt, put);
+      final double centre = distribute(mt, ut);
 
-      final double mt2 = (alpha * Math.abs(close - centre)) + (one_alpha * pmt2);
-      final double ut2 = (alpha * mt2) + (one_alpha * put2);
-      final double dt2 = stdDev * ((two_alpha * mt2) - ut2) * inverseOne_alpha;
+      final double mt2 = allocate(Math.abs(close - centre), pmt2);
+      final double ut2 = allocate(mt2, put2);
+      final double dt2 = stdDev * distribute(mt2, ut2);
 
       middleBand[b] = centre;
       upperBand[b] = centre + dt2;
       lowerBand[b] = centre - dt2;
 
+      // shift forward in time
       pmt = mt;
       put = ut;
       pmt2 = mt2;
@@ -104,6 +107,14 @@ public class BetterBollingerBands extends AbstractIndicator {
     return Arrays.asList(new TimeSeries(UPPER_BAND, dates, upperBand),
                          new TimeSeries(MIDDLE_BAND, dates, middleBand),
                          new TimeSeries(LOWER_BAND, dates, lowerBand));
+  }
+
+  private double allocate(final double left, final double right) {
+    return (alpha * left) + (one_alpha * right);
+  }
+
+  private double distribute(final double left, final double right) {
+    return ((two_alpha * left) - right) * inverseOne_alpha;
   }
 
 }
