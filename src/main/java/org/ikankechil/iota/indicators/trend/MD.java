@@ -1,7 +1,7 @@
 /**
- * MD.java  v0.1  15 January 2017 11:03:54 pm
+ * MD.java  v0.2  15 January 2017 11:03:54 pm
  *
- * Copyright © 2017 Daniel Kuan.  All rights reserved.
+ * Copyright © 2017-2018 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.trend;
 
@@ -20,9 +20,9 @@ import com.tictactec.ta.lib.RetCode;
  *
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
-public class MD extends AbstractIndicator {
+public class MD extends AbstractIndicator implements MA {
 
   private final double inverseN;
 
