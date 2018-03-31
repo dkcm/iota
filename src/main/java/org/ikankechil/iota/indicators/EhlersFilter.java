@@ -1,9 +1,11 @@
 /**
- * EhlersFilter.java  v0.2  7 July 2015 5:57:45 PM
+ * EhlersFilter.java  v0.3  7 July 2015 5:57:45 PM
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2018 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators;
+
+import static org.ikankechil.iota.indicators.MedianPrice.*;
 
 import org.ikankechil.iota.OHLCVTimeSeries;
 
@@ -17,7 +19,7 @@ import com.tictactec.ta.lib.RetCode;
  * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V19/C04/040NON.pdf<br>
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public abstract class EhlersFilter extends AbstractIndicator {
 
@@ -48,11 +50,11 @@ public abstract class EhlersFilter extends AbstractIndicator {
                    output);
   }
 
-  protected double[] values(final OHLCVTimeSeries ohlcv) {
+  private static double[] values(final OHLCVTimeSeries ohlcv) {
     final double[] values = new double[ohlcv.size()];
     // mid-point of high and low = median
     for (int i = ZERO; i < values.length; ++i) {
-      values[i] = (ohlcv.high(i) + ohlcv.low(i)) * HALF;
+      values[i] = medianPrice(ohlcv.high(i), ohlcv.low(i));
     }
     logger.debug(USING_MEDIAN_PRICE);
     return values;

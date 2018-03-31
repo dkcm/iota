@@ -1,12 +1,13 @@
 /**
- * OscillatorTests.java  v0.1  10 January 2017 1:23:40 am
+ * OscillatorTests.java  v0.2  10 January 2017 1:23:40 am
  *
- * Copyright © 2017 Daniel Kuan.  All rights reserved.
+ * Copyright © 2017-2018 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.suites;
 
 import org.ikankechil.iota.indicators.momentum.AcceleratorOscillatorTest;
 import org.ikankechil.iota.indicators.momentum.AwesomeOscillatorTest;
+import org.ikankechil.iota.indicators.momentum.CGOscillatorTest;
 import org.ikankechil.iota.indicators.momentum.CMOTest;
 import org.ikankechil.iota.indicators.momentum.DerivativeOscillatorTest;
 import org.ikankechil.iota.indicators.momentum.ErgodicCandlestickOscillatorTest;
@@ -28,7 +29,7 @@ import org.junit.runners.Suite.SuiteClasses;
   // Momentum indicators
   AcceleratorOscillatorTest.class,
   AwesomeOscillatorTest.class,
-//  CGOscillatorTest.class,
+  CGOscillatorTest.class,
   CMOTest.class,
   DerivativeOscillatorTest.class,
   ErgodicCandlestickOscillatorTest.class,
@@ -52,7 +53,7 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class OscillatorTests {
   // holder for above annotations

@@ -1,7 +1,7 @@
 /**
- * CGOscillator.java  v0.2  7 July 2015 3:41:47 PM
+ * CGOscillator.java  v0.3  7 July 2015 3:41:47 PM
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2018 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.momentum;
 
@@ -18,11 +18,15 @@ import com.tictactec.ta.lib.RetCode;
  * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V20/C05/088CENT.pdf<br>
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class CGOscillator extends EhlersFilter {
 
   private final double zeroCounter;
+
+  public CGOscillator() {
+    this(TEN);
+  }
 
   public CGOscillator(final int period) {
     super(period, period, period - ONE);
@@ -39,12 +43,13 @@ public class CGOscillator extends EhlersFilter {
                             final double[] output) {
     // Formula:
     // CG = sum(Index * Price) / sum(Price)
+    // where Price is median price
 
     // compute indicator
     for (int i = ZERO; i < output.length; ++i) {
       double sumProduct = ZERO;
       double sumPrice = ZERO;
-      for (int j = period, v = i; j > ZERO; --j, ++v) {
+      for (int j = period, v = i; j > ZERO; --j, ++v) { // count backwards
         final double value = values[v];
         sumProduct += j * value;
         sumPrice += value;

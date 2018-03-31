@@ -1,7 +1,7 @@
 /**
- * KVOTest.java  v0.2  29 November 2015 7:05:31 pm
+ * KVOTest.java  v0.3  29 November 2015 7:05:31 pm
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2018 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.trend;
 
@@ -16,14 +16,13 @@ import org.junit.Test;
  * JUnit test for <code>KVO</code>.
  *
  *
- *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class KVOTest extends AbstractIndicatorTest {
 
   public KVOTest() {
-    super(110);
+    super(67);
   }
 
   @BeforeClass

@@ -1,7 +1,7 @@
 /**
- * AbstractIndicatorTest.java  v0.4  10 January 2015 1:45:25 PM
+ * AbstractIndicatorTest.java  v0.5  10 January 2015 1:45:25 PM
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2018 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators;
 
@@ -36,7 +36,7 @@ import com.tictactec.ta.lib.Core;
  *
  *
  * @author Daniel Kuan
- * @version 0.4
+ * @version 0.5
  */
 public abstract class AbstractIndicatorTest {
 
@@ -54,7 +54,7 @@ public abstract class AbstractIndicatorTest {
   protected static final Core     CORE            = new Core();
 
   private static final File       INPUT_DIRECTORY = new File(".//./src/test/resources/" + AbstractIndicatorTest.class.getSimpleName());
-  private static final File       OHLCV_FILE      = new File(INPUT_DIRECTORY, "IBM_20110103-20141231.csv");
+  private static final File       OHLCV_FILE      = OhlcvFiles.IBM.file();
 
   protected static Class<?>       TEST_CLASS;
   private static final String     TEST            = "Test";
@@ -75,6 +75,22 @@ public abstract class AbstractIndicatorTest {
       logger.error("Cannot read OHLCV file: {}", OHLCV_FILE, ioE);
       throw new IOError(ioE);
     }
+  }
+
+  public enum OhlcvFiles {
+    IBM("IBM_20110103-20141231.csv"),
+    SPY("SPY_20080101-20081231_d.csv");
+
+    private final File file;
+
+    OhlcvFiles(final String filename) {
+      file = new File(INPUT_DIRECTORY, filename);
+    }
+
+    public File file() {
+      return file;
+    }
+
   }
 
   /**

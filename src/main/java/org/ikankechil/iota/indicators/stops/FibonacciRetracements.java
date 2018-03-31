@@ -1,7 +1,7 @@
 /**
- * FibonacciRetracements.java  v0.1  16 May 2017 6:57:49 pm
+ * FibonacciRetracements.java  v0.2  16 May 2017 6:57:49 pm
  *
- * Copyright Â© 2017 Daniel Kuan.  All rights reserved.
+ * Copyright © 2017-2018 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.stops;
 
@@ -36,11 +36,15 @@ import org.ikankechil.iota.indicators.pattern.TopsAndBottoms;
  * <p>http://stockcharts.com/school/doku.php?id=chart_school:chart_analysis:fibonacci_retracemen<br>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class FibonacciRetracements extends AbstractIndicator {
 
   private final Indicator topsAndBottoms;
+
+  public FibonacciRetracements() {
+    this(FIVE);
+  }
 
   public FibonacciRetracements(final int awayPoints) {
     super(ZERO);

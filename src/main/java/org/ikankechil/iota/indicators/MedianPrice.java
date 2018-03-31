@@ -1,7 +1,7 @@
 /**
- * MedianPrice.java  v0.2  12 January 2015 11:12:46 PM
+ * MedianPrice.java  v0.3  12 January 2015 11:12:46 PM
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2018 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators;
 
@@ -15,7 +15,7 @@ import com.tictactec.ta.lib.RetCode;
  *
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class MedianPrice extends AbstractIndicator {
 
@@ -34,12 +34,16 @@ public class MedianPrice extends AbstractIndicator {
     final double[] lows = ohlcv.lows();
 
     for (int i = ZERO; i < output.length; ++i) {
-      output[i] = (highs[i] + lows[i]) * HALF;
+      output[i] = medianPrice(highs[i], lows[i]);
     }
 
     outBegIdx.value = lookback;
     outNBElement.value = output.length;
     return RetCode.Success;
+  }
+
+  public static final double medianPrice(final double high, final double low) {
+    return (high + low) * HALF;
   }
 
 }
