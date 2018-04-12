@@ -1,5 +1,5 @@
 /**
- * PriceTests.java  v0.1  25 February 2018 10:05:06 AM
+ * PriceTests.java  v0.2  25 February 2018 10:05:06 AM
  *
  * Copyright © 2018 Daniel Kuan.  All rights reserved.
  */
@@ -13,6 +13,8 @@ import org.ikankechil.iota.indicators.MedianPriceTest;
 import org.ikankechil.iota.indicators.OpenPriceTest;
 import org.ikankechil.iota.indicators.TypicalPriceTest;
 import org.ikankechil.iota.indicators.WeightedClosePriceTest;
+import org.ikankechil.iota.indicators.volume.MVWAPTest;
+import org.ikankechil.iota.indicators.volume.VWAPTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -24,8 +26,10 @@ import org.junit.runners.Suite.SuiteClasses;
   HighPriceTest.class,
   LowPriceTest.class,
   MedianPriceTest.class,
+  MVWAPTest.class,
   OpenPriceTest.class,
   TypicalPriceTest.class,
+  VWAPTest.class,
   WeightedClosePriceTest.class,
 })
 
@@ -34,7 +38,7 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class PriceTests {
   // holder for above annotations

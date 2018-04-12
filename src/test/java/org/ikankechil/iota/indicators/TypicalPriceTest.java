@@ -1,7 +1,7 @@
 /**
- * TypicalPriceTest.java  v0.2  9 July 2015 5:38:51 PM
+ * TypicalPriceTest.java  v0.3  9 July 2015 5:38:51 PM
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2018 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators;
 
@@ -19,7 +19,7 @@ import org.junit.Ignore;
  *
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class TypicalPriceTest extends AbstractIndicatorTest {
 
@@ -42,7 +42,7 @@ public class TypicalPriceTest extends AbstractIndicatorTest {
                                         typical(series)));
   }
 
-  private static final double[] typical(final OHLCVTimeSeries series) {
+  public static final double[] typical(final OHLCVTimeSeries series) {
     final double[] med = new double[series.size()];
     for (int i = 0; i < med.length; ++i) {
       med[i] = (series.high(i) + series.low(i) + series.close(i)) / 3;
