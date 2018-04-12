@@ -1,5 +1,5 @@
 /**
- * OscillatorTests.java  v0.2  10 January 2017 1:23:40 am
+ * OscillatorTests.java  v0.3  10 January 2017 1:23:40 am
  *
  * Copyright © 2017-2018 Daniel Kuan.  All rights reserved.
  */
@@ -16,6 +16,7 @@ import org.ikankechil.iota.indicators.momentum.PZOTest;
 import org.ikankechil.iota.indicators.momentum.TLMOTest;
 import org.ikankechil.iota.indicators.momentum.UltimateOscillatorTest;
 import org.ikankechil.iota.indicators.trend.AroonOscillatorTest;
+import org.ikankechil.iota.indicators.trend.RainbowOscillatorTest;
 import org.ikankechil.iota.indicators.volume.AVOTest;
 import org.ikankechil.iota.indicators.volume.ChaikinOscillatorTest;
 import org.ikankechil.iota.indicators.volume.PVOTest;
@@ -41,6 +42,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
   // Trend indicators
   AroonOscillatorTest.class,
+  RainbowOscillatorTest.class,
 
   // Volume indicators
   AVOTest.class,
@@ -53,7 +55,7 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class OscillatorTests {
   // holder for above annotations

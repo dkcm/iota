@@ -1,71 +1,40 @@
 /**
- * NVI.java  v0.1  17 July 2015 3:03:49 PM
+ * NVI.java  v0.2  17 July 2015 3:03:49 PM
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2018 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.volume;
-
-import org.ikankechil.iota.OHLCVTimeSeries;
-import org.ikankechil.iota.indicators.IndicatorWithSignalLine;
-
-import com.tictactec.ta.lib.MInteger;
-import com.tictactec.ta.lib.RetCode;
 
 /**
  * Negative Volume Index (NVI) by Paul Dysart and Norman Fosback
  *
- * <p>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:negative_volume_inde<br>
+ * <p>References:
+ * <li>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:negative_volume_inde<br>
+ * <li>https://www.metastock.com/customer/resources/taaz/?p=75<br>
+ * <li>https://www.investopedia.com/terms/n/nvi.asp<br>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
-public class NVI extends IndicatorWithSignalLine {
-
-  // scaled down by 100 from original 1000 to reduce computations
-  private static final int NVI_START = TEN;
-  private static final int YEAR      = 255;
+public class NVI extends PriceAccumulationVolumeIndicator {
 
   public NVI() {
-    this(YEAR);
+    super();
   }
 
   public NVI(final int signal) {
-    super(signal, signal - ONE);
+    super(signal);
   }
 
   @Override
-  protected RetCode compute(final int start,
-                            final int end,
-                            final OHLCVTimeSeries ohlcv,
-                            final MInteger outBegIdx,
-                            final MInteger outNBElement,
-                            final double[] output) {
+  boolean compareVolume(final long previous, final long current) {
     // Formula:
     // 1. Cumulative NVI starts at 1000
     // 2. Add the Percentage Price Change to Cumulative NVI when Volume Decreases
     // 3. Cumulative NVI is Unchanged when Volume Increases
     // 4. Apply a 255-day EMA for Signals
 
-    // compute indicator
-    int i = ZERO;
-    double nvi = output[i] = NVI_START;
-    long pv = ohlcv.volume(i); // previous volume
-
-    while (++i < output.length) {
-      final long volume = ohlcv.volume(i);
-      if (volume < pv) {
-        // price %change
-        nvi += (ohlcv.close(i) / ohlcv.close(i - ONE)) - ONE;
-      }
-      output[i] = nvi;
-
-      // shift forward in time
-      pv = volume;
-    }
-
-    outBegIdx.value = lookback;
-    outNBElement.value = output.length;
-    return RetCode.Success;
+    return (current < previous);
   }
 
 }

@@ -1,7 +1,7 @@
 /**
- * RainbowOscillator.java  v0.2  1 March 2015 5:57:35 pm
+ * RainbowOscillator.java  v0.3  1 March 2015 5:57:35 pm
  *
- * Copyright © 2015-2017 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2018 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.trend;
 
@@ -21,7 +21,7 @@ import org.ikankechil.iota.indicators.MinimumMaximumPrice;
  * <li>https://c.mql5.com/forextsd/forum/64/rainbow_oscillator_-_formula.pdf<br>
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class RainbowOscillator extends RainbowCharts {
 
@@ -84,11 +84,11 @@ public class RainbowOscillator extends RainbowCharts {
       rAverage /= rainbows.size();
 
       // compute close range
-      final double cRange = cMaxs.value(i) - cMins.value(i);
+      final double cRange = HUNDRED / (cMaxs.value(i) - cMins.value(i));
 
       // compute rainbow bandwidth and oscillator
-      final double rb = HUNDRED * (rMax - rMin) / cRange;
-      final double ro = HUNDRED * (closes[c] - rAverage) / cRange;
+      final double rb = (rMax - rMin) * cRange;
+      final double ro = (closes[c] - rAverage) * cRange;
 
       indicator[i] = ro;
       upperBand[i] = rb;
