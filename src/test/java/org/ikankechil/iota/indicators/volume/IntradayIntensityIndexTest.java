@@ -1,7 +1,7 @@
 /**
- * MoneyFlowVolumeTest.java  v0.3  7 December 2015 6:10:20 PM
+ * IntradayIntensityIndexTest.java  v0.1  10 April 2018 11:54:05 PM
  *
- * Copyright © 2015-2018 Daniel Kuan.  All rights reserved.
+ * Copyright © 2018 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.volume;
 
@@ -11,21 +11,21 @@ import org.ikankechil.iota.indicators.AbstractIndicatorTest;
 import org.junit.BeforeClass;
 
 /**
- * JUnit test for <code>MoneyFlowVolume</code>.
+ * JUnit test for <code>IntradayIntensityIndex</code>.
  *
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.1
  */
-public class MoneyFlowVolumeTest extends AbstractIndicatorTest {
+public class IntradayIntensityIndexTest extends AbstractIndicatorTest {
 
-  public MoneyFlowVolumeTest() {
+  public IntradayIntensityIndexTest() {
     super(0);
   }
 
   @BeforeClass
   public static void setUpBeforeClass() throws IOException {
-    TEST_CLASS = MoneyFlowVolumeTest.class;
+    TEST_CLASS = IntradayIntensityIndexTest.class;
     AbstractIndicatorTest.setUpBeforeClass();
   }
 

@@ -1,7 +1,7 @@
 /**
- * MoneyFlowVolume.java  v0.2  7 December 2015 5:19:51 PM
+ * MoneyFlowVolume.java  v0.3  7 December 2015 5:19:51 PM
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2018 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.volume;
 
@@ -14,10 +14,11 @@ import com.tictactec.ta.lib.RetCode;
 /**
  * Money Flow Volume
  *
- * <p>https://www.tradingview.com/stock-charts-support/index.php/Money_Flow_Volume<br>
+ * <p>References:
+ * <li>https://www.tradingview.com/stock-charts-support/index.php/Money_Flow_Volume<br>
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class MoneyFlowVolume extends AbstractIndicator {
 
@@ -42,14 +43,21 @@ public class MoneyFlowVolume extends AbstractIndicator {
       final double low = ohlcv.low(i);
       final double range = high - low;
       if (range > ZERO) {
-        final double close = ohlcv.close(i);
-        output[i] = (((close - low) - (high - close)) / range) * ohlcv.volume(i);
+        output[i] = mfv(high, low, ohlcv.close(i), range, ohlcv.volume(i));
       }
     }
 
     outBegIdx.value = lookback;
     outNBElement.value = output.length;
     return RetCode.Success;
+  }
+
+  double mfv(final double high,
+             final double low,
+             final double close,
+             final double range,
+             final long volume) {
+    return (((close - low) - (high - close)) / range) * volume;
   }
 
 }
