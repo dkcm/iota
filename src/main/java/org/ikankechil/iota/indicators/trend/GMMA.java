@@ -1,7 +1,7 @@
 /**
- * GMMA.java  v0.2  4 March 2015 1:05:52 PM
+ * GMMA.java  v0.3  4 March 2015 1:05:52 PM
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2018 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.trend;
 
@@ -15,11 +15,13 @@ import org.ikankechil.iota.indicators.AbstractIndicator;
 /**
  * Guppy Multiple Moving Average (GMMA) by Darryl Guppy
  *
- * <p>http://www.chartnexus.com.sg/learning/gmma.php<br>
- * http://www.investopedia.com/terms/g/guppy-multiple-moving-average.asp<br>
+ * <p>References:
+ * <li>http://www.chartnexus.com.sg/learning/gmma.php<br>
+ * <li>http://www.investopedia.com/terms/g/guppy-multiple-moving-average.asp<br>
+ * <li>http://www.omnitrader.com/currentclients/otforum/get-attachment.asp?attachmentid=3006<br>
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class GMMA extends AbstractIndicator implements MA {
 
@@ -44,10 +46,15 @@ public class GMMA extends AbstractIndicator implements MA {
   }
 
   @Override
-  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
-    throwExceptionIfShort(ohlcv);
+  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv, final int start) {
+    return generate((TimeSeries) ohlcv, start);
+  }
 
-    final double[] closes = ohlcv.closes();
+  @Override
+  public List<TimeSeries> generate(final TimeSeries series, final int start) {
+    throwExceptionIfShort(series);
+
+    final double[] closes = series.values();
 
     // compute short-term group
     final double[] short1 = ema(closes, SHORT1);
@@ -65,9 +72,9 @@ public class GMMA extends AbstractIndicator implements MA {
     final double[] long5 = ema(closes, LONG5);
     final double[] long6 = ema(closes, LONG6);
 
-    final String[] dates = Arrays.copyOfRange(ohlcv.dates(), lookback, ohlcv.size());
+    final String[] dates = Arrays.copyOfRange(series.dates(), lookback, series.size());
 
-    logger.info(GENERATED_FOR, name, ohlcv);
+    logger.info(GENERATED_FOR, name, series);
 
     // MAs have different lengths
     final int length = long6.length;
