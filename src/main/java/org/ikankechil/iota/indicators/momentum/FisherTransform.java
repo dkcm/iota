@@ -1,7 +1,7 @@
 /**
- * FisherTransform.java  v0.2  16 January 2015 10:14:56 PM
+ * FisherTransform.java  v0.3  16 January 2015 10:14:56 PM
  *
- * Copyright © 2015-2017 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2018 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.momentum;
 
@@ -19,15 +19,16 @@ import com.tictactec.ta.lib.RetCode;
 /**
  * Fisher Transform by John Ehlers
  *
- * <p>https://www.mesasoftware.com/papers/UsingTheFisherTransform.pdf<br>
- * http://exceltechnical.web.fc2.com/ft.html<br>
- * http://user42.tuxfamily.org/chart/manual/Fisher-Transform.html<br>
- * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V20/C11/130fish.pdf<br>
- * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V20/C11/142tips.pdf<br>
- * https://www.linnsoft.com/techind/fisher-transform-fish<br>
+ * <p>References:
+ * <li>https://www.mesasoftware.com/papers/UsingTheFisherTransform.pdf<br>
+ * <li>hhttp://exceltechnical.web.fc2.com/ft.html<br>
+ * <li>hhttp://user42.tuxfamily.org/chart/manual/Fisher-Transform.html<br>
+ * <li>hftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V20/C11/130fish.pdf<br>
+ * <li>hftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V20/C11/142tips.pdf<br>
+ * <li>hhttps://www.linnsoft.com/techind/fisher-transform-fish<br>
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class FisherTransform extends AbstractIndicator {
 
@@ -90,11 +91,11 @@ public class FisherTransform extends AbstractIndicator {
     return RetCode.Success;
   }
 
-  private static final double fisher(final double x) {
+  public static final double fisher(final double x) {
     return Math.log((ONE + x) / (ONE - x));
   }
 
-  private static final double limit(final double d) {
+  static final double limit(final double d) {
     return (d >  LIMIT) ?  LIMIT :
            (d < -LIMIT) ? -LIMIT : d;
   }

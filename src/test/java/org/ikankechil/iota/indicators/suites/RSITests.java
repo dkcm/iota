@@ -1,7 +1,7 @@
 /**
- * RSITests.java  v0.2  16 November 2016 10:02:34 pm
+ * RSITests.java  v0.3  16 November 2016 10:02:34 pm
  *
- * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
+ * Copyright © 2016-2018 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.suites;
 
@@ -14,6 +14,7 @@ import org.ikankechil.iota.indicators.momentum.MFITest;
 import org.ikankechil.iota.indicators.momentum.NMOTest;
 import org.ikankechil.iota.indicators.momentum.RMITest;
 import org.ikankechil.iota.indicators.momentum.RSITest;
+import org.ikankechil.iota.indicators.momentum.RocketRSITest;
 import org.ikankechil.iota.indicators.momentum.SVEInverseFisherRSITest;
 import org.ikankechil.iota.indicators.momentum.SelfAdjustingRSITest;
 import org.ikankechil.iota.indicators.momentum.SlowRSITest;
@@ -28,6 +29,7 @@ import org.junit.runners.Suite.SuiteClasses;
   RSITest.class,
   AsymmetricalRSITest.class,
   LaguerreRSITest.class,
+  RocketRSITest.class,
   SelfAdjustingRSITest.class,
   SlowRSITest.class,
   StochasticRSITest.class,
@@ -47,7 +49,7 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class RSITests {
   // holder for above annotations
