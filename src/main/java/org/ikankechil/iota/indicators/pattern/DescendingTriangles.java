@@ -16,9 +16,9 @@ import org.ikankechil.iota.indicators.pattern.Trendlines.Trendline;
  * Descending Triangles
  *
  * <p>References:
- * <li>http://stockcharts.com/school/doku.php?id=chart_school:chart_analysis:chart_patterns:descending_triangle_continuation<be>
+ * <li>http://stockcharts.com/school/doku.php?id=chart_school:chart_analysis:chart_patterns:descending_triangle_continuation<br>
  * <li>http://thepatternsite.com/dt.html<br>
- * <li>http://www.investopedia.com/terms/d/descendingtriangle.asp<be>
+ * <li>http://www.investopedia.com/terms/d/descendingtriangle.asp<br>
  *
  *
  * @author Daniel Kuan

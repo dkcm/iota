@@ -18,7 +18,7 @@ import org.ikankechil.iota.indicators.pattern.Trendlines.Trendline;
  * <p>References:
  * <li>http://stockcharts.com/school/doku.php?id=chart_school:chart_analysis:chart_patterns:ascending_triangle_continuation<br>
  * <li>http://thepatternsite.com/at.html<br>
- * <li>http://stockcharts.com/school/doku.php?id=chart_school:chart_analysis:chart_patterns:descending_triangle_continuation<be>
+ * <li>http://stockcharts.com/school/doku.php?id=chart_school:chart_analysis:chart_patterns:descending_triangle_continuation<br>
  * <li>http://thepatternsite.com/dt.html<br>
  *
  * @author Daniel Kuan

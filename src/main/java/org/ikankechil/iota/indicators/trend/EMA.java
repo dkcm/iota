@@ -1,7 +1,7 @@
 /**
- * EMA.java  v0.3  8 December 2014 7:06:59 PM
+ * EMA.java  v0.4  8 December 2014 7:06:59 PM
  *
- * Copyright © 2014-2017 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-2018 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.trend;
 
@@ -13,19 +13,24 @@ import com.tictactec.ta.lib.RetCode;
 /**
  * Exponential Moving Average (EMA)
  *
- * <p>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:moving_averages<br>
+ * <p>References:
+ * <li>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:moving_averages<br>
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class EMA extends AbstractIndicator implements MA {
 
   private final double alpha;
 
   public EMA(final int period) {
+    this(period, TWO / (double) (period + ONE));
+  }
+
+  public EMA(final int period, final double alpha) {
     super(period, period - ONE);
 
-    alpha = TWO / (double) (period + ONE);
+    this.alpha = alpha;
   }
 
   @Override
