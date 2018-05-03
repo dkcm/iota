@@ -1,7 +1,7 @@
 /**
- * AsymmetricalRSI.java  v0.2  23 July 2015 12:29:45 am
+ * AsymmetricalRSI.java  v0.3  23 July 2015 12:29:45 am
  *
- * Copyright © 2015-2017 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2018 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.momentum;
 
@@ -17,11 +17,14 @@ import com.tictactec.ta.lib.RetCode;
  * <li>http://traders.com/Documentation/FEEDbk_docs/2008/10/TradersTips/TradersTips.html<br>
  * <li>http://exceltechnical.web.fc2.com/p-asymrsi.html<br>
  * <li>ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V26/C10/181VERV.pdf<br>
+ * <br>
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class AsymmetricalRSI extends RSI {
+
+  private final double[] alphas;
 
   public AsymmetricalRSI() {
     this(FOURTEEN);
@@ -29,6 +32,13 @@ public class AsymmetricalRSI extends RSI {
 
   public AsymmetricalRSI(final int period) {
     super(period);
+
+    // initialise
+    alphas = new double[period + ONE];
+    alphas[ONE] = ONE;
+    for (int i = TWO; i < alphas.length; ++i) {
+      alphas[i] = ONE / (double) i;
+    }
   }
 
   @Override
@@ -112,13 +122,11 @@ public class AsymmetricalRSI extends RSI {
     return RetCode.Success;
   }
 
-  private static final double smooth(final int changes,
-                                     final double change,
-                                     final double previousSum) {
-    return (changes > ZERO) ? EMA.ema(ONE / (double) changes, change, previousSum) : previousSum;
-//    return (changes > ONE)  ? EMA.ema(ONE / (double) changes, change, previousSum) :
-//           (changes == ONE) ? change
-//                            : previousSum;
+  private double smooth(final int changes,
+                        final double change,
+                        final double previousSum) {
+    return (changes > ZERO) ? EMA.ema(alphas[changes], change, previousSum)
+                            : previousSum;
   }
 
 }
