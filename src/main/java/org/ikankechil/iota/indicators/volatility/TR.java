@@ -1,7 +1,7 @@
 /**
- * TR.java  v0.3  15 December 2014 2:21:16 PM
+ * TR.java  v0.4  15 December 2014 2:21:16 PM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-2018 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.volatility;
 
@@ -14,11 +14,13 @@ import com.tictactec.ta.lib.RetCode;
 /**
  * True Range (TR)
  *
- * <p>http://user42.tuxfamily.org/chart/manual/True-Range.html<br>
- * http://www.macroption.com/true-range/<br>
+ * <p>References:
+ * <li>http://user42.tuxfamily.org/chart/manual/True-Range.html<br>
+ * <li>http://www.macroption.com/true-range/<br>
+ * <br>
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class TR extends AbstractIndicator {
 
@@ -43,11 +45,9 @@ public class TR extends AbstractIndicator {
     // max(today's high and yesterday's close) - min(today's low and yesterday's close)
 
     // compute indicator
-    int i = ZERO;
-    double close = ohlcv.close(i);
-    while (i < output.length) {
-      output[i++] = trueRange(ohlcv.high(i), ohlcv.low(i), close);
-      close = ohlcv.close(i);
+    for (int i = ZERO; i < output.length; ) {
+      final double close = ohlcv.close(i);
+      output[i] = trueRange(ohlcv.high(++i), ohlcv.low(i), close);
     }
 
     outBegIdx.value = lookback;

@@ -1,29 +1,38 @@
 /**
- * VolatilityRatio.java  v0.1  3 October 2016 7:17:00 pm
+ * VolatilityRatio.java  v0.2  3 October 2016 7:17:00 pm
  *
- * Copyright Â© 2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2016-2018 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.volatility;
+
+import static org.ikankechil.iota.indicators.volatility.TR.*;
 
 import org.ikankechil.iota.OHLCVTimeSeries;
 import org.ikankechil.iota.TimeSeries;
 import org.ikankechil.iota.indicators.AbstractIndicator;
+import org.ikankechil.iota.indicators.MaximumPrice;
+import org.ikankechil.iota.indicators.MinimumPrice;
 
 import com.tictactec.ta.lib.MInteger;
 import com.tictactec.ta.lib.RetCode;
 
 /**
- * Volatility Ratio by Jack Schwager.
+ * Volatility Ratio by Jack Schwager
  *
- * <p>http://user42.tuxfamily.org/chart/manual/Volatility-Ratio.html<br>
- * http://www.investopedia.com/ask/answers/031115/what-volatility-ratio-formula-and-how-it-calculated.asp<br>
+ * <p>References:
+ * <li>http://user42.tuxfamily.org/chart/manual/Volatility-Ratio.html<br>
+ * <li>http://www.investopedia.com/ask/answers/031115/what-volatility-ratio-formula-and-how-it-calculated.asp<br>
+ * <br>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class VolatilityRatio extends AbstractIndicator {
 
-  private static final TR TR = new TR();
+  private final MaximumPrice max;
+  private final MinimumPrice min;
+
+  private static final TR    TR = new TR();
 
   public VolatilityRatio() {
     this(FOURTEEN);
@@ -31,6 +40,9 @@ public class VolatilityRatio extends AbstractIndicator {
 
   public VolatilityRatio(final int period) {
     super(period, period);
+
+    max = new MaximumPrice(period);
+    min = new MinimumPrice(period);
   }
 
   @Override
@@ -57,17 +69,12 @@ public class VolatilityRatio extends AbstractIndicator {
 
   private final double[] nDayTrueRange(final OHLCVTimeSeries ohlcv) {
     final double[] nDayTR = new double[ohlcv.size() - lookback];
-    final double[] highs = ohlcv.highs();
-    final double[] lows = ohlcv.lows();
 
-    for (int i = ZERO, from = i + ONE, to = from + period;
-         i < nDayTR.length;
-         ++i, ++from, ++to) {
-      final double close = ohlcv.close(i);
-      final double max = Math.max(close, max(highs, from, to));
-      final double min = Math.min(close, min(lows, from, to));
+    final double[] maxs = max.generate(new TimeSeries(EMPTY, ohlcv.dates(), ohlcv.highs())).get(ZERO).values();
+    final double[] mins = min.generate(new TimeSeries(EMPTY, ohlcv.dates(), ohlcv.lows())).get(ZERO).values();
 
-      nDayTR[i] = (max - min);
+    for (int i = ZERO, m = i + ONE; i < nDayTR.length; ++i, ++m) {
+      nDayTR[i] = trueRange(maxs[m], mins[m], ohlcv.close(i));
     }
 
     return nDayTR;

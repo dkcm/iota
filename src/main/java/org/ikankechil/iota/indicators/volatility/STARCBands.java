@@ -1,7 +1,7 @@
 /**
- * STARCBands.java  v0.2  8 January 2015 6:06:28 PM
+ * STARCBands.java  v0.3  8 January 2015 6:06:28 PM
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2018 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.volatility;
 
@@ -11,20 +11,25 @@ import java.util.List;
 import org.ikankechil.iota.OHLCVTimeSeries;
 import org.ikankechil.iota.TimeSeries;
 import org.ikankechil.iota.indicators.AbstractIndicator;
+import org.ikankechil.iota.indicators.Indicator;
+import org.ikankechil.iota.indicators.trend.SMA;
 
 /**
  * Stoller Average Range Channels (STARC) by Manning Stoller
  *
- * <p>http://www.investopedia.com/terms/s/starc.asp<br>
- * http://fxtrade.oanda.com/learn/forex-indicators/starc-bands<br>
+ * <p>References:
+ * <li>http://www.investopedia.com/terms/s/starc.asp<br>
+ * <li>http://fxtrade.oanda.com/learn/forex-indicators/starc-bands<br>
+ * <br>
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class STARCBands extends AbstractIndicator {
 
-  private final ATR           atr;
+  private final Indicator     atr;
   private final double        multiplier;
+  private final Indicator     ma;
   private final int           smaOffset;
 
   private static final String UPPER_BAND  = "Upper STARC Band";
@@ -45,7 +50,8 @@ public class STARCBands extends AbstractIndicator {
 
     this.atr = new ATR(atr);
     this.multiplier = multiplier;
-    smaOffset = lookback - (period - ONE);
+    ma = new SMA(period);
+    smaOffset = lookback - ma.lookback();
   }
 
   @Override
@@ -56,10 +62,9 @@ public class STARCBands extends AbstractIndicator {
 
     throwExceptionIfShort(ohlcv);
     final int size = ohlcv.size();
-    final double[] closes = ohlcv.closes();
 
     // compute SMA and ATR
-    final double[] smas = sma(closes, period);
+    final double[] smas = ma.generate(ohlcv).get(ZERO).values();
     final double[] atrs = atr.generate(ohlcv).get(ZERO).values();
 
     // compute indicator
