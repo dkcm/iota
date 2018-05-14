@@ -1,7 +1,7 @@
 /**
- * OBVTests.java  0.1  Jul 10, 2017 9:26:25 PM
+ * OBVTests.java  0.1  10 July 2017 9:26:25 PM
  *
- * Copyright © 2017 Daniel Kuan.  All rights reserved.
+ * Copyright © 2017-2018 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.suites;
 
