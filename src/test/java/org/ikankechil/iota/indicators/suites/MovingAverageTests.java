@@ -1,5 +1,5 @@
 /**
- * MovingAverageTests.java  v0.3  22 November 2016 12:25:27 am
+ * MovingAverageTests.java  v0.4  22 November 2016 12:25:27 am
  *
  * Copyright © 2016-2018 Daniel Kuan.  All rights reserved.
  */
@@ -30,6 +30,7 @@ import org.ikankechil.iota.indicators.trend.VWEMATest;
 import org.ikankechil.iota.indicators.trend.WEVOMOTest;
 import org.ikankechil.iota.indicators.trend.WMATest;
 import org.ikankechil.iota.indicators.trend.WSMATest;
+import org.ikankechil.iota.indicators.trend.WildersSmoothingTest;
 import org.ikankechil.iota.indicators.trend.ZeroLagDEMATest;
 import org.ikankechil.iota.indicators.trend.ZeroLagEMATest;
 import org.ikankechil.iota.indicators.trend.ZeroLagTEMATest;
@@ -63,6 +64,7 @@ import org.junit.runners.Suite.SuiteClasses;
   VOMATest.class,
   VOMOMATest.class,
   VWEMATest.class,
+  WildersSmoothingTest.class,
   WEVOMOTest.class,
   WMATest.class,
   WSMATest.class,
@@ -77,7 +79,7 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class MovingAverageTests {
   // holder for above annotations

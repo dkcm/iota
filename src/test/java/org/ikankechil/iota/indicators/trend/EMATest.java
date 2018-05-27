@@ -1,7 +1,7 @@
 /**
- * EMATest.java  v0.2  10 January 2015 2:14:02 PM
+ * EMATest.java  v0.3  10 January 2015 2:14:02 PM
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-2018 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.trend;
 
@@ -20,7 +20,7 @@ import org.junit.BeforeClass;
  *
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class EMATest extends AbstractIndicatorTest {
 
@@ -50,6 +50,10 @@ public class EMATest extends AbstractIndicatorTest {
   }
 
   static final double[] ema(final int period, final int lb, final double... values) {
+    return ema(period, 2.0 / (period + 1), lb, values);
+  }
+
+  static final double[] ema(final int period, final double alpha, final int lb, final double... values) {
     // EMA = alpha * Price + (1 – alpha) * EMA[1]
     //     = EMA[1] + alpha * (Price – EMA[1])
     // where
@@ -57,8 +61,6 @@ public class EMATest extends AbstractIndicatorTest {
     // alpha = 2 / (period + 1)
 
     final double[] ema = new double[values.length - lb];
-
-    final double alpha = 2.0 / (period + 1);
     final double one_alpha = 1 - alpha;
 
     for (int i = 0; i < period; ++i) {
