@@ -1,12 +1,14 @@
 /**
- * AcceleratorOscillator.java  v0.1  16 October 2016 11:24:02 pm
+ * AcceleratorOscillator.java  v0.2  16 October 2016 11:24:02 pm
  *
- * Copyright © 2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2016-2018 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.momentum;
 
 import org.ikankechil.iota.OHLCVTimeSeries;
+import org.ikankechil.iota.TimeSeries;
 import org.ikankechil.iota.indicators.AbstractIndicator;
+import org.ikankechil.iota.indicators.trend.SMA;
 
 import com.tictactec.ta.lib.MInteger;
 import com.tictactec.ta.lib.RetCode;
@@ -14,16 +16,18 @@ import com.tictactec.ta.lib.RetCode;
 /**
  * Accelerator Oscillator (AC) by Bill Williams
  *
- * <p>http://www.forexfactory.com/attachment.php?attachmentid=1029464&d=1346336346<br>
- * http://www.forexfactory.com/attachment.php?attachmentid=1928837&d=1463398508<br>
- *
+ * <p>References:
+ * <li>http://www.forexfactory.com/attachment.php?attachmentid=1029464&d=1346336346
+ * <li>http://www.forexfactory.com/attachment.php?attachmentid=1928837&d=1463398508
+ * <li>http://tlc.tdameritrade.com.sg/center/reference/Tech-Indicators/studies-library/A-B/AccelerationDecelerationOsc.html<br>
+ * <br>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class AcceleratorOscillator extends AbstractIndicator {
 
-  private final int               fast;
+  private final SMA               sma;
   private final AwesomeOscillator ao;
 
   public AcceleratorOscillator() {
@@ -34,7 +38,7 @@ public class AcceleratorOscillator extends AbstractIndicator {
     super(fast + slow - TWO);
 
     ao = new AwesomeOscillator(fast, slow);
-    this.fast = fast;
+    sma = new SMA(fast);
   }
 
   @Override
@@ -47,14 +51,14 @@ public class AcceleratorOscillator extends AbstractIndicator {
     // Formula:
     // AC = Present Value of AO - 5-Bar Average of AO
 
-    final double[] aos = ao.generate(ohlcv).get(ZERO).values();
-    final double[] aoSma = sma(aos, fast);
+    final TimeSeries aos = ao.generate(ohlcv).get(ZERO);
+    final TimeSeries aoSma = sma.generate(aos).get(ZERO);
 
     // compute indicator
-    for (int i = ZERO, s = aos.length - aoSma.length;
+    for (int i = ZERO, s = aos.size() - aoSma.size();
          i < output.length;
          ++i, ++s) {
-      output[i] = aos[s] - aoSma[i];
+      output[i] = aos.value(s) - aoSma.value(i);
     }
 
     outBegIdx.value = lookback;
