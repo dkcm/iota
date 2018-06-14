@@ -1,7 +1,7 @@
 /**
- * LaguerreFilter.java  v0.2  12 May 2017 11:30:33 pm
+ * LaguerreFilter.java  v0.3  12 May 2017 11:30:33 pm
  *
- * Copyright © 2017 Daniel Kuan.  All rights reserved.
+ * Copyright © 2017-2018 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators;
 
@@ -12,25 +12,18 @@ import com.tictactec.ta.lib.RetCode;
  * Laguerre Filter by John Ehlers
  *
  * <p>References:
- * <li>http://www.mesasoftware.com/papers/TimeWarp.pdf<br>
+ * <li>http://www.mesasoftware.com/papers/TimeWarp.pdf
+ * <li>http://www.stockspotter.com/Files/timewarp.pdf
  * <li>https://user42.tuxfamily.org/chart/manual/Laguerre-Filter.html<br>
+ * <br>
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public abstract class LaguerreFilter extends AbstractIndicator {
 
-  private final double        gamma;  // damping factor
-  private final double        oneMinusGamma;
-
-  private static final double GAMMA = 0.8;
-
-  /**
-   * Default damping factor = 0.8
-   */
-  public LaguerreFilter() {
-    this(GAMMA);
-  }
+  private final double gamma; // damping factor
+  private final double oneMinusGamma;
 
   /**
    * Increase damping factor to increase smoothing and lag.
@@ -58,10 +51,11 @@ public abstract class LaguerreFilter extends AbstractIndicator {
     // l2 = -gamma * l1 + prevL1 + gamma * prevL2;
     // l3 = -gamma * l2 + prevL2 + gamma * prevL3;
 
-    double previousL0 = values[ZERO];
-    double previousL1 = values[ONE];
-    double previousL2 = values[TWO];
-    double previousL3 = values[THREE];
+    int today = start;
+    double previousL0 = values[today];
+    double previousL1 = values[++today];
+    double previousL2 = values[++today];
+    double previousL3 = values[++today];
 
     // damped Laguerre coefficients
     double gammaL0 = gamma * previousL0;
@@ -69,9 +63,9 @@ public abstract class LaguerreFilter extends AbstractIndicator {
     double gammaL2 = gamma * previousL2;
 
     // compute indicator
-    for (int i = ZERO, today = FOUR; i < output.length; ++i, ++today) {
+    for (int i = ZERO; i < output.length; ++i) {
       // Laguerre coefficients
-      final double l0 = (oneMinusGamma * values[today]) + gammaL0;
+      final double l0 = (oneMinusGamma * values[++today]) + gammaL0;
       gammaL0 = gamma * l0;
       final double l1 = -gammaL0 + previousL0 + gammaL1;
       gammaL1 = gamma * l1;
@@ -101,7 +95,7 @@ public abstract class LaguerreFilter extends AbstractIndicator {
    * @param l1 second Laguerre coefficient
    * @param l2 third Laguerre coefficient
    * @param l3 fourth Laguerre coefficient
-   * @return
+   * @return Laguerre output
    */
   protected abstract double filter(final double l0, final double l1, final double l2, final double l3);
 

@@ -1,7 +1,7 @@
 /**
- * SimpleLaguerreFilter.java  v0.1  13 May 2017 12:02:54 am
+ * SimpleLaguerreFilter.java  v0.2  13 May 2017 12:02:54 am
  *
- * Copyright © 2017 Daniel Kuan.  All rights reserved.
+ * Copyright © 2017-2018 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.trend;
 
@@ -10,11 +10,13 @@ import org.ikankechil.iota.indicators.LaguerreFilter;
 /**
  * Simple Laguerre Filter by John Ehlers
  *
- * <p>http://www.mesasoftware.com/papers/TimeWarp.pdf<br>
- *
+ * <p>References:
+ * <li>http://www.mesasoftware.com/papers/TimeWarp.pdf
+ * <li>http://www.stockspotter.com/Files/timewarp.pdf<br>
+ * <br>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class SimpleLaguerreFilter extends LaguerreFilter {
 
@@ -26,13 +28,42 @@ public class SimpleLaguerreFilter extends LaguerreFilter {
 
   private static final double GAMMA = 0.8;
 
+  /**
+   * Default damping factor = 0.8
+   */
   public SimpleLaguerreFilter() {
-    this(ONE, TWO, TWO, ONE, GAMMA);
+    this(GAMMA);
   }
 
   /**
+   * Increase damping factor to increase smoothing and lag.
    *
+   * @param gamma damping factor
+   */
+  public SimpleLaguerreFilter(final double gamma) {
+    this(ONE, TWO, TWO, ONE, gamma);
+  }
+
+  /**
+   * Laguerre coefficients' weights.
    *
+   * @param weight0 first Laguerre coefficient's weight
+   * @param weight1 second Laguerre coefficient's weight
+   * @param weight2 third Laguerre coefficient's weight
+   * @param weight3 fourth Laguerre coefficient's weight
+   */
+  public SimpleLaguerreFilter(final double weight0, final double weight1, final double weight2, final double weight3) {
+    this(weight0, weight1, weight2, weight3, GAMMA);
+  }
+
+  /**
+   * Laguerre coefficients' weights.
+   * Increase damping factor to increase smoothing and lag.
+   *
+   * @param weight0 first Laguerre coefficient's weight
+   * @param weight1 second Laguerre coefficient's weight
+   * @param weight2 third Laguerre coefficient's weight
+   * @param weight3 fourth Laguerre coefficient's weight
    * @param gamma damping factor
    */
   public SimpleLaguerreFilter(final double weight0, final double weight1, final double weight2, final double weight3, final double gamma) {
