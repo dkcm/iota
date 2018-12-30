@@ -1,7 +1,7 @@
 /**
- * CompositeStrategy.java  v0.6  2 August 2016 6:36:44 pm
+ * CompositeStrategy.java  v0.7  2 August 2016 6:36:44 pm
  *
- * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
+ * Copyright © 2016-2019 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.strategies;
 
@@ -19,12 +19,12 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A <code>Strategy</code> of strategies. Signals only when unanimous (i.e. all
+ * A {@code Strategy} of strategies. Signals only when unanimous (i.e. all
  * trading strategies are in agreement).
  *
  *
  * @author Daniel Kuan
- * @version 0.6
+ * @version 0.7
  */
 public class CompositeStrategy implements Strategy {
 
@@ -44,7 +44,7 @@ public class CompositeStrategy implements Strategy {
    *
    *
    * @param window forward and / or backward search space
-   * @param strategies <code>Strategy</code> components making up the composite
+   * @param strategies {@code Strategy} components making up the composite
    */
   public CompositeStrategy(final int window, final Strategy... strategies) {
     this(window, true, true, strategies);
@@ -54,11 +54,11 @@ public class CompositeStrategy implements Strategy {
    *
    *
    * @param window forward and / or backward search space
-   * @param searchForwards <code>true</code> if searching forward in time for
+   * @param searchForwards {@code true} if searching forward in time for
    *          matching signals
-   * @param searchBackwards <code>true</code> if searching backward in time for
+   * @param searchBackwards {@code true} if searching backward in time for
    *          matching signals
-   * @param strategies <code>Strategy</code> components making up the composite
+   * @param strategies {@code Strategy} components making up the composite
    */
   public CompositeStrategy(final int window, final boolean searchForwards, final boolean searchBackwards, final Strategy... strategies) {
     if (window < ONE) {
@@ -97,7 +97,7 @@ public class CompositeStrategy implements Strategy {
     return aggregateSignals(signals, ohlcv);
   }
 
-  private final List<SignalTimeSeries> generateSignals(final OHLCVTimeSeries ohlcv, final int lookback) {
+  private List<SignalTimeSeries> generateSignals(final OHLCVTimeSeries ohlcv, final int lookback) {
     final List<SignalTimeSeries> signals = new ArrayList<>(strategies.size());
 
     int shortestLength = Integer.MAX_VALUE;
@@ -113,7 +113,7 @@ public class CompositeStrategy implements Strategy {
     return signals;
   }
 
-  private static final void truncate(final List<SignalTimeSeries> signals, final int shortestLength) {
+  private static void truncate(final List<SignalTimeSeries> signals, final int shortestLength) {
     final ListIterator<SignalTimeSeries> iterator = signals.listIterator();
     while (iterator.hasNext()) {
       final SignalTimeSeries series = iterator.next();
@@ -131,9 +131,10 @@ public class CompositeStrategy implements Strategy {
     logger.debug("Signals truncated to length: {}", shortestLength);
   }
 
-  private final SignalTimeSeries aggregateSignals(final List<SignalTimeSeries> signals, final OHLCVTimeSeries ohlcv) {
+  private SignalTimeSeries aggregateSignals(final List<SignalTimeSeries> signals, final OHLCVTimeSeries ohlcv) {
     final SignalTimeSeries references = signals.remove(ZERO);
     final int length = references.size();
+    logger.debug("Aggregating signals using {} as reference", references);
 
     final SignalTimeSeries composite = new SignalTimeSeries(name, length);
     System.arraycopy(references.dates(), ZERO, composite.dates(), ZERO, length);
@@ -143,6 +144,10 @@ public class CompositeStrategy implements Strategy {
       if (reference == BUY || reference == SELL) {
         // search backwards and forwards in other signals series for matching
         // signals, defaulting to Signal.NONE if none are found
+        logger.debug("{} found at index {} in {}",
+                     reference,
+                     today,
+                     references);
         today = searchForMatchAndSet(reference, signals, today, composite, ohlcv);
       }
       else { // no buy / sell signal
@@ -153,16 +158,14 @@ public class CompositeStrategy implements Strategy {
     return composite;
   }
 
-  private final int searchForMatchAndSet(final Signal reference,
-                                         final List<SignalTimeSeries> signals,
-                                         final int start,
-                                         final SignalTimeSeries composite,
-                                         final OHLCVTimeSeries ohlcv) {
+  private int searchForMatchAndSet(final Signal reference,
+                                   final List<SignalTimeSeries> signals,
+                                   final int start,
+                                   final SignalTimeSeries composite,
+                                   final OHLCVTimeSeries ohlcv) {
     int today = start;
     // search backwards
-    final int backwards = isSearchBackwards && (today >= window) ?
-                          findMaxMatch(reference, today - window, today, signals) :
-                          NOT_FOUND;
+    final int backwards = searchBackwards(reference, signals, today);
     // search current
     final int current = findMaxMatch(reference, today, today + ONE, signals);
 
@@ -180,9 +183,7 @@ public class CompositeStrategy implements Strategy {
     }
 
     // search forwards
-    final int forwards = isSearchForwards && (today + window < composite.size()) ?
-                         findMaxMatch(reference, today + ONE, today + window + ONE, signals) :
-                         NOT_FOUND;
+    final int forwards = searchForwards(reference, signals, today, composite);
     if (forwards > NOT_FOUND) {  // matching signal found
       // skip forward and backfill, masking other signals (TODO bug?)
       while (++today < forwards) {
@@ -196,13 +197,63 @@ public class CompositeStrategy implements Strategy {
                   ohlcv.close(forwards + offset));
     }
 
+    // combine backwards and forwards search results
+    if (backwards == NOT_FOUND && current == NOT_FOUND && forwards == NOT_FOUND) {
+      final int match = searchBackwardsAndForwards(reference, signals, today, composite);
+      if (match > NOT_FOUND) {
+        today = match;
+        setSignal(reference, today, composite);
+        logger.info(TRADE_SIGNAL,
+                    reference,
+                    ohlcv.toString(),
+                    composite.date(today),
+                    ohlcv.close(today + offset));
+      }
+    }
+
     return today;
   }
 
-  private static final int findMaxMatch(final Signal reference,
-                                        final int start,
-                                        final int end,
-                                        final List<SignalTimeSeries> others) {
+  private int searchBackwards(final Signal reference,
+                              final List<SignalTimeSeries> others,
+                              final int today) {
+    return isSearchBackwards(today, window) ?
+           findMaxMatch(reference, today - window, today, others) :
+           NOT_FOUND;
+  }
+
+  private boolean isSearchBackwards(final int today, final int offset) {
+    return isSearchBackwards && (today >= offset);
+  }
+
+  private int searchForwards(final Signal reference,
+                             final List<SignalTimeSeries> others,
+                             final int today,
+                             final SignalTimeSeries composite) {
+    return isSearchForwards(today, window, composite.size()) ?
+           findMaxMatch(reference, today + ONE, today + window + ONE, others) :
+           NOT_FOUND;
+  }
+
+  private boolean isSearchForwards(final int today, final int offset, final int size) {
+    return isSearchForwards && (today + offset < size);
+  }
+
+  private int searchBackwardsAndForwards(final Signal reference,
+                                         final List<SignalTimeSeries> others,
+                                         final int today,
+                                         final SignalTimeSeries composite) {
+    final int halfWindow = window >> ONE;
+    return (isSearchBackwards(today, halfWindow) &&
+            isSearchForwards(today, halfWindow, composite.size())) ?
+           findMaxMatch(reference, today - halfWindow, today + halfWindow + ONE, others) :
+           NOT_FOUND;
+  }
+
+  private static int findMaxMatch(final Signal reference,
+                                  final int start,
+                                  final int end,
+                                  final List<SignalTimeSeries> others) {
     int maxMatchingSignalIndex = NOT_FOUND;
     // find maximum matching index across all signal series
     for (final SignalTimeSeries other : others) {
@@ -212,17 +263,17 @@ public class CompositeStrategy implements Strategy {
       }
       else {
         maxMatchingSignalIndex = NOT_FOUND;
-        logger.debug("No unanimous {} in {}", reference, other);
+        logger.debug("No matching {} found in {}", reference, other);
         break;
       }
     }
     return maxMatchingSignalIndex;
   }
 
-  private static final int findMatch(final Signal reference,
-                                     final int start,
-                                     final int end,
-                                     final SignalTimeSeries signals) {
+  private static int findMatch(final Signal reference,
+                               final int start,
+                               final int end,
+                               final SignalTimeSeries signals) {
     int matchingSignalIndex = NOT_FOUND;
     // find first match in a signal series
     for (int i = start; i < end; ++i) {
@@ -238,9 +289,9 @@ public class CompositeStrategy implements Strategy {
     return matchingSignalIndex;
   }
 
-  private static final void setSignal(final Signal signal,
-                                      final int index,
-                                      final SignalTimeSeries signals) {
+  private static void setSignal(final Signal signal,
+                                final int index,
+                                final SignalTimeSeries signals) {
     signals.signal(signal, index);
   }
 
@@ -249,7 +300,7 @@ public class CompositeStrategy implements Strategy {
     return name;
   }
 
-  private static final void throwExceptionIfNull(final Strategy... strategies) {
+  private static void throwExceptionIfNull(final Strategy... strategies) {
     for (int i = 0; i < strategies.length; ++i) {
       final Strategy strategy = strategies[i];
       if (strategy == null) {

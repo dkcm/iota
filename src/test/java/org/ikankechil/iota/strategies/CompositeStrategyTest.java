@@ -1,7 +1,7 @@
 /**
- * CompositeStrategyTest.java  v0.2  28 September 2016 2:41:08 pm
+ * CompositeStrategyTest.java  v0.3  28 September 2016 2:41:08 pm
  *
- * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
+ * Copyright © 2016-2019 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.strategies;
 
@@ -23,21 +23,18 @@ import org.junit.Test;
  *
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class CompositeStrategyTest {
 
   private Signal[]                     expected;
   private CompositeStrategy            composite;
 
-//  @Rule
-//  public final ExpectedException       thrown                = ExpectedException.none();
-
   private static final int             ZERO                  = 0;
   private static final int             ONE                   = 1;
-  private static final int             THREE                 = 3;
+  private static final int             FIVE                  = 5;
 
-  private static final int             WINDOW                = THREE;
+  private static final int             WINDOW                = FIVE;
   private static final OHLCVTimeSeries OHLCV                 = new OHLCVTimeSeries("OHLCV", (WINDOW << ONE) + ONE);
 
   private static final String          ACTUAL_SIGNALS        = "Actual signals: ";
@@ -57,10 +54,22 @@ public class CompositeStrategyTest {
       signals.signal(BUY, ZERO);
     }
   };
+  private static final TestStrategy    BUY_MIDDLE_LEFT       = new TestStrategy(OHLCV.size()) {
+    @Override
+    void populateSignals(final SignalTimeSeries signals) {
+      signals.signal(BUY, (signals.size() >> ONE) - ONE);
+    }
+  };
   private static final TestStrategy    BUY_MIDDLE            = new TestStrategy(OHLCV.size()) {
     @Override
     void populateSignals(final SignalTimeSeries signals) {
       signals.signal(BUY, signals.size() >> ONE);
+    }
+  };
+  private static final TestStrategy    BUY_MIDDLE_RIGHT      = new TestStrategy(OHLCV.size()) {
+    @Override
+    void populateSignals(final SignalTimeSeries signals) {
+      signals.signal(BUY, (signals.size() >> ONE) + ONE);
     }
   };
   private static final TestStrategy    BUY_LAST              = new TestStrategy(OHLCV.size()) {
@@ -143,27 +152,27 @@ public class CompositeStrategyTest {
     composite = null;
   }
 
-  @Test(expected=IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void positiveWindowRequired() {
     composite = new CompositeStrategy(ZERO, BUY_FIRST, BUY_MIDDLE);
   }
 
-  @Test(expected=IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void atLeastTwoStrategies() {
     composite = new CompositeStrategy(WINDOW, BUY_FIRST);
   }
 
-  @Test(expected=IllegalArgumentException.class)
+  @Test(expected = IllegalArgumentException.class)
   public void nullStrategy() {
     composite = new CompositeStrategy(WINDOW, (Strategy) null);
   }
 
-  @Test(expected=NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void nullStrategies() {
     composite = new CompositeStrategy(WINDOW, null, null);
   }
 
-  @Test(expected=NullPointerException.class)
+  @Test(expected = NullPointerException.class)
   public void nullStrategies2() {
     composite = new CompositeStrategy(WINDOW, (Strategy[]) null);
   }
@@ -238,11 +247,21 @@ public class CompositeStrategyTest {
   public void unanimousBuysSearchesBackwardsAndForwardsByDefault() {
     composite = new CompositeStrategy(WINDOW, BUY_MIDDLE, BUY_FIRST, BUY_LAST);
     compare(expected, composite);
+    composite = new CompositeStrategy(WINDOW, BUY_FIRST, BUY_MIDDLE, BUY_LAST);
+    compare(expected, composite);
 
-    expected[expected.length - ONE] = BUY;
     expected[WINDOW] = BUY;
+    expected[expected.length - ONE] = BUY;
 
     composite = new CompositeStrategy(WINDOW, BUY_MIDDLE, BUY_FIRST_LAST, BUY_FIRST_LAST);
+    compare(expected, composite);
+  }
+
+  @Test
+  public void unanimousBuysCombineBackwardAndForwardSearchesByDefault() {
+    expected[WINDOW + ONE] = BUY;
+
+    composite = new CompositeStrategy(WINDOW, BUY_MIDDLE, BUY_MIDDLE_LEFT, BUY_MIDDLE_RIGHT);
     compare(expected, composite);
   }
 
@@ -269,12 +288,27 @@ public class CompositeStrategyTest {
   @Test
   public void unanimousBuysNoSearch() {
     expected[WINDOW] = BUY;
+
     composite = new CompositeStrategy(WINDOW, false, false, BUY_MIDDLE, BUY_MIDDLE);
+    compare(expected, composite);
+
+    composite = new CompositeStrategy(WINDOW, false, false, BUY_MIDDLE, BUY_MIDDLE, BUY_MIDDLE);
     compare(expected, composite);
   }
 
   @Test
   public void unanimousBuys() {
+    expected[ZERO] = BUY;
+
+    composite = new CompositeStrategy(WINDOW, BUY_FIRST, BUY_FIRST);
+    compare(expected, composite);
+
+    composite = new CompositeStrategy(WINDOW, BUY_FIRST, BUY_FIRST, BUY_FIRST);
+    compare(expected, composite);
+  }
+
+  @Test
+  public void unanimousBuys2() {
     expected[WINDOW] = BUY;
 
     composite = new CompositeStrategy(WINDOW, BUY_MIDDLE, BUY_MIDDLE);
@@ -330,10 +364,23 @@ public class CompositeStrategyTest {
 
   @Test
   public void sizeOneWindowEquivalence() {
+    expected[ZERO] = BUY;
+
+    // unanimous
+    composite = new CompositeStrategy(ONE, false, false, BUY_FIRST, BUY_FIRST);
+    compare(expected, composite);
+    composite = new CompositeStrategy(ONE, false, false, BUY_FIRST, BUY_FIRST, BUY_FIRST);
+    compare(expected, composite);
+  }
+
+  @Test
+  public void sizeOneWindowEquivalence2() {
     expected[WINDOW] = BUY;
 
     // unanimous
     composite = new CompositeStrategy(ONE, false, false, BUY_MIDDLE, BUY_MIDDLE);
+    compare(expected, composite);
+    composite = new CompositeStrategy(ONE, false, false, BUY_MIDDLE, BUY_MIDDLE, BUY_MIDDLE);
     compare(expected, composite);
   }
 
@@ -387,6 +434,9 @@ public class CompositeStrategyTest {
 
     final String message = ACTUAL_SIGNALS + Arrays.asList(actual);
     assertArrayEquals(message, expected, actual);
+
+    assertEquals(CompositeStrategy.class.getSimpleName(), composite.toString());
+    assertEquals(ZERO, composite.compareTo(composite));
   }
 
   private static final Signal[] newSignals() {
