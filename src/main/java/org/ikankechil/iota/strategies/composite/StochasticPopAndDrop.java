@@ -1,7 +1,7 @@
 /**
- * StochasticPopAndDrop.java  v0.1  8 December 2014 9:09:15 PM
+ * StochasticPopAndDrop.java  v0.2  8 December 2014 9:09:15 PM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-2019 Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.strategies.composite;
 
@@ -19,14 +19,16 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Stochastic Pop and Drop by Jake Bernstein and David Steckler
- * <p>
- * http://stockcharts.com/school/doku.php?id=chart_school:trading_strategies:stochastic_pop_drop<br>
- * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V18/C08/071POP.pdf<br>
+ *
+ * <p>References:
+ * <li>http://stockcharts.com/school/doku.php?id=chart_school:trading_strategies:stochastic_pop_drop
+ * <li>ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V18/C08/071POP.pdf<br>
+ * <br>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
-class StochasticPopAndDrop extends AbstractStrategy {
+public class StochasticPopAndDrop extends AbstractStrategy {
 
   // thresholds
   private static final int    BIAS       = 50;
@@ -90,23 +92,23 @@ class StochasticPopAndDrop extends AbstractStrategy {
 
       Signal signal = Signal.NONE;
       final double shortTermStochasticToday = shortTermStochastic[today];
+      final double longTermStochasticToday = longTermStochastic[today];
+      final double adxToday = adx[today];
       // long
-      if (longTermStochastic[today] > BIAS) {
-        if (adx[today] < WEAK_TREND) {
-          if (crossover(shortTermStochasticYesterday, shortTermStochasticToday, POP)) {
-            signal = Signal.BUY;
-            logger.info(TRADE_SIGNAL, signal, ohlcvName, date, close);
-          }
-        }
+      if (buy(longTermStochasticToday,
+              adxToday,
+              shortTermStochasticYesterday,
+              shortTermStochasticToday)) {
+        signal = Signal.BUY;
+        logger.info(TRADE_SIGNAL, signal, ohlcvName, date, close);
       }
       // short
-      else if (longTermStochastic[today] < BIAS) {
-        if (adx[today] < WEAK_TREND) {
-          if (crossover(shortTermStochasticToday, shortTermStochasticYesterday, DROP)) {
-            signal = Signal.SELL;
-            logger.info(TRADE_SIGNAL, signal, ohlcvName, date, close);
-          }
-        }
+      else if (sell(longTermStochasticToday,
+                    adxToday,
+                    shortTermStochasticYesterday,
+                    shortTermStochasticToday)) {
+        signal = Signal.SELL;
+        logger.info(TRADE_SIGNAL, signal, ohlcvName, date, close);
       }
       signals.set(date, signal, s);
 
@@ -118,14 +120,16 @@ class StochasticPopAndDrop extends AbstractStrategy {
 
   @Override
   protected boolean buy(final double... doubles) {
-    // TODO Auto-generated method stub
-    return false;
+    return (doubles[ZERO] > BIAS) &&      // long-term stochastic
+           (doubles[ONE] < WEAK_TREND) && // ADX
+           crossover(doubles[TWO], doubles[THREE], POP); // short-term stochastic
   }
 
   @Override
   protected boolean sell(final double... doubles) {
-    // TODO Auto-generated method stub
-    return false;
+    return (doubles[ZERO] < BIAS) &&      // long-term stochastic
+           (doubles[ONE] < WEAK_TREND) && // ADX
+           crossunder(doubles[TWO], doubles[THREE], DROP); // short-term stochastic
   }
 
 }
