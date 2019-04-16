@@ -1,7 +1,7 @@
 /**
- * ZeroLagPriceOscillator.java  v0.1  21 July 2015 10:36:12 pm
+ * ZeroLagPriceOscillator.java  v0.2  21 July 2015 10:36:12 pm
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-present Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.trend;
 
@@ -13,7 +13,6 @@ import org.ikankechil.iota.TimeSeries;
 import org.ikankechil.iota.indicators.AbstractIndicator;
 
 import com.tictactec.ta.lib.MInteger;
-import com.tictactec.ta.lib.RetCode;
 
 /**
  *
@@ -21,7 +20,7 @@ import com.tictactec.ta.lib.RetCode;
  *
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public abstract class ZeroLagPriceOscillator extends AbstractIndicator {
 
@@ -40,33 +39,17 @@ public abstract class ZeroLagPriceOscillator extends AbstractIndicator {
   }
 
   @Override
-  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
-    throwExceptionIfShort(ohlcv);
-    final int size = ohlcv.size();
-    final double[] closes = ohlcv.closes();
+  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv, final int start) {
+    return generate((TimeSeries) ohlcv, start);
+  }
 
-    final MInteger outBegIdx = new MInteger();
-    final MInteger outNBElement = new MInteger();
+  @Override
+  public List<TimeSeries> generate(final TimeSeries series, final int start) {
+    throwExceptionIfShort(series);
 
-    // compute fast zero-lag EMA
-    final double[] fastZeroLagEMA = new double[size - fast.lookback()];
-    RetCode outcome = fast.compute(ZERO,
-                                   size - ONE,
-                                   closes,
-                                   outBegIdx,
-                                   outNBElement,
-                                   fastZeroLagEMA);
-    throwExceptionIfBad(outcome, ohlcv);
-
-    // compute slow zero-lag EMA
-    final double[] slowZeroLagEMA = new double[size - slow.lookback()];
-    outcome = slow.compute(ZERO,
-                           size - ONE,
-                           closes,
-                           outBegIdx,
-                           outNBElement,
-                           slowZeroLagEMA);
-    throwExceptionIfBad(outcome, ohlcv);
+    // compute fast and slow zero-lag EMAs
+    final double[] fastZeroLagEMA = generate(fast, series.values(), start);
+    final double[] slowZeroLagEMA = generate(slow, series.values(), start);
 
     // compute indicator
     final double[] zeroLagIndicator = new double[slowZeroLagEMA.length];
@@ -77,19 +60,12 @@ public abstract class ZeroLagPriceOscillator extends AbstractIndicator {
     }
 
     // compute indicator signal line - zero-lag EMA of indicator
-    final double[] zeroLagIndicatorSignal = new double[size - lookback];
-    outcome = signal.compute(ZERO,
-                             zeroLagIndicator.length - ONE,
-                             zeroLagIndicator,
-                             outBegIdx,
-                             outNBElement,
-                             zeroLagIndicatorSignal);
-    throwExceptionIfBad(outcome, ohlcv);
+    final double[] zeroLagIndicatorSignal = generate(signal, zeroLagIndicator, ZERO);
 
     // build output
-    final String[] dates = Arrays.copyOfRange(ohlcv.dates(), lookback, size);
+    final String[] dates = Arrays.copyOfRange(series.dates(), lookback, series.size());
 
-    logger.info(GENERATED_FOR, name, ohlcv);
+    logger.info(GENERATED_FOR, name, series);
     return Arrays.asList(new TimeSeries(name,
                                         dates,
                                         Arrays.copyOfRange(zeroLagIndicator,
@@ -98,6 +74,19 @@ public abstract class ZeroLagPriceOscillator extends AbstractIndicator {
                          new TimeSeries(name + SIGNAL,
                                         dates,
                                         zeroLagIndicatorSignal));
+  }
+
+  private static double[] generate(final ZeroLagEMA indicator,
+                                   final double[] values,
+                                   final int start) {
+    final double[] zeroLagEMA = new double[values.length - indicator.lookback()];
+    indicator.compute(start,
+                      values.length - ONE,
+                      values,
+                      new MInteger(),
+                      new MInteger(),
+                      zeroLagEMA);
+    return zeroLagEMA;
   }
 
   abstract double compute(final double fastZeroLagEMA, final double slowZeroLagEMA);

@@ -1,7 +1,7 @@
 /**
- * STARCBands.java  v0.3  8 January 2015 6:06:28 PM
+ * STARCBands.java  v0.4  8 January 2015 6:06:28 PM
  *
- * Copyright © 2015-2018 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-present Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.volatility;
 
@@ -12,25 +12,22 @@ import org.ikankechil.iota.OHLCVTimeSeries;
 import org.ikankechil.iota.TimeSeries;
 import org.ikankechil.iota.indicators.AbstractIndicator;
 import org.ikankechil.iota.indicators.Indicator;
-import org.ikankechil.iota.indicators.trend.SMA;
 
 /**
  * Stoller Average Range Channels (STARC) by Manning Stoller
  *
  * <p>References:
- * <li>http://www.investopedia.com/terms/s/starc.asp<br>
+ * <li>http://www.investopedia.com/terms/s/starc.asp
  * <li>http://fxtrade.oanda.com/learn/forex-indicators/starc-bands<br>
  * <br>
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class STARCBands extends AbstractIndicator {
 
   private final Indicator     atr;
   private final double        multiplier;
-  private final Indicator     ma;
-  private final int           smaOffset;
 
   private static final String UPPER_BAND  = "Upper STARC Band";
   private static final String MIDDLE_BAND = "Middle STARC Band";
@@ -50,12 +47,10 @@ public class STARCBands extends AbstractIndicator {
 
     this.atr = new ATR(atr);
     this.multiplier = multiplier;
-    ma = new SMA(period);
-    smaOffset = lookback - ma.lookback();
   }
 
   @Override
-  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
+  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv, final int start) {
     // Formula
     // Upper STARC band = SMA + ATR * multiplier
     // Lower STARC band = SMA - ATR * multiplier
@@ -64,13 +59,14 @@ public class STARCBands extends AbstractIndicator {
     final int size = ohlcv.size();
 
     // compute SMA and ATR
-    final double[] smas = ma.generate(ohlcv).get(ZERO).values();
-    final double[] atrs = atr.generate(ohlcv).get(ZERO).values();
+    final double[] smas = sma(ohlcv.closes(), period);
+    final double[] atrs = atr.generate(ohlcv, start).get(ZERO).values();
 
     // compute indicator
     final double[] upperSTARCBand = new double[size - lookback];
     final double[] lowerSTARCBand = new double[upperSTARCBand.length];
 
+    final int smaOffset = smas.length - atrs.length;
     for (int i = ZERO, s = smaOffset, a = lookback - atr.lookback();
          i < upperSTARCBand.length;
          ++i, ++s, ++a) {

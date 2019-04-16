@@ -1,7 +1,7 @@
 /**
- * Vortex.java  v0.2  15 December 2014 2:24:23 PM
+ * Vortex.java  v0.3  15 December 2014 2:24:23 PM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-present Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.trend;
 
@@ -11,22 +11,25 @@ import java.util.List;
 import org.ikankechil.iota.OHLCVTimeSeries;
 import org.ikankechil.iota.TimeSeries;
 import org.ikankechil.iota.indicators.AbstractIndicator;
+import org.ikankechil.iota.indicators.Indicator;
 import org.ikankechil.iota.indicators.volatility.TR;
 
 /**
  * Vortex Indicator by Etienne Botes and Douglas Siepman
  *
- * <p>http://www.traders.com/Reprints/PDF_reprints/VFX_VORTEX.PDF<br>
+ * <p>References:
+ * <li>http://www.traders.com/Reprints/PDF_reprints/VFX_VORTEX.PDF<br>
+ * <br>
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class Vortex extends AbstractIndicator {
 
-  private static final TR     TR    = new TR();
+  private static final Indicator TR           = new TR();
 
-  private static final String PLUS_VORTEX  = "+Vortex";
-  private static final String MINUS_VORTEX = "-Vortex";
+  private static final String    PLUS_VORTEX  = "+Vortex";
+  private static final String    MINUS_VORTEX = "-Vortex";
 
   public Vortex() {
     this(FOURTEEN); // periods: 13, 14, 21, 34 or 55
@@ -37,7 +40,7 @@ public class Vortex extends AbstractIndicator {
   }
 
   @Override
-  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
+  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv, final int start) {
     throwExceptionIfShort(ohlcv);
     final int size = ohlcv.size();
 
@@ -51,7 +54,7 @@ public class Vortex extends AbstractIndicator {
     final double[] sumMinusVM = sum(period, minusVM);
 
     // compute true range
-    final double[] tr = TR.generate(ohlcv).get(ZERO).values();
+    final double[] tr = TR.generate(ohlcv, start).get(ZERO).values();
 
     // compute true range sum
     final double[] sumTR = sum(period, tr);
@@ -66,9 +69,9 @@ public class Vortex extends AbstractIndicator {
                          new TimeSeries(MINUS_VORTEX, dates, sumMinusVM));
   }
 
-  private static final void computeVortexMovements(final double[] plusVM,
-                                                   final double[] minusVM,
-                                                   final OHLCVTimeSeries ohlcv) {
+  private static void computeVortexMovements(final double[] plusVM,
+                                             final double[] minusVM,
+                                             final OHLCVTimeSeries ohlcv) {
     final int size = ohlcv.size();
     final double[] highs = ohlcv.highs();
     final double[] lows = ohlcv.lows();
@@ -88,9 +91,9 @@ public class Vortex extends AbstractIndicator {
     }
   }
 
-  private static final void computeVortexIndicators(final double[] plusVI,
-                                                    final double[] minusVI,
-                                                    final double[] sumTR) {
+  private static void computeVortexIndicators(final double[] plusVI,
+                                              final double[] minusVI,
+                                              final double[] sumTR) {
     for (int i = ZERO; i < plusVI.length; ++i) {
       final double inverseSumTR = ONE / sumTR[i];
       plusVI[i] *= inverseSumTR;

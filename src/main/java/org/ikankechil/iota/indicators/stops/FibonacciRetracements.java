@@ -1,7 +1,7 @@
 /**
- * FibonacciRetracements.java  v0.2  16 May 2017 6:57:49 pm
+ * FibonacciRetracements.java  v0.3  16 May 2017 6:57:49 pm
  *
- * Copyright © 2017-2018 Daniel Kuan.  All rights reserved.
+ * Copyright © 2017-present Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.stops;
 
@@ -33,10 +33,12 @@ import org.ikankechil.iota.indicators.pattern.TopsAndBottoms;
  * <li> 100.0%
  * </ol>
  *
- * <p>http://stockcharts.com/school/doku.php?id=chart_school:chart_analysis:fibonacci_retracemen<br>
+ * <p>References:
+ * <li>http://stockcharts.com/school/doku.php?id=chart_school:chart_analysis:fibonacci_retracemen<br>
+ * <br>
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class FibonacciRetracements extends AbstractIndicator {
 
@@ -77,11 +79,11 @@ public class FibonacciRetracements extends AbstractIndicator {
   }
 
   @Override
-  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
+  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv, final int start) {
     throwExceptionIfShort(ohlcv);
 
     // generate tops and bottoms
-    final List<TimeSeries> tab = topsAndBottoms.generate(ohlcv);
+    final List<TimeSeries> tab = topsAndBottoms.generate(ohlcv, start);
     final double[] tops = tab.get(ZERO).values();
     final double[] bottoms = tab.get(ONE).values();
 
@@ -92,9 +94,9 @@ public class FibonacciRetracements extends AbstractIndicator {
     return new ArrayList<>(fibonacciRetracements.values());
   }
 
-  private static final Map<Retracements, TimeSeries> drawRetracements(final double[] tops,
-                                                                      final double[] bottoms,
-                                                                      final String[] dates) {
+  private static Map<Retracements, TimeSeries> drawRetracements(final double[] tops,
+                                                                final double[] bottoms,
+                                                                final String[] dates) {
     final Map<Retracements, TimeSeries> fibonacciRetracements = new EnumMap<>(Retracements.class);
 
     // initialise
@@ -128,11 +130,11 @@ public class FibonacciRetracements extends AbstractIndicator {
     return fibonacciRetracements;
   }
 
-  private static final void draw(final Map<Retracements, TimeSeries> fibonacciRetracements,
-                                 final int x1,
-                                 final int x2,
-                                 final double y1,
-                                 final double y2) {
+  private static void draw(final Map<Retracements, TimeSeries> fibonacciRetracements,
+                           final int x1,
+                           final int x2,
+                           final double y1,
+                           final double y2) {
     logger.debug("Fibonacci retracement from ({}, {}) to ({}, {})", x1, y1, x2, y2);
     for (final Entry<Retracements, TimeSeries> fibonacciRetracement : fibonacciRetracements.entrySet()) {
       final Retracements retracement = fibonacciRetracement.getKey();

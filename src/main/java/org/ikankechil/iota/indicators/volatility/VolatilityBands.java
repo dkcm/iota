@@ -1,7 +1,7 @@
 /**
- * VolatilityBands.java  v0.1  26 September 2016 10:56:51 am
+ * VolatilityBands.java  v0.2  26 September 2016 10:56:51 am
  *
- * Copyright © 2016-2017 Daniel Kuan.  All rights reserved.
+ * Copyright © 2016-present Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.volatility;
 
@@ -18,15 +18,15 @@ import org.ikankechil.iota.indicators.trend.ZeroLagTEMA;
 /**
  * Volatility Bands by David Rooke
  *
- * <p><References:
- * <li>http://www.futuresmag.com/2010/04/30/fixing-bollinger-bands<br>
- * <li>http://www.futuresmag.com/2010/04/30/fixing-bollinger-bands-codes-and-results<br>
- * <li>https://lcchong.files.wordpress.com/2011/06/fixing-the-bollinger-bands.pdf<br>
+ * <p>References:
+ * <li>http://www.futuresmag.com/2010/04/30/fixing-bollinger-bands
+ * <li>http://www.futuresmag.com/2010/04/30/fixing-bollinger-bands-codes-and-results
+ * <li>https://lcchong.files.wordpress.com/2011/06/fixing-the-bollinger-bands.pdf
  * <li>https://c.mql5.com/forextsd/forum/72/fixing_the_bollinger_bands.pdf<br>
- *
+ * <br>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class VolatilityBands extends AbstractIndicator {
 
@@ -57,7 +57,7 @@ public class VolatilityBands extends AbstractIndicator {
   }
 
   @Override
-  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
+  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv, final int start) {
     // Formula:
     //
     // The requirements for calculating the volatility bands are simple:
@@ -87,7 +87,7 @@ public class VolatilityBands extends AbstractIndicator {
     final int size = ohlcv.size();
 
     // compute low-lag moving average
-    final TimeSeries zltemas = zltema.generate(ohlcv).get(ZERO);
+    final TimeSeries zltemas = zltema.generate(ohlcv, start).get(ZERO);
 
     // compute standard deviation of moving average
     final double[] upperBand = stdDev.generate(zltemas).get(ZERO).values();

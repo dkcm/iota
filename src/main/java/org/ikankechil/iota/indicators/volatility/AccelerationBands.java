@@ -1,7 +1,7 @@
 /**
- * AccelerationBands.java  v0.3  14 January 2015 9:46:27 AM
+ * AccelerationBands.java  v0.4  14 January 2015 9:46:27 AM
  *
- * Copyright © 2015-2018 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-present Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.volatility;
 
@@ -11,8 +11,6 @@ import java.util.List;
 import org.ikankechil.iota.OHLCVTimeSeries;
 import org.ikankechil.iota.TimeSeries;
 import org.ikankechil.iota.indicators.AbstractIndicator;
-import org.ikankechil.iota.indicators.Indicator;
-import org.ikankechil.iota.indicators.trend.SMA;
 
 /**
  * Acceleration Bands by Price Headley
@@ -25,12 +23,11 @@ import org.ikankechil.iota.indicators.trend.SMA;
  * <br>
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class AccelerationBands extends AbstractIndicator {
 
   private final double        factor;
-  private final Indicator     sma;
 
   private static final int    MULTIPLIER  = 4000;
   private static final double FACTOR      = 0.001;
@@ -48,11 +45,10 @@ public class AccelerationBands extends AbstractIndicator {
     throwExceptionIfNegative(factor);
 
     this.factor = MULTIPLIER * factor;
-    sma = new SMA(period);
   }
 
   @Override
-  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
+  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv, final int start) {
     // Formula:
     // Upper band = SMA( High * ( 1 + 2 * (((( High - Low )/(( High + Low ) / 2 )) * 1000 ) * Factor )))
     // Lower band = SMA( Low  * ( 1 - 2 * (((( High - Low )/(( High + Low ) / 2 )) * 1000 ) * Factor )))
@@ -68,19 +64,11 @@ public class AccelerationBands extends AbstractIndicator {
     // compute upper and lower bands
     final double[] upper = new double[size];
     final double[] lower = new double[upper.length];
-    for (int i = ZERO; i < size; ++i) {
-      final double high = ohlcv.high(i);
-      final double low = ohlcv.low(i);
-      final double ratio = ((high - low) / (high + low)) * factor;
-
-      upper[i] = high * (ONE + ratio);
-      lower[i] = low  * (ONE - ratio);
-    }
+    compute(upper, lower, ohlcv);
 
     // compute indicator
-    final String[] unused = new String[size];
-    final double[] upperBand = sma.generate(new TimeSeries(EMPTY, unused, upper)).get(ZERO).values();
-    final double[] lowerBand = sma.generate(new TimeSeries(EMPTY, unused, lower)).get(ZERO).values();
+    final double[] upperBand = sma(upper, period);
+    final double[] lowerBand = sma(lower, period);
     final double[] middleBand = new double[size - lookback];
     for (int i = ZERO; i < middleBand.length; ++i) {
       middleBand[i] = (upperBand[i] + lowerBand[i]) * HALF;
@@ -92,6 +80,19 @@ public class AccelerationBands extends AbstractIndicator {
     return Arrays.asList(new TimeSeries(UPPER_BAND, dates, upperBand),
                          new TimeSeries(MIDDLE_BAND, dates, middleBand),
                          new TimeSeries(LOWER_BAND, dates, lowerBand));
+  }
+
+  private void compute(final double[] upper,
+                       final double[] lower,
+                       final OHLCVTimeSeries ohlcv) {
+    for (int i = ZERO; i < upper.length; ++i) {
+      final double high = ohlcv.high(i);
+      final double low = ohlcv.low(i);
+      final double ratio = ((high - low) / (high + low)) * factor;
+
+      upper[i] = high * (ONE + ratio);
+      lower[i] = low  * (ONE - ratio);
+    }
   }
 
 }

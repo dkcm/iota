@@ -1,7 +1,7 @@
 /**
- * SelfAdjustingRSI.java  v0.4  14 January 2015 2:05:43 PM
+ * SelfAdjustingRSI.java  v0.5  14 January 2015 2:05:43 PM
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-present Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.momentum;
 
@@ -17,12 +17,14 @@ import org.ikankechil.iota.indicators.volatility.StandardDeviation;
 /**
  * Self-Adjusting RSI by David Sepiashvili
  *
- * <p>{@link ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V24/C02/023SEPI.pdf}<br>
- * {@link ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V24/C02/037TIPS.pdf}<br>
- * {@link http://www.traders.com/documentation/feedbk_docs/2006/02/TradersTips/TradersTips.html}<br>
+ * <p>References:
+ * <li>ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V24/C02/023SEPI.pdf
+ * <li>ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V24/C02/037TIPS.pdf
+ * <li>http://www.traders.com/documentation/feedbk_docs/2006/02/TradersTips/TradersTips.html<br>
+ * <br>
  *
  * @author Daniel Kuan
- * @version 0.4
+ * @version 0.5
  */
 public class SelfAdjustingRSI extends AbstractIndicator {
 
@@ -53,7 +55,7 @@ public class SelfAdjustingRSI extends AbstractIndicator {
   }
 
   @Override
-  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
+  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv, final int start) {
     // Formulae:
     // Version 1
     // Upper = 50 + k * SDn(RSIn)
@@ -66,7 +68,7 @@ public class SelfAdjustingRSI extends AbstractIndicator {
     throwExceptionIfShort(ohlcv);
 
     // compute RSI and standard deviation of RSI
-    final TimeSeries rsis = rsi.generate(ohlcv).get(ZERO);
+    final TimeSeries rsis = rsi.generate(ohlcv, start).get(ZERO);
     final double[] stdDevRsi = stdDev.generate(rsis).get(ZERO).values();
 
     // compute indicator

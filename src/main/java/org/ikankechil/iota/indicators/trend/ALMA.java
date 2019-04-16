@@ -1,7 +1,7 @@
 /**
- * ALMA.java  v0.1  11 October 2016 12:00:21 am
+ * ALMA.java  v0.2  11 October 2016 12:00:21 am
  *
- * Copyright © 2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2016-present Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.trend;
 
@@ -15,11 +15,16 @@ import com.tictactec.ta.lib.RetCode;
  * Arnaud Legoux Moving Average (ALMA) by Arnaud Legoux, Dimitrios Kouzis-Loukas
  * and Anthony Cascino
  *
- * <p>http://www.arnaudlegoux.com/img/ALMA-Arnaud-Legoux-Moving-Average.pdf<br>
- * http://www.wisestocktrader.com/indicators/1477-arnaud-legoux-moving-average<br>
+ * <p>References:
+ * <li>https://www.tradingview.com/ideas/arnaudlegoux/
+ * <li>http://www.wisestocktrader.com/indicators/1477-arnaud-legoux-moving-average
+ * <li>https://www.forexfactory.com/attachment.php?attachmentid=1123528&d=1359078631
+ * <li>https://www.prorealcode.com/prorealtime-indicators/alma-arnaud-legoux-moving-average/
+ * <li>https://tradingsim.com/blog/5-strategies-day-trading-arnaud-legoux-moving-average/<br>
+ * <br>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class ALMA extends EhlersFilter implements MA {
 
@@ -40,21 +45,20 @@ public class ALMA extends EhlersFilter implements MA {
   /**
    *
    *
-   * @param period
+   * @param period window size
    * @param sigma changes filter shape -- increase / decrease to make it wider /
    *          more focused
-   * @param offset trades-off smoothness with responsiveness (0.0, 1.0)
+   * @param offset trades-off smoothness with responsiveness (0.0, 1.0) --
+   *          increase / decrease to make it responsive / smooth
    */
   public ALMA(final int period, final double sigma, final double offset) {
     super(period, ZERO, period - ONE);
     throwExceptionIfNegative(sigma, offset);
 
     // compute weights and norm
-    // weight = e^-[(i - m)^2 / 2s^2]
-    // norm = sum of weights
     final int m = (int) (offset * (period - ONE));
-    final double s = period / sigma;
-    final double inverseVariance = HALF / (s * s);
+    final double is = sigma / period;
+    final double inverseVariance = HALF * (is * is);
 
     double sum = ZERO;
     weights = new double[period];
@@ -62,6 +66,14 @@ public class ALMA extends EhlersFilter implements MA {
       sum += weights[i] = Math.exp(-i_m * i_m * inverseVariance);
     }
     norm = sum;
+
+    // Formula:
+    // ALMA = sum(prices * weights) / norm
+    // where
+    // weight = e^-[(i - m)^2 / 2s^2]
+    // norm = sum of weights
+    // m = offset * (period - 1)
+    // s = period / sigma
   }
 
   @Override
@@ -85,7 +97,7 @@ public class ALMA extends EhlersFilter implements MA {
   }
 
   @Override
-  protected double sumOf(final double... coefficients) {
+  protected double denominator(final double... coefficients) {
     return norm;
   }
 

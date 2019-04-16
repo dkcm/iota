@@ -1,7 +1,7 @@
 /**
- * MinimumMaximumPrice.java  v0.3  27 January 2015 12:56:59 PM
+ * MinimumMaximumPrice.java  v0.4  27 January 2015 12:56:59 PM
  *
- * Copyright © 2015-2017 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-present Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators;
 
@@ -16,15 +16,12 @@ import org.ikankechil.iota.TimeSeries;
  *
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class MinimumMaximumPrice extends AbstractIndicator {
 
-  private final MinimumPrice  min;
-  private final MaximumPrice  max;
-
-  private static final String MININUM_PRICE = "Minimum Price";
-  private static final String MAXIMUM_PRICE = "Maximum Price";
+  private final Indicator min;
+  private final Indicator max;
 
   public MinimumMaximumPrice(final int period) {
     super(period, (period - ONE));
@@ -42,14 +39,11 @@ public class MinimumMaximumPrice extends AbstractIndicator {
   public List<TimeSeries> generate(final TimeSeries series, final int start) {
     throwExceptionIfShort(series);
 
-    final double[] minPrices = min.generate(series).get(ZERO).values();
-    final double[] maxPrices = max.generate(series).get(ZERO).values();
-
-    final String[] dates = Arrays.copyOfRange(series.dates(), lookback, series.size());
+    final TimeSeries minPrices = min.generate(series, start).get(ZERO);
+    final TimeSeries maxPrices = max.generate(series, start).get(ZERO);
 
     logger.info(GENERATED_FOR, name, series);
-    return Arrays.asList(new TimeSeries(MININUM_PRICE, dates, minPrices),
-                         new TimeSeries(MAXIMUM_PRICE, dates, maxPrices));
+    return Arrays.asList(minPrices, maxPrices);
   }
 
 }

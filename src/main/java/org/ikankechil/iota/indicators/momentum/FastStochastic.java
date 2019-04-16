@@ -1,7 +1,7 @@
 /**
- * FastStochastic.java  v0.4  8 December 2014 8:49:06 PM
+ * FastStochastic.java  v0.5  8 December 2014 8:49:06 PM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-present Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.momentum;
 
@@ -19,10 +19,12 @@ import org.ikankechil.iota.indicators.MinimumPrice;
 /**
  * Fast Stochastic Oscillator by George C. Lane
  *
- * <p>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:stochastic_oscillator_fast_slow_and_full
+ * <p>References:
+ * <li>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:stochastic_oscillator_fast_slow_and_full<br>
+ * <br>
  *
  * @author Daniel Kuan
- * @version 0.4
+ * @version 0.5
  */
 public class FastStochastic extends AbstractIndicator {
 
@@ -48,7 +50,7 @@ public class FastStochastic extends AbstractIndicator {
   }
 
   @Override
-  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
+  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv, final int start) {
     // Formula:
     // Fast Stochastic
     // %K = (Current Close - Lowest Low)/(Highest High - Lowest Low) * 100
@@ -87,11 +89,9 @@ public class FastStochastic extends AbstractIndicator {
                                                final double[] lows,
                                                final double[] closes) {
     // copy highs and lows
-    final int size = closes.length;
-    final TimeSeries lowsTS = new TimeSeries(EMPTY, size);
-    final TimeSeries highsTS = new TimeSeries(EMPTY, size);
-    System.arraycopy(lows, ZERO, lowsTS.values(), ZERO, size);
-    System.arraycopy(highs, ZERO, highsTS.values(), ZERO, size);
+    final String[] dates = new String[closes.length];
+    final TimeSeries lowsTS = new TimeSeries(EMPTY, dates, lows);
+    final TimeSeries highsTS = new TimeSeries(EMPTY, dates, highs);
 
     // retrieve
     final MinimumPrice minPrice;
@@ -106,15 +106,22 @@ public class FastStochastic extends AbstractIndicator {
     }
 
     // generate min and max
-    final double[] mins = minPrice.generate(lowsTS).get(ZERO).values();
-    final double[] maxs = maxPrice.generate(highsTS).get(ZERO).values();
+    final TimeSeries mins = minPrice.generate(lowsTS).get(ZERO);
+    final TimeSeries maxs = maxPrice.generate(highsTS).get(ZERO);
 
+    return fastStochasticK(fastK, maxs, mins, closes);
+  }
+
+  public static final double[] fastStochasticK(final int fastK,
+                                               final TimeSeries maxs,
+                                               final TimeSeries mins,
+                                               final double[] closes) {
     // compute fast K
     int c = fastK - ONE;
-    final double[] fastKs = new double[size - c];
+    final double[] fastKs = new double[closes.length - c];
     for (int i = ZERO; i < fastKs.length; ++i, ++c) {
-      final double max = maxs[i];
-      final double min = mins[i];
+      final double max = maxs.value(i);
+      final double min = mins.value(i);
       fastKs[i] = (closes[c] - min) / (max - min) * HUNDRED_PERCENT;
     }
     return fastKs;

@@ -1,7 +1,7 @@
 /**
- * BollingerBands.java  v0.3  4 December 2014 12:26:06 PM
+ * BollingerBands.java  v0.4  4 December 2014 12:26:06 PM
  *
- * Copyright © 2014-2017 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-present Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.volatility;
 
@@ -17,11 +17,12 @@ import org.ikankechil.iota.indicators.Indicator;
  * Bollinger Bands by John Bollinger
  *
  * <p>References:
- * <li><a href="http://www.bollingerbands.com/services/bb/">Bollinger Bands Tutorial</a><br>
+ * <li><a href="http://www.bollingerbands.com/services/bb/">Bollinger Bands Tutorial</a>
  * <li>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:bollinger_bands<br>
+ * <br>
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class BollingerBands extends AbstractIndicator {
 
@@ -65,12 +66,12 @@ public class BollingerBands extends AbstractIndicator {
   }
 
   @Override
-  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
-    return generate((TimeSeries) ohlcv);
+  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv, final int start) {
+    return generate((TimeSeries) ohlcv, start);
   }
 
   @Override
-  public List<TimeSeries> generate(final TimeSeries series) {
+  public List<TimeSeries> generate(final TimeSeries series, final int start) {
     // Formula:
     // Middle Band = 20-day simple moving average (SMA)
     // Upper Band = 20-day SMA + (20-day standard deviation of price x 2)

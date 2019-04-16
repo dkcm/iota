@@ -1,7 +1,7 @@
 /**
- * RainbowOscillator.java  v0.3  1 March 2015 5:57:35 pm
+ * RainbowOscillator.java  v0.4  1 March 2015 5:57:35 pm
  *
- * Copyright © 2015-2018 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-present Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.trend;
 
@@ -10,26 +10,28 @@ import java.util.List;
 
 import org.ikankechil.iota.OHLCVTimeSeries;
 import org.ikankechil.iota.TimeSeries;
+import org.ikankechil.iota.indicators.Indicator;
 import org.ikankechil.iota.indicators.MinimumMaximumPrice;
 
 /**
  * Rainbow Oscillator by Mel Widner
  *
  * <p>References:
- * <li>https://c.mql5.com/forextsd/forum/77/mel_widner_-_rainbow_charts.pdf<br>
- * <li>https://c.forex-tsd.com/forum/64/rainbow_oscillator_-_formula.pdf<br>
+ * <li>https://c.mql5.com/forextsd/forum/77/mel_widner_-_rainbow_charts.pdf
+ * <li>https://c.forex-tsd.com/forum/64/rainbow_oscillator_-_formula.pdf
  * <li>https://c.mql5.com/forextsd/forum/64/rainbow_oscillator_-_formula.pdf<br>
+ * <br>
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class RainbowOscillator extends RainbowCharts {
 
-  private final MinimumMaximumPrice minMax;
+  private final Indicator     minMax;
 
-  private static final String       UPPER_BAND  = "Upper Rainbow Band";
-  private static final String       MIDDLE_BAND = "Rainbow Oscillator";
-  private static final String       LOWER_BAND  = "Lower Rainbow Band";
+  private static final String UPPER_BAND  = "Upper Rainbow Band";
+  private static final String MIDDLE_BAND = "Rainbow Oscillator";
+  private static final String LOWER_BAND  = "Lower Rainbow Band";
 
   public RainbowOscillator() {
     this(TWO);
@@ -42,7 +44,7 @@ public class RainbowOscillator extends RainbowCharts {
   }
 
   @Override
-  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
+  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv, final int start) {
     // Formula:
     // RANGEA = MAX(AVE1, AVE2, ..., AVE10) - MIN(AVE1, AVE2, ..., AVE10)
     // RANGEC = MAX (CJ) - MIN (CJ)
@@ -55,17 +57,16 @@ public class RainbowOscillator extends RainbowCharts {
     // LRB = -RB
 
     final int size = ohlcv.size();
-    final double[] closes = ohlcv.closes();
 
     final double[] indicator = new double[size - lookback];
     final double[] upperBand = new double[indicator.length];
     final double[] lowerBand = new double[upperBand.length];
 
-    final List<TimeSeries> cMinMaxs = minMax.generate(ohlcv);
+    final List<TimeSeries> cMinMaxs = minMax.generate(ohlcv, start);
     final TimeSeries cMins = cMinMaxs.get(ZERO);
     final TimeSeries cMaxs = cMinMaxs.get(ONE);
 
-    final List<TimeSeries> rainbows = super.generate(ohlcv);
+    final List<TimeSeries> rainbows = super.generate(ohlcv, start);
     for (int i = ZERO, c = i + lookback; i < indicator.length; ++i, ++c) {
       // compute rainbow max, min and average
       double rMax = Double.NEGATIVE_INFINITY;
@@ -88,7 +89,7 @@ public class RainbowOscillator extends RainbowCharts {
 
       // compute rainbow bandwidth and oscillator
       final double rb = (rMax - rMin) * cRange;
-      final double ro = (closes[c] - rAverage) * cRange;
+      final double ro = (ohlcv.close(c) - rAverage) * cRange;
 
       indicator[i] = ro;
       upperBand[i] = rb;
@@ -98,7 +99,6 @@ public class RainbowOscillator extends RainbowCharts {
     final String[] dates = Arrays.copyOfRange(ohlcv.dates(), lookback, size);
 
     logger.info(GENERATED_FOR, name, ohlcv);
-
     return Arrays.asList(new TimeSeries(UPPER_BAND, dates, upperBand),
                          new TimeSeries(MIDDLE_BAND, dates, indicator),
                          new TimeSeries(LOWER_BAND, dates, lowerBand));

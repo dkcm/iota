@@ -1,7 +1,7 @@
 /**
- * KaufmanVolatilityStops.java  v0.2  18 October 2016 7:15:56 pm
+ * KaufmanVolatilityStops.java  v0.3  18 October 2016 7:15:56 pm
  *
- * Copyright © 2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2016-present Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.stops;
 
@@ -15,13 +15,15 @@ import org.ikankechil.iota.indicators.AbstractIndicator;
 /**
  * Kaufman's Volatility Stops by Perry Kaufman
  *
- * <p>http://thepatternsite.com/stops.html#VS<br>
- * http://bookzz.org/book/938775/4bc6bf<br>
- * http://www.tradingsetupsreview.com/ultimate-guide-volatility-stop-losses/<br>
- * http://bmoen.com/stock-stops/stock-volatility-stop.aspx<br>
+ * <p>References:
+ * <li>http://thepatternsite.com/stops.html#VS
+ * <li>http://bookzz.org/book/938775/4bc6bf
+ * <li>http://www.tradingsetupsreview.com/ultimate-guide-volatility-stop-losses/
+ * <li>http://bmoen.com/stock-stops/stock-volatility-stop.aspx<br>
+ * <br>
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class KaufmanVolatilityStops extends AbstractIndicator {
 
@@ -44,7 +46,7 @@ public class KaufmanVolatilityStops extends AbstractIndicator {
   }
 
   @Override
-  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
+  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv, final int start) {
     // Formula:
     // 1. Compute the average daily high-low price range for the prior month
     // 2. Multiply by 2 to get volatility
@@ -56,14 +58,14 @@ public class KaufmanVolatilityStops extends AbstractIndicator {
     throwExceptionIfShort(ohlcv);
     final int size = ohlcv.size();
 
-    final double[] shortStops = new double[size - lookback];
+    final double[] shortStops = new double[size - lookback - start];
     final double[] longStops = new double[shortStops.length];
 
     final double[] highs = ohlcv.highs();
     final double[] lows = ohlcv.lows();
 
     // compute indicator
-    int i = ZERO;
+    int i = start;
     int j = i + lookback;
 
     final double initialVolatility = computeVolatility(i, highs, lows);
@@ -96,7 +98,7 @@ public class KaufmanVolatilityStops extends AbstractIndicator {
                          new TimeSeries(LONG_KAUFMAN_VOLATILITY_STOPS, dates, longStops));
   }
 
-  private final double computeVolatility(final int start, final double[] highs, final double[] lows) {
+  private double computeVolatility(final int start, final double[] highs, final double[] lows) {
     double averageRange = ZERO;
     for (int i = start; i < start + period; ++i) {
       averageRange += (highs[i] - lows[i]); // range
@@ -105,11 +107,11 @@ public class KaufmanVolatilityStops extends AbstractIndicator {
     return (averageRange * multiplier);     // volatility
   }
 
-  private static final double computeLongStop(final double low, final double volatility) {
+  private static double computeLongStop(final double low, final double volatility) {
     return low - volatility;
   }
 
-  private static final double computeShortStop(final double high, final double volatility) {
+  private static double computeShortStop(final double high, final double volatility) {
     return high + volatility;
   }
 

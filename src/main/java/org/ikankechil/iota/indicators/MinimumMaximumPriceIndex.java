@@ -1,7 +1,7 @@
 /**
- * MinimumMaximumPriceIndex.java  v0.2  27 January 2015 1:52:20 PM
+ * MinimumMaximumPriceIndex.java  v0.3  27 January 2015 1:52:20 PM
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-present Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators;
 
@@ -16,15 +16,12 @@ import org.ikankechil.iota.TimeSeries;
  *
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class MinimumMaximumPriceIndex extends AbstractIndicator {
 
-  private final MinimumPriceIndex min;
-  private final MaximumPriceIndex max;
-
-  private static final String     MININUM_PRICE_INDEX = "Minimum Price Index";
-  private static final String     MAXIMUM_PRICE_INDEX = "Maximum Price Index";
+  private final Indicator min;
+  private final Indicator max;
 
   public MinimumMaximumPriceIndex(final int period) {
     super(period, (period - ONE));
@@ -34,17 +31,14 @@ public class MinimumMaximumPriceIndex extends AbstractIndicator {
   }
 
   @Override
-  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
+  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv, final int start) {
     throwExceptionIfShort(ohlcv);
 
-    final double[] minPriceIndices = min.generate(ohlcv).get(ZERO).values();
-    final double[] maxPriceIndices = max.generate(ohlcv).get(ZERO).values();
-
-    final String[] dates = Arrays.copyOfRange(ohlcv.dates(), lookback, ohlcv.size());
+    final TimeSeries minPriceIndices = min.generate(ohlcv, start).get(ZERO);
+    final TimeSeries maxPriceIndices = max.generate(ohlcv, start).get(ZERO);
 
     logger.info(GENERATED_FOR, name, ohlcv);
-    return Arrays.asList(new TimeSeries(MININUM_PRICE_INDEX, dates, minPriceIndices),
-                         new TimeSeries(MAXIMUM_PRICE_INDEX, dates, maxPriceIndices));
+    return Arrays.asList(minPriceIndices, maxPriceIndices);
   }
 
 }

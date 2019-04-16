@@ -1,7 +1,7 @@
 /**
- * BetterBollingerBands.java  v0.3  19 July 2015 12:45:34 am
+ * BetterBollingerBands.java  v0.4  19 July 2015 12:45:34 am
  *
- * Copyright © 2015-2017 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-present Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.volatility;
 
@@ -16,12 +16,13 @@ import org.ikankechil.iota.indicators.AbstractIndicator;
  * Better Bollinger Bands by Dennis McNicholl
  *
  * <p>References:
- * <li>http://www.vantharp.com/Tharps-Thoughts/634_June_19_2013.html<br>
- * <li>https://www.tradingview.com/script/dK1uhbN8-DEnvelope-Better-Bollinger-Bands/<br>
+ * <li>http://www.vantharp.com/Tharps-Thoughts/634_June_19_2013.html
+ * <li>https://www.tradingview.com/script/dK1uhbN8-DEnvelope-Better-Bollinger-Bands/
  * <li>https://www.mql5.com/en/forum/173534<br>
+ * <br>
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class BetterBollingerBands extends AbstractIndicator {
 
@@ -54,7 +55,7 @@ public class BetterBollingerBands extends AbstractIndicator {
   }
 
   @Override
-  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
+  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv, final int start) {
     // Formula:
     // alpha = 2/(period + 1);
     // mt = alpha*close + (1 - alpha)*m1;
@@ -73,6 +74,20 @@ public class BetterBollingerBands extends AbstractIndicator {
     final double[] middleBand = new double[upperBand.length];
     final double[] lowerBand = new double[upperBand.length];
 
+    compute(upperBand, middleBand, lowerBand, ohlcv);
+
+    final String[] dates = Arrays.copyOfRange(ohlcv.dates(), lookback, size);
+
+    logger.info(GENERATED_FOR, name, ohlcv);
+    return Arrays.asList(new TimeSeries(UPPER_BAND, dates, upperBand),
+                         new TimeSeries(MIDDLE_BAND, dates, middleBand),
+                         new TimeSeries(LOWER_BAND, dates, lowerBand));
+  }
+
+  private void compute(final double[] upperBand,
+                       final double[] middleBand,
+                       final double[] lowerBand,
+                       final OHLCVTimeSeries ohlcv) {
     int i = ZERO;
     double pmt = ohlcv.close(i);
     double put = pmt;
@@ -100,13 +115,6 @@ public class BetterBollingerBands extends AbstractIndicator {
       pmt2 = mt2;
       put2 = ut2;
     }
-
-    final String[] dates = Arrays.copyOfRange(ohlcv.dates(), lookback, size);
-
-    logger.info(GENERATED_FOR, name, ohlcv);
-    return Arrays.asList(new TimeSeries(UPPER_BAND, dates, upperBand),
-                         new TimeSeries(MIDDLE_BAND, dates, middleBand),
-                         new TimeSeries(LOWER_BAND, dates, lowerBand));
   }
 
   private double allocate(final double left, final double right) {

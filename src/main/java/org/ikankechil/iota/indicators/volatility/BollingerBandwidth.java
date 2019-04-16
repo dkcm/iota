@@ -1,7 +1,7 @@
 /**
- * BollingerBandwidth.java  v0.1  19 December 2014 1:59:47 PM
+ * BollingerBandwidth.java  v0.2  19 December 2014 1:59:47 PM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-present Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.volatility;
 
@@ -14,11 +14,13 @@ import org.ikankechil.iota.TimeSeries;
 /**
  * Bollinger Bandwidth
  *
- * <p>http://www.bollingerbands.com/services/bb/<br>
- * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:bollinger_band_width<br>
+ * <p>References:
+ * <li>http://www.bollingerbands.com/services/bb/
+ * <li>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:bollinger_band_width<br>
+ * <br>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class BollingerBandwidth extends BollingerBands {
 
@@ -35,8 +37,8 @@ public class BollingerBandwidth extends BollingerBands {
   }
 
   @Override
-  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
-    final List<TimeSeries> bollingerBands = super.generate(ohlcv);
+  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv, final int start) {
+    final List<TimeSeries> bollingerBands = super.generate(ohlcv, start);
 
     final TimeSeries upper = bollingerBands.get(ZERO);
     final TimeSeries middle = bollingerBands.get(ONE);

@@ -1,7 +1,7 @@
 /**
- * TCF.java  v0.1  9 December 2015 4:13:48 PM
+ * TCF.java  v0.2  9 December 2015 4:13:48 PM
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-present Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.trend;
 
@@ -15,10 +15,12 @@ import org.ikankechil.iota.indicators.AbstractIndicator;
 /**
  * Trend Continuation Factor (TCF) by M.H. Pee
  *
- * <p>ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V20/C03/050TREN.pdf<br>
+ * <p>References:
+ * <li>ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V20/C03/050TREN.pdf<br>
+ * <br>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class TCF extends AbstractIndicator {
 
@@ -34,7 +36,7 @@ public class TCF extends AbstractIndicator {
   }
 
   @Override
-  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
+  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv, final int start) {
     // Formula:
     // 35-day +TCF = Sum of (+change) for the last 35 days - sum of (-CF) for the last 35 days
     // 35-day –TCF = Sum of (-change) for the last 35 days - sum of (+CF) for the last 35 days
@@ -78,9 +80,9 @@ public class TCF extends AbstractIndicator {
                          new TimeSeries(NEGATIVE_TCF, dates, nTCF));
   }
 
-  private static final void computeChanges(final double[] closes,
-                                           final double[] positiveChanges,
-                                           final double[] negativeChanges) {
+  private static void computeChanges(final double[] closes,
+                                     final double[] positiveChanges,
+                                     final double[] negativeChanges) {
     int c = ZERO;
     double previous = closes[c];
     for (int i = ZERO; ++c < closes.length; ++i) {
@@ -96,8 +98,8 @@ public class TCF extends AbstractIndicator {
     }
   }
 
-  private static final void computeContinuationFactors(final double[] positiveChanges,
-                                                       final double[] negativeChanges) {
+  private static void computeContinuationFactors(final double[] positiveChanges,
+                                                 final double[] negativeChanges) {
     for (int today = ONE, yesterday = ZERO;
          today < negativeChanges.length;
          ++today, ++yesterday) {

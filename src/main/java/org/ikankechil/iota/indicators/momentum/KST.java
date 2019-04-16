@@ -1,7 +1,7 @@
 /**
- * KST.java  v0.2  10 December 2014 10:47:07 AM
+ * KST.java  v0.3  10 December 2014 10:47:07 AM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-present Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.momentum;
 
@@ -15,16 +15,19 @@ import org.ikankechil.iota.indicators.AbstractIndicator;
 /**
  * Know Sure Thing (KST) by Martin Pring
  *
- * <p>Time Frames<br>
- * Short-term Daily = KST(10,15,20,30,10,10,10,15,9)<br>
- * Medium-term Weekly = KST(10,13,15,20,10,13,15,20,9)<br>
- * Long-term Monthly = KST(9,12,18,24,6,6,6,9,9)<br>
+ * <p>Time Frames
+ * <li>Short-term Daily = KST(10,15,20,30,10,10,10,15,9)
+ * <li>Medium-term Weekly = KST(10,13,15,20,10,13,15,20,9)
+ * <li>Long-term Monthly = KST(9,12,18,24,6,6,6,9,9)<br>
+ * <br>
  *
- * <p>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:know_sure_thing_kst<br>
- * http://en.wikipedia.org/wiki/KST_oscillator<br>
+ * <p>References:
+ * <li>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:know_sure_thing_kst
+ * <li>http://en.wikipedia.org/wiki/KST_oscillator<br>
+ * <br>
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class KST extends AbstractIndicator {
 
@@ -92,7 +95,7 @@ public class KST extends AbstractIndicator {
   }
 
   @Override
-  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
+  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv, final int start) {
     // Formula:
     // RCMA1 = 10-Period SMA of 10-Period Rate-of-Change
     // RCMA2 = 10-Period SMA of 15-Period Rate-of-Change
@@ -110,25 +113,8 @@ public class KST extends AbstractIndicator {
     final double[] smaRoc3 = smaRoc(ohlcv, sma3, roc3);
     final double[] smaRoc4 = smaRoc(ohlcv, sma4, roc4);
 
-    return kst(ohlcv, smaRoc1, smaRoc2, smaRoc3, smaRoc4);
-  }
-
-  private List<TimeSeries> kst(final OHLCVTimeSeries ohlcv,
-                               final double[] smaRoc1,
-                               final double[] smaRoc2,
-                               final double[] smaRoc3,
-                               final double[] smaRoc4) {
-    final int size = ohlcv.size();
-
     // compute indicator
-    final double[] kst = new double[(size - lookback) + signalLookback];
-    final int length = kst.length;
-    for (int k = ZERO, i1 = smaRoc1.length - length, i2 = smaRoc2.length - length,
-                       i3 = smaRoc3.length - length, i4 = smaRoc4.length - length;
-         k < length;
-         ++k, ++i1, ++i2, ++i3, ++i4) {
-      kst[k] = smaRoc1[i1] + (smaRoc2[i2] * TWO) + (smaRoc3[i3] * THREE) + (smaRoc4[i4] * FOUR);
-    }
+    final double[] kst = kst(ohlcv, smaRoc1, smaRoc2, smaRoc3, smaRoc4);
 
     // compute indicator signal line
     final double[] kstSignal = sma(kst, signal);
@@ -141,10 +127,26 @@ public class KST extends AbstractIndicator {
                                         dates,
                                         Arrays.copyOfRange(kst,
                                                            signalLookback,
-                                                           length)),
+                                                           kst.length)),
                          new TimeSeries(KST_SIGNAL,
                                         dates,
                                         kstSignal));
+  }
+
+  private double[] kst(final OHLCVTimeSeries ohlcv,
+                       final double[] smaRoc1,
+                       final double[] smaRoc2,
+                       final double[] smaRoc3,
+                       final double[] smaRoc4) {
+    final double[] kst = new double[(ohlcv.size() - lookback) + signalLookback];
+    final int length = kst.length;
+    for (int k = ZERO, i1 = smaRoc1.length - length, i2 = smaRoc2.length - length,
+                       i3 = smaRoc3.length - length, i4 = smaRoc4.length - length;
+         k < length;
+         ++k, ++i1, ++i2, ++i3, ++i4) {
+      kst[k] = smaRoc1[i1] + (smaRoc2[i2] * TWO) + (smaRoc3[i3] * THREE) + (smaRoc4[i4] * FOUR);
+    }
+    return kst;
   }
 
 }

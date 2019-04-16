@@ -1,7 +1,7 @@
 /**
- * Divergence.java  v0.3  20 April 2016 7:36:35 pm
+ * Divergence.java  v0.4  20 April 2016 7:36:35 pm
  *
- * Copyright © 2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2016-present Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.pattern;
 
@@ -21,7 +21,7 @@ import org.ikankechil.iota.indicators.Indicator;
  *
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class Divergence extends AbstractIndicator {
 
@@ -46,13 +46,13 @@ public class Divergence extends AbstractIndicator {
   }
 
   @Override
-  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
+  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv, final int start) {
     throwExceptionIfShort(ohlcv);
 
-    final int size = ohlcv.size();
+    final int size = ohlcv.size() - start;
 
     // generate tops and bottoms
-    final List<TimeSeries> tabs = topsAndBottoms.generate(ohlcv);
+    final List<TimeSeries> tabs = topsAndBottoms.generate(ohlcv, start);
     final double[] tops = Arrays.copyOfRange(tabs.get(ZERO).values(),
                                              lookback,
                                              size);
@@ -61,7 +61,7 @@ public class Divergence extends AbstractIndicator {
                                                 size);
 
     // apply indicator
-    final TimeSeries indicatorSeries = indicator.generate(ohlcv).get(ZERO);
+    final TimeSeries indicatorSeries = indicator.generate(ohlcv, start).get(ZERO);
     final double[] indicatorValues = indicatorSeries.values();
 
     // detect divergences
@@ -112,7 +112,7 @@ public class Divergence extends AbstractIndicator {
     return divergence;
   }
 
-  static enum Comparators {
+  enum Comparators {
     TOPS {
       @Override
       public double divergence(final double[] globalExtrema,

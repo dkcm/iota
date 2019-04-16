@@ -1,7 +1,7 @@
 /**
- * StandardErrorBands.java  v0.1  26 September 2016 4:45:48 pm
+ * StandardErrorBands.java  v0.2  26 September 2016 4:45:48 pm
  *
- * Copyright © 2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2016-present Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.volatility;
 
@@ -11,33 +11,37 @@ import java.util.List;
 import org.ikankechil.iota.OHLCVTimeSeries;
 import org.ikankechil.iota.TimeSeries;
 import org.ikankechil.iota.indicators.AbstractIndicator;
+import org.ikankechil.iota.indicators.Indicator;
 import org.ikankechil.iota.indicators.trend.LinearRegression;
 
 /**
  * Standard Error Bands by Jon Andersen
  *
- * <p>ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V14/C09/STANDAR.pdf<br>
- * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V14/C09/SIDESTA.pdf<br>
- * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V14/C09/TRADERS.pdf<br>
- * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V14/C10/TRADERS.pdf<br>
- * https://reference.wolfram.com/language/ref/indicator/StandardErrorBands.html<br>
- * http://www.vantharp.com/Tharps-Thoughts/635_June_26_2013.html<br>
+ * <p>References:
+ * <li>ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V14/C09/STANDAR.pdf
+ * <li>ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V14/C09/SIDESTA.pdf
+ * <li>ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V14/C09/TRADERS.pdf
+ * <li>ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V14/C10/TRADERS.pdf
+ * <li>https://reference.wolfram.com/language/ref/indicator/StandardErrorBands.html
+ * <li>http://www.vantharp.com/Tharps-Thoughts/635_June_26_2013.html<br>
+ * <br>
  *
  * <p>Strategy:
- * http://www.vantharp.com/Tharps-Thoughts/637_July_10_2013.html<br>
+ * <li>http://www.vantharp.com/Tharps-Thoughts/637_July_10_2013.html<br>
+ * <br>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class StandardErrorBands extends AbstractIndicator {
 
-  private final LinearRegression linearRegression;
-  private final StandardError    standardError;
-  private final int              smooth;
+  private final Indicator     linearRegression;
+  private final Indicator     standardError;
+  private final int           smooth;
 
-  private static final String    UPPER_BAND  = "Standard Error Bands Upper Band";
-  private static final String    MIDDLE_BAND = "Standard Error Bands Middle Band";
-  private static final String    LOWER_BAND  = "Standard Error Bands Lower Band";
+  private static final String UPPER_BAND  = "Standard Error Bands Upper Band";
+  private static final String MIDDLE_BAND = "Standard Error Bands Middle Band";
+  private static final String LOWER_BAND  = "Standard Error Bands Lower Band";
 
   public StandardErrorBands() {
     this(TWENTY_ONE, THREE, TWO); // recommended periods: 21, 34
@@ -53,7 +57,7 @@ public class StandardErrorBands extends AbstractIndicator {
   }
 
   @Override
-  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
+  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv, final int start) {
     // Formula:
     // Standard Error bands were invented by Jon Andersen as a trend following
     // indicator. SE Bands are built around a linear regression line using the
@@ -70,7 +74,7 @@ public class StandardErrorBands extends AbstractIndicator {
     final double[] lowerBand = new double[upperBand.length];
 
     // compute linear regression moving average
-    final TimeSeries lr = linearRegression.generate(ohlcv).get(ZERO);
+    final TimeSeries lr = linearRegression.generate(ohlcv, start).get(ZERO);
     final double[] lrma = sma(lr.values(), smooth);
 
     // compute standard error moving average

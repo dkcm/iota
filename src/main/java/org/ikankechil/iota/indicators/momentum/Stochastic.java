@@ -1,7 +1,7 @@
 /**
- * Stochastic.java  v0.3  4 December 2014 2:05:03 PM
+ * Stochastic.java  v0.4  4 December 2014 2:05:03 PM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-present Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.momentum;
 
@@ -17,10 +17,12 @@ import org.ikankechil.iota.indicators.AbstractIndicator;
 /**
  * Stochastic Oscillator by George C. Lane
  *
- * <p>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:stochastic_oscillator_fast_slow_and_full<br>
+ * <p>References:
+ * <li>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:stochastic_oscillator_fast_slow_and_full<br>
+ * <br>
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class Stochastic extends AbstractIndicator {
 
@@ -52,7 +54,7 @@ public class Stochastic extends AbstractIndicator {
   }
 
   @Override
-  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
+  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv, final int start) {
     // Formula:
     // Full %K = Fast %K smoothed with X-period SMA
     // Full %D = X-period SMA of Full %K

@@ -1,7 +1,7 @@
 /**
- * ChandelierExit.java  v0.2  30 July 2015 12:30:13 am
+ * ChandelierExit.java  v0.3  30 July 2015 12:30:13 am
  *
- * Copyright © 2015-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-present Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.trend;
 
@@ -11,6 +11,7 @@ import java.util.List;
 import org.ikankechil.iota.OHLCVTimeSeries;
 import org.ikankechil.iota.TimeSeries;
 import org.ikankechil.iota.indicators.AbstractIndicator;
+import org.ikankechil.iota.indicators.Indicator;
 import org.ikankechil.iota.indicators.MaximumPrice;
 import org.ikankechil.iota.indicators.MinimumPrice;
 import org.ikankechil.iota.indicators.volatility.ATR;
@@ -18,17 +19,19 @@ import org.ikankechil.iota.indicators.volatility.ATR;
 /**
  * Chandelier Exit by Charles LeBeau
  *
- * <p>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:chandelier_exit<br>
- * https://www.incrediblecharts.com/indicators/chandelier_exits.php<br>
+ * <p>References:
+ * <li>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:chandelier_exit
+ * <li>https://www.incrediblecharts.com/indicators/chandelier_exits.php<br>
+ * <br>
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class ChandelierExit extends AbstractIndicator {
 
-  private final MaximumPrice  maxPrice;
-  private final MinimumPrice  minPrice;
-  private final ATR           atr;
+  private final Indicator     maxPrice;
+  private final Indicator     minPrice;
+  private final Indicator     atr;
   private final double        multiplier;
 
   private static final String CHANDELIER_EXIT_LONG  = "Chandelier Exit Long";
@@ -57,7 +60,7 @@ public class ChandelierExit extends AbstractIndicator {
   }
 
   @Override
-  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv) {
+  public List<TimeSeries> generate(final OHLCVTimeSeries ohlcv, final int start) {
     throwExceptionIfShort(ohlcv);
     final int size = ohlcv.size();
 
@@ -66,17 +69,11 @@ public class ChandelierExit extends AbstractIndicator {
     // Chandelier Exit (short) = 22-day Low + ATR(22) x 3
 
     // compute highs and lows
-    final TimeSeries highs = new TimeSeries(EMPTY, size);
-    final TimeSeries lows = new TimeSeries(EMPTY, size);
-    for (int i = ZERO; i < size; ++i) {
-      highs.value(ohlcv.high(i), i);
-      lows.value(ohlcv.low(i), i);
-    }
-    final TimeSeries max = maxPrice.generate(highs).get(ZERO);
-    final TimeSeries min = minPrice.generate(lows).get(ZERO);
+    final TimeSeries max = maxPrice.generate(new TimeSeries(EMPTY, ohlcv.dates(), ohlcv.highs()), start).get(ZERO);
+    final TimeSeries min = minPrice.generate(new TimeSeries(EMPTY, ohlcv.dates(), ohlcv.lows()), start).get(ZERO);
 
     // compute ATR
-    final TimeSeries atrs = atr.generate(ohlcv).get(ZERO);
+    final TimeSeries atrs = atr.generate(ohlcv, start).get(ZERO);
 
     // compute indicator
     final double[] chandelierExitLong = new double[atrs.size()];

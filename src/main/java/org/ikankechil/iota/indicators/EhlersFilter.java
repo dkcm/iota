@@ -1,7 +1,7 @@
 /**
- * EhlersFilter.java  v0.3  7 July 2015 5:57:45 PM
+ * EhlersFilter.java  v0.4  7 July 2015 5:57:45 PM
  *
- * Copyright © 2015-2018 Daniel Kuan.  All rights reserved.
+ * Copyright © 2015-present Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators;
 
@@ -15,18 +15,19 @@ import com.tictactec.ta.lib.RetCode;
 /**
  * Ehlers Filter by John Ehlers.  Nonlinear FIR, Order Statistic (OS) filters.
  *
- * <p>http://www.mesasoftware.com/papers/EhlersFilters.pdf<br>
- * ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V19/C04/040NON.pdf<br>
+ * <p>References:
+ * <li>http://www.mesasoftware.com/papers/EhlersFilters.pdf
+ * <li>ftp://80.240.216.180/Transmission/%D0%A4%D0%B0%D0%B9%D0%BB%D1%8B/S&C%20on%20DVD%2011.26/VOLUMES/V19/C04/040NON.pdf<br>
+ * <br>
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public abstract class EhlersFilter extends AbstractIndicator {
 
   private final int           priceOffset;
 
   private static final String USING_MEDIAN_PRICE = "Using median price";
-//  private static final String NUMERATOR_AND_DENOMINATOR = "Numerator / Denominator [{}] = {} / {} = {}";
 
   public EhlersFilter(final int period, final int priceOffset, final int lookback) {
     super(period, lookback);
@@ -78,7 +79,7 @@ public abstract class EhlersFilter extends AbstractIndicator {
     for (int i = ZERO; i < output.length; ++i) {
       // compute coefficients and denominator
       final double[] coefficients = coefficients(i, values);
-      final double denominator = sumOf(coefficients);
+      final double denominator = denominator(coefficients);
 
       // compute numerator - sum product of coefficients and values
       double numerator = ZERO;
@@ -88,11 +89,6 @@ public abstract class EhlersFilter extends AbstractIndicator {
 
       // compute filter output
       output[i] = (numerator / denominator);
-//      logger.debug(NUMERATOR_AND_DENOMINATOR,
-//                   i,
-//                   numerator,
-//                   denominator,
-//                   output[i]);
     }
     cleanUp();
 
@@ -103,7 +99,7 @@ public abstract class EhlersFilter extends AbstractIndicator {
 
   protected abstract double[] coefficients(final int index, final double... values);
 
-  protected double sumOf(final double... coefficients) {
+  protected double denominator(final double... coefficients) {
     return sum(coefficients);
   }
 

@@ -1,7 +1,7 @@
 /**
- * BollingerB.java  v0.1  19 December 2014 2:58:00 PM
+ * BollingerB.java  v0.2  19 December 2014 2:58:00 PM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-present Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.momentum;
 
@@ -14,10 +14,13 @@ import org.ikankechil.iota.indicators.volatility.BollingerBands;
 /**
  * Bollinger %b by John Bollinger
  *
- * <p>http://www.bollingerbands.com/services/bb/<br>
+ * <p>References:
+ * <li>http://www.bollingerbands.com/services/bb/
+ * <li>https://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:bollinger_band_perce<br>
+ * <br>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class BollingerB extends BollingerBands {
 
@@ -34,8 +37,8 @@ public class BollingerB extends BollingerBands {
   }
 
   @Override
-  public List<TimeSeries> generate(final TimeSeries series) {
-    final List<TimeSeries> bollingerBands = super.generate(series);
+  public List<TimeSeries> generate(final TimeSeries series, final int start) {
+    final List<TimeSeries> bollingerBands = super.generate(series, start);
 
     final TimeSeries upperBand = bollingerBands.get(ZERO);
     final double[] upper = upperBand.values();
