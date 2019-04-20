@@ -1,7 +1,7 @@
 /**
- * MACD.java  v0.3  27 November 2014 1:06:03 am
+ * MACD.java  v0.4  27 November 2014 1:06:03 am
  *
- * Copyright © 2014-2017 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-present Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.trend;
 
@@ -14,11 +14,15 @@ import com.tictactec.ta.lib.RetCode;
 /**
  * Moving Average Convergence/Divergence (MACD) by Gerald Appel
  *
- * <p>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:moving_average_convergence_divergence_macd
- * http://www.investopedia.com/terms/m/macd.asp
+ * <p>References:
+ * <li>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:moving_average_convergence_divergence_macd
+ * <li>http://www.investopedia.com/terms/m/macd.asp
+ * <li>https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/macd
+ * <li>http://www.forexabode.com/forex-school/technical-indicators/macd/<br>
+ * <br>
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class MACD extends IndicatorWithSignalLineAndHistogram {
 
@@ -64,6 +68,12 @@ public class MACD extends IndicatorWithSignalLineAndHistogram {
 
   double[] smoothenPrices(final int smoothingPeriod, final OHLCVTimeSeries ohlcv) {
     return ema(ohlcv.closes(), smoothingPeriod);
+  }
+
+  public static final double[] macd(final int fast, final int slow, final double... closes) {
+    final double[] fastEMAs = ema(closes, fast);
+    final double[] slowEMAs = ema(closes, slow);
+    return difference(fastEMAs, slowEMAs);
   }
 
 }

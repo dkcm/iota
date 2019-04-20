@@ -1,7 +1,7 @@
 /**
- * StochasticsTests.java  v0.1  2 November 2016 10:30:33 pm
+ * StochasticsTests.java  v0.2  2 November 2016 10:30:33 pm
  *
- * Copyright © 2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2016-present Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.suites;
 
@@ -9,6 +9,7 @@ import org.ikankechil.iota.indicators.momentum.FastStochasticTest;
 import org.ikankechil.iota.indicators.momentum.KDJTest;
 import org.ikankechil.iota.indicators.momentum.StochasticRSITest;
 import org.ikankechil.iota.indicators.momentum.StochasticTest;
+import org.ikankechil.iota.indicators.trend.SchaffTrendCycleTest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -18,16 +19,16 @@ import org.junit.runners.Suite.SuiteClasses;
   StochasticTest.class,
   FastStochasticTest.class,
   KDJTest.class,
-  StochasticRSITest.class
+  StochasticRSITest.class,
+  SchaffTrendCycleTest.class
 })
 
 /**
  *
  *
  *
- *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class StochasticsTests {
   // holder for above annotations

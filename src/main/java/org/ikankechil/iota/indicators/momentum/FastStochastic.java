@@ -1,5 +1,5 @@
 /**
- * FastStochastic.java  v0.5  8 December 2014 8:49:06 PM
+ * FastStochastic.java  v0.6  8 December 2014 8:49:06 PM
  *
  * Copyright © 2014-present Daniel Kuan.  All rights reserved.
  */
@@ -20,11 +20,12 @@ import org.ikankechil.iota.indicators.MinimumPrice;
  * Fast Stochastic Oscillator by George C. Lane
  *
  * <p>References:
- * <li>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:stochastic_oscillator_fast_slow_and_full<br>
+ * <li>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:stochastic_oscillator_fast_slow_and_full
+ * <li>https://www.technicalindicators.net/indicators-technical-analysis/86-stochastic-oscillator-ssto-fsto<br>
  * <br>
  *
  * @author Daniel Kuan
- * @version 0.5
+ * @version 0.6
  */
 public class FastStochastic extends AbstractIndicator {
 
@@ -119,12 +120,20 @@ public class FastStochastic extends AbstractIndicator {
     // compute fast K
     int c = fastK - ONE;
     final double[] fastKs = new double[closes.length - c];
-    for (int i = ZERO; i < fastKs.length; ++i, ++c) {
-      final double max = maxs.value(i);
-      final double min = mins.value(i);
-      fastKs[i] = (closes[c] - min) / (max - min) * HUNDRED_PERCENT;
+    int i = ZERO;
+    fastKs[i] = stochastic(maxs.value(i), mins.value(i), closes[c], ZERO);
+    while (++i < fastKs.length) {
+      fastKs[i] = stochastic(maxs.value(i), mins.value(i), closes[++c], fastKs[i - ONE]);
     }
     return fastKs;
+  }
+
+  private static double stochastic(final double max,
+                                   final double min,
+                                   final double close,
+                                   final double previous) {
+    return (max == min) ? previous // prevent divide-by-zero
+                        : (close - min) / (max - min) * HUNDRED_PERCENT;
   }
 
 }
