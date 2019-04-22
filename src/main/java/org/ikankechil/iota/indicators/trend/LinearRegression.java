@@ -1,7 +1,7 @@
 /**
- * LinearRegression.java  v0.3  10 December 2014 10:24:29 AM
+ * LinearRegression.java  v0.4  10 December 2014 10:24:29 AM
  *
- * Copyright © 2014-2017 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-present Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.trend;
 
@@ -13,12 +13,13 @@ import com.tictactec.ta.lib.RetCode;
 /**
  * Linear Regression
  *
- *
  * <p>References:
- * <li>https://www.incrediblecharts.com/indicators/linear_regression_indicator.php<br>
+ * <li>https://www.incrediblecharts.com/indicators/linear_regression_indicator.php
+ * <li>http://etfhq.com/blog/2010/11/06/linear-regression-indicator-time-series-forecast/<br>
+ * <br>
  *
  * @author Daniel Kuan
- * @version 0.3
+ * @version 0.4
  */
 public class LinearRegression extends AbstractIndicator {
 
@@ -79,7 +80,7 @@ public class LinearRegression extends AbstractIndicator {
                                     final double inverseDivisor) {
     final double m = slope(sumX, sumY, sumXY, inverseDivisor);
     final double c = intercept(sumX, sumY, m);
-    return m * lookback + c;
+    return straightLine(m, c);
   }
 
   protected double slope(final double sumX,
@@ -93,6 +94,10 @@ public class LinearRegression extends AbstractIndicator {
                              final double sumY,
                              final double m) {
     return (sumY - m * sumX) * inversePeriod;
+  }
+
+  protected double straightLine(final double m, final double c) {
+    return m * lookback + c;
   }
 
 }

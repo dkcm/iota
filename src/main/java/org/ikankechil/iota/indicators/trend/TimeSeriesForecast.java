@@ -1,42 +1,35 @@
 /**
- * TimeSeriesForecast.java  v0.1  8 December 2014 6:25:21 PM
+ * TimeSeriesForecast.java  v0.2  8 December 2014 6:25:21 PM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-present Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.trend;
-
-import org.ikankechil.iota.indicators.AbstractIndicator;
-
-import com.tictactec.ta.lib.MInteger;
-import com.tictactec.ta.lib.RetCode;
 
 /**
  * Time Series Forecast (TSF)
  *
+ * <p>References:
+ * <li>http://etfhq.com/blog/2010/11/06/linear-regression-indicator-time-series-forecast/
+ * <li>https://library.tradingtechnologies.com/trade/chrt-ti-time-series-forecast.html
+ * <li>https://www.metastock.com/customer/resources/taaz/?p=109<br>
+ * <br>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
-public class TimeSeriesForecast extends AbstractIndicator {
+public class TimeSeriesForecast extends LinearRegression {
+
+  public TimeSeriesForecast() {
+    this(FOURTEEN);
+  }
 
   public TimeSeriesForecast(final int period) {
-    super(period, TA_LIB.tsfLookback(period));
+    super(period);
   }
 
   @Override
-  protected RetCode compute(final int start,
-                            final int end,
-                            final double[] values,
-                            final MInteger outBegIdx,
-                            final MInteger outNBElement,
-                            final double[] output) {
-    return TA_LIB.tsf(start,
-                      end,
-                      values,
-                      period,
-                      outBegIdx,
-                      outNBElement,
-                      output);
+  protected double straightLine(final double m, final double c) {
+    return m * period + c;
   }
 
 }
