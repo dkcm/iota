@@ -1,7 +1,7 @@
 /**
- * DirectionalMovementIndexTests.java  v0.1  9 November 2016 12:06:46 am
+ * DirectionalMovementIndexTests.java  v0.2  9 November 2016 12:06:46 am
  *
- * Copyright © 2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2016-present Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.suites;
 
@@ -31,14 +31,9 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  *
  *
- *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class DirectionalMovementIndexTests {
-
-  public DirectionalMovementIndexTests() {
-    // holder for above annotations
-  }
-
+  // holder for above annotations
 }

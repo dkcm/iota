@@ -1,7 +1,7 @@
 /**
- * MovingAverageTests.java  v0.4  22 November 2016 12:25:27 am
+ * MovingAverageTests.java  v0.5  22 November 2016 12:25:27 am
  *
- * Copyright © 2016-2018 Daniel Kuan.  All rights reserved.
+ * Copyright © 2016-present Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.suites;
 
@@ -20,6 +20,7 @@ import org.ikankechil.iota.indicators.trend.REMATest;
 import org.ikankechil.iota.indicators.trend.RainbowChartsTest;
 import org.ikankechil.iota.indicators.trend.SMATest;
 import org.ikankechil.iota.indicators.trend.SWMATest;
+import org.ikankechil.iota.indicators.trend.SmoothedMATest;
 import org.ikankechil.iota.indicators.trend.T3Test;
 import org.ikankechil.iota.indicators.trend.TEMATest;
 import org.ikankechil.iota.indicators.trend.TRIMATest;
@@ -54,6 +55,7 @@ import org.junit.runners.Suite.SuiteClasses;
   RainbowChartsTest.class,
   REMATest.class,
 //  SimpleLaguerreFilterTest.class,
+  SmoothedMATest.class,
   SMATest.class,
   SWMATest.class,
   T3Test.class,
@@ -79,7 +81,7 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  *
  * @author Daniel Kuan
- * @version 0.4
+ * @version 0.5
  */
 public class MovingAverageTests {
   // holder for above annotations
