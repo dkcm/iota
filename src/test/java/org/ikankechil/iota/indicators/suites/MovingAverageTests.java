@@ -1,11 +1,12 @@
 /**
- * MovingAverageTests.java  v0.5  22 November 2016 12:25:27 am
+ * MovingAverageTests.java  v0.6  22 November 2016 12:25:27 am
  *
  * Copyright © 2016-present Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.suites;
 
 import org.ikankechil.iota.indicators.trend.ALMATest;
+import org.ikankechil.iota.indicators.trend.AlligatorTest;
 import org.ikankechil.iota.indicators.trend.DEMATest;
 import org.ikankechil.iota.indicators.trend.EMATest;
 import org.ikankechil.iota.indicators.trend.GMMATest;
@@ -41,6 +42,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 @RunWith(Suite.class)
 @SuiteClasses({
+  AlligatorTest.class,
   ALMATest.class,
   DEMATest.class,
   EMATest.class,
@@ -81,7 +83,7 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  *
  * @author Daniel Kuan
- * @version 0.5
+ * @version 0.6
  */
 public class MovingAverageTests {
   // holder for above annotations
