@@ -1,5 +1,5 @@
 /**
- * OscillatorTests.java  v0.7  10 January 2017 1:23:40 am
+ * OscillatorTests.java  v0.8  10 January 2017 1:23:40 am
  *
  * Copyright © 2017-present Daniel Kuan.  All rights reserved.
  */
@@ -12,6 +12,7 @@ import org.ikankechil.iota.indicators.momentum.CMOTest;
 import org.ikankechil.iota.indicators.momentum.DerivativeOscillatorTest;
 import org.ikankechil.iota.indicators.momentum.ErgodicCandlestickOscillatorTest;
 import org.ikankechil.iota.indicators.momentum.ForecastOscillatorTest;
+import org.ikankechil.iota.indicators.momentum.NMOTest;
 import org.ikankechil.iota.indicators.momentum.PGOTest;
 import org.ikankechil.iota.indicators.momentum.PZOTest;
 import org.ikankechil.iota.indicators.momentum.RMOTest;
@@ -40,6 +41,7 @@ import org.junit.runners.Suite.SuiteClasses;
   ErgodicCandlestickOscillatorTest.class,
   ForecastOscillatorTest.class,
 //  KasePeakOscillatorTest.class,
+  NMOTest.class,
   PGOTest.class,
   PZOTest.class,
   RMOTest.class,
@@ -63,7 +65,7 @@ import org.junit.runners.Suite.SuiteClasses;
  *
  *
  * @author Daniel Kuan
- * @version 0.7
+ * @version 0.8
  */
 public class OscillatorTests {
   // holder for above annotations

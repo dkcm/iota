@@ -1,7 +1,7 @@
 /**
- * CMO.java  v0.2  8 December 2014 10:15:02 AM
+ * CMO.java  v0.3  8 December 2014 10:15:02 AM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-present Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.momentum;
 
@@ -13,13 +13,15 @@ import com.tictactec.ta.lib.RetCode;
 /**
  * Chande Momentum Oscillator (CMO) by Tushar Chande
  *
- * <p>https://www.incrediblecharts.com/indicators/chande-momentum-oscillator.php<br>
- * https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/cmo<br>
- * http://www.technicalindicators.net/indicators-technical-analysis/144-cmo-chande-momentum-oscillator<br>
- * http://www.motivewave.com/studies/chande_momentum_oscillator.htm<br>
+ * <p>References:
+ * <li>https://www.incrediblecharts.com/indicators/chande-momentum-oscillator.php
+ * <li>https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/cmo
+ * <li>http://www.technicalindicators.net/indicators-technical-analysis/144-cmo-chande-momentum-oscillator
+ * <li>http://www.motivewave.com/studies/chande_momentum_oscillator.htm<br>
+ * <br>
  *
  * @author Daniel Kuan
- * @version 0.2
+ * @version 0.3
  */
 public class CMO extends AbstractIndicator {
 
@@ -73,14 +75,16 @@ public class CMO extends AbstractIndicator {
 
     // compute indicator
     for (int i = ZERO; i < output.length; ++i) {
-      final double sumGain = sumGains[i];
-      final double sumLoss = sumLosses[i];
-      output[i] = HUNDRED_PERCENT * (sumGain - sumLoss) / (sumGain + sumLoss);
+      output[i] = cmo(sumGains[i], sumLosses[i]);
     }
 
     outBegIdx.value = lookback;
     outNBElement.value = output.length;
     return RetCode.Success;
+  }
+
+  public static final double cmo(final double sumGain, final double sumLoss) {
+    return HUNDRED_PERCENT * (sumGain - sumLoss) / (sumGain + sumLoss);
   }
 
 }
