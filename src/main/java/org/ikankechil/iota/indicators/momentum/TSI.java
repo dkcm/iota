@@ -1,7 +1,7 @@
 /**
- * TSI.java  v0.1  19 December 2014 12:10:13 PM
+ * TSI.java  v0.2  19 December 2014 12:10:13 PM
  *
- * Copyright © 2014-2016 Daniel Kuan.  All rights reserved.
+ * Copyright © 2014-present Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.momentum;
 
@@ -13,11 +13,14 @@ import com.tictactec.ta.lib.RetCode;
 /**
  * True Strength Index (TSI) by William Blau
  *
- * <p>https://community.tradestation.com/discussions/data/2002125162918_at-tsi%20jan2002.pdf<br>
- * http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:true_strength_index<br>
+ * <p>References:
+ * <li>https://community.tradestation.com/discussions/data/2002125162918_at-tsi%20jan2002.pdf
+ * <li>http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:true_strength_index
+ * <li>https://www.mql5.com/en/articles/190#Blau_TSI<br>
+ * <br>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class TSI extends AbstractIndicator {
 
@@ -63,17 +66,11 @@ public class TSI extends AbstractIndicator {
       yesterday = today;  // only need to access closes[] once
     }
 
-    // compute EMA(momentum)
-    final double[] emaMomentum = ema(momentum, period);
-
-    // compute EMA(|momentum|)
-    final double[] emaAbsMomentum = ema(absMomentum, period);
-
     // compute EMA(EMA(momentum))
-    final double[] emaEmaMomentum = ema(emaMomentum, smoothPeriod);
+    final double[] emaEmaMomentum = ema(momentum, period, smoothPeriod);
 
     // compute EMA(EMA(|momentum|))
-    final double[] emaEmaAbsMomentum = ema(emaAbsMomentum, smoothPeriod);
+    final double[] emaEmaAbsMomentum = ema(absMomentum, period, smoothPeriod);
 
     // compute TSI
     // TSI(close,r,s) = 100 * EMA(EMA(mtm,r),s) / EMA(EMA(|mtm|,r),s)
@@ -84,6 +81,11 @@ public class TSI extends AbstractIndicator {
     outBegIdx.value = lookback;
     outNBElement.value = output.length;
     return RetCode.Success;
+  }
+
+  static final double[] ema(final double[] input, final int r, final int s) {
+    final double[] emas = ema(input, r);
+    return ema(emas, s);
   }
 
 }

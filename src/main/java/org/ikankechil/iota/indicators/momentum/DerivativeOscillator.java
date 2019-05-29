@@ -1,11 +1,11 @@
 /**
- * DerivativeOscillator.java  v0.1  4 July 2017 9:55:07 am
+ * DerivativeOscillator.java  v0.2  4 July 2017 9:55:07 am
  *
- * Copyright Â© 2017 Daniel Kuan.  All rights reserved.
+ * Copyright © 2017-present Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.momentum;
 
-import org.ikankechil.iota.OHLCVTimeSeries;
+import org.ikankechil.iota.TimeSeries;
 import org.ikankechil.iota.indicators.AbstractIndicator;
 import org.ikankechil.iota.indicators.Indicator;
 
@@ -16,12 +16,12 @@ import com.tictactec.ta.lib.RetCode;
  * Derivative Oscillator by Constance Brown
  *
  * <p>References:
- * <li>http://aeroinvest.com/derivative.pdf<br>
+ * <li>http://aeroinvest.com/derivative.pdf
  * <li>http://www2.wealth-lab.com/WL5wiki/DerivativeOscillator.ashx<br>
- *
+ * <br>
  *
  * @author Daniel Kuan
- * @version 0.1
+ * @version 0.2
  */
 public class DerivativeOscillator extends AbstractIndicator {
 
@@ -47,7 +47,7 @@ public class DerivativeOscillator extends AbstractIndicator {
   @Override
   protected RetCode compute(final int start,
                             final int end,
-                            final OHLCVTimeSeries ohlcv,
+                            final double[] values,
                             final MInteger outBegIdx,
                             final MInteger outNBElement,
                             final double[] output) {
@@ -57,15 +57,17 @@ public class DerivativeOscillator extends AbstractIndicator {
     // 3. SMA of step 2
     // 4. Derivative Oscillator = Difference between steps 2 and 3
 
-    final double[] rsis = rsi.generate(ohlcv).get(ZERO).values();
+    final double[] rsis = rsi.generate(new TimeSeries(EMPTY, new String[values.length], values), start).get(ZERO).values();
     final double[] ema1s = ema(rsis, ema1);
     final double[] ema2s = ema(ema1s, ema2);
     final double[] smas = sma(ema2s, sma);
 
     // compute indicator
-    for (int i = ZERO, j = i + sma - ONE; i < output.length; ++i, ++j) {
-      output[i] = ema2s[j] - smas[i];
-    }
+    System.arraycopy(difference(ema2s, smas),
+                     ZERO,
+                     output,
+                     ZERO,
+                     output.length);
 
     outBegIdx.value = lookback;
     outNBElement.value = output.length;
