@@ -1,7 +1,7 @@
 /**
- * MoneyFlowTests.java  0.4  10 July 2017 10:22:23 PM
+ * MoneyFlowTests.java  0.5  10 July 2017 10:22:23 PM
  *
- * Copyright © 2017-2018 Daniel Kuan.  All rights reserved.
+ * Copyright © 2017-present Daniel Kuan.  All rights reserved.
  */
 package org.ikankechil.iota.indicators.suites;
 
@@ -13,6 +13,7 @@ import org.ikankechil.iota.indicators.volume.MoneyFlowVolumeTest;
 import org.ikankechil.iota.indicators.volume.NVITest;
 import org.ikankechil.iota.indicators.volume.PVITest;
 import org.ikankechil.iota.indicators.volume.TMFTest;
+import org.ikankechil.iota.indicators.volume.TVITest;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 import org.junit.runners.Suite.SuiteClasses;
@@ -32,14 +33,16 @@ import org.junit.runners.Suite.SuiteClasses;
   // Price Accumulation Volume Indicator
   NVITest.class,
   PVITest.class,
+
+  // Trade Volume Index
+  TVITest.class,
 })
 
 /**
  *
  *
- *
  * @author Daniel Kuan
- * @version 0.4
+ * @version 0.5
  */
 public class MoneyFlowTests {
   // holder for above annotations
